@@ -1,0 +1,115 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+import React, { useEffect } from "react";
+import { useParams } from "next/navigation";
+import { NODE_TYPE, Node } from "@/types/node";
+import { formatDate, toShortString } from "@/utils/helpers";
+import { useNodeStore } from "@/store/node";
+import { useModalStore } from "@/store/modal";
+import SvgInfoSquare from "@/lib/icons/essential/outline/InfoSquare";
+import SvgTrashSquare from "@/lib/icons/essential/outline/TrashSquare";
+import SvgChart5Square from "@/lib/icons/business/outline/Chart5Square";
+import { IconButton, CopyButton } from "@/lib/components/Button";
+import { Heading } from "@/lib/components/Heading";
+import { Tooltip } from "@/lib/components/Tooltip";
+import { ColumnDef, ReactTable, Row, createColumnHelper } from "@/lib/components/ReactTable";
+import { NodeDbRow } from "@/db-queries";
+
+const NodeTableRowActions = ({ row }: { row: Row<NodeDbRow> }) => {
+  const { openModal } = useModalStore();
+  const params = useParams();
+  return (
+    <div className="flex gap-4 lg:flex-row">
+      <Tooltip text="View Details" placement="top-start">
+        <IconButton
+          colorScheme="primary"
+          variant={"ghost"}
+          onClick={() => {
+            openModal("nodeDetails", {
+              nodeDetails: {
+                networkId: params.id as string,
+                nodeId: row.original.node_id,
+                nodeType: row.original.node_type,
+              },
+            });
+          }}
+        >
+          <SvgInfoSquare width={24} height={24} />
+        </IconButton>
+      </Tooltip>
+      <Tooltip text="Analytics" placement="top-start">
+        <IconButton colorScheme="primary" variant={"ghost"} isDisabled={true}>
+          <SvgChart5Square width={24} height={24} />
+        </IconButton>
+      </Tooltip>
+      <Tooltip text="Delete" placement="top-start">
+        <IconButton colorScheme="red" variant={"ghost"} isDisabled={true}>
+          <SvgTrashSquare width={24} height={24} />
+        </IconButton>
+      </Tooltip>
+    </div>
+  );
+};
+
+const columnHelper = createColumnHelper<NodeDbRow>();
+
+const nodeTableColumns: ColumnDef<NodeDbRow, any>[] = [
+  columnHelper.accessor("node_id", {
+    header: "ID",
+    cell: (info) => (
+      <Tooltip text={info.getValue()} placement="top-start">
+        <div className="flex items-center">
+          <div className="mr-2">{toShortString(info.getValue())}</div>
+          <CopyButton text={info.getValue()} />
+        </div>
+      </Tooltip>
+    ),
+  }),
+  columnHelper.accessor("node_name", {
+    header: "Name",
+    cell: (info) => info.getValue(),
+  }),
+  // columnHelper.accessor("nodeStatus", {
+  //   header: "Status",
+  //   cell: (info) => <NetworkNodeStatus status={info.getValue()} />,
+  // }),
+  columnHelper.accessor("created_at", {
+    header: "Created On",
+    cell: (info) => formatDate(new Date(info.getValue())),
+  }),
+  columnHelper.display({
+    header: "Actions",
+    cell: (info) => <NodeTableRowActions row={info.row} />,
+  }),
+];
+
+const NodeTable = ({ nodeType, heading, nodes }: { nodeType: NODE_TYPE; heading: string; nodes: NodeDbRow[] }) => {
+  const [{ pageIndex, pageSize }, setPagination] = React.useState({
+    pageIndex: 1,
+    pageSize: nodes.length,
+  });
+
+  return (
+    <div className="flex flex-col gap-2 overflow-hidden p-4 lg:gap-4">
+      <Heading as="h5">
+        {heading} ({pageSize})
+      </Heading>
+      <div>
+        <ReactTable
+          data={nodes ?? []}
+          columns={nodeTableColumns}
+          isLoading={false}
+          pagination={{
+            pageCount: nodes.length,
+            pageIndex: pageIndex,
+            pageSize: pageSize,
+            pageSizes: [3, 5, 10, 20, 50],
+            setPagination: setPagination,
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default NodeTable;

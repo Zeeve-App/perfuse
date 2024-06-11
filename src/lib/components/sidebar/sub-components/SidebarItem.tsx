@@ -1,0 +1,52 @@
+/* eslint-disable react/display-name */
+import React from "react";
+import { PolymorphicComponentPropsWithRef, PolymorphicRef } from "../../core";
+import { tx } from "@/utils/shared";
+
+type SidebarItemProps<C extends React.ElementType> = PolymorphicComponentPropsWithRef<
+  C,
+  {
+    title: string;
+    isActive: boolean;
+    iconLeft?: React.ReactElement;
+    badge?: React.ReactElement;
+    isChild?: boolean;
+  }
+>;
+
+type SidebarItemComponent = <C extends React.ElementType = "a">(props: SidebarItemProps<C>) => React.ReactNode;
+
+const SidebarItem: SidebarItemComponent = React.forwardRef(
+  <C extends React.ElementType>(
+    { as, title, isActive, iconLeft, badge, isChild, className, ...rest }: SidebarItemProps<C>,
+    ref?: PolymorphicRef<C>,
+  ) => {
+    const Component = as || "a";
+
+    return (
+      <Component
+        className={tx(
+          "group relative flex max-h-14 cursor-pointer items-center justify-start gap-3 px-6 py-4 text-white transition-all duration-200 ease-in-out hover:bg-gradient-to-r hover:from-brand-cyan/10 hover:to-brand-teal/5",
+          { "px-10": isChild, "bg-gradient-to-r from-brand-cyan/10 to-brand-teal/5": isActive },
+          className,
+        )}
+        ref={ref}
+        {...rest}
+      >
+        <div
+          className={`absolute left-0 w-[4px] rounded-r-full py-4 bg-brand-gradient group-hover:block ${
+            isActive ? "block" : "hidden"
+          }`}
+        />
+        {iconLeft ? iconLeft : null}
+        <span className="flex flex-col gap-y-1 text-base font-normal leading-4">
+          {title}
+          {badge ? badge : null}
+        </span>
+      </Component>
+    );
+  },
+);
+
+export type { SidebarItemProps };
+export { SidebarItem };

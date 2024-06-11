@@ -1,0 +1,79 @@
+/* eslint-disable react/display-name */
+import React, { forwardRef } from "react";
+import { cva, VariantProps } from "class-variance-authority";
+import { HTMLMotionProps, motion, MotionProps } from "framer-motion";
+import { tx } from "@/utils/shared";
+
+const progressStyles = cva("w-full overflow-hidden rounded-full bg-neutral-200", {
+  variants: {
+    size: {
+      xSmall: "h-2 text-[8px]",
+      small: "h-4 text-sm",
+      medium: "h-6 text-base",
+      large: "h-8 text-lg",
+      xLarge: "h-10 text-xl",
+    },
+  },
+  compoundVariants: [],
+  defaultVariants: {
+    size: "small",
+  },
+});
+
+const progressBarStyles = cva(
+  "flex h-full items-center justify-center rounded-full font-semibold text-white bg-brand-gradient",
+  {
+    variants: {},
+    compoundVariants: [],
+    defaultVariants: {},
+  },
+);
+
+interface ProgressProps extends HTMLMotionProps<"div">, VariantProps<typeof progressStyles> {
+  value: number;
+  max: number;
+  shouldShowProgress?: boolean;
+  progressBarProps?: ProgressBarProps;
+}
+
+const Progress = forwardRef<HTMLDivElement, ProgressProps>((props, ref) => {
+  const { className, size, value, max, shouldShowProgress, progressBarProps, ...rest } = props;
+  const progress = Math.round((value / max) * 100);
+
+  return (
+    <motion.div className={tx(progressStyles({ size, className }))} ref={ref} {...rest}>
+      <ProgressBar progress={progress} shouldShowProgress={shouldShowProgress} {...progressBarProps} />
+    </motion.div>
+  );
+});
+
+interface ProgressBarProps extends HTMLMotionProps<"div">, VariantProps<typeof progressBarStyles> {
+  progress?: number;
+  shouldShowProgress?: boolean;
+}
+
+const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>((props, ref) => {
+  const { progress, shouldShowProgress, className, ...rest } = props;
+
+  const progressBarMotionProps: MotionProps = {
+    animate: {
+      width: `${progress}%`,
+    },
+  };
+
+  return (
+    <motion.div
+      className={tx(progressBarStyles({ className }))}
+      role="progressbar"
+      ref={ref}
+      {...progressBarMotionProps}
+      {...rest}
+    >
+      {shouldShowProgress ? `${progress}%` : null}
+    </motion.div>
+  );
+});
+
+Progress.displayName = "Progress";
+export type { ProgressBarProps, ProgressProps };
+export { Progress };

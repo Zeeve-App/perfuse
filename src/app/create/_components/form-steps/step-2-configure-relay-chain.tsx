@@ -1,0 +1,458 @@
+"use client";
+import * as yup from "yup";
+import { useFieldArray, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { configureRelayChainValidationSchema } from "./validation-schema";
+import { useCreateNetworkFormStore } from "@/store/create-network";
+import { relayChainTypeOptions } from "@/constants/parachain-options";
+import SvgChevronLeftSquare from "@/lib/icons/arrows/outline/ChevronLeftSquare";
+import SvgChevronRightSquare from "@/lib/icons/arrows/outline/ChevronRightSquare";
+import { Button, IconButton } from "@/lib/components/Button";
+import { FormField } from "@/lib/components/Form/FormField";
+import { Heading } from "@/lib/components/Heading";
+import { useProgressiveFormContext, ProgressiveFormStepFooter } from "@/lib/components/ProgressiveForm";
+import { Checkbox, FormFieldStatus, Input, Password, Radio } from "@/lib/components/Form";
+import { authenticationMethods } from "@/types/credentials";
+import { Tooltip } from "@/lib/components/Tooltip";
+import SvgInfoCircle from "@/lib/icons/essential/outline/InfoCircle";
+import HTTP_STATUS from "@/constants/http";
+import { CreatePerfuseApiPayload } from "@/app/api/create/route";
+import { withBasePath } from "@/utils/helpers";
+
+type ConfigureRelayChainSchemaType = yup.InferType<typeof configureRelayChainValidationSchema>;
+
+const ConfigureRelayChain = () => {
+  const { configureNetwork, configureRelayChain, setFormData } = useCreateNetworkFormStore();
+
+  const {
+    handleSubmit,
+    control,
+    getValues,
+    register,
+    unregister,
+    watch,
+    formState: { errors, isValid },
+  } = useForm<ConfigureRelayChainSchemaType>({
+    resolver: yupResolver(configureRelayChainValidationSchema),
+    mode: "all",
+    defaultValues: configureRelayChain ?? {
+      relay_chain: relayChainTypeOptions.find((e) => e.value === configureNetwork?.chainSpecFile?.contents.relay_chain),
+      rpcNodes: [
+        {
+          type: "rpc",
+          http: true,
+          ws: true,
+          credentials: {
+            type: "api_key",
+          },
+        },
+      ],
+    },
+  });
+
+  const { fields } = useFieldArray({
+    control,
+    name: "rpcNodes",
+  });
+
+  const { fields: collatorFields } = useFieldArray({
+    control,
+    name: "collatorNodes",
+  });
+
+  const { goToPreviousStep, goToNextStep } = useProgressiveFormContext();
+
+  const router = useRouter();
+
+  const handleBack = () => {
+    const data = getValues();
+    setFormData({ step: "configureRelayChain", data });
+    goToPreviousStep();
+  };
+
+  const onSubmit = async (data: ConfigureRelayChainSchemaType) => {
+    setFormData({ step: "configureRelayChain", data });
+    const payload: CreatePerfuseApiPayload = {
+      network: {
+        network_name: data.name,
+        network_env: configureNetwork?.networkEnviorment.value ?? "",
+        network_template: configureNetwork?.template.value ?? "",
+        network_relay_chain: configureNetwork?.relayChain.value ?? "",
+        network_sidecar: configureNetwork?.sidecar.value ?? false,
+        network_blockchain_explorer: configureNetwork?.explorer.value ?? "",
+        network_chain_spec_file_json: configureNetwork?.chainSpecFile.contents ?? {},
+        network_binary_path: configureNetwork?.binaryFile.path ?? "",
+      },
+      nodes: [
+        ...(data.collatorNodes?.map
+          ? data.collatorNodes?.map((e): CreatePerfuseApiPayload["nodes"][0] => {
+              return {
+                node_name: e.collatorName ?? "",
+                node_type: "collator",
+                node_address: e.collatorAddress ?? "",
+                node_rpc_cors: e.rpcCors ?? "",
+                node_balance: e.collatorBalance ?? 0,
+              };
+            })
+          : []),
+        ...(data.rpcNodes?.map
+          ? data.rpcNodes?.map((e): CreatePerfuseApiPayload["nodes"][0] => {
+              return {
+                node_name: e.name ?? "",
+                node_type: "rpc",
+                node_auth_method: e.credentials.type ?? "api_key",
+                node_https_enabled: e.http ?? false,
+                node_wss_enabled: e.ws ?? false,
+              };
+            })
+          : []),
+      ],
+    };
+
+    const response = await axios.post(withBasePath("/api/create"), payload);
+
+    if (response.status === HTTP_STATUS.OK && response.data.success) {
+      router.push("/" + response.data?.data?.network_id);
+    }
+    goToNextStep();
+  };
+
+  const watchRPCNodes = watch(["rpcNodes"])[0];
+
+  return (
+    <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+      {/* form fields */}
+      <div className="flex flex-col gap-3 p-3 lg:gap-6 lg:p-6">
+        <div className="flex flex-col gap-3 lg:gap-6">
+          <Heading as="h5">Parachain Config</Heading>
+          <div className="grid grid-cols-12 items-start gap-3 lg:gap-6">
+            {/* para Id */}
+            <FormField
+              className="col-span-12 md:col-span-6 lg:col-span-4"
+              helper={{
+                status: "error",
+                text: errors.paraId?.message?.toString(),
+              }}
+            >
+              <Input
+                {...register("paraId")}
+                placeholder="Para Id"
+                isRequired
+                isDisabled
+                floatingLabel={{
+                  labelText: "Para Id",
+                }}
+              />
+            </FormField>
+            {/* Chain Type */}
+            <FormField
+              className="col-span-12 md:col-span-6 lg:col-span-4"
+              helper={{
+                status: "error",
+                text: errors.chainType?.message?.toString(),
+              }}
+            >
+              <Input
+                {...register("chainType")}
+                placeholder="Chain Type"
+                isDisabled
+                isRequired
+                floatingLabel={{
+                  labelText: "Chain Type",
+                }}
+              />
+            </FormField>
+            {/* Name */}
+            <FormField
+              className="col-span-12 md:col-span-6 lg:col-span-4"
+              helper={{
+                status: "error",
+                text: errors.name?.message?.toString(),
+              }}
+            >
+              <Input
+                {...register("name")}
+                placeholder="Name"
+                isDisabled
+                isRequired
+                floatingLabel={{
+                  labelText: "Name",
+                }}
+              />
+            </FormField>
+            {/* Telemetry Endpoint */}
+            <FormField
+              className="col-span-12 md:col-span-6 lg:col-span-4"
+              helper={{
+                status: "error",
+                text: errors.telemetryEndpoint?.message?.toString(),
+              }}
+            >
+              <Input
+                {...register("telemetryEndpoint")}
+                placeholder="Telemetry Endpoint"
+                isRequired
+                floatingLabel={{
+                  labelText: "Telemetry Endpoint",
+                }}
+              />
+            </FormField>
+
+            <FormField
+              className="col-span-12 md:col-span-6 lg:col-span-4"
+              helper={{
+                status: "error",
+                text: errors.tokenName?.message?.toString(),
+              }}
+            >
+              <Input
+                {...register("tokenName")}
+                placeholder="Token Symbol"
+                isRequired
+                floatingLabel={{
+                  labelText: "Token Symbol",
+                }}
+              />
+            </FormField>
+          </div>
+
+          <Heading as="h4">Collator Nodes</Heading>
+          {collatorFields.map((e, i) => {
+            return (
+              <div key={i} className="grid grid-cols-12 items-start gap-3 lg:gap-6">
+                {/* Collator Name */}
+                <FormField
+                  className="col-span-12 md:col-span-6 lg:col-span-4"
+                  helper={{
+                    status: "error",
+                    text: errors.collatorNodes?.[i]?.collatorName?.message?.toString(),
+                  }}
+                >
+                  <Input
+                    {...register(`collatorNodes.${i}.collatorName`)}
+                    type="text"
+                    isRequired
+                    isDisabled
+                    placeholder="Collator Name"
+                    floatingLabel={{
+                      labelText: "Collator Name",
+                    }}
+                  />
+                </FormField>
+                {/* Address */}
+                <FormField
+                  className="col-span-12 md:col-span-6 lg:col-span-4"
+                  helper={{
+                    status: "error",
+                    text: errors.collatorNodes?.[i]?.collatorAddress?.message?.toString(),
+                  }}
+                >
+                  <Input
+                    {...register(`collatorNodes.${i}.collatorAddress`)}
+                    type="text"
+                    isRequired
+                    isDisabled
+                    placeholder="Address"
+                    floatingLabel={{
+                      labelText: "Address",
+                    }}
+                  />
+                </FormField>
+                {/* Balance */}
+                <FormField
+                  className="col-span-12 md:col-span-6 lg:col-span-4"
+                  helper={{
+                    status: "error",
+                    text: errors.collatorNodes?.[i]?.collatorBalance?.message?.toString(),
+                  }}
+                >
+                  <Input
+                    {...register(`collatorNodes.${i}.collatorBalance`)}
+                    type="text"
+                    isRequired
+                    isDisabled
+                    placeholder="Balance"
+                    floatingLabel={{
+                      labelText: "Balance",
+                    }}
+                  />
+                </FormField>
+                {/* Rpc Cors */}
+                <FormField
+                  className="col-span-12 md:col-span-6 lg:col-span-4"
+                  helper={{
+                    status: "error",
+                    text: errors.collatorNodes?.[i]?.rpcCors?.message?.toString(),
+                  }}
+                >
+                  <Input
+                    {...register(`collatorNodes.${i}.rpcCors`)}
+                    type="text"
+                    isRequired
+                    isDisabled
+                    placeholder="Rpc Cors"
+                    floatingLabel={{
+                      labelText: "Rpc Cors",
+                    }}
+                  />
+                </FormField>
+                <hr className="col-span-12 border-brand-outline" />
+              </div>
+            );
+          })}
+
+          <Heading as="h4">RPC Nodes</Heading>
+          {fields.map((field, index) => (
+            <div key={field.id} className="grid grid-cols-12 items-start gap-3 lg:gap-6">
+              {/* Node name */}
+              <FormField
+                className="col-span-12 md:col-span-6 lg:col-span-4"
+                helper={{
+                  status: "error",
+                  text: errors.rpcNodes?.[index]?.name?.message?.toString(),
+                }}
+              >
+                <Input
+                  {...register(`rpcNodes.${index}.name`)}
+                  type="text"
+                  isRequired
+                  placeholder="Name"
+                  floatingLabel={{
+                    labelText: "Name",
+                  }}
+                />
+              </FormField>
+              {/* Enabled Public Endpoint */}
+              <div className="col-span-12 md:col-span-6 lg:col-span-4">
+                <Heading as="h5">Enabled Public Endpoint</Heading>
+                <div className="grid grid-cols-12 gap-3 lg:gap-6">
+                  <Checkbox
+                    {...register(`rpcNodes.${index}.http`)}
+                    checkboxLabelProps={{
+                      className: "text-sm font-poppins col-span-6 lg:col-span-3",
+                    }}
+                    isDisabled
+                  >
+                    HTTPS
+                  </Checkbox>
+                  <Checkbox
+                    {...register(`rpcNodes.${index}.ws`)}
+                    checkboxLabelProps={{
+                      className: "text-sm font-poppins col-span-6 lg:col-span-3",
+                    }}
+                    isDisabled
+                  >
+                    WSS
+                  </Checkbox>
+                </div>
+              </div>
+              <hr className="col-span-12 border-brand-outline" />
+              {/* authentication methods */}
+              <div className="col-span-12 md:col-span-6 lg:col-span-4">
+                <Heading as="h5">Authentication Method</Heading>
+                <div className="grid grid-cols-12 gap-3 lg:gap-6">
+                  {authenticationMethods.length
+                    ? authenticationMethods.map((item) => {
+                        return (
+                          <div key={item.name} className="col-span-6 flex flex-row items-center gap-1 lg:col-span-6">
+                            <Radio
+                              {...register(`rpcNodes.${index}.credentials.type`, {
+                                onChange: (e) => {
+                                  if (e.target.value === "api_key") {
+                                    // unregister username and password if selected authorization method is `api_key`
+                                    unregister([
+                                      `rpcNodes.${index}.credentials.username`,
+                                      `rpcNodes.${index}.credentials.password`,
+                                    ]);
+                                  }
+                                },
+                              })}
+                              value={item.value}
+                              isDisabled={item.isDisabled}
+                            >
+                              {item.name}
+                            </Radio>
+                            {item.tooltipText ? (
+                              <Tooltip text={item.tooltipText} placement="top-start">
+                                <IconButton variant="text" colorScheme="gray">
+                                  <SvgInfoCircle className="text-base" />
+                                </IconButton>
+                              </Tooltip>
+                            ) : null}
+                          </div>
+                        );
+                      })
+                    : null}
+                </div>
+                {errors.rpcNodes?.[index]?.credentials && (
+                  <FormFieldStatus className="text-xs lg:text-sm" status="error">
+                    {errors.rpcNodes?.[index]?.credentials?.message?.toString()}
+                  </FormFieldStatus>
+                )}
+                {/* show username and password fields only in case of "basic_auth" */}
+                {watchRPCNodes?.[index]?.credentials?.type === "basic_auth" ? (
+                  <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
+                    {/* <Heading as="h5">Basic Auth</Heading> */}
+                    <div className="grid grid-cols-12 gap-3 lg:gap-6">
+                      {/* username */}
+                      <FormField
+                        className="col-span-12 lg:col-span-6"
+                        helper={{
+                          status: "error",
+                          text: errors.rpcNodes?.[index]?.credentials?.username?.message?.toString(),
+                        }}
+                      >
+                        <Input
+                          {...register(`rpcNodes.${index}.credentials.username`)}
+                          type="text"
+                          isRequired
+                          placeholder="Username"
+                          floatingLabel={{
+                            labelText: "Username",
+                          }}
+                        />
+                      </FormField>
+                      {/* password */}
+                      <FormField
+                        className="col-span-12 lg:col-span-6"
+                        helper={{
+                          status: "error",
+                          text: errors.rpcNodes?.[index]?.credentials?.password?.message?.toString(),
+                        }}
+                      >
+                        <Password
+                          {...register(`rpcNodes.${index}.credentials.password`)}
+                          shouldToggleMask
+                          isRequired
+                          placeholder="Password"
+                          floatingLabel={{
+                            labelText: "Password",
+                          }}
+                        />
+                      </FormField>
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <hr className="border-brand-outline" />
+      </div>
+      <ProgressiveFormStepFooter>
+        <Button variant="outline" iconLeft={<SvgChevronLeftSquare />} onClick={handleBack}>
+          Back
+        </Button>
+        <Button type="submit" iconRight={<SvgChevronRightSquare />} isDisabled={!isValid}>
+          Deploy
+        </Button>
+      </ProgressiveFormStepFooter>
+    </form>
+  );
+};
+
+export type { ConfigureRelayChainSchemaType };
+export default ConfigureRelayChain;
