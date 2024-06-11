@@ -13,11 +13,10 @@ import {
   SidebarItemDropdown,
   SidebarProps,
 } from "../sidebar/sub-components";
-import { HOST, ITEMS } from "./constants/sidebar";
+import { ITEMS } from "./constants/sidebar";
 import ZeeveSidebarItemProps from "./type";
 import { tx } from "@/utils/shared";
 import { isActive, withBasePath } from "@/utils/helpers";
-// import "./sidebar.css";
 
 const ZeeveSidebarItemDropdown = ({ item, pathname }: { item: ZeeveSidebarItemProps; pathname: string }) => {
   return (
@@ -105,7 +104,7 @@ const ZeeveSidebar = (props: SidebarProps) => {
   return (
     <Sidebar className={tx("w-full lg:w-full", className)} {...rest}>
       <SidebarHeader className="justify-center">
-        <a href={`${HOST}/app/dashboard`}>
+        <a href={`/`}>
           <Image
             src={withBasePath("/assets/images/zeeve-logo-on-dark-bg.svg")}
             alt="Zeeve Logo"

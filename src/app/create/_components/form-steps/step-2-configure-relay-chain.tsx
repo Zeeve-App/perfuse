@@ -20,6 +20,7 @@ import SvgInfoCircle from "@/lib/icons/essential/outline/InfoCircle";
 import HTTP_STATUS from "@/constants/http";
 import { CreatePerfuseApiPayload } from "@/app/api/create/route";
 import { withBasePath } from "@/utils/helpers";
+import { ChainSpecFileType } from "@/types/chain-spec";
 
 type ConfigureRelayChainSchemaType = yup.InferType<typeof configureRelayChainValidationSchema>;
 
@@ -74,6 +75,8 @@ const ConfigureRelayChain = () => {
 
   const onSubmit = async (data: ConfigureRelayChainSchemaType) => {
     setFormData({ step: "configureRelayChain", data });
+    const chainspec = configureNetwork?.chainSpecFile.contents;
+
     const payload: CreatePerfuseApiPayload = {
       network: {
         network_name: data.name,
@@ -82,7 +85,11 @@ const ConfigureRelayChain = () => {
         network_relay_chain: configureNetwork?.relayChain.value ?? "",
         network_sidecar: configureNetwork?.sidecar.value ?? false,
         network_blockchain_explorer: configureNetwork?.explorer.value ?? "",
-        network_chain_spec_file_json: configureNetwork?.chainSpecFile.contents ?? {},
+        network_chain_spec_file_json: {
+          ...chainspec,
+          telemetryEndpoints: data.telemetryEndpoint,
+          properties: { ...chainspec?.properties, tokenSymbol: data.tokenName },
+        } as ChainSpecFileType,
         network_binary_path: configureNetwork?.binaryFile.path ?? "",
       },
       nodes: [

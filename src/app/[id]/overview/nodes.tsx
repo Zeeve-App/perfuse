@@ -1,5 +1,7 @@
 "use client";
 import React from "react";
+import { useParams } from "next/navigation";
+import Link from "next/link";
 import { IconButton } from "@/lib/components/Button";
 import { Heading } from "@/lib/components/Heading";
 import { ColumnDef, ReactTable, createColumnHelper } from "@/lib/components/ReactTable";
@@ -28,17 +30,21 @@ const nodeTableColumns: ColumnDef<NodeDbRow, any>[] = [
 ];
 
 const Nodes = ({ isLoading, nodes }: { isLoading: boolean; nodes: NodeDbRow[] }) => {
+  const params = useParams();
+  const networkId = params.id;
   const rowPerPage = 3;
   return (
-    <div className="col-span-12 flex flex-col overflow-hidden rounded-lg border border-brand-outline xl:col-span-6 2xl:col-span-6">
+    <div className="col-span-12 flex flex-col overflow-hidden rounded-lg border border-brand-outline xl:col-span-6 2xl:col-span-5">
       <div className="p-4">
         <div className="flex items-center justify-between">
           <Heading as="h4">Nodes</Heading>
-          <Tooltip text={"My Nodes"} placement="top-start">
-            <IconButton colorScheme="primary" variant={"ghost"} onClick={() => {}} size={"small"}>
-              <SvgArrowUpRightFromSquare className="text-xl" />
-            </IconButton>
-          </Tooltip>
+          <Link href={`/${networkId}/my-nodes`}>
+            <Tooltip text={"My Nodes"} placement="top-start">
+              <IconButton colorScheme="primary" variant={"ghost"} size={"small"}>
+                <SvgArrowUpRightFromSquare className="text-xl" />
+              </IconButton>
+            </Tooltip>
+          </Link>
         </div>
       </div>
       <div className="grid grid-cols-12 gap-3 p-2">

@@ -36,7 +36,7 @@ const GeneralInfo = ({
     },
   };
   return (
-    <div className="col-span-12 flex flex-col rounded-lg border border-brand-outline xl:col-span-6 2xl:col-span-6">
+    <div className="col-span-12 flex flex-col rounded-lg border border-brand-outline xl:col-span-6 2xl:col-span-4">
       <div className="p-4">
         <Heading as="h4">General Info</Heading>
       </div>
@@ -44,7 +44,7 @@ const GeneralInfo = ({
         <KeyValuePair
           label="Name"
           value={name ?? "NA"}
-          className="col-span-12 md:col-span-6 xl:col-span-4"
+          className="col-span-12 md:col-span-6 xl:col-span-6"
           isLoading={isLoading}
         />
         <KeyValuePair
@@ -61,7 +61,7 @@ const GeneralInfo = ({
               "NA"
             )
           }
-          className="col-span-12 md:col-span-6 xl:col-span-4"
+          className="col-span-12 md:col-span-6 xl:col-span-6"
           isLoading={isLoading}
         />
         {/* <KeyValuePair
@@ -78,13 +78,13 @@ const GeneralInfo = ({
               "NA"
             )
           }
-          className="col-span-12 md:col-span-6 xl:col-span-4"
+          className="col-span-12 md:col-span-6 xl:col-span-6"
           isLoading={isLoading}
         /> */}
         <KeyValuePair
           label="Environment"
           value={env ? env.toUpperCase() : "NA"}
-          className="col-span-12 md:col-span-6 xl:col-span-4"
+          className="col-span-12 md:col-span-6 xl:col-span-6"
           isLoading={isLoading}
         />
         {/* <KeyValuePair

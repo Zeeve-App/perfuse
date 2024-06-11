@@ -7,8 +7,8 @@ type NetworkEnvironment = "sandbox" | "production";
 type Network = {
   networkId: string;
   networkName: string;
-  networkEnvironment: NetworkEnvironment;
-  networkStatus: NodeNetworkStates;
+  networkEnvironment: string;
+  // networkStatus: NodeNetworkStates;
   networkCreatedAt: Date;
 };
 

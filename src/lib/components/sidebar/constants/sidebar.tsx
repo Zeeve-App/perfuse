@@ -3,13 +3,12 @@
 import ZeeveSidebarItemProps from "../type";
 import SvgBook2 from "@/lib/icons/school/outline/Book2";
 import SvgMail from "@/lib/icons/communication/outline/Mail";
-import SvgArrow2Up from "@/lib/icons/arrows/outline/Arrow2Up";
 import SvgElement3 from "@/lib/icons/grid/outline/Element3";
 import SvgNodes from "@/lib/icons/programming/outline/Nodes";
 import SvgBubbles from "@/lib/icons/essential/outline/Bubbles";
 import SvgSetting1 from "@/lib/icons/setting/outline/Setting1";
 
-const HOST = process.env.NEXT_PUBLIC_HOST ?? "https://app.zeeve.io";
+// const HOST = process.env.NEXT_PUBLIC_HOST ?? "https://app.zeeve.io";
 
 const ITEMS: {
   title?: string;
@@ -29,17 +28,17 @@ const ITEMS: {
       {
         title: "Dashboard",
         icon: <SvgElement3 />,
-        path: `${HOST}/app/dashboard`,
+        path: `/`,
       },
       {
-        title: "My Parachains",
+        title: "My Parachain",
         icon: <SvgNodes />,
-        path: `${HOST}/app/workspace`,
+        path: `/my-parachains`,
       },
       {
         title: "Deploy",
         icon: <SvgBubbles />,
-        path: `${HOST}/app/workspace`,
+        path: `/create`,
       },
     ],
   },
@@ -49,7 +48,7 @@ const ITEMS: {
       {
         title: "Documentation",
         icon: <SvgBook2 />,
-        path: `${HOST}/app/account`,
+        path: `#`,
       },
       {
         title: "Email",
@@ -60,10 +59,10 @@ const ITEMS: {
       {
         title: "Settings",
         icon: <SvgSetting1 />,
-        path: `${HOST}/app/account`,
+        path: `#`,
       },
     ],
   },
 ];
 
-export { HOST, ITEMS };
+export { ITEMS };

@@ -75,6 +75,7 @@ const isActive = (pathname: string, path: string): boolean => {
  * @returns `string`
  */
 const toShortString = (string: string, startCharCount = 5, endCharCount = 5) => {
+  if (string.length < startCharCount + 3) return string;
   const finalEndCharCount =
     string.length - startCharCount > endCharCount
       ? endCharCount

@@ -23,6 +23,7 @@ const NodeTableRowActions = ({ row }: { row: Row<NodeDbRow> }) => {
         <IconButton
           colorScheme="primary"
           variant={"ghost"}
+          isDisabled={true}
           onClick={() => {
             openModal("nodeDetails", {
               nodeDetails: {
