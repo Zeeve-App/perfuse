@@ -4,7 +4,7 @@ import knex from "knex";
 import { NetworkDbRow, NodeDbRow } from "./type";
 import { knexHandler } from "./knexfile";
 
-export const saveNetworkData = async (data: NetworkDbRow, trx?: knex.Knex.Transaction) => {
+export const saveNetworkData = async (data: Omit<NetworkDbRow, "created_at">, trx?: knex.Knex.Transaction) => {
   const db = trx ?? knexHandler;
 
   return db<NetworkDbRow>("networks").insert(data);

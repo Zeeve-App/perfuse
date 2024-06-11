@@ -4,7 +4,7 @@ import { IconPlusSquare } from "@zeeve-platform/icons/essential/outline";
 import { Heading, Tooltip, Button } from "@zeeve-platform/ui";
 import { ColumnDef, ReactTable, createColumnHelper } from "@zeeve-platform/ui-common-components";
 import React from "react";
-import RegisterParachainInfo from "../../register-parachain-info";
+import RegisterParachainInfo from "../../../overview/register-parachain-info";
 
 type ProposedInvite = {
   proposalId: string;

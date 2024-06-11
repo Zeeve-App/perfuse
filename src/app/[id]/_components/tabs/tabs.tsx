@@ -1,11 +1,11 @@
 "use client";
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from "@zeeve-platform/ui";
 import React from "react";
-import Overview from "./overview/overview";
 import BlockchainConfig from "../../blockchain-config/blockchain-config";
+import MyNodes from "../../my-nodes/my-nodes";
+import Overview from "../../overview/overview";
 import CloudInfra from "./cloud-infra/cloud-infra";
 import ManageInvites from "./manage-invites/manage-invites";
-import MyNodes from "../../my-nodes/my-nodes";
+import { Tabs, TabList, Tab, TabPanels, TabPanel } from "@/lib/components/Tabs";
 
 const IdPageTabs = () => {
   return (
@@ -21,12 +21,12 @@ const IdPageTabs = () => {
         <TabPanel>
           <Overview />
         </TabPanel>
-        <TabPanel>
+        {/* <TabPanel>
           <BlockchainConfig />
         </TabPanel>
         <TabPanel>
           <MyNodes />
-        </TabPanel>
+        </TabPanel> */}
         <TabPanel>
           <CloudInfra />
         </TabPanel>

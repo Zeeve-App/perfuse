@@ -15,6 +15,7 @@ exports.up = async function (knex: Knex) {
             network_env TEXT NOT NULL,
             network_template TEXT NOT NULL,
             network_relay_chain TEXT NOT NULL,
+            network_relay_chain_version TEXT NOT NULL,
             network_sidecar INTEGER CHECK (network_sidecar IN (0, 1)),
             network_blockchain_explorer TEXT NOT NULL,
             network_chain_spec_file_json TEXT NOT NULL,

@@ -1,0 +1,38 @@
+"use client";
+import React from "react";
+import GeneralInfo from "./general-info";
+import Nodes from "./nodes";
+import BlockchainConfig from "./blockchain-config";
+import RegisterParachainInfo from "./register-parachain-info";
+import { NodeDbRow } from "@/db-queries";
+const Overview = ({
+  createdAt,
+  env,
+  id,
+  isLoading,
+  name,
+  nodes,
+  paraId,
+  relayCainType,
+}: {
+  isLoading: boolean;
+  createdAt: string;
+  env: string;
+  name: string;
+  id: string;
+  paraId: string;
+  relayCainType: string;
+  nodes: NodeDbRow[];
+}) => {
+  return (
+    <div className="grid grid-cols-12 gap-3 text-brand-dark lg:gap-6">
+      <RegisterParachainInfo />
+      <GeneralInfo isLoading={isLoading} createdAt={createdAt} env={env} name={name} id={id} />
+      <BlockchainConfig isLoading={isLoading} paraId={paraId} relayChainType={relayCainType} />
+      <Nodes isLoading={isLoading} nodes={nodes} />
+      {/* <Alerts agentId={data?.data.generalInfo.agentId}  /> */}
+    </div>
+  );
+};
+
+export default Overview;

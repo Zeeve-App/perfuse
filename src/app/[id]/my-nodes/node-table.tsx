@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import { useParams } from "next/navigation";
-import { NODE_TYPE, Node } from "@/types/node";
+import { NODE_TYPE } from "@/types/node";
 import { formatDate, toShortString } from "@/utils/helpers";
-import { useNodeStore } from "@/store/node";
 import { useModalStore } from "@/store/modal";
 import SvgInfoSquare from "@/lib/icons/essential/outline/InfoSquare";
 import SvgTrashSquare from "@/lib/icons/essential/outline/TrashSquare";
@@ -83,7 +82,7 @@ const nodeTableColumns: ColumnDef<NodeDbRow, any>[] = [
   }),
 ];
 
-const NodeTable = ({ nodeType, heading, nodes }: { nodeType: NODE_TYPE; heading: string; nodes: NodeDbRow[] }) => {
+const NodeTable = ({ heading, nodes }: { nodeType: NODE_TYPE; heading: string; nodes: NodeDbRow[] }) => {
   const [{ pageIndex, pageSize }, setPagination] = React.useState({
     pageIndex: 1,
     pageSize: nodes.length,

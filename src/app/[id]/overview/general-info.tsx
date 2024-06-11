@@ -1,24 +1,40 @@
 "use client";
 
-import { CopyButton, Heading, Tooltip } from "@zeeve-platform/ui";
-import { useParams } from "next/navigation";
-import { IconInfoCircle } from "@zeeve-platform/icons/essential/outline";
 import React from "react";
-import KeyValuePair from "@/components/key-value-pair";
-import NetworkNodeStatus from "@/components/network-node-status";
-import { formatDate, formatIntoAge } from "@/utils/date";
-import { toShortString } from "@/utils/helpers";
-import useParachainsService from "@/services/parachains/use-parachains-service";
+import { formatDate, toShortString } from "@/utils/helpers";
+import { CopyButton } from "@/lib/components/Button";
+import { Heading } from "@/lib/components/Heading";
+import { Tooltip } from "@/lib/components/Tooltip";
+import KeyValuePair from "@/lib/components/utils/key-value-pair";
 
-const GeneralInfo = () => {
-  const params = useParams();
-  const networkId = params.id as string;
-  const {
-    request: { data, isLoading },
-  } = useParachainsService().network.overviewDetails(networkId);
+const GeneralInfo = ({
+  isLoading,
+  name,
+  id,
+  env,
+  createdAt,
+}: {
+  isLoading: boolean;
+  name?: string;
+  id?: string;
+  env?: string;
+  createdAt?: string | Date;
+}) => {
+  // const {
+  //   request: { data: networkBlockHeightsData, isLoading: isNetworkBlockHeightsDataLoading },
+  // } = useParachainsService().network.blockHeight(networkId);
   const {
     request: { data: networkBlockHeightsData, isLoading: isNetworkBlockHeightsDataLoading },
-  } = useParachainsService().network.blockHeight(networkId);
+  } = {
+    request: {
+      data: {
+        data: {
+          blockHeight: 23,
+        },
+      },
+      isLoading: false,
+    },
+  };
   return (
     <div className="col-span-12 flex flex-col rounded-lg border border-brand-outline xl:col-span-6 2xl:col-span-6">
       <div className="p-4">
@@ -27,18 +43,18 @@ const GeneralInfo = () => {
       <div className="grid grid-cols-12 gap-3 p-4 lg:gap-6">
         <KeyValuePair
           label="Name"
-          value={data?.data.generalInfo.name ?? "NA"}
+          value={name ?? "NA"}
           className="col-span-12 md:col-span-6 xl:col-span-4"
           isLoading={isLoading}
         />
         <KeyValuePair
           label="ID"
           value={
-            networkId && data?.data.generalInfo.name ? (
-              <Tooltip text={networkId} placement={"top-start"}>
+            id ? (
+              <Tooltip text={id} placement={"top-start"}>
                 <div className="flex items-center gap-2">
-                  {toShortString(networkId)}
-                  <CopyButton text={networkId} />
+                  {toShortString(id)}
+                  <CopyButton text={id} />
                 </div>
               </Tooltip>
             ) : (
@@ -48,7 +64,7 @@ const GeneralInfo = () => {
           className="col-span-12 md:col-span-6 xl:col-span-4"
           isLoading={isLoading}
         />
-        <KeyValuePair
+        {/* <KeyValuePair
           label="Description"
           value={
             data?.data.generalInfo.description ? (
@@ -64,44 +80,20 @@ const GeneralInfo = () => {
           }
           className="col-span-12 md:col-span-6 xl:col-span-4"
           isLoading={isLoading}
-        />
+        /> */}
         <KeyValuePair
           label="Environment"
-          value={
-            data?.data.generalInfo.environment
-              ? data.data.generalInfo.environment === "sandbox"
-                ? "Devnet"
-                : data.data.generalInfo.environment.toUpperCase()
-              : "NA"
-          }
+          value={env ? env.toUpperCase() : "NA"}
           className="col-span-12 md:col-span-6 xl:col-span-4"
           isLoading={isLoading}
         />
-        <KeyValuePair
+        {/* <KeyValuePair
           label="Owned By"
           value={data?.data.generalInfo.ownedBy ?? "NA"}
           className="col-span-12 md:col-span-6 xl:col-span-4"
           isLoading={isLoading}
-        />
-        <KeyValuePair
-          label="Status"
-          value={
-            data?.data.generalInfo.status === "ready" &&
-            parseInt(networkBlockHeightsData?.data.blockHeight || "0") === 0 ? (
-              <Tooltip text={"Please register your Parachain"} placement="top-start">
-                <span className="flex items-center">
-                  <IconInfoCircle className="mr-2 text-brand-yellow" />
-                  AUTHENTICATION PENDING
-                </span>
-              </Tooltip>
-            ) : (
-              <NetworkNodeStatus status={data?.data.generalInfo.status} type={"icon"} />
-            )
-          }
-          className="col-span-12 md:col-span-6 xl:col-span-4"
-          isLoading={isLoading || isNetworkBlockHeightsDataLoading}
-        />
-        <KeyValuePair
+        /> */}
+        {/* <KeyValuePair
           label="Infra Provision Time"
           value={formatIntoAge(
             data?.data.generalInfo.infraProvisioningStartedAt,
@@ -109,8 +101,8 @@ const GeneralInfo = () => {
           )}
           className="col-span-12 md:col-span-6 xl:col-span-4"
           isLoading={isLoading}
-        />
-        <KeyValuePair
+        /> */}
+        {/* <KeyValuePair
           label="Blockchain Provision Time"
           value={formatIntoAge(
             data?.data.generalInfo.blockchainProvisioningStartedAt,
@@ -118,16 +110,16 @@ const GeneralInfo = () => {
           )}
           className="col-span-12 md:col-span-6 xl:col-span-4"
           isLoading={isLoading}
-        />
-        <KeyValuePair
+        /> */}
+        {/* <KeyValuePair
           label="Duration"
           value={formatIntoAge(data?.data.generalInfo.createdAt, new Date())}
           className="col-span-12 md:col-span-6 xl:col-span-4"
           isLoading={isLoading}
-        />
+        /> */}
         <KeyValuePair
           label="Created On"
-          value={formatDate(data?.data.generalInfo.createdAt)}
+          value={createdAt ? formatDate(createdAt) : "NA"}
           className="col-span-12 md:col-span-6 xl:col-span-4"
           isLoading={isLoading}
         />

@@ -9,6 +9,7 @@ import KeyValuePair from "@/lib/components/utils/key-value-pair";
 interface RelayChainConfigProps {
   data?: ChainSpecFileType;
   isLoading: boolean;
+  relayChain: { type: string | undefined; version: string | undefined };
 }
 
 const RelayChainConfig = ({ data, isLoading }: RelayChainConfigProps) => {

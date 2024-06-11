@@ -1,16 +1,17 @@
 // /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { Heading, Tooltip, tx } from "@zeeve-platform/ui";
 import React, { useCallback, useEffect, useState } from "react";
-import { ReactTable, createColumnHelper, ColumnDef } from "@zeeve-platform/ui-common-components";
-import useOASService from "@/services/oas/use-oas-service";
-import { Alert } from "@/services/oas/alert/list";
+import { createColumnHelper, ColumnDef } from "@tanstack/react-table";
 import HTTP_STATUS from "@/constants/http";
+import { Heading } from "@/lib/components/Heading";
+import { ReactTable } from "@/lib/components/ReactTable";
+import { Tooltip } from "@/lib/components/Tooltip";
+import { tx } from "@/utils/shared";
 
-const columnHelper = createColumnHelper<Alert>();
+const columnHelper = createColumnHelper<any>();
 // table columns
-const alertTableColumns: ColumnDef<Alert, any>[] = [
+const alertTableColumns: ColumnDef<any, any>[] = [
   columnHelper.accessor("alertName", {
     header: "Name",
     cell: (info) => (
@@ -80,36 +81,33 @@ const Alerts = ({ agentId }: { agentId?: string }) => {
     pageIndex: 0,
     pageSize: 3,
   });
-  const [data, setData] = useState<Array<Alert>>([]);
+  const [data, setData] = useState<Array<any>>([]);
   const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-
-  const { request, url } = useOASService().alert.list();
 
   const getAlertList = useCallback(async () => {
     try {
       if (agentId) {
-        const response = await request(url, {
-          filter: [{ fieldName: "agentId", compare: "equal", val: agentId }],
-          sort: [{ fieldName: "alertTimestamp", orderBy: "desc" }],
-          meta: {
-            pageNum: pageIndex + 1,
-            numRecords: pageSize,
-          },
-        });
-
-        if (response.status === HTTP_STATUS.OK && response.data.success) {
-          console.log(response);
-          setData(response.data.data.results);
-          setTotal(response.data.data.meta.totalNumRecords);
-        }
+        // const response = await request(url, {
+        //   filter: [{ fieldName: "agentId", compare: "equal", val: agentId }],
+        //   sort: [{ fieldName: "alertTimestamp", orderBy: "desc" }],
+        //   meta: {
+        //     pageNum: pageIndex + 1,
+        //     numRecords: pageSize,
+        //   },
+        // });
+        // if (response.status === HTTP_STATUS.OK && response.data.success) {
+        //   console.log(response);
+        //   setData(response.data.data.results);
+        //   setTotal(response.data.data.meta.totalNumRecords);
+        // }
       }
     } catch (error) {
       console.log("getAlertList: ", error);
     } finally {
       setIsLoading(false);
     }
-  }, [agentId, pageIndex, pageSize, request, url]);
+  }, [agentId, pageIndex, pageSize]);
 
   useEffect(() => {
     getAlertList();

@@ -1,5 +1,4 @@
 import fs from "fs/promises";
-import path from "path";
 import { NextRequest } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { sendDataResponse, sendErrorResponse } from "../_helpers/response";
@@ -51,6 +50,7 @@ export async function POST(req: NextRequest) {
             network_id,
             network_sidecar: formData.network.network_sidecar ? 1 : 0,
             network_chain_spec_file_json: JSON.stringify(formData.network.network_chain_spec_file_json),
+            network_relay_chain_version: "1.12.0",
           },
           trx,
         );

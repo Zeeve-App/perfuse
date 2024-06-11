@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useParams } from "next/navigation";
-import RegisterParachainInfo from "../../register-parachain-info";
+import RegisterParachainInfo from "../../../overview/register-parachain-info";
 import CloudInfo from "./cloud-info";
 import MachineUtilization from "./machine-utilization";
 import useParachainsService from "@/services/parachains/use-parachains-service";
