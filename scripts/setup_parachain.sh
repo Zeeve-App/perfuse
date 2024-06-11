@@ -3,9 +3,10 @@
 set -e
 set -u
 
+SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
 # Load environment variables from .env file
 if [ -f ".env" ]; then
-  source .env
+  source "$SCRIPT_DIR/../.env"
 else
   echo "ERROR: .env file not found."
   exit 1
@@ -28,7 +29,7 @@ chain_spec="$parachain_dir/raw-parachain-chainspec.json"
 relay_chain_spec="$parachain_dir/rococo_relay_chain_spec_raw.json"
 extra_params="--unsafe-rpc-external --rpc-methods unsafe"
 
-source ./binary_and_keys.sh
+source $SCRIPT_DIR/binary_install.sh
 # Download and install polkadot-parachain
 download_and_install "polkadot-parachain" "$POLKA_VERSION"
 
@@ -86,16 +87,16 @@ create_service() {
       -- \
       --chain $relay_chain_spec \
       --execution wasm \
-      --port $((port + 7007)) \
-      --rpc-port $((rpc_port + 2021)) \
+      --port $((port)) \
+      --rpc-port $((rpc_port)) \
       --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/$relay_bootnode_id1 /ip4/127.0.0.1/tcp/30334/p2p/$relay_bootnode_id2"
   else
     exec_start+=" \
       -- \
       --chain $relay_chain_spec \
       --execution wasm \
-      --port $((port + 7007)) \
-      --rpc-port $((rpc_port + 2021)) \
+      --port $((port)) \
+      --rpc-port $((rpc_port)) \
       --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/$relay_bootnode_id /ip4/127.0.0.1/tcp/30334/p2p/$relay_bootnode_id"
 
   cat <<EOF >/etc/systemd/system/${service_name}.service

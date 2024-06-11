@@ -1,8 +1,9 @@
 #!/bin/bash
 
+SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
 # Load environment variables from .env file
 if [ -f ".env" ]; then
-  source .env
+  source "$SCRIPT_DIR/../.env"
 else
   echo "ERROR: .env file not found."
   exit 1
@@ -10,7 +11,6 @@ fi
 
 set -e  # Exit immediately if any command fails
 set -u  # Treat unset variables as errors
-
 # Configuration variables
 service_names=("relaychain-1" "relaychain-2" "relaychain-3")
 default_user=("--alice" "--bob" "--charlie")
@@ -24,9 +24,8 @@ base_path_template="$relaychain_dir/%s"  # Placeholder for service name
 chain_spec="$relaychain_dir/rococo_relay_chain_spec_raw.json"
 extra_params="--unsafe-rpc-external --rpc-methods unsafe"
 
-source ./generate_json.sh
+source $SCRIPT_DIR/binary_install.sh
 
-source ./binary_and_keys.sh
 download_and_install "polkadot" "$POLKA_VERSION" 
 
 # Function to create a service
@@ -35,7 +34,7 @@ create_service() {
   local default_user="$2"
   local port="$3"
   local rpc_port="$4"
-  local prometheus_port="$5"
+  local prometheus_ports="$5"
 
   local base_path=$(printf "$base_path_template" "$service_name")
 
@@ -55,7 +54,7 @@ ExecStart=/usr/local/bin/polkadot $default_user  \
   --no-mdns \
   --no-telemetry \
   --prometheus-external \
-  --prometheus-port $prometheus_port \
+  --prometheus-port $prometheus_ports \
   --validator \
   --base-path $base_path \
   --chain $chain_spec \
@@ -76,5 +75,5 @@ EOF
 
 # Main loop
 for i in "${!service_names[@]}"; do
-  create_service "${service_names[i]}" "${ports[i]}" "${rpc_ports[i]}" "${prometheus_ports[i]}"
+  create_service "${service_names[i]}" "${default_user[i]}" "${ports[i]}" "${rpc_ports[i]}" "${prometheus_ports[i]}"
 done

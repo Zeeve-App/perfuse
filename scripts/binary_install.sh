@@ -11,11 +11,11 @@ download_and_install() {
     local binary_name="$1"
     local version="$2"
     local url="https://github.com/paritytech/polkadot-sdk/releases/download/${binary_name}-${version}/${binary_name}"
-    local path="$PARACHAIN_DIR/$binary_name"
+    local path="$download_dir/$binary_name"
 
     if [ ! -f "$path" ]; then
         echo "Downloading $binary_name version $version..."
-        mkdir -p "$PARACHAIN_DIR"
+        mkdir -p "$download_dir"
         if ! wget -O "$path" "$url"; then
             echo "ERROR: Download failed for $binary_name."
             exit 1
