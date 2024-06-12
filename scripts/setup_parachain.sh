@@ -15,7 +15,7 @@ fi
 # Configuration variables
 service_config=(
   "${COL_NAME_1}:--alice"   # Collator node 1 with --alice
-  "${col_name_2}:--bob"     # Collator node 2 with --bob
+  "${COL_NAME_2}:--bob"     # Collator node 2 with --bob
   "${RPC_NAME}:"            # RPC node 
 )
 
@@ -23,15 +23,16 @@ ports=(40334 40335 40336)
 rpc_ports=(9008 9009 9010)
 prometheus_ports=(8004 8005 8006)
 base_path_template="/home/perfuse/parachain/%s/data"  # Data directory template
-relaychain_key_dir="/home/perfuse/relaychain_keys"
+relaychain_key_dir="${RELAYCHAIN_KEY_DIR:-/home/perfuse/relaychain_keys}"
+parachain_key_dir="${PARACHAIN_KEY_DIR:-/home/perfuse/parachain_keys}"
 parachain_dir="/home/perfuse/parachain"
 chain_spec="$parachain_dir/raw-parachain-chainspec.json"
 relay_chain_spec="$parachain_dir/rococo_relay_chain_spec_raw.json"
 extra_params="--unsafe-rpc-external --rpc-methods unsafe"
 
-source $SCRIPT_DIR/binary_install.sh
-# Download and install polkadot-parachain
-download_and_install "polkadot-parachain" "$POLKA_VERSION"
+source $SCRIPT_DIR/generate_keys.sh
+# Generate Collator Node Keys
+generate_node_keys collator $parachain_key_dir 2
 
 get_bootnode_id() {
     
@@ -57,8 +58,8 @@ create_service() {
   local rpc_port="$3"
   local prometheus_port="$4"
   local base_path=$(printf "$base_path_template" "$service_name")
-  local bootnode_id1=$(get_bootnode_id "${relaychain_key_dir}/relaychain_node_key_1.txt")
-  local bootnode_id2=$(get_bootnode_id "${relaychain_key_dir}/relaychain_node_key_2.txt")
+  local relay_bootnode_id1=$(get_bootnode_id "${relaychain_key_dir}/relaychain_node_key_1.txt" | echo $bootnode_id )
+  local relay_bootnode_id2=$(get_bootnode_id "${relaychain_key_dir}/relaychain_node_key_2.txt" | echo $bootnode_id )
 
   local exec_start="$parachain_dir/polkadot-parachain \
     --name $service_name \
@@ -84,20 +85,22 @@ create_service() {
   if [[ $service_name == collator-* ]]; then
     exec_start+=" \
       --collator \
+      --node-key-file $parachain_key_dir/collator_node_key_$i.txt \
       -- \
       --chain $relay_chain_spec \
       --execution wasm \
-      --port $((port)) \
-      --rpc-port $((rpc_port)) \
+      --port $port \
+      --rpc-port $rpc_port \
       --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/$relay_bootnode_id1 /ip4/127.0.0.1/tcp/30334/p2p/$relay_bootnode_id2"
   else
     exec_start+=" \
       -- \
       --chain $relay_chain_spec \
       --execution wasm \
-      --port $((port)) \
-      --rpc-port $((rpc_port)) \
-      --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/$relay_bootnode_id /ip4/127.0.0.1/tcp/30334/p2p/$relay_bootnode_id"
+      --port $port \
+      --rpc-port $rpc_port \
+      --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/$relay_bootnode_id1 /ip4/127.0.0.1/tcp/30334/p2p/$relay_bootnode_id2"
+  fi
 
   cat <<EOF >/etc/systemd/system/${service_name}.service
 [Unit]
@@ -125,6 +128,8 @@ EOF
 mkdir -p "${service_config[@]%%:*}" # Extract service names and create directories
 
 # Main loop
+count=1
 for i in "${!service_config[@]}"; do
   create_service "${service_config[i]}" "${ports[i]}" "${rpc_ports[i]}" "${prometheus_ports[i]}"
+  count=$((count + 1))
 done

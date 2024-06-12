@@ -3,6 +3,14 @@
 set -e
 set -u
 
+SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
+# Load environment variables from .env file
+if [ -f ".env" ]; then
+  source "$SCRIPT_DIR/../.env"
+else
+  echo "ERROR: .env file not found."
+  exit 1
+fi
 download_dir="/usr/local/bin"
 
 polkadot_path="$download_dir/polkadot"
@@ -10,7 +18,7 @@ polkadot_path="$download_dir/polkadot"
 download_and_install() {
     local binary_name="$1"
     local version="$2"
-    local url="https://github.com/paritytech/polkadot-sdk/releases/download/${binary_name}-${version}/${binary_name}"
+    local url="https://github.com/paritytech/polkadot-sdk/releases/download/polkadot-${version}/${binary_name}"
     local path="$download_dir/$binary_name"
 
     if [ ! -f "$path" ]; then
@@ -28,10 +36,10 @@ download_and_install() {
 }
 
 # # Download and install polkadot
-# download_and_install "polkadot" "$POLKA_VERSION"
+download_and_install "polkadot" "$POLKA_VERSION"
 
 # # Download and install polkadot-parachain
-# download_and_install "polkadot-parachain" "$POLKA_VERSION"
+download_and_install "polkadot-parachain" "$POLKA_VERSION"
 
 
 

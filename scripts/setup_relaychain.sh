@@ -23,10 +23,12 @@ relaychain_dir="/home/perfuse/relaychain"
 base_path_template="$relaychain_dir/%s"  # Placeholder for service name
 chain_spec="$relaychain_dir/rococo_relay_chain_spec_raw.json"
 extra_params="--unsafe-rpc-external --rpc-methods unsafe"
+relaychain_key_dir="${RELAYCHAIN_KEY_DIR:-/home/perfuse/relaychain_keys}"
 
-source $SCRIPT_DIR/binary_install.sh
 
-download_and_install "polkadot" "$POLKA_VERSION" 
+source $SCRIPT_DIR/generate_keys.sh
+# Generate Collator Node Keys
+generate_node_keys relaychain $relaychain_key_dir 3
 
 # Function to create a service
 create_service() {
@@ -52,6 +54,7 @@ ExecStart=/usr/local/bin/polkadot $default_user  \
   --name $service_name \
   --rpc-cors all \
   --no-mdns \
+  --node-key-file $relaychain_key_dir/relaychain_node_key_$i.txt \
   --no-telemetry \
   --prometheus-external \
   --prometheus-port $prometheus_ports \
@@ -73,7 +76,9 @@ EOF
   chmod 644 /etc/systemd/system/${service_name}.service
 }
 
+count=1
 # Main loop
 for i in "${!service_names[@]}"; do
   create_service "${service_names[i]}" "${default_user[i]}" "${ports[i]}" "${rpc_ports[i]}" "${prometheus_ports[i]}"
+  count=$((count + 1))
 done
