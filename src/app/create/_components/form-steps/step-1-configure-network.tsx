@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
 import {
   explorerOption,
   networkEnvOption,
@@ -27,6 +26,7 @@ import SvgChevronRightSquare from "@/lib/icons/arrows/outline/ChevronRightSquare
 import { ReactSelect } from "@/lib/components/ReactSelect";
 import { FileUpload } from "@/lib/components/Form/FileUpload";
 import { withBasePath } from "@/utils/helpers";
+import useApi from "@/api-client";
 
 type ConfigureNetworkSchemaType = yup.InferType<typeof configureNetworkValidationSchema>;
 
@@ -45,6 +45,7 @@ const ConfigureNetwork = () => {
   } = useCreateNetworkFormStore();
   const [progressValue, setProgressValue] = useState(0);
   const [progressTotal, setProgressTotal] = useState(1);
+  const apis = useApi();
 
   const binaryFileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -121,7 +122,7 @@ const ConfigureNetwork = () => {
         form.append("file", selectedFile);
 
         // upload binary file
-        const response = await axios.post(withBasePath("/api/upload"), form, {
+        const response = await apis.uploadApi(form, {
           onUploadProgress(progressEvent) {
             if (progressEvent.lengthComputable) {
               setProgressTotal(progressEvent.total);

@@ -2,7 +2,6 @@
 import * as yup from "yup";
 import { useFieldArray, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { configureRelayChainValidationSchema } from "./validation-schema";
 import { useCreateNetworkFormStore } from "@/store/create-network";
@@ -21,11 +20,13 @@ import HTTP_STATUS from "@/constants/http";
 import { CreatePerfuseApiPayload } from "@/app/api/create/route";
 import { withBasePath } from "@/utils/helpers";
 import { ChainSpecFileType } from "@/types/chain-spec";
+import useApi from "@/api-client";
 
 type ConfigureRelayChainSchemaType = yup.InferType<typeof configureRelayChainValidationSchema>;
 
 const ConfigureRelayChain = () => {
   const { configureNetwork, configureRelayChain, setFormData } = useCreateNetworkFormStore();
+  const apis = useApi();
 
   const {
     handleSubmit,
@@ -118,7 +119,7 @@ const ConfigureRelayChain = () => {
       ],
     };
 
-    const response = await axios.post(withBasePath("/api/create"), payload);
+    const response = await apis.createNetwork(payload);
 
     if (response.status === HTTP_STATUS.OK && response.data.success) {
       router.push("/" + response.data?.data?.network_id);
