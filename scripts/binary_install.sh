@@ -13,7 +13,9 @@ else
 fi
 download_dir="/usr/local/bin"
 
-polkadot_path="$download_dir/polkadot"
+binaries_name=("polkadot" "polkadot-parachain" "polkadot-execute-worker" "polkadot-prepare-worker")
+
+# polkadot_path="$download_dir/polkadot"
 # Function to download and install a binary
 download_and_install() {
     local binary_name="$1"
@@ -35,11 +37,7 @@ download_and_install() {
     fi
 }
 
-# # Download and install polkadot
-download_and_install "polkadot" "$POLKA_VERSION"
-
-# # Download and install polkadot-parachain
-download_and_install "polkadot-parachain" "$POLKA_VERSION"
-
-
+for i in "${!binaries_name[@]}"; do
+  download_and_install "${binaries_name[i]}" "$POLKA_VERSION"
+done
 
