@@ -4,14 +4,7 @@ import TabContainer from "./_components/tabs-container";
 import { withBasePath } from "@/utils/helpers";
 import { Navigation } from "@/lib/components/navigation";
 
-const IdPageClient = ({
-  children,
-  params,
-}: Readonly<{
-  children: React.ReactNode;
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-}>) => {
+const IdPageClient: React.FC<{ children: React.ReactNode; params: { id: string } }> = ({ children, params }) => {
   const id = params.id;
   const items = [
     {

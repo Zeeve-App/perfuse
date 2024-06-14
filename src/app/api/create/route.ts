@@ -39,7 +39,7 @@ export type CreatePerfuseApiPayload = {
 export async function POST(req: NextRequest) {
   try {
     const formData: CreatePerfuseApiPayload = await req.json();
-    // console.log(formData);
+    console.log(formData);
 
     const network_id = uuidv4();
     await knexHandler.transaction(async (trx) => {
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
             network_id,
             network_sidecar: formData.network.network_sidecar ? 1 : 0,
             network_chain_spec_file_json: JSON.stringify(formData.network.network_chain_spec_file_json),
-            network_relay_chain_version: "1.12.0",
+            network_relay_chain_version: "v1.12.0",
           },
           trx,
         );
@@ -69,11 +69,12 @@ export async function POST(req: NextRequest) {
           }, trx),
         );
 
-        await fs.copyFile(
-          formData.network.network_binary_path,
-          config.server.binaryFilePathForCopy,
-          // fs.constants.COPYFILE_EXCL,
-        );
+        if (formData.network.network_template === "custom")
+          await fs.copyFile(
+            formData.network.network_binary_path,
+            config.server.binaryFilePathForCopy,
+            // fs.constants.COPYFILE_EXCL,
+          );
 
         await fs.writeFile(config.server.envFilePathForCopy, createEnvFile(formData));
 
@@ -83,12 +84,9 @@ export async function POST(req: NextRequest) {
           // "utf-8",
         );
 
-        jobShellExecutorBG("date > ./perfuse/date.txt", process.cwd());
-
-        // trx.commit();
+        jobShellExecutorBG("make all", process.cwd());
       } catch (error) {
         console.log(error);
-        // trx.rollback();
         throw error;
       }
     });
@@ -111,14 +109,16 @@ const createEnvFile = (data: CreatePerfuseApiPayload) => {
     throw new Error("rpc node not exist");
   }
   const envFile =
-    `polka_version=${"1.12.0"}\n` +
-    `network_type=${data.network.network_env}\n` +
-    `col_name_1=${collatorNode1?.node_name}\n` +
-    `col_name_2=${collatorNode2?.node_name}\n` +
-    `rpc_name=${rpcNode?.node_name}\n` +
-    `endpoint_auth=${rpcNode?.node_auth_method}\n` +
-    `template=${data.network.network_template}\n` +
-    `sidecar=${data.network.network_sidecar ? 1 : 0}\n` +
+    `POLKA_VERSION=${"v1.12.0"}\n` +
+    `NETWORK_TYPE=${data.network.network_env}\n` +
+    `COL_NAME_1=${collatorNode1?.node_name}\n` +
+    `COL_NAME_2=${collatorNode2?.node_name}\n` +
+    `RPC_NAME=${rpcNode?.node_name}\n` +
+    `ENDPOINT_AUTH=${rpcNode?.node_auth_method}\n` +
+    `TEMPLATE=${data.network.network_template}\n` +
+    `SIDECAR=${data.network.network_sidecar ? 1 : 0}\n` +
+    `SCRIPT_USER=STEM\n` +
+    `REPO=\n` +
     ``;
 
   return envFile;

@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
 import {
   explorerOption,
   networkEnvOption,
@@ -66,7 +67,14 @@ const ConfigureNetwork = () => {
   const templateWatcher = watch("template");
 
   useEffect(() => {
-    console.log(templateWatcher?.value);
+    if (templateWatcher?.value === "substrate" || templateWatcher?.value === "evm_frontier") {
+      axios
+        .get(`/template/${templateWatcher?.value}.json`)
+        .then((res) => res.data)
+        .then((e) => {
+          setValue("chainSpecFile.contents", e);
+        });
+    }
   }, [templateWatcher]);
 
   // progressive form context
