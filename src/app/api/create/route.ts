@@ -102,8 +102,7 @@ export async function POST(req: NextRequest) {
 }
 
 const createEnvFile = (data: CreatePerfuseApiPayload) => {
-  const collatorNode1 = data.nodes.find((e) => e.node_name === "col_name_1");
-  const collatorNode2 = data.nodes.find((e) => e.node_name === "col_name_2");
+  const collatorNodes = data.nodes.filter((e) => e.node_type === "collator");
   const rpcNode = data.nodes.find((e) => e.node_type === "rpc");
   if (rpcNode?.node_type !== "rpc") {
     throw new Error("rpc node not exist");
@@ -111,8 +110,8 @@ const createEnvFile = (data: CreatePerfuseApiPayload) => {
   const envFile =
     `POLKA_VERSION=${"v1.12.0"}\n` +
     `NETWORK_TYPE=${data.network.network_env}\n` +
-    `COL_NAME_1=${collatorNode1?.node_name}\n` +
-    `COL_NAME_2=${collatorNode2?.node_name}\n` +
+    `COL_NAME_1=${collatorNodes[0]?.node_name}\n` +
+    `COL_NAME_2=${collatorNodes[1]?.node_name}\n` +
     `RPC_NAME=${rpcNode?.node_name}\n` +
     `ENDPOINT_AUTH=${rpcNode?.node_auth_method}\n` +
     `TEMPLATE=${data.network.network_template}\n` +
