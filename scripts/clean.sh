@@ -1,0 +1,75 @@
+#!/bin/bash
+
+set -e       # Exit on error
+set -u       # Fail on unset variables
+parachain_dir="/home/perfuse/parachain"
+SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
+# Load environment variables from .env file
+if [ -f ".env" ]; then
+  source "$SCRIPT_DIR/../.env"
+else
+  echo "ERROR: .env file not found."
+  exit 1
+fi
+
+# Configuration variables (adapt these to your setup)
+service_names=("relaychain-1" "relaychain-2" "collator-1" "collator-2" "$RPC_NAME")
+base_path_template="/home/perfuse/parachain/%s/data"
+
+# Function to remove a service and its data directory
+cleanup_service() {
+    local service_name="$1"
+
+    # Determine the base path based on service type
+    if [[ $service_name == collator-* ]] || [[ $service_name == $RPC_NAME ]]; then
+        local base_path="/home/perfuse/parachain/$service_name/data"
+    elif [[ $service_name == relaychain-* ]]; then
+        local base_path="/home/perfuse/relaychain/$service_name/data"
+    else # For rpc-node or other services (if needed)
+        echo "WARNING: Unknown service type for '$service_name'. Skipping data directory removal."
+        local base_path=""  # Set an empty base path
+    fi
+
+
+    # Check if service exists
+    # if ! sudo systemctl is-enabled --quiet "$service_name"; then
+    #     echo "WARNING: Service '$service_name' not found or not enabled."
+    #     return  # Skip if the service doesn't exist
+    # fi
+
+    # Stop and disable the service
+    echo "Stopping and disabling service '$service_name'..."
+    sudo systemctl stop "$service_name"
+    sudo systemctl disable "$service_name"
+
+    # Remove the service file
+    echo "Removing service file for '$service_name'..."
+    sudo rm "/etc/systemd/system/${service_name}.service"
+
+    # Check if data directory exists
+    if [ -d "$base_path" ]; then
+        echo "Removing data directory '$base_path'..."
+        sudo rm -rf "$base_path"
+    else
+        echo "WARNING: Data directory '$base_path' not found."
+    fi
+
+    echo "Service '$service_name' and data cleaned up."
+}
+
+# Main loop
+for service_name in "${service_names[@]}"; do
+    cleanup_service "$service_name"
+done
+
+# Remove the binaries (optional)
+if [ -f "/usr/local/bin/polkadot" ]; then
+    echo "Removing Polkadot binary..."
+    sudo rm "/usr/local/bin/polkadot"
+fi
+if [ -f "/usr/local/bin/polkadot-parachain" ]; then
+    echo "Removing parachain binary..."
+    sudo rm "/usr/local/bin/polkadot-parachain"
+fi
+
+sudo rm -r /home/perfuse

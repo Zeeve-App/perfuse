@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -e
+set -u
+
+SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
+# Load environment variables from .env file
+if [ -f ".env" ]; then
+  source "$SCRIPT_DIR/../.env"
+else
+  echo "ERROR: .env file not found."
+  exit 1
+fi
+
+install_tools() {
+    if ! command -v jq &> /dev/null; then
+        echo "jq is not installed. Installing..."
+        sudo apt-get update && sudo apt-get install -y jq
+    else
+        echo "jq is already installed."
+    fi
+}
+
+create_user() {
+    if ! id "${SCRIPT_USER}" &>/dev/null; then  # If user doesn't exist
+        echo "Creating user '${SCRIPT_USER}'..."
+        sudo useradd -d "/home/perfuse" -s "/bin/false" -m "${SCRIPT_USER}"
+        sudo chmod 
+        echo "User '${SCRIPT_USER}' created successfully."
+    else
+        echo "User '${SCRIPT_USER}' already exists."
+    fi
+    # user_group=$(id -gn "$SCRIPT_USER")
+    # echo "Adding $(whoami) to group '$user_group'..."
+    # sudo usermod -aG "$user_group" "$(whoami)"
+    # echo "$(whoami) added to group '$user_group'."
+}
+
+
+
+install_tools
+create_user
