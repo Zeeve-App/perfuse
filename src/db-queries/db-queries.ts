@@ -39,3 +39,9 @@ export const getNetworkData = async (networkId?: string, trx?: knex.Knex.Transac
 
   return db<NetworkDbRow>("networks").select("*").where({ network_id: networkId }).first();
 };
+
+export const deleteNetwork = (networkId: string, trx?: knex.Knex.Transaction) => {
+  const db = trx ?? knexHandler;
+
+  return db<NetworkDbRow>("networks").where({ network_id: networkId }).del();
+};

@@ -3,6 +3,7 @@ import "./globals.css";
 import { dmSans, poppins } from "@/utils/fonts";
 import LayoutProvider from "@/providers/layout-provider";
 import ToastProvider from "@/providers/toast-provider";
+import ModalProvider from "@/providers/modal-provider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,6 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${dmSans.variable} ${poppins.variable} font-sans`}>
         <ToastProvider>
+          <ModalProvider />
           <LayoutProvider>{children}</LayoutProvider>
         </ToastProvider>
       </body>
