@@ -6,7 +6,7 @@ set -u
 SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
 # Load environment variables from .env file
 if [ -f ".env" ]; then
-  source "$SCRIPT_DIR/../.env"
+  source "$SCRIPT_DIR/../perfuse/.env"
 else
   echo "ERROR: .env file not found."
   exit 1
