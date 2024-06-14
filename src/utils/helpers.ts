@@ -49,8 +49,8 @@ const formatIntoAge = (startDate?: Date | string, endDate?: Date | string): stri
  * @param url url (e.g. "/url")
  */
 const withBasePath = (url: string): string => {
-  if (process.env.NEXT_PUBLIC_BASE_PATH) {
-    return `${process.env.NEXT_PUBLIC_BASE_PATH}${url}`;
+  if (process.env.NEXT_PUBLIC_BASE_PATH ?? "") {
+    return `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${url}`;
   }
   return url;
 };

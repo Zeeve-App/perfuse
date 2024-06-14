@@ -18,7 +18,6 @@ import { Tooltip } from "@/lib/components/Tooltip";
 import SvgInfoCircle from "@/lib/icons/essential/outline/InfoCircle";
 import HTTP_STATUS from "@/constants/http";
 import { CreatePerfuseApiPayload } from "@/app/api/create/route";
-import { withBasePath } from "@/utils/helpers";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import useApi from "@/api-client";
 

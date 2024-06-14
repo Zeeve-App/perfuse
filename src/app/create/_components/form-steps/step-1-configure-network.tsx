@@ -54,12 +54,20 @@ const ConfigureNetwork = () => {
     handleSubmit,
     setValue,
     trigger,
+    watch,
+    getValues,
     formState: { errors, isValid },
   } = useForm<ConfigureNetworkSchemaType>({
     resolver: yupResolver(configureNetworkValidationSchema),
     mode: "all",
     defaultValues: configureNetwork ?? {},
   });
+
+  const templateWatcher = watch("template");
+
+  useEffect(() => {
+    console.log(templateWatcher?.value);
+  }, [templateWatcher]);
 
   // progressive form context
   const { goToNextStep } = useProgressiveFormContext();
@@ -324,84 +332,86 @@ const ConfigureNetwork = () => {
         <hr className="border-brand-outline" />
 
         {/* Parachain Config */}
-        <div className="flex flex-col gap-3 lg:gap-6">
-          <Heading as="h5">Parachain Config</Heading>
-          <div className="grid grid-cols-12 items-start gap-3 lg:gap-6">
-            {/* Chain Spec File */}
-            <FormField
-              className="col-span-12 md:col-span-6 lg:col-span-4"
-              helper={{
-                status: "error",
-                text: errors.chainSpecFile?.message?.toString(),
-              }}
-            >
-              <Controller
-                control={control}
-                name={"chainSpecFile.contents"}
-                render={({ field: { value, onChange, ...field } }) => {
-                  return (
-                    <FileUpload
-                      field={{
-                        ...field,
-                        onChange: (event) => {
-                          onChange(event);
-                          handleChainSpecFile(event);
-                        },
-                        value,
-                      }}
-                      progressValue={0}
-                      progressTotal={0}
-                      fileName={chainSpecFile?.name ?? ""}
-                      id={"chainSpecFile"}
-                      floatingLabelText={"Chain Spec File"}
-                    />
-                  );
+        {templateWatcher?.value === "custom" && (
+          <div className="flex flex-col gap-3 lg:gap-6">
+            <Heading as="h5">Parachain Config</Heading>
+            <div className="grid grid-cols-12 items-start gap-3 lg:gap-6">
+              {/* Chain Spec File */}
+              <FormField
+                className="col-span-12 md:col-span-6 lg:col-span-4"
+                helper={{
+                  status: "error",
+                  text: errors.chainSpecFile?.message?.toString(),
                 }}
-              />
-            </FormField>
+              >
+                <Controller
+                  control={control}
+                  name={"chainSpecFile.contents"}
+                  render={({ field: { value, onChange, ...field } }) => {
+                    return (
+                      <FileUpload
+                        field={{
+                          ...field,
+                          onChange: (event) => {
+                            onChange(event);
+                            handleChainSpecFile(event);
+                          },
+                          value,
+                        }}
+                        progressValue={0}
+                        progressTotal={0}
+                        fileName={chainSpecFile?.name ?? ""}
+                        id={"chainSpecFile"}
+                        floatingLabelText={"Chain Spec File"}
+                      />
+                    );
+                  }}
+                />
+              </FormField>
 
-            {/* Binary File */}
-            <FormField
-              className="col-span-12 md:col-span-6 lg:col-span-4"
-              helper={{
-                status: "error",
-                text: errors.binaryFile?.name?.message?.toString(),
-              }}
-            >
-              <Controller
-                control={control}
-                name={"binaryFile.name"}
-                render={({ field: { value, onChange, ...field } }) => {
-                  return (
-                    <FileUpload
-                      field={{
-                        ...field,
-                        value,
-                        onChange: async (event) => {
-                          onChange(event);
-                          await handleBinaryFile(event);
-                        },
-                      }}
-                      progressValue={progressValue}
-                      progressTotal={progressTotal}
-                      fileName={binaryFile?.name ?? ""}
-                      id={"binaryFile"}
-                      floatingLabelText={"Binary File"}
-                      iconRight={
-                        isBinaryFileUploading ? (
-                          <Spinner fontSize={24} className="mx-4" />
-                        ) : (
-                          <SvgArrowUpFromBucket fontSize={24} className="mx-4" />
-                        )
-                      }
-                      ref={binaryFileInputRef}
-                    />
-                  );
+              {/* Binary File */}
+              <FormField
+                className="col-span-12 md:col-span-6 lg:col-span-4"
+                helper={{
+                  status: "error",
+                  text: errors.binaryFile?.name?.message?.toString(),
                 }}
-              />
-            </FormField>
+              >
+                <Controller
+                  control={control}
+                  name={"binaryFile.name"}
+                  render={({ field: { value, onChange, ...field } }) => {
+                    return (
+                      <FileUpload
+                        field={{
+                          ...field,
+                          value,
+                          onChange: async (event) => {
+                            onChange(event);
+                            await handleBinaryFile(event);
+                          },
+                        }}
+                        progressValue={progressValue}
+                        progressTotal={progressTotal}
+                        fileName={binaryFile?.name ?? ""}
+                        id={"binaryFile"}
+                        floatingLabelText={"Binary File"}
+                        iconRight={
+                          isBinaryFileUploading ? (
+                            <Spinner fontSize={24} className="mx-4" />
+                          ) : (
+                            <SvgArrowUpFromBucket fontSize={24} className="mx-4" />
+                          )
+                        }
+                        ref={binaryFileInputRef}
+                      />
+                    );
+                  }}
+                />
+              </FormField>
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <ProgressiveFormStepFooter>
         <Button type="submit" iconRight={<SvgChevronRightSquare />} isDisabled={!isValid || isBinaryFileUploading}>

@@ -8,8 +8,6 @@ import SvgNodes from "@/lib/icons/programming/outline/Nodes";
 import SvgBubbles from "@/lib/icons/essential/outline/Bubbles";
 import SvgSetting1 from "@/lib/icons/setting/outline/Setting1";
 
-// const HOST = process.env.NEXT_PUBLIC_HOST ?? "https://app.zeeve.io";
-
 const ITEMS: {
   title?: string;
   items: {

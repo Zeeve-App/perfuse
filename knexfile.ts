@@ -8,7 +8,7 @@ module.exports = {
   dev: {
     client: "sqlite3",
     connection: {
-      filename: process.env.SQLITE_DB_LOCATION,
+      filename: process.env.SQLITE_DB_LOCATION ?? "./perfuse.sqlite",
     },
     migrations: {
       tableName: "knex_migrations",

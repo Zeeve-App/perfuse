@@ -24,7 +24,7 @@ export const networkEnvOption = [
 
 export const explorerOption = [
   { label: "Polkadot.js", value: "polkadotjs" },
-  { label: "Polcascan", value: "polcascan" },
+  { label: "Polcascan", value: "polkascan" },
   { label: "Subscann", value: "subscan" },
   { label: "TraceHawk", value: "tracehawk" },
 ];
