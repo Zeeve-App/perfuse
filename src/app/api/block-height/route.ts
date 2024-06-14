@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
       id: 1,
     });
 
-    return new Response(res.data, { status: 200 });
+    return new Response(JSON.stringify(res.data), { status: 200 });
   } catch (error) {
     return sendErrorResponse({
       message: "Error while uploading file",
