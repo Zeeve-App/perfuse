@@ -27,9 +27,7 @@ const BlockchainConfig = ({
   const networkId = params.id;
 
   const apis = useApi();
-  const {
-    request: { data: blockRpcResponse, isLoading: blockRpcLoading },
-  } = apis.blockNumber();
+  const { data: blockRpcResponse, isLoading: blockRpcLoading } = apis.blockNumber();
 
   return (
     <div className="col-span-12 flex flex-col rounded-lg border border-brand-outline xl:col-span-4 2xl:col-span-3">

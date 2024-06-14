@@ -21,9 +21,7 @@ const Parameters = ({ data, isLoading }: ParametersProps) => {
   const networkId = params.id as string;
   const [tokenSupply, setTokenSupply] = useState<number | undefined>(undefined);
   const apis = useApi();
-  const {
-    request: { data: blockRpcResponse, isLoading: blockRpcLoading },
-  } = apis.blockNumber();
+  const { data: blockRpcResponse, isLoading: blockRpcLoading } = apis.blockNumber();
 
   useEffect(() => {
     if (data?.genesis?.runtime?.balances?.balances || data?.genesis.runtimeGenesis?.patch.balances.balances) {
