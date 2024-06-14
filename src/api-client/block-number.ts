@@ -1,5 +1,6 @@
 import useSWR from "swr";
 import useFetcher from "@/hooks/use-fetcher";
+import { withBasePath } from "@/utils/helpers";
 
 /** interface declaration of network list API response payload */
 interface ResponsePayload {
@@ -30,24 +31,17 @@ interface Digest {
   logs: string[];
 }
 
+const apiEndpoint = withBasePath("/api/block-height");
+
 /** hook to use network list api */
 const useBlockNumberApi = () => {
-  const fetcher = useFetcher("post", {
-    jsonrpc: "2.0",
-    method: "chain_getBlock",
-    params: [],
-    id: 1,
-  });
+  const fetcher = useFetcher();
 
-  const url = `http://localhost:9010`;
-  const request = useSWR<ResponsePayload, Record<string, string>>(url, fetcher, {
+  const request = useSWR<ResponsePayload, Record<string, string>>(apiEndpoint, fetcher, {
     shouldRetryOnError: false,
   });
 
-  return {
-    url,
-    request,
-  };
+  return request;
 };
 
 export type { ResponsePayload };
