@@ -11,6 +11,7 @@ import { Tooltip } from "@/lib/components/Tooltip";
 import CardKeyValuePair from "@/lib/components/utils/card-key-value-pair";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
 import SvgArrowUpRightFromSquare from "@/lib/icons/arrows/outline/ArrowUpRightFromSquare";
+import useApi from "@/api-client";
 
 const BlockchainConfig = ({
   paraId,
@@ -24,25 +25,11 @@ const BlockchainConfig = ({
   const router = useRouter();
   const params = useParams();
   const networkId = params.id;
-  // const {
-  //   request: { data: networkOverviewDetailsData, isLoading: isNetworkOverviewDetailsDataLoading },
-  // } = useParachainsService().network.overviewDetails(networkId);
 
-  // const {
-  //   request: { data: networkBlockHeightsData, isLoading: isNetworkBlockHeightsDataLoading },
-  // } = useParachainsService().network.blockHeight(networkId);
+  const apis = useApi();
   const {
-    request: { data: networkBlockHeightsData, isLoading: isNetworkBlockHeightsDataLoading },
-  } = {
-    request: {
-      data: {
-        data: {
-          blockHeight: 23,
-        },
-      },
-      isLoading: false,
-    },
-  };
+    request: { data: blockRpcResponse, isLoading: blockRpcLoading },
+  } = apis.blockNumber();
 
   return (
     <div className="col-span-12 flex flex-col rounded-lg border border-brand-outline xl:col-span-4 2xl:col-span-3">
@@ -74,8 +61,8 @@ const BlockchainConfig = ({
         <div className="col-span-12 lg:col-span-12">
           <CardKeyValuePair
             label={"Parachain Block Height"}
-            value={networkBlockHeightsData?.data.blockHeight}
-            isLoading={isNetworkBlockHeightsDataLoading}
+            value={parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16)}
+            isLoading={blockRpcLoading}
           />
         </div>
       </div>

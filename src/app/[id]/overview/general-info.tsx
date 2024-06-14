@@ -20,21 +20,6 @@ const GeneralInfo = ({
   env?: string;
   createdAt?: string | Date;
 }) => {
-  // const {
-  //   request: { data: networkBlockHeightsData, isLoading: isNetworkBlockHeightsDataLoading },
-  // } = useParachainsService().network.blockHeight(networkId);
-  const {
-    request: { data: networkBlockHeightsData, isLoading: isNetworkBlockHeightsDataLoading },
-  } = {
-    request: {
-      data: {
-        data: {
-          blockHeight: 23,
-        },
-      },
-      isLoading: false,
-    },
-  };
   return (
     <div className="col-span-12 flex flex-col rounded-lg border border-brand-outline xl:col-span-6 2xl:col-span-4">
       <div className="p-4">

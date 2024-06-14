@@ -10,6 +10,7 @@ import { Heading } from "@/lib/components/Heading";
 import { Tooltip } from "@/lib/components/Tooltip";
 import CardKeyValuePair from "@/lib/components/utils/card-key-value-pair";
 import { tx } from "@/utils/shared";
+import useApi from "@/api-client";
 
 interface ParametersProps {
   data?: ChainSpecFileType;
@@ -19,21 +20,10 @@ const Parameters = ({ data, isLoading }: ParametersProps) => {
   const params = useParams();
   const networkId = params.id as string;
   const [tokenSupply, setTokenSupply] = useState<number | undefined>(undefined);
-  // const {
-  //   request: { data: networkBlockHeightsData, isLoading: isNetworkBlockHeightsDataLoading },
-  // } = useParachainsService().network.blockHeight(networkId);
+  const apis = useApi();
   const {
-    request: { data: networkBlockHeightsData, isLoading: isNetworkBlockHeightsDataLoading },
-  } = {
-    request: {
-      isLoading: false,
-      data: {
-        data: {
-          blockHeight: 12,
-        },
-      },
-    },
-  };
+    request: { data: blockRpcResponse, isLoading: blockRpcLoading },
+  } = apis.blockNumber();
 
   useEffect(() => {
     if (data?.genesis?.runtime?.balances?.balances || data?.genesis.runtimeGenesis?.patch.balances.balances) {
@@ -53,9 +43,9 @@ const Parameters = ({ data, isLoading }: ParametersProps) => {
         <div className="col-span-12 lg:col-span-6 2xl:col-span-12">
           <CardKeyValuePair
             label={"Parchain Block Height"}
-            value={networkBlockHeightsData?.data.blockHeight}
+            value={parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16)}
             className="lg:p-7"
-            isLoading={isNetworkBlockHeightsDataLoading}
+            isLoading={blockRpcLoading}
           />
         </div>
         <div className="col-span-12 lg:col-span-6 2xl:col-span-12">
