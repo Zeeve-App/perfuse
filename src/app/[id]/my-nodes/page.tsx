@@ -13,7 +13,6 @@ const CreatePage = async ({
   params: { id: string };
   searchParams: { [key: string]: string | string[] | undefined };
 }) => {
-  const network = await getNetworkData(params.id);
   const nodes = await getNodes(params.id);
   return (
     <MyNodes

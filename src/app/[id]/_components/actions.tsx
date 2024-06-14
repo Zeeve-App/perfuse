@@ -5,12 +5,22 @@ import { useModalStore } from "@/store/modal";
 import { IconButton } from "@/lib/components/Button";
 import { Tooltip } from "@/lib/components/Tooltip";
 import SvgTrash from "@/lib/icons/essential/outline/Trash";
+import { useNetworkStore } from "@/store/network";
+import { NetworkDbRow } from "@/db-queries";
 
-const Actions = () => {
+const Actions = ({ network }: { network: NetworkDbRow }) => {
   const params = useParams();
   const networkId = params.id as string;
   const { openModal } = useModalStore();
-  const networkInfo = {};
+  const setNetorkInStore = useNetworkStore((e) => e.setNetworkInfo);
+  setNetorkInStore({
+    data: {
+      networkId,
+      networkName: network.network_name,
+      relayChainType: network.network_relay_chain,
+    },
+    isLoading: false,
+  });
 
   return (
     <div className="flex flex-row gap-x-4">
@@ -20,7 +30,7 @@ const Actions = () => {
           variant={"outline"}
           onClick={() => {
             //TODO: change name
-            openModal("deleteNetwork", { deleteNetwork: { networkId, networkName: "name" as string } });
+            openModal("deleteNetwork", { deleteNetwork: { networkId, networkName: network.network_name as string } });
           }}
         >
           {<SvgTrash className="text-xl" />}

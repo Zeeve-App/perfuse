@@ -22,9 +22,10 @@ exports.up = async function (knex: Knex) {
             network_binary_path TEXT NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
-    `);
+        `);
 
     await knex.raw(`
+
         CREATE TABLE IF NOT EXISTS nodes (
             node_id TEXT PRIMARY KEY,
             network_id TEXT NOT NULL,
@@ -37,12 +38,13 @@ exports.up = async function (knex: Knex) {
             node_wss_enabled INTEGER CHECK (node_wss_enabled IN (0, 1)),
             node_https_enabled INTEGER CHECK (node_https_enabled IN (0, 1)),
             node_auth_method TEXT CHECK (node_auth_method IN ('api_key', 'basic_auth')),
-            node_username,
-            node_password,
-            node_api_key,
+            node_username TEXT,
+            node_password TEXT,
+            node_api_key TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (network_id) REFERENCES network(network_id)
+            FOREIGN KEY (network_id) REFERENCES networks(network_id) ON DELETE CASCADE
         );
+
     `);
   } catch (error) {
     console.log(error);
