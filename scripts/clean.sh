@@ -13,7 +13,7 @@ else
 fi
 
 # Configuration variables (adapt these to your setup)
-service_names=("relaychain-1" "relaychain-2" "collator-1" "collator-2" "$RPC_NAME")
+service_names=("relaychain-1" "relaychain-2" "relaychain-3" "$COL_NAME_1" "$COL_NAME_2" "$RPC_NAME")
 base_path_template="/home/perfuse/parachain/%s/data"
 
 # Function to remove a service and its data directory
@@ -21,7 +21,7 @@ cleanup_service() {
     local service_name="$1"
 
     # Determine the base path based on service type
-    if [[ $service_name == collator-* ]] || [[ $service_name == $RPC_NAME ]]; then
+    if [[ $service_name == $COL_NAME_1 || $service_name == $COL_NAME_2 ]] || [[ $service_name == $RPC_NAME ]]; then
         local base_path="/home/perfuse/parachain/$service_name/data"
     elif [[ $service_name == relaychain-* ]]; then
         local base_path="/home/perfuse/relaychain/$service_name/data"
@@ -32,10 +32,10 @@ cleanup_service() {
 
 
     # Check if service exists
-    # if ! sudo systemctl is-enabled --quiet "$service_name"; then
-    #     echo "WARNING: Service '$service_name' not found or not enabled."
-    #     return  # Skip if the service doesn't exist
-    # fi
+    if ! sudo systemctl is-enabled --quiet "$service_name"; then
+        echo "WARNING: Service '$service_name' not found or not enabled."
+        return  # Skip if the service doesn't exist
+    fi
 
     # Stop and disable the service
     echo "Stopping and disabling service '$service_name'..."
@@ -58,8 +58,8 @@ cleanup_service() {
 }
 
 # Main loop
-for service_name in "${service_names[@]}"; do
-    cleanup_service "$service_name"
+for i in "${!service_names[@]}"; do
+    cleanup_service "${service_names[i]}"
 done
 
 # Remove the binaries (optional)
