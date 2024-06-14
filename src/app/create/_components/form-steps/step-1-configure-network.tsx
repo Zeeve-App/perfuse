@@ -210,7 +210,7 @@ const ConfigureNetwork = () => {
         collatorNodes: runtimeGenesis?.patch.aura.authorities.map((col, idx) => {
           const bal = runtimeGenesis?.patch?.balances?.balances?.find((e) => e[0] === col)?.[1];
           return {
-            collatorName: `col_name_${idx + 1}`,
+            collatorName: `collator_name_${idx + 1}`,
             collatorAddress: col,
             collatorBalance: bal ? Number(bal) : 0,
             rpcCors: "*",
