@@ -83,7 +83,7 @@ create_service() {
     $extra_params"
 
   # Special configuration for collator nodes
-  if [[ $service_name == collator-* ]]; then
+  if [[ $service_name == $COL_NAME_1 || $service_name == $COL_NAME_2 ]]; then
     exec_start+=" \
       --collator \
       --node-key-file $parachain_key_dir/collator_node_key_$count.txt \
