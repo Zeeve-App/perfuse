@@ -37,7 +37,7 @@ generate_node_keys collator $parachain_key_dir 2
 get_bootnode_id() {
     
     local key_file="$1"
-    echo "Fetching bootnode ID from the key file: $key_file..."
+    # echo "Fetching bootnode ID from the key file: $key_file..."
     local bootnode_id=$(/usr/local/bin/polkadot key inspect-node-key --file "$key_file")
 
     if [ -z "$bootnode_id" ]; then
@@ -58,10 +58,11 @@ create_service() {
   local rpc_port="$3"
   local prometheus_port="$4"
   local base_path=$(printf "$base_path_template" "$service_name")
-  local relay_bootnode_id1=$(get_bootnode_id "${relaychain_key_dir}/relaychain_node_key_1.txt" | echo $bootnode_id )
-  local relay_bootnode_id2=$(get_bootnode_id "${relaychain_key_dir}/relaychain_node_key_2.txt" | echo $bootnode_id )
-
-  local exec_start="$parachain_dir/polkadot-parachain \
+  local relay_bootnode_id1=$(get_bootnode_id "${relaychain_key_dir}/relaychain_node_key_1.txt" )
+  local relay_bootnode_id2=$(get_bootnode_id "${relaychain_key_dir}/relaychain_node_key_2.txt" )
+  sudo mkdir -p $base_path
+  sudo chown -R $SCRIPT_USER:$SCRIPT_USER $base_path
+  local exec_start="/usr/local/bin/polkadot-parachain \
     --name $service_name \
     --chain $chain_spec \
     --base-path $base_path \
@@ -85,7 +86,7 @@ create_service() {
   if [[ $service_name == collator-* ]]; then
     exec_start+=" \
       --collator \
-      --node-key-file $parachain_key_dir/collator_node_key_$i.txt \
+      --node-key-file $parachain_key_dir/collator_node_key_$count.txt \
       -- \
       --chain $relay_chain_spec \
       --execution wasm \
@@ -121,7 +122,9 @@ WantedBy=multi-user.target
 EOF
 
   echo "System service for $service_name created ..."
-  chmod 644 /etc/systemd/system/${service_name}.service
+  chmod 644 /etc/systemd/system/${service_name}.service 
+  sudo systemctl enable ${service_name}.service
+  sudo systemctl start ${service_name}.service
 }
 
 # Create data directories

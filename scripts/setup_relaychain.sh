@@ -20,12 +20,13 @@ prometheus_ports=(8001 8002 8003)
 
 # Common parameters (can be customized)
 relaychain_dir="/home/perfuse/relaychain"
+parachain_dir="/home/perfuse/parachain"
 base_path_template="$relaychain_dir/%s"  # Placeholder for service name
 chain_spec="$relaychain_dir/rococo_relay_chain_spec_raw.json"
 extra_params="--unsafe-rpc-external --rpc-methods unsafe"
 relaychain_key_dir="${RELAYCHAIN_KEY_DIR:-/home/perfuse/relaychain_keys}"
 
-
+sudo cp $relaychain_dir/rococo_relay_chain_spec_raw.json $parachain_dir/rococo_relay_chain_spec_raw.json
 source $SCRIPT_DIR/generate_keys.sh
 # Generate Collator Node Keys
 generate_node_keys relaychain $relaychain_key_dir 3
@@ -39,6 +40,8 @@ create_service() {
   local prometheus_ports="$5"
 
   local base_path=$(printf "$base_path_template" "$service_name")
+  sudo mkdir -p $base_path
+  sudo chown -R $SCRIPT_USER:$SCRIPT_USER $base_path
 
   cat <<EOF >/etc/systemd/system/${service_name}.service
 [Unit]
@@ -54,7 +57,7 @@ ExecStart=/usr/local/bin/polkadot $default_user  \
   --name $service_name \
   --rpc-cors all \
   --no-mdns \
-  --node-key-file $relaychain_key_dir/relaychain_node_key_$i.txt \
+  --node-key-file $relaychain_key_dir/relaychain_node_key_$count.txt \
   --no-telemetry \
   --prometheus-external \
   --prometheus-port $prometheus_ports \
@@ -63,7 +66,6 @@ ExecStart=/usr/local/bin/polkadot $default_user  \
   --chain $chain_spec \
   --port $port \
   --rpc-port $rpc_port \
-  --ws-port $((rpc_port + 1)) \
   $extra_params
 Type=simple
 User=$SCRIPT_USER
@@ -74,6 +76,8 @@ EOF
 
   echo "System service for $service_name created ..."
   chmod 644 /etc/systemd/system/${service_name}.service
+  sudo systemctl enable ${service_name}.service
+  sudo systemctl start ${service_name}.service
 }
 
 count=1
