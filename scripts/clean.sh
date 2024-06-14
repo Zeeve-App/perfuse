@@ -2,7 +2,7 @@
 
 set -e       # Exit on error
 set -u       # Fail on unset variables
-
+parachain_dir="/home/perfuse/parachain"
 SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
 # Load environment variables from .env file
 if [ -f ".env" ]; then
@@ -32,10 +32,10 @@ cleanup_service() {
 
 
     # Check if service exists
-    if ! sudo systemctl is-enabled --quiet "$service_name"; then
-        echo "WARNING: Service '$service_name' not found or not enabled."
-        return  # Skip if the service doesn't exist
-    fi
+    # if ! sudo systemctl is-enabled --quiet "$service_name"; then
+    #     echo "WARNING: Service '$service_name' not found or not enabled."
+    #     return  # Skip if the service doesn't exist
+    # fi
 
     # Stop and disable the service
     echo "Stopping and disabling service '$service_name'..."
@@ -63,11 +63,13 @@ for service_name in "${service_names[@]}"; do
 done
 
 # Remove the binaries (optional)
-if [ -f "$PARACHAIN_DIR/polkadot" ]; then
+if [ -f "/usr/local/bin/polkadot" ]; then
     echo "Removing Polkadot binary..."
-    sudo rm "$PARACHAIN_DIR/polkadot"
+    sudo rm "/usr/local/bin/polkadot"
 fi
-if [ -f "$PARACHAIN_DIR/polkadot-parachain" ]; then
+if [ -f "/usr/local/bin/polkadot-parachain" ]; then
     echo "Removing parachain binary..."
-    sudo rm "$PARACHAIN_DIR/polkadot-parachain"
+    sudo rm "/usr/local/bin/polkadot-parachain"
 fi
+
+sudo rm -r /home/perfuse
