@@ -14,6 +14,7 @@ fi
 
 # Configuration variables (adapt these to your setup)
 service_names=("relaychain-1" "relaychain-2" "relaychain-3" "$COL_NAME_1" "$COL_NAME_2" "$RPC_NAME")
+binaries_name=("polkadot" "polkadot-parachain" "polkadot-execute-worker" "polkadot-prepare-worker")
 base_path_template="/home/perfuse/parachain/%s/data"
 
 # Function to remove a service and its data directory
@@ -62,14 +63,21 @@ for i in "${!service_names[@]}"; do
     cleanup_service "${service_names[i]}"
 done
 
-# Remove the binaries (optional)
-if [ -f "/usr/local/bin/polkadot" ]; then
-    echo "Removing Polkadot binary..."
-    sudo rm "/usr/local/bin/polkadot"
-fi
-if [ -f "/usr/local/bin/polkadot-parachain" ]; then
-    echo "Removing parachain binary..."
-    sudo rm "/usr/local/bin/polkadot-parachain"
-fi
+remove_binary() {
+    local binary_name="$1"
+    local binary_path="/usr/local/bin/$binary_name"
+
+    if [ -f "$binary_path" ]; then  # Check if the binary exists
+        echo "Removing binary: $binary_name"
+        sudo rm "$binary_path"
+        echo "$binary_name removed successfully."
+    else
+        echo "WARNING: Binary '$binary_name' not found at '$binary_path'. Skipping removal."
+    fi
+}
+
+for i in "${!binaries_name[@]}"; do
+  remove_binary "${binaries_name[i]}" "$POLKA_VERSION"
+done
 
 sudo rm -r /home/perfuse
