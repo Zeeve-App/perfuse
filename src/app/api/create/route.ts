@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
             network_id,
             network_sidecar: formData.network.network_sidecar ? 1 : 0,
             network_chain_spec_file_json: JSON.stringify(formData.network.network_chain_spec_file_json),
-            network_relay_chain_version: "v1.12.0",
+            network_relay_chain_version: "v1.9.0",
           },
           trx,
         );
@@ -108,7 +108,7 @@ const createEnvFile = (data: CreatePerfuseApiPayload) => {
     throw new Error("rpc node not exist");
   }
   const envFile =
-    `POLKA_VERSION=${"v1.12.0"}\n` +
+    `POLKA_VERSION=${"v1.9.0"}\n` +
     `NETWORK_TYPE=${data.network.network_env}\n` +
     `COL_NAME_1=${collatorNodes[0]?.node_name}\n` +
     `COL_NAME_2=${collatorNodes[1]?.node_name}\n` +

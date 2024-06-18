@@ -1,7 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
 import MyNodes from "./my-nodes";
-import { getNetworkData, getNodes } from "@/db-queries";
+import { getNodes } from "@/db-queries";
 export const metadata: Metadata = {
   title: "Create",
 };
