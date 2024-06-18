@@ -30,6 +30,8 @@ export type CreatePerfuseApiPayload = {
         node_name: string;
         node_type: "rpc";
         node_auth_method: "api_key" | "basic_auth";
+        node_username: string;
+        node_password: string;
         node_https_enabled: boolean;
         node_wss_enabled: boolean;
       }
@@ -113,6 +115,8 @@ const createEnvFile = (data: CreatePerfuseApiPayload) => {
     `COL_NAME_1=${collatorNodes[0]?.node_name}\n` +
     `COL_NAME_2=${collatorNodes[1]?.node_name}\n` +
     `RPC_NAME=${rpcNode?.node_name}\n` +
+    `RPC_USERNAME=${rpcNode?.node_username}\n` +
+    `RPC_PASSWORD=${rpcNode?.node_password}\n` +
     `ENDPOINT_AUTH=${rpcNode?.node_auth_method}\n` +
     `TEMPLATE=${data.network.network_template}\n` +
     `SIDECAR=${data.network.network_sidecar ? 1 : 0}\n` +

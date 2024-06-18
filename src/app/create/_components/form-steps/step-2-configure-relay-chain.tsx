@@ -3,6 +3,7 @@ import * as yup from "yup";
 import { useFieldArray, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
+import { authenticationMethods } from "../constants/create-network";
 import { configureRelayChainValidationSchema } from "./validation-schema";
 import { useCreateNetworkFormStore } from "@/store/create-network";
 import { relayChainTypeOptions } from "@/constants/parachain-options";
@@ -13,7 +14,6 @@ import { FormField } from "@/lib/components/Form/FormField";
 import { Heading } from "@/lib/components/Heading";
 import { useProgressiveFormContext, ProgressiveFormStepFooter } from "@/lib/components/ProgressiveForm";
 import { Checkbox, FormFieldStatus, Input, Password, Radio } from "@/lib/components/Form";
-import { authenticationMethods } from "@/types/credentials";
 import { Tooltip } from "@/lib/components/Tooltip";
 import SvgInfoCircle from "@/lib/icons/essential/outline/InfoCircle";
 import HTTP_STATUS from "@/constants/http";
@@ -111,6 +111,8 @@ const ConfigureRelayChain = () => {
                 node_type: "rpc",
                 node_auth_method: e.credentials.type ?? "api_key",
                 node_https_enabled: e.http ?? false,
+                node_username: e.credentials.username ?? "",
+                node_password: e.credentials.password ?? "",
                 node_wss_enabled: e.ws ?? false,
               };
             })
@@ -357,92 +359,92 @@ const ConfigureRelayChain = () => {
               </div>
               <hr className="col-span-12 border-brand-outline" />
               {/* authentication methods */}
-              <div className="col-span-12 md:col-span-6 lg:col-span-4">
-                <Heading as="h5">Authentication Method</Heading>
-                <div className="grid grid-cols-12 gap-3 lg:gap-6">
-                  {authenticationMethods.length
-                    ? authenticationMethods.map((item) => {
-                        return (
-                          <div key={item.name} className="col-span-6 flex flex-row items-center gap-1 lg:col-span-6">
-                            <Radio
-                              {...register(`rpcNodes.${index}.credentials.type`, {
-                                onChange: (e) => {
-                                  if (e.target.value === "api_key") {
-                                    // unregister username and password if selected authorization method is `api_key`
-                                    unregister([
-                                      `rpcNodes.${index}.credentials.username`,
-                                      `rpcNodes.${index}.credentials.password`,
-                                    ]);
-                                  }
-                                },
-                              })}
-                              value={item.value}
-                              isDisabled={item.isDisabled}
-                            >
-                              {item.name}
-                            </Radio>
-                            {item.tooltipText ? (
-                              <Tooltip text={item.tooltipText} placement="top-start">
-                                <IconButton variant="text" colorScheme="gray">
-                                  <SvgInfoCircle className="text-base" />
-                                </IconButton>
-                              </Tooltip>
-                            ) : null}
-                          </div>
-                        );
-                      })
-                    : null}
-                </div>
-                {errors.rpcNodes?.[index]?.credentials && (
-                  <FormFieldStatus className="text-xs lg:text-sm" status="error">
-                    {errors.rpcNodes?.[index]?.credentials?.message?.toString()}
-                  </FormFieldStatus>
-                )}
-                {/* show username and password fields only in case of "basic_auth" */}
-                {watchRPCNodes?.[index]?.credentials?.type === "basic_auth" ? (
-                  <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
-                    {/* <Heading as="h5">Basic Auth</Heading> */}
-                    <div className="grid grid-cols-12 gap-3 lg:gap-6">
-                      {/* username */}
-                      <FormField
-                        className="col-span-12 lg:col-span-6"
-                        helper={{
-                          status: "error",
-                          text: errors.rpcNodes?.[index]?.credentials?.username?.message?.toString(),
-                        }}
-                      >
-                        <Input
-                          {...register(`rpcNodes.${index}.credentials.username`)}
-                          type="text"
-                          isRequired
-                          placeholder="Username"
-                          floatingLabel={{
-                            labelText: "Username",
-                          }}
-                        />
-                      </FormField>
-                      {/* password */}
-                      <FormField
-                        className="col-span-12 lg:col-span-6"
-                        helper={{
-                          status: "error",
-                          text: errors.rpcNodes?.[index]?.credentials?.password?.message?.toString(),
-                        }}
-                      >
-                        <Password
-                          {...register(`rpcNodes.${index}.credentials.password`)}
-                          shouldToggleMask
-                          isRequired
-                          placeholder="Password"
-                          floatingLabel={{
-                            labelText: "Password",
-                          }}
-                        />
-                      </FormField>
-                    </div>
-                  </div>
-                ) : null}
+              <Heading as="h5" className="col-span-12">
+                Authentication Method
+              </Heading>
+              <div className="grid grid-cols-12 gap-3 lg:gap-6">
+                {authenticationMethods.length
+                  ? authenticationMethods.map((item) => {
+                      return (
+                        <div key={item.name} className="col-span-6 flex flex-row items-center gap-1 lg:col-span-6">
+                          <Radio
+                            {...register(`rpcNodes.${index}.credentials.type`, {
+                              onChange: (e) => {
+                                if (e.target.value === "api_key") {
+                                  // unregister username and password if selected authorization method is `api_key`
+                                  unregister([
+                                    `rpcNodes.${index}.credentials.username`,
+                                    `rpcNodes.${index}.credentials.password`,
+                                  ]);
+                                }
+                              },
+                            })}
+                            value={item.value}
+                            isDisabled={item.isDisabled}
+                          >
+                            {item.name}
+                          </Radio>
+                          {item.tooltipText ? (
+                            <Tooltip text={item.tooltipText} placement="top-start">
+                              <IconButton variant="text" colorScheme="gray">
+                                <SvgInfoCircle className="text-base" />
+                              </IconButton>
+                            </Tooltip>
+                          ) : null}
+                        </div>
+                      );
+                    })
+                  : null}
               </div>
+              {errors.rpcNodes?.[index]?.credentials && (
+                <FormFieldStatus className="text-xs lg:text-sm" status="error">
+                  {errors.rpcNodes?.[index]?.credentials?.message?.toString()}
+                </FormFieldStatus>
+              )}
+              {/* show username and password fields only in case of "basic_auth" */}
+              {watchRPCNodes?.[index]?.credentials?.type === "basic_auth" ? (
+                <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
+                  <Heading as="h5">Basic Auth</Heading>
+                  <div className="grid grid-cols-12 gap-3 lg:gap-6">
+                    {/* username */}
+                    <FormField
+                      className="col-span-12 md:col-span-6 lg:col-span-4"
+                      helper={{
+                        status: "error",
+                        text: errors.rpcNodes?.[index]?.credentials?.username?.message?.toString(),
+                      }}
+                    >
+                      <Input
+                        {...register(`rpcNodes.${index}.credentials.username`)}
+                        type="text"
+                        isRequired
+                        placeholder="Username"
+                        floatingLabel={{
+                          labelText: "Username",
+                        }}
+                      />
+                    </FormField>
+                    {/* password */}
+                    <FormField
+                      className="col-span-12 md:col-span-6 lg:col-span-4"
+                      helper={{
+                        status: "error",
+                        text: errors.rpcNodes?.[index]?.credentials?.password?.message?.toString(),
+                      }}
+                    >
+                      <Password
+                        {...register(`rpcNodes.${index}.credentials.password`)}
+                        shouldToggleMask
+                        isRequired
+                        placeholder="Password"
+                        floatingLabel={{
+                          labelText: "Password",
+                        }}
+                      />
+                    </FormField>
+                  </div>
+                </div>
+              ) : null}
             </div>
           ))}
         </div>

@@ -19,9 +19,6 @@ const CreatePageClient = () => {
   const [activeStep, setActiveStep] = useState<number>(0);
   const createNetworkForm = useCreateNetworkFormStore();
 
-  // urls
-  const oldPlatformFrontendUrl = "#";
-
   return (
     <div className="flex flex-col gap-y-3 lg:gap-y-6">
       <Navigation

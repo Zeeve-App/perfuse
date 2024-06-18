@@ -48,7 +48,12 @@ const ListPageClient = () => {
           href={"/create"}
           Icon={SvgEdit2}
         />
-        <DashboardCard title={"My parachain"} description={"List the deployed parachains"} href={""} Icon={SvgEdit2} />
+        <DashboardCard
+          title={"My parachain"}
+          description={"List the deployed parachains"}
+          href={"/my-parachains"}
+          Icon={SvgEdit2}
+        />
         <DashboardCard title={"Monitoring"} description={"Check real time analytics"} href={""} Icon={SvgEdit2} />
       </div>
     </div>

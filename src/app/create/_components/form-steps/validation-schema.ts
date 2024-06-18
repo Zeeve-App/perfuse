@@ -1,6 +1,6 @@
 import * as yup from "yup";
+import { AuthenticationMethods, networkEnvType } from "../constants/create-network";
 import { ChainSpecFileType } from "@/types/chain-spec";
-import { AuthenticationMethods } from "@/types/credentials";
 import { REGEX_NODE_NAME } from "@/constants/regex";
 
 export const configureNetworkValidationSchema = yup
@@ -16,7 +16,7 @@ export const configureNetworkValidationSchema = yup
     }),
 
     networkEnviorment: yup.object({
-      value: yup.string().required("Select a workspace."),
+      value: yup.string<networkEnvType>().required("Select a workspace."),
     }),
     template: yup.object({
       value: yup.string().required("Select a workspace."),

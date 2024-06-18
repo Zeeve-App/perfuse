@@ -65,6 +65,7 @@ const ConfigureNetwork = () => {
   });
 
   const templateWatcher = watch("template");
+  const networkEnvWatcher = watch("networkEnviorment");
 
   useEffect(() => {
     if (templateWatcher?.value === "substrate" || templateWatcher?.value === "evm_frontier") {
@@ -75,7 +76,7 @@ const ConfigureNetwork = () => {
           setValue("chainSpecFile.contents", e);
         });
     }
-  }, [templateWatcher]);
+  }, [setValue, templateWatcher?.value]);
 
   // progressive form context
   const { goToNextStep } = useProgressiveFormContext();
@@ -293,7 +294,12 @@ const ConfigureNetwork = () => {
                 name="relayChain"
                 control={control}
                 render={({ field }) => (
-                  <ReactSelect isRequired options={relayChainOption} placeholder="Select Relay Chain" {...field} />
+                  <ReactSelect
+                    isRequired
+                    options={relayChainOption[networkEnvWatcher?.value ?? "testnet"]}
+                    placeholder="Select Relay Chain"
+                    {...field}
+                  />
                 )}
               />
             </FormField>
