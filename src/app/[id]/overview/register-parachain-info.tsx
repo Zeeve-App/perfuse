@@ -9,9 +9,9 @@ import { Tooltip } from "@/lib/components/Tooltip";
 import { tx } from "@/utils/shared";
 interface InfoProps {
   className?: string;
-  show:boolean;
+  show: boolean;
 }
-const RegisterParachainInfo = ({ className,show }: InfoProps) => {
+const RegisterParachainInfo = ({ className, show }: InfoProps) => {
   const { openModal } = useModalStore();
   const params = useParams();
   const networkId = params.id as string;

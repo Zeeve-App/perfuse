@@ -8,7 +8,7 @@ const ModalProvider = () => {
     <>
       {/* Register modals here */}
       <DeleteNetworkModal />
-      <RegisterParachainInfoModal/>
+      <RegisterParachainInfoModal />
     </>
   );
 };

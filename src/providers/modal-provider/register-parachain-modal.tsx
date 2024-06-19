@@ -9,7 +9,15 @@ import { downloadFile, toShortString, withBasePath } from "@/utils/helpers";
 import { useNetworkStore } from "@/store/network";
 import { IconButton, CopyButton, Button } from "@/lib/components/Button";
 import { Heading } from "@/lib/components/Heading";
-import { Modal, ModalOverlay, ModalContent, ModalBody, ModalTitle, ModalText, ModalFooter } from "@/lib/components/Modal";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalBody,
+  ModalTitle,
+  ModalText,
+  ModalFooter,
+} from "@/lib/components/Modal";
 import { Tooltip } from "@/lib/components/Tooltip";
 import SvgDownload from "@/lib/icons/product/outline/Download";
 import SvgCodeDocument3 from "@/lib/icons/programming/outline/CodeDocument3";

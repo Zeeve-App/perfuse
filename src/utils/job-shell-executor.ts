@@ -1,6 +1,8 @@
 "use server";
 import chProcess from "child_process";
 import Logger from "./logger";
+import { createTaskHandler } from "./task-handler";
+import { updateTask } from "@/db-queries";
 
 const logger = new Logger(module, "jobShellExecutor");
 
@@ -50,10 +52,20 @@ const jobShellExecutor = (
   });
 };
 
-const jobShellExecutorBG = (command: string, cwdPath: string, timeout?: number, regex?: RegExp | string) => {
+const jobShellExecutorBG = async (
+  command: string,
+  cwdPath: string,
+  taskId?: string,
+  timeout?: number,
+  regex?: RegExp | string,
+) => {
   try {
-    jobShellExecutor(command, cwdPath, timeout, regex);
-  } catch (error) {}
+    await jobShellExecutor(command, cwdPath, timeout, regex);
+    taskId && (await updateTask({ task_status: "completed" }, taskId));
+    await createTaskHandler();
+  } catch (error) {
+    taskId && (await updateTask({ task_status: "failed" }, taskId));
+  }
 };
 
 export { jobShellExecutor, jobShellExecutorBG };

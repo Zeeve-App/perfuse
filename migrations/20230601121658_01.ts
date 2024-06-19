@@ -46,6 +46,23 @@ exports.up = async function (knex: Knex) {
         );
 
     `);
+
+    await knex.raw(`
+
+        CREATE TABLE IF NOT EXISTS tasks (
+            task_id UUID NOT NULL PRIMARY KEY,
+            task_type task_type NOT NULL,
+            task_status task_status NOT NULL,
+            task_associated_network_id UUID NOT NULL,
+            task_associated_node_id UUID,
+            task_parent_id UUID,
+            task_description VARCHAR(255) NOT NULL,
+            task_retry_count SMALLINT DEFAULT 0,
+            task_created_at TIMESTAMP DEFAULT current_timestamp,
+            task_updated_at TIMESTAMP DEFAULT current_timestamp
+        );
+
+    `);
   } catch (error) {
     console.log(error);
   }

@@ -30,4 +30,17 @@ interface NodeDbRow {
   created_at?: Date;
 }
 
-export type { NodeDbRow, NetworkDbRow };
+interface TaskDbRow {
+  task_id: string;
+  task_type: "network_provision" | "add_node" | "node_provision" | "delete_node" | "delete_infra";
+  task_status: "pending" | "inprogress" | "completed" | "failed";
+  task_associated_network_id: string;
+  task_associated_node_id?: string;
+  task_parent_id?: string;
+  task_description?: string;
+  task_retry_count: number;
+  task_created_at: string;
+  task_updated_at: string;
+}
+
+export type { NodeDbRow, NetworkDbRow, TaskDbRow };

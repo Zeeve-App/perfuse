@@ -1,7 +1,7 @@
 "use server";
 
 import knex from "knex";
-import { NetworkDbRow, NodeDbRow } from "./type";
+import { NetworkDbRow, NodeDbRow, TaskDbRow } from "./type";
 import { knexHandler } from "./knexfile";
 
 export const saveNetworkData = async (data: Omit<NetworkDbRow, "created_at">, trx?: knex.Knex.Transaction) => {
@@ -44,4 +44,16 @@ export const deleteNetwork = (networkId: string, trx?: knex.Knex.Transaction) =>
   const db = trx ?? knexHandler;
 
   return db<NetworkDbRow>("networks").where({ network_id: networkId }).del();
+};
+
+export const addTask = (data: Omit<TaskDbRow, "task_created_at" | "task_updated_at">, trx?: knex.Knex.Transaction) => {
+  const db = trx ?? knexHandler;
+
+  return db<TaskDbRow>("tasks").insert(data);
+};
+
+export const updateTask = (data: Partial<TaskDbRow>, taskId: string, trx?: knex.Knex.Transaction) => {
+  const db = trx ?? knexHandler;
+
+  return db<TaskDbRow>("tasks").update(data).where("task_id", taskId);
 };

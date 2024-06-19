@@ -2,7 +2,7 @@ import fs from "fs/promises";
 import { NextRequest } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { sendDataResponse, sendErrorResponse } from "../_helpers/response";
-import { NodeDbRow, saveNetworkData, saveNodeData } from "@/db-queries";
+import { NodeDbRow, addTask, saveNetworkData, saveNodeData } from "@/db-queries";
 import { knexHandler } from "@/db-queries/knexfile";
 import { config } from "@/config/config";
 import { jobShellExecutorBG } from "@/utils/job-shell-executor";
@@ -44,6 +44,8 @@ export async function POST(req: NextRequest) {
     console.log(formData);
 
     const network_id = uuidv4();
+    const taskId = uuidv4();
+
     await knexHandler.transaction(async (trx) => {
       try {
         await saveNetworkData(
@@ -53,6 +55,17 @@ export async function POST(req: NextRequest) {
             network_sidecar: formData.network.network_sidecar ? 1 : 0,
             network_chain_spec_file_json: JSON.stringify(formData.network.network_chain_spec_file_json),
             network_relay_chain_version: "v1.9.0",
+          },
+          trx,
+        );
+
+        await addTask(
+          {
+            task_id: taskId,
+            task_type: "network_provision",
+            task_status: "inprogress",
+            task_associated_network_id: network_id,
+            task_retry_count: 5,
           },
           trx,
         );
@@ -86,7 +99,7 @@ export async function POST(req: NextRequest) {
           // "utf-8",
         );
 
-        jobShellExecutorBG("make all", process.cwd());
+        jobShellExecutorBG("make all", process.cwd(), taskId);
       } catch (error) {
         console.log(error);
         throw error;

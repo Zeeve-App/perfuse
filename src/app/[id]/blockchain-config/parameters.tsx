@@ -15,13 +15,12 @@ import useApi from "@/api-client";
 interface ParametersProps {
   data?: ChainSpecFileType;
   isLoading: boolean;
+  blockHeight: number;
 }
-const Parameters = ({ data, isLoading }: ParametersProps) => {
+const Parameters = ({ data, isLoading, blockHeight }: ParametersProps) => {
   const params = useParams();
   const networkId = params.id as string;
   const [tokenSupply, setTokenSupply] = useState<number | undefined>(undefined);
-  const apis = useApi();
-  const { data: blockRpcResponse, isLoading: blockRpcLoading } = apis.blockNumber();
 
   useEffect(() => {
     if (data?.genesis?.runtime?.balances?.balances || data?.genesis.runtimeGenesis?.patch.balances.balances) {
@@ -41,9 +40,9 @@ const Parameters = ({ data, isLoading }: ParametersProps) => {
         <div className="col-span-12 lg:col-span-6 2xl:col-span-12">
           <CardKeyValuePair
             label={"Parchain Block Height"}
-            value={parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16)}
+            value={blockHeight}
             className="lg:p-7"
-            isLoading={blockRpcLoading}
+            isLoading={isLoading}
           />
         </div>
         <div className="col-span-12 lg:col-span-6 2xl:col-span-12">
