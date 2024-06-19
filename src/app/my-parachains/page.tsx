@@ -1,5 +1,6 @@
 import Image from "next/image";
 import NetworkCard from "./_components/network-card";
+import NoData from "./_components/no-data";
 import { Navigation } from "@/lib/components/navigation";
 import { getNetworks } from "@/db-queries";
 import { withBasePath } from "@/utils/helpers";
@@ -40,17 +41,21 @@ export default async function Home() {
         />
         <div className="rounded-lg border border-brand-outline bg-white p-3 lg:p-6">
           <div className="grid grid-cols-12 gap-3 text-brand-dark lg:gap-6">
-            {networks.map((e) => (
-              <NetworkCard
-                key={e.network_id}
-                data={{
-                  networkId: e.network_id,
-                  networkName: e.network_name,
-                  networkEnvironment: e.network_env,
-                  networkCreatedAt: new Date(e.created_at),
-                }}
-              />
-            ))}
+            {networks.length > 0 ? (
+              networks.map((e) => (
+                <NetworkCard
+                  key={e.network_id}
+                  data={{
+                    networkId: e.network_id,
+                    networkName: e.network_name,
+                    networkEnvironment: e.network_env,
+                    networkCreatedAt: new Date(e.created_at),
+                  }}
+                />
+              ))
+            ) : (
+              <NoData />
+            )}
           </div>
         </div>
       </div>
