@@ -9,12 +9,13 @@ import { Tooltip } from "@/lib/components/Tooltip";
 import { tx } from "@/utils/shared";
 interface InfoProps {
   className?: string;
+  show:boolean;
 }
-const RegisterParachainInfo = ({ className }: InfoProps) => {
+const RegisterParachainInfo = ({ className,show }: InfoProps) => {
   const { openModal } = useModalStore();
   const params = useParams();
   const networkId = params.id as string;
-  return false ? (
+  return show ? (
     <Card
       className={tx(
         "col-span-12 flex flex-row items-center border border-brand-yellow bg-brand-yellow/5 gap-3",

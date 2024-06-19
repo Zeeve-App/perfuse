@@ -80,7 +80,7 @@ const ConfigureNetwork = () => {
   }, [setValue, templateWatcher?.value]);
 
   useEffect(() => {
-    setValue("relayChain", "");
+    setValue("relayChain", "" as unknown as { label: string; value: string });
   }, [networkEnvWatcher]);
 
   // progressive form context

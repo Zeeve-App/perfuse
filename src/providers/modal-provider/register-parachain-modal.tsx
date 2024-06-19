@@ -1,0 +1,180 @@
+"use client";
+import Image from "next/image";
+import React, { useState } from "react";
+
+import { useParams } from "next/navigation";
+import { useModalStore } from "@/store/modal";
+import { downloadFile, toShortString, withBasePath } from "@/utils/helpers";
+// import useParachainsService from "@/services/parachains/use-parachains-service";
+import { useNetworkStore } from "@/store/network";
+import { IconButton, CopyButton, Button } from "@/lib/components/Button";
+import { Heading } from "@/lib/components/Heading";
+import { Modal, ModalOverlay, ModalContent, ModalBody, ModalTitle, ModalText, ModalFooter } from "@/lib/components/Modal";
+import { Tooltip } from "@/lib/components/Tooltip";
+import SvgDownload from "@/lib/icons/product/outline/Download";
+import SvgCodeDocument3 from "@/lib/icons/programming/outline/CodeDocument3";
+
+const FileCard = ({ name, checksum }: { name: "WASM" | "Genesis"; checksum?: string }) => {
+  const params = useParams();
+  const networkId = params.id as string;
+  const [isLoading, setIsLoading] = useState(false);
+  // const { request, url } = useParachainsService().network.downloadFile(
+  //   networkId,
+  //   name.toLowerCase() as "wasm" | "genesis",
+  // );
+  const getFileContent = async () => {
+    try {
+      setIsLoading(true);
+      const mimeType = name === "WASM" ? "application/octet-stream" : "application/json";
+      // const response = await request(url, {
+      //   headers: {
+      //     Accept: "application/json",
+      //     "Content-Type": mimeType,
+      //   },
+      //   responseType: "blob",
+      // });
+      downloadFile("", `${name.toLowerCase()}-${networkId}`, mimeType);
+    } catch (error) {
+      console.error(`getFileContent-${name}: `, error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  return (
+    <div className="col-span-12 flex flex-row items-center gap-2 md:col-span-6 2xl:col-span-6">
+      <SvgCodeDocument3 className="text-5xl text-brand-primary" />
+      <div>
+        <div className="flex flex-row items-start gap-1">
+          <div>{name} File</div>
+          <Tooltip text={`Download ${name} File`} placement="top-start">
+            <IconButton
+              className="h-5 border-0"
+              colorScheme="green"
+              variant={"ghost"}
+              size={"small"}
+              isLoading={isLoading}
+              isDisabled={isLoading}
+              onClick={getFileContent}
+            >
+              <SvgDownload className="text-xl" />
+            </IconButton>
+          </Tooltip>
+        </div>
+        <div className="flex flex-row items-center gap-2">
+          <div className="text-xs text-brand-gray">
+            {checksum ? (
+              <Tooltip text={checksum} placement={"top-start"}>
+                <div>
+                  MD5 Checksum: <span className="text-brand-dark">{toShortString(checksum)}</span>
+                  <CopyButton text={checksum} />
+                </div>
+              </Tooltip>
+            ) : (
+              <div>
+                MD5 Checksum: <span className="text-brand-dark">NA</span>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const RegisterParachainInfoModal = () => {
+  const params = useParams();
+  const networkId = params.id as string;
+  const { isOpen, onClose, type } = useModalStore();
+
+  const isModalOpen = isOpen && type === "registerParachain";
+
+  const networkInfo = useNetworkStore((state) => state.networkInfo);
+
+  // const {
+  //   request: { data },
+  // } = useParachainsService().globalNetwork.checksums(networkId, networkInfo.data?.status === "ready");
+
+  return (
+    <Modal isOpen={isModalOpen} handleClose={onClose}>
+      <ModalOverlay />
+      <ModalContent className="max-h-screen w-full max-w-2xl overflow-y-auto">
+        <ModalBody>
+          {/* <StatusIcon status="error" /> */}
+          <div className="flex flex-col gap-y-1">
+            <ModalTitle className="text-xl">Register Parachain</ModalTitle>
+            <ModalText>
+              Parachain setup will be done only when you authorize it by registering it on the relay chain. You need to
+              upload the <span className="text-brand-dark">WASM</span> and{" "}
+              <span className="text-brand-dark">Genesis</span> file of the parachain by following the below
+              instructions.
+            </ModalText>
+            {/* <div className="grid grid-cols-12 gap-3 py-4 lg:gap-y-6">
+              <FileCard name={"WASM"} checksum={data?.data.wasm} />
+              <FileCard name={"Genesis"} checksum={data?.data.genesis} />
+            </div> */}
+            <div className="p-2">
+              <Heading as="h6" className="text-brand-dark">
+                1. To Reserve ParaId
+              </Heading>
+              <div className="p-2 text-sm text-brand-gray">
+                a. Reserve ParaId by going to explorer.
+                <br />
+                b. Navigate to{" "}
+                <span className="italic text-brand-primary">Network-&gt;Parachains-&gt;Parathread-&gt;ParaId</span>
+                .
+                <Image
+                  className="py-2"
+                  src={withBasePath(`/assets/images/meta/reserve-para-id.png`)}
+                  alt={"reserve-para-id.png"}
+                  width={600}
+                  height={600}
+                />
+              </div>
+            </div>
+            <div className="p-2">
+              <Heading as="h6" className="text-brand-dark">
+                2. Upload genesis wasm and state files to the relay chain
+              </Heading>
+              <div className="p-2 text-sm text-brand-gray">
+                a. Go to polkadot explorer and under the <span className="font-semibold italic">Developer</span> nav
+                select{""} <span className="font-semibold italic">Sudo</span>.
+                <Image
+                  className="py-2"
+                  src={withBasePath(`/assets/images/meta/sudo-tab.png`)}
+                  alt={"reserve-para-id.png"}
+                  width={600}
+                  height={600}
+                />
+                <br />
+                b. Select the apis:{" "}
+                <span className="italic text-brand-primary">parasSudoWrapper-&gt;sudoScheduleParaInitialize</span>.
+                <br />
+                c. Fill in the appropriate values of <span className="font-semibold italic">Paraid</span>,{" "}
+                <span className="font-semibold italic">Genesis file</span> and{" "}
+                <span className="font-semibold italic">Genesis Wasm</span> which we have generated previously and
+                Submit.
+                <Image
+                  className="py-2"
+                  src={withBasePath(`/assets/images/meta/register-with-sudo.png`)}
+                  alt={"reserve-para-id.png"}
+                  width={600}
+                  height={600}
+                />
+              </div>
+            </div>
+            <div className="text-center text-sm font-semibold">
+              Your collator node will start generating blocks and finalizing them from the next or two epoch duration.
+            </div>
+          </div>
+        </ModalBody>
+        <ModalFooter placement="end">
+          <Button variant="ghost" colorScheme={"primary"} onClick={onClose}>
+            Close
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+};
+
+export default RegisterParachainInfoModal;

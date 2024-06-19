@@ -5,6 +5,7 @@ import Nodes from "./nodes";
 import BlockchainConfig from "./blockchain-config";
 import RegisterParachainInfo from "./register-parachain-info";
 import { NodeDbRow } from "@/db-queries";
+import useApi from "@/api-client";
 const Overview = ({
   createdAt,
   env,
@@ -24,9 +25,12 @@ const Overview = ({
   relayCainType: string;
   nodes: NodeDbRow[];
 }) => {
+  const apis = useApi();
+  const { data: blockRpcResponse, isLoading: blockRpcLoading } = apis.blockNumber();
   return (
+
     <div className="grid grid-cols-12 gap-3 text-brand-dark lg:gap-6">
-      <RegisterParachainInfo />
+      <RegisterParachainInfo  show={parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16) === 0}/>
       <GeneralInfo isLoading={isLoading} createdAt={createdAt} env={env} name={name} id={id} />
       <BlockchainConfig isLoading={isLoading} paraId={paraId} relayChainType={relayCainType} />
       <Nodes isLoading={isLoading} nodes={nodes} />
