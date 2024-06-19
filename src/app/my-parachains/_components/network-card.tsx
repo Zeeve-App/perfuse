@@ -22,7 +22,7 @@ const NetworkCard = ({ data: { networkId, networkName, networkEnvironment, netwo
       <div className="flex flex-row items-center gap-3">
         <div className="rounded-lg bg-brand-outline p-2">
           <Image
-            src={withBasePath("/assets/images/protocol/parachains-logo.svg")}
+            src={withBasePath("/assets/images/parachains-logo.svg")}
             alt="parachains-logo"
             width={24}
             height={24}

@@ -106,7 +106,7 @@ const ZeeveSidebar = (props: SidebarProps) => {
       <SidebarHeader className="justify-center">
         <a href={`/`}>
           <Image
-            src={withBasePath("/assets/images/zeeve-logo-on-dark-bg.svg")}
+            src={withBasePath("/assets/images/parachains-logo.svg")}
             alt="Zeeve Logo"
             width={64}
             height={64}

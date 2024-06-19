@@ -14,7 +14,7 @@ export default async function Home() {
           heading={"Perfuse"}
           logo={
             <Image
-              src={withBasePath("/assets/images/protocol/parachains-logo.svg")}
+              src={withBasePath("/assets/images/parachains-logo.svg")}
               alt="parachains-logo"
               width={32}
               height={32}
