@@ -90,16 +90,16 @@ create_service() {
       -- \
       --chain $relay_chain_spec \
       --execution wasm \
-      --port $port \
-      --rpc-port $rpc_port \
+      --port $((port + 2022)) \
+      --rpc-port $((rpc_port + 2022)) \
       --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/$relay_bootnode_id1 /ip4/127.0.0.1/tcp/30334/p2p/$relay_bootnode_id2"
   else
     exec_start+=" \
       -- \
       --chain $relay_chain_spec \
       --execution wasm \
-      --port $port \
-      --rpc-port $rpc_port \
+      --port $((port + 2022)) \
+      --rpc-port $((rpc_port + 2022)) \
       --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/$relay_bootnode_id1 /ip4/127.0.0.1/tcp/30334/p2p/$relay_bootnode_id2"
   fi
 
