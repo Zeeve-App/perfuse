@@ -35,3 +35,4 @@ const CreatePage = async ({
 };
 
 export default CreatePage;
+export const dynamic = "force-dynamic";
