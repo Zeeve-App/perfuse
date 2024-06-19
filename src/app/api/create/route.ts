@@ -64,6 +64,7 @@ export async function POST(req: NextRequest) {
             task_id: taskId,
             task_type: "network_provision",
             task_status: "inprogress",
+            task_description: "this task is to deploy network",
             task_associated_network_id: network_id,
             task_retry_count: 5,
           },

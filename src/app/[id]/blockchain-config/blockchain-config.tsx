@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import RegisterParachainInfo from "../overview/register-parachain-info";
+import RegisterParachainInfo from "../_components/register-parachain-info";
 import ParachainSpecFile from "./parachain-spec-file";
 import ParachainConfig from "./parachain-config";
 import Parameters from "./parameters";

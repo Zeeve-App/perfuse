@@ -37,7 +37,7 @@ interface TaskDbRow {
   task_associated_network_id: string;
   task_associated_node_id?: string;
   task_parent_id?: string;
-  task_description?: string;
+  task_description: string;
   task_retry_count: number;
   task_created_at: string;
   task_updated_at: string;

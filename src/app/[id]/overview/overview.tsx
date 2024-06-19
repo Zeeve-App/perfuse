@@ -3,7 +3,7 @@ import React from "react";
 import GeneralInfo from "./general-info";
 import Nodes from "./nodes";
 import BlockchainConfig from "./blockchain-config";
-import RegisterParachainInfo from "./register-parachain-info";
+import RegisterParachainInfo from "../_components/register-parachain-info";
 import { NodeDbRow } from "@/db-queries";
 import useApi from "@/api-client";
 const Overview = ({

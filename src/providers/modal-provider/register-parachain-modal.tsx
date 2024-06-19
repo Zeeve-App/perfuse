@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useParams } from "next/navigation";
 import { useModalStore } from "@/store/modal";
@@ -21,27 +21,25 @@ import {
 import { Tooltip } from "@/lib/components/Tooltip";
 import SvgDownload from "@/lib/icons/product/outline/Download";
 import SvgCodeDocument3 from "@/lib/icons/programming/outline/CodeDocument3";
+import useApi from "@/api-client";
 
-const FileCard = ({ name, checksum }: { name: "WASM" | "Genesis"; checksum?: string }) => {
+const FileCard = ({ name, checksum }: { name: "wasm" | "Genesis"; checksum?: string }) => {
   const params = useParams();
   const networkId = params.id as string;
   const [isLoading, setIsLoading] = useState(false);
-  // const { request, url } = useParachainsService().network.downloadFile(
-  //   networkId,
-  //   name.toLowerCase() as "wasm" | "genesis",
-  // );
+  const api = useApi();
   const getFileContent = async () => {
     try {
       setIsLoading(true);
-      const mimeType = name === "WASM" ? "application/octet-stream" : "application/json";
-      // const response = await request(url, {
-      //   headers: {
-      //     Accept: "application/json",
-      //     "Content-Type": mimeType,
-      //   },
-      //   responseType: "blob",
-      // });
-      downloadFile("", `${name.toLowerCase()}-${networkId}`, mimeType);
+      const mimeType = name === "wasm" ? "application/octet-stream" : "application/json";
+      const response = await api.file(name, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": mimeType,
+        },
+        responseType: "blob",
+      });
+      downloadFile(response.data, `${name.toLowerCase()}-${networkId}`, mimeType);
     } catch (error) {
       console.error(`getFileContent-${name}: `, error);
     } finally {
@@ -94,13 +92,31 @@ const RegisterParachainInfoModal = () => {
   const networkId = params.id as string;
   const { isOpen, onClose, type } = useModalStore();
 
+  const [checksum, setChecksum] = useState<{ wasm: string; genesis: string }>();
+
   const isModalOpen = isOpen && type === "registerParachain";
 
   const networkInfo = useNetworkStore((state) => state.networkInfo);
 
-  // const {
-  //   request: { data },
-  // } = useParachainsService().globalNetwork.checksums(networkId, networkInfo.data?.status === "ready");
+  const api = useApi();
+  const getChecksum = async () => {
+    try {
+      const res = await api.file("checksum.json", {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        responseType: "blob",
+      });
+      if (res.data.data) {
+        setChecksum(res.data.data);
+      }
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    getChecksum();
+  });
 
   return (
     <Modal isOpen={isModalOpen} handleClose={onClose}>
@@ -116,10 +132,10 @@ const RegisterParachainInfoModal = () => {
               <span className="text-brand-dark">Genesis</span> file of the parachain by following the below
               instructions.
             </ModalText>
-            {/* <div className="grid grid-cols-12 gap-3 py-4 lg:gap-y-6">
-              <FileCard name={"WASM"} checksum={data?.data.wasm} />
-              <FileCard name={"Genesis"} checksum={data?.data.genesis} />
-            </div> */}
+            <div className="grid grid-cols-12 gap-3 py-4 lg:gap-y-6">
+              <FileCard name={"wasm"} checksum={checksum?.wasm} />
+              <FileCard name={"Genesis"} checksum={checksum?.genesis} />
+            </div>
             <div className="p-2">
               <Heading as="h6" className="text-brand-dark">
                 1. To Reserve ParaId
