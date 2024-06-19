@@ -22,7 +22,7 @@ import SvgDownload from "@/lib/icons/product/outline/Download";
 import SvgCodeDocument3 from "@/lib/icons/programming/outline/CodeDocument3";
 import useApi from "@/api-client";
 
-const FileCard = ({ name, checksum }: { name: "wasm" | "Genesis"; checksum?: string }) => {
+const FileCard = ({ name, checksum }: { name: "wasm" | "genesis"; checksum?: string }) => {
   const params = useParams();
   const networkId = params.id as string;
   const [isLoading, setIsLoading] = useState(false);
@@ -104,11 +104,10 @@ const RegisterParachainInfoModal = () => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        responseType: "blob",
       });
 
-      if (res.data.data) {
-        setChecksum(res.data.data);
+      if (res.data) {
+        setChecksum(res.data);
       }
     } catch (error) {}
   };
@@ -135,7 +134,7 @@ const RegisterParachainInfoModal = () => {
             </ModalText>
             <div className="grid grid-cols-12 gap-3 py-4 lg:gap-y-6">
               <FileCard name={"wasm"} checksum={checksum?.wasm} />
-              <FileCard name={"Genesis"} checksum={checksum?.genesis} />
+              <FileCard name={"genesis"} checksum={checksum?.genesis} />
             </div>
             <div className="p-2">
               <Heading as="h6" className="text-brand-dark">
