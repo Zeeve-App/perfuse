@@ -3,7 +3,7 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ["knex"],
   },
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH ?? "/perfuse",
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH ?? "",
   output: "standalone",
 };
 

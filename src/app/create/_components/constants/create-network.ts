@@ -11,12 +11,7 @@ export const relayChainOption: Record<networkEnvType, { label: string; value: st
     { label: "Kusama", value: "kusama" },
     { label: "Polkadot", value: "polkadot" },
   ],
-  testnet: [
-    { label: "Rococo-local", value: "rococo_local" },
-    { label: "Rococo", value: "rococo" },
-    { label: "Kusama", value: "kusama" },
-    { label: "Polkadot", value: "polkadot" },
-  ],
+  testnet: [{ label: "Rococo", value: "rococo" }],
 };
 
 export const templateOption = [

@@ -2,11 +2,12 @@
 
 import ZeeveSidebarItemProps from "../type";
 import SvgBook2 from "@/lib/icons/school/outline/Book2";
-import SvgMail from "@/lib/icons/communication/outline/Mail";
 import SvgElement3 from "@/lib/icons/grid/outline/Element3";
 import SvgNodes from "@/lib/icons/programming/outline/Nodes";
 import SvgBubbles from "@/lib/icons/essential/outline/Bubbles";
 import SvgSetting1 from "@/lib/icons/setting/outline/Setting1";
+import SvgGithub from "@/lib/icons/programming/outline/github-mark-white";
+import SvgEndpoints1 from "@/lib/icons/programming/outline/Endpoints1";
 
 const ITEMS: {
   title?: string;
@@ -41,19 +42,18 @@ const ITEMS: {
     ],
   },
   {
-    title: "Others",
+    title: "Support",
     items: [
       {
-        title: "Documentation",
-        icon: <SvgBook2 />,
+        title: "Github",
+        icon: <SvgEndpoints1 />,
         path: `#`,
       },
-      {
-        title: "Email",
-        icon: <SvgMail />,
-        path: "https://help.zeeve.io/hc/en-us/signin?return_to=https://help.zeeve.io",
-        shouldOpenInNewTab: true,
-      },
+    ],
+  },
+  {
+    title: "Others",
+    items: [
       {
         title: "Settings",
         icon: <SvgSetting1 />,
