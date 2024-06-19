@@ -1,10 +1,13 @@
 SCRIPTS_DIR = scripts
 
 # Targets
-all:  initial binary_install generate-genesis-wasm-spec build-relaychain build-parachain 
+all:  initial proxy_setup binary_install generate-genesis-wasm-spec build-relaychain build-parachain 
 
 clean:
 	sudo bash $(SCRIPTS_DIR)/clean.sh
+
+proxy_setup:
+	sudo bash $(SCRIPTS_DIR)/setup_proxy.sh
 
 initial:
 	sudo bash $(SCRIPTS_DIR)/initialization.sh

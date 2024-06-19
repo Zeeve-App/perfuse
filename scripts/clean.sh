@@ -4,6 +4,7 @@ set -e       # Exit on error
 set -u       # Fail on unset variables
 parachain_dir="/home/perfuse/parachain"
 SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
+
 # Load environment variables from .env file
 if [ -f ".env" ]; then
   source "$SCRIPT_DIR/../perfuse/.env"
@@ -16,6 +17,8 @@ fi
 service_names=("relaychain-1" "relaychain-2" "relaychain-3" "$COL_NAME_1" "$COL_NAME_2" "$RPC_NAME")
 binaries_name=("polkadot" "polkadot-parachain" "polkadot-execute-worker" "polkadot-prepare-worker")
 base_path_template="/home/perfuse/parachain/%s/data"
+HAPROXY_CONFIG_FILE="/etc/haproxy/haproxy.cfg"
+
 
 # Function to remove a service and its data directory
 cleanup_service() {
@@ -76,8 +79,20 @@ remove_binary() {
     fi
 }
 
+# Function to clean the HAProxy configuration
+clean_haproxy_config() {
+    echo "Cleaning HAProxy configuration..."
+
+    # Remove frontend and backends
+    sudo sed -i '/^frontend rpc_frontend/,/^backend collator_backend/d' "$HAPROXY_CONFIG_FILE"
+    sudo sed -i '/^userlist authorized_users/,+1d' "$HAPROXY_CONFIG_FILE"
+    
+    echo "HAProxy configuration cleaned."
+}
+
 for i in "${!binaries_name[@]}"; do
   remove_binary "${binaries_name[i]}" "$POLKA_VERSION"
 done
 
+clean_haproxy_config
 sudo rm -r /home/perfuse
