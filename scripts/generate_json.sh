@@ -33,7 +33,7 @@ build_parachain_spec() {
             jq ".genesis.runtimeGenesis.parachainInfo.parachainId = $PARACHAIN_ID | .para_id = $PARACHAIN_ID" ${PARACHAIN_DIR}/plain-parachain-chainspec.json | sudo tee "$PARACHAIN_DIR/new-parachain-chainspec.json" &> /dev/null
             /usr/local/bin/polkadot-parachain build-spec \
                 --chain $PARACHAIN_DIR/new-parachain-chainspec.json \
-                --disable-default-bootnode | sudo tee "$PARACHAIN_DIR/raw-parachain-chainspec.json" &> /dev/null
+                --disable-default-bootnode --raw | sudo tee "$PARACHAIN_DIR/raw-parachain-chainspec.json" &> /dev/null
         else
             echo "WARNING: 'jq' not found. Chainspec modification skipped. Please install 'jq' if you need to modify the chainspec."
         fi
@@ -45,7 +45,7 @@ modify_chainspec() {
     sudo cp "$CHAINSPEC_FILE" "$PARACHAIN_DIR/plain-parachain-chainspec.json"
     /usr/local/bin/polkadot-parachain build-spec \
         --chain $PARACHAIN_DIR/plain-parachain-chainspec.json \
-        --disable-default-bootnode | sudo tee "$PARACHAIN_DIR/raw-parachain-chainspec.json" &> /dev/null
+        --disable-default-bootnode --raw | sudo tee "$PARACHAIN_DIR/raw-parachain-chainspec.json" &> /dev/null
     echo "Chain spec modified."
 }
 
