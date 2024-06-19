@@ -2,9 +2,8 @@
 
 import React from "react";
 // import { IconArrowUpRightFromSquare } from "@zeeve-platform/icons/arrow/outline";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import Link from "next/link";
-import { useTabsContext } from "@/lib/components/Tabs";
 import { IconButton } from "@/lib/components/Button";
 import { Heading } from "@/lib/components/Heading";
 import { Tooltip } from "@/lib/components/Tooltip";
@@ -22,7 +21,6 @@ const BlockchainConfig = ({
   relayChainType?: string;
   isLoading: boolean;
 }) => {
-  const router = useRouter();
   const params = useParams();
   const networkId = params.id;
 

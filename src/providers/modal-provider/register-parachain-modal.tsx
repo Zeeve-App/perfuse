@@ -6,7 +6,6 @@ import { useParams } from "next/navigation";
 import { useModalStore } from "@/store/modal";
 import { downloadFile, toShortString, withBasePath } from "@/utils/helpers";
 // import useParachainsService from "@/services/parachains/use-parachains-service";
-import { useNetworkStore } from "@/store/network";
 import { IconButton, CopyButton, Button } from "@/lib/components/Button";
 import { Heading } from "@/lib/components/Heading";
 import {
@@ -88,15 +87,14 @@ const FileCard = ({ name, checksum }: { name: "wasm" | "Genesis"; checksum?: str
 };
 
 const RegisterParachainInfoModal = () => {
-  const params = useParams();
-  const networkId = params.id as string;
+  // const networkId = params.id as string;
   const { isOpen, onClose, type } = useModalStore();
 
   const [checksum, setChecksum] = useState<{ wasm: string; genesis: string }>();
 
   const isModalOpen = isOpen && type === "registerParachain";
 
-  const networkInfo = useNetworkStore((state) => state.networkInfo);
+  // const networkInfo = useNetworkStore((state) => state.networkInfo);
 
   const api = useApi();
   const getChecksum = async () => {
@@ -108,6 +106,7 @@ const RegisterParachainInfoModal = () => {
         },
         responseType: "blob",
       });
+
       if (res.data.data) {
         setChecksum(res.data.data);
       }
@@ -116,7 +115,9 @@ const RegisterParachainInfoModal = () => {
 
   useEffect(() => {
     getChecksum();
-  });
+    console.log("lol");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Modal isOpen={isModalOpen} handleClose={onClose}>

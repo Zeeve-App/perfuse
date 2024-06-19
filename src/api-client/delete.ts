@@ -2,7 +2,6 @@ import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { backendAxiosInstance } from "@/utils/axios";
 import { withBasePath } from "@/utils/helpers";
 
-type ApiRequest = FormData;
 type ApiResponse = {
   success: boolean;
   data: { path: string };

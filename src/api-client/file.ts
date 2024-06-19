@@ -11,7 +11,7 @@ type ApiResponse =
   | any;
 
 const useFileApi = async (file: string, config?: AxiosRequestConfig<FormData>) => {
-  const apiEndpoint = withBasePath(`/public/output/${file}`);
+  const apiEndpoint = withBasePath(`/output/${file}`);
   const request = backendAxiosInstance.get<ApiResponse, AxiosResponse<ApiResponse>>;
 
   return request(apiEndpoint, { ...config });

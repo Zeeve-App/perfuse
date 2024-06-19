@@ -1,5 +1,3 @@
-import { NodeNetworkStates } from "./node";
-
 /** type declaration of purpose of environment of parachain network */
 type NetworkEnvironment = "sandbox" | "production";
 

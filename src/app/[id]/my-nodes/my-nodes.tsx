@@ -20,7 +20,7 @@ const MyNodes = ({ nodes }: { nodes: { collator: NodeDbRow[]; rpc: NodeDbRow[] }
   }, [windowSize]);
 
   const apis = useApi();
-  const { data: blockRpcResponse, isLoading: blockRpcLoading } = apis.blockNumber();
+  const { data: blockRpcResponse } = apis.blockNumber();
   const blockHeight = parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16);
 
   return (

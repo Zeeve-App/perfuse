@@ -8,7 +8,6 @@ export const metadata: Metadata = {
 
 const CreatePage = async ({
   params,
-  searchParams,
 }: {
   params: { id: string };
   searchParams: { [key: string]: string | string[] | undefined };

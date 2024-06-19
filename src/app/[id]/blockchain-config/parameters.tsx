@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import { formateNumber } from "@/utils/helpers";
 import { TOKEN_COLOR_CLASS } from "@/constants/token";
@@ -10,7 +9,6 @@ import { Heading } from "@/lib/components/Heading";
 import { Tooltip } from "@/lib/components/Tooltip";
 import CardKeyValuePair from "@/lib/components/utils/card-key-value-pair";
 import { tx } from "@/utils/shared";
-import useApi from "@/api-client";
 
 interface ParametersProps {
   data?: ChainSpecFileType;
@@ -18,8 +16,7 @@ interface ParametersProps {
   blockHeight: number;
 }
 const Parameters = ({ data, isLoading, blockHeight }: ParametersProps) => {
-  const params = useParams();
-  const networkId = params.id as string;
+  // const networkId = params.id as string;
   const [tokenSupply, setTokenSupply] = useState<number | undefined>(undefined);
 
   useEffect(() => {

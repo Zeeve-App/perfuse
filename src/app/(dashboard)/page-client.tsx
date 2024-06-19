@@ -9,9 +9,6 @@ import SvgEdit2 from "@/lib/icons/document/outline/Edit2";
 const ListPageClient = () => {
   // localStorage.setItem("from", "parachains");
 
-  // check there is no network list
-  const [disable, setDisable] = useState(false);
-
   return (
     <div className="flex flex-col gap-y-3 lg:gap-y-6">
       <Navigation

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { IconButton } from "@/lib/components/Button";
 import { Heading } from "@/lib/components/Heading";
 import { ColumnDef, ReactTable, createColumnHelper } from "@/lib/components/ReactTable";
-import { useTabsContext } from "@/lib/components/Tabs";
 import { Tooltip } from "@/lib/components/Tooltip";
 import CardKeyValuePair from "@/lib/components/utils/card-key-value-pair";
 import SvgArrowUpRightFromSquare from "@/lib/icons/arrows/outline/ArrowUpRightFromSquare";
