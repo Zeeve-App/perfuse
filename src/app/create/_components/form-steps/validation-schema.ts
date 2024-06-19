@@ -16,19 +16,20 @@ export const configureNetworkValidationSchema = yup
     }),
 
     networkEnviorment: yup.object({
-      value: yup.string<networkEnvType>().required("Select a workspace."),
+      value: yup.string<networkEnvType>().required("Select a network environment."),
     }),
     template: yup.object({
-      value: yup.string().required("Select a workspace."),
+      value: yup.string().required("Select a template."),
     }),
     relayChain: yup.object({
-      value: yup.string().required("Select a workspace."),
+      value: yup.string().required("Select a relay chain."),
+      label: yup.string(),
     }),
     sidecar: yup.object({
-      value: yup.boolean().required("Select a workspace."),
+      value: yup.boolean().required("Select a sidecar."),
     }),
     explorer: yup.object({
-      value: yup.string().required("Select a workspace."),
+      value: yup.string().required("Select a explorer."),
     }),
   })
   .required();

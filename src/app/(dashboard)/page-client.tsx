@@ -29,11 +29,6 @@ const ListPageClient = () => {
             {
               href: `#`,
               label: "Dashboard",
-              as: "a",
-            },
-            {
-              href: "#",
-              label: "Parachains",
               isActive: true,
             },
           ],

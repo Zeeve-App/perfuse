@@ -14,12 +14,12 @@ const IdPageClient: React.FC<{ children: React.ReactNode; params: { id: string }
       label: "Dashboard",
     },
     {
-      href: "#",
-      label: "Parachains",
+      href: "/my-parachains",
+      label: "My Parachains",
     },
     {
       href: `/${id}`,
-      label: "name",
+      label: network?.network_name ?? "name",
       isActive: true,
     },
   ];

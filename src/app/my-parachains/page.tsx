@@ -24,15 +24,11 @@ export default async function Home() {
             items: [
               {
                 label: "Dashboard",
-                href: "#",
+                href: "/",
                 as: "a",
               },
               {
-                label: "Perfuse",
-                href: "#",
-              },
-              {
-                label: "Create",
+                label: "My Parachains",
                 href: "#",
                 isActive: true,
               },

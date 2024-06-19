@@ -30,12 +30,8 @@ const CreatePage = async () => {
             items: [
               {
                 label: "Dashboard",
-                href: "#",
+                href: "/",
                 as: "a",
-              },
-              {
-                label: "Perfuse",
-                href: "#",
               },
               {
                 label: "Create",

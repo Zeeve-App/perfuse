@@ -56,8 +56,9 @@ const ConfigureNetwork = () => {
     setValue,
     trigger,
     watch,
+    reset,
     getValues,
-    formState: { errors, isValid },
+    formState: { errors, isValid, defaultValues },
   } = useForm<ConfigureNetworkSchemaType>({
     resolver: yupResolver(configureNetworkValidationSchema),
     mode: "all",
@@ -77,6 +78,10 @@ const ConfigureNetwork = () => {
         });
     }
   }, [setValue, templateWatcher?.value]);
+
+  useEffect(() => {
+    setValue("relayChain", "");
+  }, [networkEnvWatcher]);
 
   // progressive form context
   const { goToNextStep } = useProgressiveFormContext();
