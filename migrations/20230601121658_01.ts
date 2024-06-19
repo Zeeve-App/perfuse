@@ -59,7 +59,10 @@ exports.up = async function (knex: Knex) {
             task_description VARCHAR(255) NOT NULL,
             task_retry_count SMALLINT DEFAULT 0,
             task_created_at TIMESTAMP DEFAULT current_timestamp,
-            task_updated_at TIMESTAMP DEFAULT current_timestamp
+            task_updated_at TIMESTAMP DEFAULT current_timestamp,
+            FOREIGN KEY (task_associated_network_id) REFERENCES networks(network_id) ON DELETE CASCADE,
+            FOREIGN KEY (task_associated_node_id) REFERENCES nodes(node_id) ON DELETE SET NULL,
+            FOREIGN KEY (task_parent_id) REFERENCES tasks(task_id) ON DELETE SET NULL
         );
 
     `);

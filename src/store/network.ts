@@ -1,8 +1,11 @@
 import { create } from "zustand";
+import { TaskDbRow } from "@/db-queries";
 
 type registrationInfo = { show: boolean; isLoading: boolean };
 type NetworkInfo = {
-  data: { networkId: string; relayChainType: string; networkName: string } | undefined;
+  data:
+    | { networkId: string; relayChainType: string; networkName: string; networkStatus?: TaskDbRow["task_status"] }
+    | undefined;
   isLoading: boolean;
 };
 // types

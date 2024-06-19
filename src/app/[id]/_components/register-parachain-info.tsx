@@ -7,15 +7,17 @@ import { Card } from "@/lib/components/Card";
 import { StatusIcon } from "@/lib/components/StatusIcon";
 import { Tooltip } from "@/lib/components/Tooltip";
 import { tx } from "@/utils/shared";
+import { useNetworkStore } from "@/store/network";
 interface InfoProps {
   className?: string;
   show: boolean;
 }
 const RegisterParachainInfo = ({ className, show }: InfoProps) => {
   const { openModal } = useModalStore();
+  const networkInfo = useNetworkStore((e) => e.networkInfo);
   const params = useParams();
   const networkId = params.id as string;
-  return show ? (
+  return networkInfo.data?.networkStatus === "completed" && show ? (
     <Card
       className={tx(
         "col-span-12 flex flex-row items-center border border-brand-yellow bg-brand-yellow/5 gap-3",

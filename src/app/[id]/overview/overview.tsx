@@ -26,7 +26,7 @@ const Overview = ({
   nodes: NodeDbRow[];
 }) => {
   const apis = useApi();
-  const { data: blockRpcResponse, isLoading: blockRpcLoading } = apis.blockNumber();
+  const { data: blockRpcResponse } = apis.blockNumber();
   return (
     <div className="grid grid-cols-12 gap-3 text-brand-dark lg:gap-6">
       <RegisterParachainInfo show={parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16) === 0} />

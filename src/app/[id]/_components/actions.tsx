@@ -6,9 +6,9 @@ import { IconButton } from "@/lib/components/Button";
 import { Tooltip } from "@/lib/components/Tooltip";
 import SvgTrash from "@/lib/icons/essential/outline/Trash";
 import { useNetworkStore } from "@/store/network";
-import { NetworkDbRow } from "@/db-queries";
+import { NetworkDbRow, TaskDbRow } from "@/db-queries";
 
-const Actions = ({ network }: { network: NetworkDbRow }) => {
+const Actions = ({ network, task }: { network: NetworkDbRow; task?: TaskDbRow }) => {
   const params = useParams();
   const networkId = params.id as string;
   const { openModal } = useModalStore();
@@ -18,6 +18,7 @@ const Actions = ({ network }: { network: NetworkDbRow }) => {
       networkId,
       networkName: network.network_name,
       relayChainType: network.network_relay_chain,
+      networkStatus: task?.task_status,
     },
     isLoading: false,
   });
@@ -29,7 +30,6 @@ const Actions = ({ network }: { network: NetworkDbRow }) => {
           colorScheme="red"
           variant={"outline"}
           onClick={() => {
-            //TODO: change name
             openModal("deleteNetwork", { deleteNetwork: { networkId, networkName: network.network_name as string } });
           }}
         >

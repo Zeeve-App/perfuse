@@ -6,6 +6,7 @@ import { CopyButton } from "@/lib/components/Button";
 import { Heading } from "@/lib/components/Heading";
 import { Tooltip } from "@/lib/components/Tooltip";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
+import { useNetworkStore } from "@/store/network";
 
 const GeneralInfo = ({
   isLoading,
@@ -20,6 +21,7 @@ const GeneralInfo = ({
   env?: string;
   createdAt?: string | Date;
 }) => {
+  const networkInfo = useNetworkStore((e) => e.networkInfo);
   return (
     <div className="col-span-12 flex flex-col rounded-lg border border-brand-outline xl:col-span-6 2xl:col-span-4">
       <div className="p-4">
@@ -69,6 +71,12 @@ const GeneralInfo = ({
         <KeyValuePair
           label="Environment"
           value={env ? env.toUpperCase() : "NA"}
+          className="col-span-12 md:col-span-6 xl:col-span-6"
+          isLoading={isLoading}
+        />
+        <KeyValuePair
+          label="Environment"
+          value={networkInfo.data?.networkStatus ? networkInfo.data?.networkStatus.toUpperCase() : "NA"}
           className="col-span-12 md:col-span-6 xl:col-span-6"
           isLoading={isLoading}
         />

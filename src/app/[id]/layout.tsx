@@ -3,11 +3,13 @@ import Actions from "./_components/actions";
 import TabContainer from "./_components/tabs-container";
 import { withBasePath } from "@/utils/helpers";
 import { Navigation } from "@/lib/components/navigation";
-import { getNetworkData } from "@/db-queries";
+import { getNetworkData, getTask } from "@/db-queries";
 
 const IdPageClient: React.FC<{ children: React.ReactNode; params: { id: string } }> = async ({ children, params }) => {
   const id = params.id;
   const network = await getNetworkData(id);
+  const task = await getTask({ task_associated_network_id: network?.network_id, task_type: "network_provision" });
+
   const items = [
     {
       href: `#`,
@@ -43,7 +45,7 @@ const IdPageClient: React.FC<{ children: React.ReactNode; params: { id: string }
         breadcrumb={{ items: items }}
       >
         {/* page actions */}
-        <Actions network={network} />
+        <Actions network={network} task={task} />
       </Navigation>
       <div className="rounded-lg border border-brand-outline bg-white px-3 pb-3 pt-2 lg:px-6 lg:pb-6">
         <TabContainer id={params.id} />

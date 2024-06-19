@@ -52,6 +52,12 @@ export const addTask = (data: Omit<TaskDbRow, "task_created_at" | "task_updated_
   return db<TaskDbRow>("tasks").insert(data);
 };
 
+export const getTask = (data: Partial<TaskDbRow>, trx?: knex.Knex.Transaction) => {
+  const db = trx ?? knexHandler;
+
+  return db<TaskDbRow>("tasks").select("*").where(data).first();
+};
+
 export const updateTask = (data: Partial<TaskDbRow>, taskId: string, trx?: knex.Knex.Transaction) => {
   const db = trx ?? knexHandler;
 
