@@ -15,7 +15,7 @@ const IdPageClient: React.FC<{ children: React.ReactNode; params: { id: string }
   const rpcNode = await getNodeData({ network_id: id, node_type: "rpc" });
   let rpcUrl = "";
   if (rpcNode?.node_auth_method === "api_key") {
-    rpcUrl = `wss://${headersList.get("host")}/${rpcNode.node_api_key}/`;
+    rpcUrl = `wss://${headersList.get("host")}/${rpcNode.node_api_key}`;
   } else {
     rpcUrl = `wss://${rpcNode?.node_username}:${rpcNode?.node_password}@${headersList.get("host")}`;
   }
