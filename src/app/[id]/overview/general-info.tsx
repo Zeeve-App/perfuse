@@ -75,7 +75,7 @@ const GeneralInfo = ({
           isLoading={isLoading}
         />
         <KeyValuePair
-          label="Environment"
+          label="Status"
           value={networkInfo.data?.networkStatus ? networkInfo.data?.networkStatus.toUpperCase() : "NA"}
           className="col-span-12 md:col-span-6 xl:col-span-6"
           isLoading={isLoading}

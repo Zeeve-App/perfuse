@@ -8,9 +8,21 @@ import { Tooltip } from "@/lib/components/Tooltip";
 import SvgTrash from "@/lib/icons/essential/outline/Trash";
 import { useNetworkStore } from "@/store/network";
 import { NetworkDbRow, TaskDbRow } from "@/db-queries";
+import { DropdownMenu, DropdownMenuButton, DropdownMenuList, DropdownMenuItem } from "@/lib/components/DropdownMenu";
+import { useToggle } from "@/hooks";
+import SvgChart5Square from "@/lib/icons/business/outline/Chart5Square";
 
-const Actions = ({ network, task, explorerUrl }: { network: NetworkDbRow; task?: TaskDbRow; explorerUrl: string }) => {
+const Actions = ({
+  network,
+  task,
+  explorerUrl: { paraExplorerUrl, relayExplorerUrl },
+}: {
+  network: NetworkDbRow;
+  task?: TaskDbRow;
+  explorerUrl: { paraExplorerUrl: string; relayExplorerUrl: string };
+}) => {
   const params = useParams();
+  const { isOpen, handleToggle, handleClose } = useToggle();
   const networkId = params.id as string;
   const { openModal } = useModalStore();
   const setNetorkInStore = useNetworkStore((e) => e.setNetworkInfo);
@@ -26,8 +38,27 @@ const Actions = ({ network, task, explorerUrl }: { network: NetworkDbRow; task?:
 
   return (
     <div className="flex flex-row gap-x-4">
+      <DropdownMenu onClose={handleClose} isOpen={isOpen} placement="bottom-start">
+        <DropdownMenuButton
+          as={Button}
+          onClick={handleToggle}
+          // isDisabled={task?.task_status !== "completed"}
+          iconLeft={<SvgChart5Square className="text-xl" />}
+          isFullWidth
+        >
+          Explorer
+        </DropdownMenuButton>
+        <DropdownMenuList>
+          <Link href={relayExplorerUrl} target={"_blank"}>
+            <DropdownMenuItem>Relay Chain Explorer</DropdownMenuItem>
+          </Link>
+          <Link href={paraExplorerUrl} target={"_blank"}>
+            <DropdownMenuItem>Parachain Explorer</DropdownMenuItem>
+          </Link>
+        </DropdownMenuList>
+      </DropdownMenu>
       <Tooltip text="Delete Network" placement={"top-start"}>
-        <Link href={explorerUrl}>
+        <Link href={"#"}>
           <Button colorScheme="blue" variant={"solid"}>
             Explorer
           </Button>

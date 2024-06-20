@@ -15,14 +15,13 @@ const IdPageClient: React.FC<{ children: React.ReactNode; params: { id: string }
   const rpcNode = await getNodeData({ network_id: id, node_type: "rpc" });
   let rpcUrl = "";
   if (rpcNode?.node_auth_method === "api_key") {
-    rpcUrl = `wss://${headersList.get("host")}/${rpcNode.node_api_key}/rpc`;
+    rpcUrl = `wss://${headersList.get("host")}/${rpcNode.node_api_key}/`;
   } else {
-    rpcUrl = `wss://${rpcNode?.node_username}:${rpcNode?.node_password}@${headersList.get("host")}/rpc`;
+    rpcUrl = `wss://${rpcNode?.node_username}:${rpcNode?.node_password}@${headersList.get("host")}`;
   }
 
-  const explorerUrl = `https://polkadot.js.org/apps/?rpc=${encodeURIComponent(rpcUrl)}#explorer`;
-
-  console.log(explorerUrl);
+  const paraExplorerUrl = `https://polkadot.js.org/apps/?rpc=${encodeURIComponent(`${rpcUrl}/relay-rpc`)}#explorer`;
+  const relayExplorerUrl = `https://polkadot.js.org/apps/?rpc=${encodeURIComponent(`${rpcUrl}/para-rpc`)}#explorer`;
 
   const task = await getTask({ task_associated_network_id: network?.network_id, task_type: "network_provision" });
 
@@ -61,7 +60,7 @@ const IdPageClient: React.FC<{ children: React.ReactNode; params: { id: string }
         breadcrumb={{ items: items }}
       >
         {/* page actions */}
-        <Actions network={network} task={task} explorerUrl={explorerUrl ?? "#"} />
+        <Actions network={network} task={task} explorerUrl={{ paraExplorerUrl, relayExplorerUrl }} />
       </Navigation>
       <div className="rounded-lg border border-brand-outline bg-white px-3 pb-3 pt-2 lg:px-6 lg:pb-6">
         <TabContainer id={params.id} />
