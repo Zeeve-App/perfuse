@@ -133,7 +133,7 @@ const createEnvFile = (data: CreatePerfuseApiPayload, apiKey?: string) => {
     `RPC_NAME=${rpcNode?.node_name ?? ""}\n` +
     `RPC_USER=${rpcNode?.node_username ?? ""}\n` +
     `RPC_PASS=${rpcNode?.node_password ?? ""}\n` +
-    `RPC_API_KEY=${rpcNode?.node_password ?? ""}\n` +
+    `RPC_API_KEY=${apiKey ?? ""}\n` +
     `AUTH_METHOD=${rpcNode?.node_auth_method ?? ""}\n` +
     `TEMPLATE=${data.network.network_template ?? ""}\n` +
     `SIDECAR=${data.network.network_sidecar ? 1 : 0}\n` +

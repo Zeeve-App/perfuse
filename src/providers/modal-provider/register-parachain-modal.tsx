@@ -33,8 +33,8 @@ const FileCard = ({ name, checksum }: { name: "wasm" | "genesis"; checksum?: str
       const mimeType = name === "wasm" ? "application/octet-stream" : "application/json";
       const response = await api.file(name, {
         headers: {
-          Accept: "application/json",
-          "Content-Type": mimeType,
+          Accept: mimeType,
+          "Content-Type": "application/json",
         },
         responseType: "blob",
       });
