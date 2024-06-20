@@ -1,4 +1,5 @@
 import fs from "fs/promises";
+import crypto from "crypto";
 import { NextRequest } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { sendDataResponse, sendErrorResponse } from "../_helpers/response";
@@ -45,6 +46,7 @@ export async function POST(req: NextRequest) {
 
     const network_id = uuidv4();
     const taskId = uuidv4();
+    const apiKey = crypto.randomBytes(30).toString("hex");
 
     await knexHandler.transaction(async (trx) => {
       try {
@@ -80,6 +82,7 @@ export async function POST(req: NextRequest) {
               node_id: uuidv4(),
               node_wss_enabled: !isRpc ? undefined : e.node_wss_enabled ? 1 : 0,
               node_https_enabled: !isRpc ? undefined : e.node_https_enabled ? 1 : 0,
+              node_api_key: isRpc && e.node_auth_method === "api_key" ? apiKey : undefined,
             };
             await saveNodeData(node, trx);
           }, trx),
@@ -117,7 +120,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-const createEnvFile = (data: CreatePerfuseApiPayload) => {
+const createEnvFile = (data: CreatePerfuseApiPayload, apiKey?: string) => {
   const collatorNodes = data.nodes.filter((e) => e.node_type === "collator");
   const rpcNode = data.nodes.find((e) => e.node_type === "rpc");
   if (rpcNode?.node_type !== "rpc") {
@@ -125,14 +128,15 @@ const createEnvFile = (data: CreatePerfuseApiPayload) => {
   }
   const envFile =
     `POLKA_VERSION=${"v1.9.0"}\n` +
-    `NETWORK_TYPE=${data.network.network_env}\n` +
-    `COL_NAME_1=${collatorNodes[0]?.node_name}\n` +
-    `COL_NAME_2=${collatorNodes[1]?.node_name}\n` +
-    `RPC_NAME=${rpcNode?.node_name}\n` +
-    `RPC_USERNAME=${rpcNode?.node_username}\n` +
-    `RPC_PASSWORD=${rpcNode?.node_password}\n` +
-    `ENDPOINT_AUTH=${rpcNode?.node_auth_method}\n` +
-    `TEMPLATE=${data.network.network_template}\n` +
+    `NETWORK_TYPE=${data.network.network_env ?? ""}\n` +
+    `COL_NAME_1=${collatorNodes[0]?.node_name ?? ""}\n` +
+    `COL_NAME_2=${collatorNodes[1]?.node_name ?? ""}\n` +
+    `RPC_NAME=${rpcNode?.node_name ?? ""}\n` +
+    `RPC_USER=${rpcNode?.node_username ?? ""}\n` +
+    `RPC_PASS=${rpcNode?.node_password ?? ""}\n` +
+    `RPC_API_KEY=${rpcNode?.node_password ?? ""}\n` +
+    `AUTH_METHOD=${rpcNode?.node_auth_method ?? ""}\n` +
+    `TEMPLATE=${data.network.network_template ?? ""}\n` +
     `SIDECAR=${data.network.network_sidecar ? 1 : 0}\n` +
     `SCRIPT_USER=STEM\n` +
     `REPO=\n` +
