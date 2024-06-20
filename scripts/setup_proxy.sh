@@ -14,7 +14,8 @@ fi
 
 # Configuration variables
 HAPROXY_CONFIG_FILE="/etc/haproxy/haproxy.cfg"  # Adjust if your HAProxy config is in a different location
-RPC_PORT=9010  # Frontend port for HAProxy
+RELAY_RPC_PORT=9345  # Frontend port for HAProxy
+PARA_RPC_PORT=9010
 PERFUSE_PORT=3000
 
 # Function to install HAProxy (optional)
@@ -79,22 +80,30 @@ frontend rpc_frontend
 #    bind *:443 ssl crt /etc/haproxy/ssl/${DOMAIN}.pem alpn h2,http/1.1
 #    http-request redirect scheme https unless { ssl_fc }
     acl letsencrypt-acl path_beg /.well-known/acme-challenge/
-    acl is_rpc_request path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}rpc"
+    acl is_relay_rpc path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}relay-rpc
+    acl is_para_rpc path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}para-rpc"
     if [[ "$AUTH_METHOD" == "basic_auth" ]]; then
     frontend_config+="
     http-request auth unless { http_auth(authorized_users) }"
     fi
     frontend_config+="
     use_backend letsencrypt-backend if letsencrypt-acl
-    use_backend rpc_backend if is_rpc_request
+    use_backend relay_rpc_backend if is_relay_rpc
+    use_backend para_rpc_backend if is_para_rpc
     default_backend perfuse_ui"
 
-  local backend_config="
-backend rpc_backend
+  local relay_backend_config="
+backend relay_rpc_backend
     mode http
     balance roundrobin
     option forwardfor
-    server substrate_rpc_1 127.0.0.1:${RPC_PORT}"
+    server relaychain_rpc_1 127.0.0.1:${RELAY_RPC_PORT}"
+  local parachain_backend_config="
+backend para_rpc_backend
+    mode http
+    balance roundrobin
+    option forwardfor
+    server substrate_rpc_1 127.0.0.1:${PARA_RPC_PORT}"
 
   local perfuse_ui_config="
 backend perfuse_ui
@@ -102,6 +111,7 @@ backend perfuse_ui
     balance roundrobin
     option forwardfor
     server perfuse_ui 127.0.0.1:${PERFUSE_PORT}"
+
   local certbot_config="
 backend letsencrypt-backend
     server certbot 127.0.0.1:8888"
@@ -114,7 +124,8 @@ backend letsencrypt-backend
 
   # Append the configuration blocks
   echo "$frontend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
-  echo "$backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
+  echo "$relay_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
+  echo "$parachain_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$perfuse_ui_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$certbot_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
 
