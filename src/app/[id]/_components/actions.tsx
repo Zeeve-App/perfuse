@@ -58,13 +58,6 @@ const Actions = ({
         </DropdownMenuList>
       </DropdownMenu>
       <Tooltip text="Delete Network" placement={"top-start"}>
-        <Link href={"#"}>
-          <Button colorScheme="blue" variant={"solid"}>
-            Explorer
-          </Button>
-        </Link>
-      </Tooltip>
-      <Tooltip text="Delete Network" placement={"top-start"}>
         <IconButton
           colorScheme="red"
           variant={"outline"}

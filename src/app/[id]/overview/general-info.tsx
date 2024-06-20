@@ -113,7 +113,7 @@ const GeneralInfo = ({
         <KeyValuePair
           label="Created On"
           value={createdAt ? formatDate(createdAt) : "NA"}
-          className="col-span-12 md:col-span-6 xl:col-span-4"
+          className="col-span-12"
           isLoading={isLoading}
         />
       </div>
