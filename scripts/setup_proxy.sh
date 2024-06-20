@@ -55,7 +55,7 @@ add_frontend_backend() {
   frontend_config="
 frontend rpc_frontend
     bind *:80
-    acl is_rpc_request path_beg -i /${RPC_API_KEY}rpc"
+    acl is_rpc_request path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}rpc"
     if [[ "$AUTH_METHOD" == "basic_auth" ]]; then
     frontend_config+="
     http-request auth unless { http_auth(authorized_users) }"
