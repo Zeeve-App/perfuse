@@ -95,12 +95,11 @@ export async function POST(req: NextRequest) {
             // fs.constants.COPYFILE_EXCL,
           );
 
-        await fs.writeFile(config.server.envFilePathForCopy, createEnvFile(formData));
+        await fs.writeFile(config.server.envFilePathForCopy, createEnvFile(formData, apiKey));
 
         await fs.writeFile(
           config.server.chainSpecFilePathForCopy,
           JSON.stringify(formData.network.network_chain_spec_file_json),
-          // "utf-8",
         );
 
         jobShellExecutorBG("make all", process.cwd(), taskId);

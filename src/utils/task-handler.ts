@@ -11,7 +11,8 @@ export const createTaskHandler = async () => {
       await fs.copyFile(file, "./public/output/genesis");
       outputChecksum.genesis = checksum[file];
     }
-    // return undefined;
   });
+  console.log("outputChecksum", outputChecksum);
+
   await fs.writeFile("./public/output/checksum.json", JSON.stringify(outputChecksum));
 };
