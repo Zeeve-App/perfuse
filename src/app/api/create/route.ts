@@ -137,6 +137,8 @@ const createEnvFile = (data: CreatePerfuseApiPayload, apiKey?: string) => {
     `AUTH_METHOD=${rpcNode?.node_auth_method ?? ""}\n` +
     `TEMPLATE=${data.network.network_template ?? ""}\n` +
     `SIDECAR=${data.network.network_sidecar ? 1 : 0}\n` +
+    `DOMAIN=perfuse-testing-devnet.zeeve.net\n` +
+    `EMAIL=rahul.meena@zeeve.io\n` +
     `SCRIPT_USER=STEM\n` +
     `REPO=\n` +
     ``;
