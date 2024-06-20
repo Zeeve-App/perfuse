@@ -25,7 +25,7 @@ const MyNodes = ({ nodes }: { nodes: { collator: NodeDbRow[]; rpc: NodeDbRow[] }
 
   return (
     <div className="flex flex-col gap-3 lg:gap-6">
-      <RegisterParachainInfo show={true} />
+      <RegisterParachainInfo show={blockHeight === 0} />
       <Tabs orientation={configTabsOrientation}>
         <TabList>
           <Tab className="border-transparent focus:border-transparent">Collator Nodes</Tab>
