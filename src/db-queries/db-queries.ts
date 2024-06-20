@@ -16,10 +16,10 @@ export const saveNodeData = async (data: NodeDbRow, trx?: knex.Knex.Transaction)
   return db<NodeDbRow>("nodes").insert(data);
 };
 
-export const getNodeData = async (networkId?: string, trx?: knex.Knex.Transaction) => {
+export const getNodeData = async (data: Partial<NodeDbRow>, trx?: knex.Knex.Transaction) => {
   const db = trx ?? knexHandler;
 
-  return db<NodeDbRow>("nodes").select("*").where({ network_id: networkId }).first();
+  return db<NodeDbRow>("nodes").select("*").where(data).first();
 };
 
 export const getNodes = async (networkId?: string, trx?: knex.Knex.Transaction) => {
