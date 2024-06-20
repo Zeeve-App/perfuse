@@ -86,6 +86,7 @@ clean_haproxy_config() {
     # Remove frontend and backends
     sudo sed -i '/^frontend rpc_frontend/,/^backend collator_backend/d' "$HAPROXY_CONFIG_FILE"
     sudo sed -i '/^userlist authorized_users/,+1d' "$HAPROXY_CONFIG_FILE"
+    sudo systemctl restart haproxy
     
     echo "HAProxy configuration cleaned."
 }

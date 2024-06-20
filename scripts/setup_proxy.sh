@@ -20,11 +20,32 @@ PERFUSE_PORT=3000
 # Function to install HAProxy (optional)
 install_haproxy() {
   if ! command -v haproxy &> /dev/null; then
-    echo "Installing HAProxy..."
-    sudo apt-get update && sudo apt-get install -y haproxy whois  # Adjust for your package manager
+    echo "Installing HAProxy and Certbot..."
+    sudo apt-get update && sudo apt-get install -y haproxy whois certbot  # Adjust for your package manager
   else
     echo "HAProxy is already installed. Skipping...."
   fi
+}
+
+obtain_renew_ssl_certificate() {
+    echo "Checking for existing certificate for $DOMAIN..."
+    if sudo certbot certificates | grep -q "$DOMAIN"; then
+        echo "Certificate already exists. Attempting renewal..."
+        sudo certbot renew || true  # Allow renewal to fail without stopping the script
+    else
+        echo "Certificate does not exist. Obtaining new certificate..."
+        sudo sudo certbot certonly --standalone \
+            -d "$DOMAIN" \
+            --email "$EMAIL" \
+            --agree-tos \
+            --non-interactive \
+            --http-01-port=8888
+    fi
+    sudo mkdir -p /etc/haproxy/ssl
+    sudo cat /etc/letsencrypt/live/$DOMAIN/fullchain.pem /etc/letsencrypt/live/$DOMAIN/privkey.pem | sudo tee /etc/haproxy/ssl/$DOMAIN.pem
+    # Uncomment SSL configuration lines after successful certificate obtaining/renewal
+    sudo sed -i '/ssl crt/s/^#//' "$HAPROXY_CONFIG_FILE"
+    sudo sed -i '/http-request redirect scheme https/s/^#//' "$HAPROXY_CONFIG_FILE"
 }
 
 # Function to add Basic Auth configuration
@@ -55,12 +76,16 @@ add_frontend_backend() {
   frontend_config="
 frontend rpc_frontend
     bind *:80
+#    bind *:443 ssl crt /etc/haproxy/ssl/${DOMAIN}.pem alpn h2,http/1.1
+#    http-request redirect scheme https unless { ssl_fc }
+    acl letsencrypt-acl path_beg /.well-known/acme-challenge/
     acl is_rpc_request path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}rpc"
     if [[ "$AUTH_METHOD" == "basic_auth" ]]; then
     frontend_config+="
     http-request auth unless { http_auth(authorized_users) }"
     fi
     frontend_config+="
+    use_backend letsencrypt-backend if letsencrypt-acl
     use_backend rpc_backend if is_rpc_request
     default_backend perfuse_ui"
 
@@ -69,7 +94,6 @@ backend rpc_backend
     mode http
     balance roundrobin
     option forwardfor
-    http-request set-header X-Forwarded-Proto https if { ssl_fc }
     server substrate_rpc_1 127.0.0.1:${RPC_PORT}"
 
   local perfuse_ui_config="
@@ -77,8 +101,10 @@ backend perfuse_ui
     mode http
     balance roundrobin
     option forwardfor
-    http-request set-header X-Forwarded-Proto https if { ssl_fc }
     server perfuse_ui 127.0.0.1:${PERFUSE_PORT}"
+  local certbot_config="
+backend letsencrypt-backend
+    server certbot 127.0.0.1:8888"
 
   # Check if frontend and backend already exist
   if grep -q "^frontend rpc_frontend" "$HAPROXY_CONFIG_FILE" || grep -q "^backend rpc_backend" "$HAPROXY_CONFIG_FILE"; then
@@ -90,7 +116,7 @@ backend perfuse_ui
   echo "$frontend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$perfuse_ui_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
-
+  echo "$certbot_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
 
   echo "Frontend and backend configurations added to $HAPROXY_CONFIG_FILE"
 
@@ -106,5 +132,8 @@ restart_haproxy() {
 install_haproxy   # Install HAProxy
 add_frontend_backend
 restart_haproxy
+obtain_renew_ssl_certificate
+restart_haproxy
+
 
 echo "HAProxy setup complete."
