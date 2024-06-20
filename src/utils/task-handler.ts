@@ -5,12 +5,13 @@ export const createTaskHandler = async () => {
   const outputChecksum = { wasm: "", genesis: "" };
   Object.keys(checksum).map(async (file) => {
     if (file.includes("wasm")) {
-      await fs.copyFile(file, "/public/output/wasm");
+      await fs.copyFile(file, "./public/output/wasm");
       outputChecksum.wasm = checksum[file];
     } else {
-      await fs.copyFile(file, "/public/output/genesis");
+      await fs.copyFile(file, "./public/output/genesis");
       outputChecksum.genesis = checksum[file];
     }
+    // return undefined;
   });
-  await fs.writeFile("/public/output/checksum.json", JSON.stringify(outputChecksum));
+  await fs.writeFile("./public/output/checksum.json", JSON.stringify(outputChecksum));
 };
