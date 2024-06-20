@@ -20,8 +20,8 @@ const IdPageClient: React.FC<{ children: React.ReactNode; params: { id: string }
     rpcUrl = `wss://${rpcNode?.node_username}:${rpcNode?.node_password}@${headersList.get("host")}`;
   }
 
-  const paraExplorerUrl = `https://polkadot.js.org/apps/?rpc=${encodeURIComponent(`${rpcUrl}/relay-rpc`)}#explorer`;
-  const relayExplorerUrl = `https://polkadot.js.org/apps/?rpc=${encodeURIComponent(`${rpcUrl}/para-rpc`)}#explorer`;
+  const paraExplorerUrl = `https://polkadot.js.org/apps/?rpc=${encodeURIComponent(`${rpcUrl}/para-rpc`)}#explorer`;
+  const relayExplorerUrl = `https://polkadot.js.org/apps/?rpc=${encodeURIComponent(`${rpcUrl}/relay-rpc`)}#explorer`;
 
   const task = await getTask({ task_associated_network_id: network?.network_id, task_type: "network_provision" });
 
