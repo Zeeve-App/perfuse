@@ -32,7 +32,6 @@ const BlockchainConfig = ({
       <PreMiningConfig isLoading={isLoading} data={chainSpecJSON} />
       <RelayChainConfig
         isLoading={isLoading}
-        data={chainSpecJSON}
         relayChain={{
           type: relayChain.type,
           version: relayChain.version,
