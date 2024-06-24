@@ -35,6 +35,7 @@ export type CreatePerfuseApiPayload = {
         node_password: string;
         node_https_enabled: boolean;
         node_wss_enabled: boolean;
+        node_endpoint: string;
       }
   >;
 };
@@ -74,8 +75,9 @@ export async function POST(req: NextRequest) {
         );
 
         await Promise.all(
-          formData.nodes.map(async (e) => {
+          formData.nodes.map(async (e, idx) => {
             const isRpc = e.node_type === "rpc";
+
             const node: NodeDbRow = {
               ...e,
               network_id,
@@ -83,6 +85,7 @@ export async function POST(req: NextRequest) {
               node_wss_enabled: !isRpc ? undefined : e.node_wss_enabled ? 1 : 0,
               node_https_enabled: !isRpc ? undefined : e.node_https_enabled ? 1 : 0,
               node_api_key: isRpc && e.node_auth_method === "api_key" ? apiKey : undefined,
+              node_endpoint: isRpc ? e.node_endpoint ?? "perfuse-testing-devnet.zeeve.net" : undefined,
             };
             await saveNodeData(node, trx);
           }, trx),

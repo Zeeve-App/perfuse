@@ -8,7 +8,7 @@ type ApiResponse = {
 };
 
 const useDeleteApi = async (networkId: string, config?: AxiosRequestConfig<FormData>) => {
-  const apiEndpoint = withBasePath(`/api/${networkId}/delete`);
+  const apiEndpoint = withBasePath(`/api/network/${networkId}/delete`);
   const request = backendAxiosInstance.get<ApiResponse, AxiosResponse<ApiResponse>>;
 
   return request(apiEndpoint, config);

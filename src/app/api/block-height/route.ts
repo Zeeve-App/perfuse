@@ -1,8 +1,7 @@
-import { NextRequest } from "next/server";
 import axios from "axios";
 import { sendErrorResponse } from "../_helpers/response";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const res = await axios.post("http://localhost:9010", {
       jsonrpc: "2.0",

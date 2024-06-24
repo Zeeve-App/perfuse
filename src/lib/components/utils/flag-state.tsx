@@ -3,10 +3,11 @@ import React from "react";
 import SvgCheckCircle from "@/lib/icons/essential/outline/CheckCircle";
 import SvgXMarkCircle from "@/lib/icons/essential/outline/XMarkCircle";
 
-const FlagState = ({ flag }: { flag?: boolean }) => {
+const FlagState = ({ flag }: { flag?: boolean | 0 | 1 }) => {
+  const val = Boolean(flag);
   return (
     <>
-      {flag ? (
+      {val ? (
         <div className="flex items-center">
           <SvgCheckCircle className="mr-2 text-brand-green" />
           ENABLED

@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
-import { sendDataResponse, sendErrorResponse } from "../../_helpers/response";
 import { deleteNetwork } from "@/db-queries";
 import { jobShellExecutorBG } from "@/utils/job-shell-executor";
+import { sendDataResponse, sendErrorResponse } from "@/app/api/_helpers/response";
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   try {
