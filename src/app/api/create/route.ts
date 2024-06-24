@@ -35,7 +35,7 @@ export type CreatePerfuseApiPayload = {
         node_password: string;
         node_https_enabled: boolean;
         node_wss_enabled: boolean;
-        node_endpoint: string;
+        node_endpoint?: string;
       }
   >;
 };
