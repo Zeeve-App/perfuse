@@ -3,7 +3,8 @@ import React from "react";
 import ListPageClient from "./page-client";
 
 export const metadata: Metadata = {
-  description: "Parachain List",
+  title: "Perfuse | Dashboard",
+  description: "Dashboard of perfuse",
 };
 
 const ListPage = () => {

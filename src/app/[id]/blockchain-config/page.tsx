@@ -2,8 +2,10 @@ import React from "react";
 import { Metadata } from "next";
 import BlockchainConfig from "./_copmonents/blockchain-config";
 import { getNetworkData } from "@/db-queries";
+
 export const metadata: Metadata = {
-  title: "Create",
+  title: "Perfuse | Parachain Details",
+  description: "blockchain config of parachain network",
 };
 
 const CreatePage = async ({

@@ -1,9 +1,15 @@
 import Image from "next/image";
+import { Metadata } from "next";
 import NetworkCard from "./_components/network-card";
 import NoData from "./_components/no-data";
 import { Navigation } from "@/lib/components/navigation";
 import { getNetworks } from "@/db-queries";
 import { withBasePath } from "@/utils/helpers";
+
+export const metadata: Metadata = {
+  title: "Perfuse | My Parachains",
+  description: "Parachain nodes of perfuse",
+};
 
 export default async function Home() {
   const networks = await getNetworks();

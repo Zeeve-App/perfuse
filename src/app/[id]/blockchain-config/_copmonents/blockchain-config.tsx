@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense, lazy } from "react";
+import React from "react";
 import RegisterParachainInfo from "../../_components/register-parachain-info";
 import ParachainSpecFile from "./parachain-spec-file";
 import ParachainConfig from "./parachain-config";

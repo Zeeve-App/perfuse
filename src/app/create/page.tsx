@@ -8,7 +8,8 @@ import { withBasePath } from "@/utils/helpers";
 import { Navigation } from "@/lib/components/navigation";
 
 export const metadata: Metadata = {
-  title: "Create",
+  title: "Perfuse | Create Parachain",
+  description: "Create parachain with peruse",
 };
 
 const CreatePage = async () => {

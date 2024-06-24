@@ -2,8 +2,10 @@ import React from "react";
 import { Metadata } from "next";
 import MyNodes from "./my-nodes";
 import { getNodes } from "@/db-queries";
+
 export const metadata: Metadata = {
-  title: "Create",
+  title: "Perfuse | Parachain Details",
+  description: "nodes of parachain node",
 };
 
 const CreatePage = async ({

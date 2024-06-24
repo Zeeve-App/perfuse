@@ -3,8 +3,10 @@ import { Metadata } from "next";
 import Overview from "./overview/overview";
 import { getNetworkData, getNodes } from "@/db-queries";
 import { ChainSpecFileType } from "@/types/chain-spec";
+
 export const metadata: Metadata = {
-  title: "Create",
+  title: "Perfuse | Parachain Details",
+  description: "Overview of parachain node",
 };
 
 const CreatePage = async ({
