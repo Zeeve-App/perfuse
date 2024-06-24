@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import RegisterParachainInfo from "../_components/register-parachain-info";
+import React, { Suspense, lazy } from "react";
+import RegisterParachainInfo from "../../_components/register-parachain-info";
 import ParachainSpecFile from "./parachain-spec-file";
 import ParachainConfig from "./parachain-config";
 import Parameters from "./parameters";
@@ -26,8 +26,8 @@ const BlockchainConfig = ({
   return (
     <div className="grid grid-cols-12 gap-3 text-brand-dark lg:gap-6">
       <RegisterParachainInfo show={blockHeight === 0} />
-      <ParachainConfig isLoading={isLoading || blockRpcLoading} data={chainSpecJSON} />
-      <Parameters isLoading={isLoading} data={chainSpecJSON} blockHeight={blockHeight} />
+      <ParachainConfig isLoading={isLoading} data={chainSpecJSON} />
+      <Parameters isLoading={isLoading || blockRpcLoading} data={chainSpecJSON} blockHeight={blockHeight} />
       <ParachainSpecFile isLoading={isLoading} data={chainSpecJSON} />
       <PreMiningConfig isLoading={isLoading} data={chainSpecJSON} />
       <RelayChainConfig

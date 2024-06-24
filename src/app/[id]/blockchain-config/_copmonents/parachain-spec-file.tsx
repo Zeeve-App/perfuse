@@ -1,8 +1,6 @@
 "use client";
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { useParams } from "next/navigation";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import * as theme from "react-syntax-highlighter/dist/esm/styles/prism";
 import { downloadFile } from "@/utils/helpers";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import SvgDownload from "@/lib/icons/product/outline/Download";
@@ -20,6 +18,8 @@ interface ParachainSpecFileProps {
 const ParachainSpecFile = ({ data, isLoading }: ParachainSpecFileProps) => {
   const params = useParams();
   const networkId = params.id as string;
+  const ExtraComponent = lazy(() => import("./parachain-chainspec-preview"));
+
   return (
     <div className="col-span-12 flex flex-col overflow-hidden rounded-lg border border-brand-outline md:col-span-6 lg:col-span-6 2xl:col-span-4">
       <div className="p-4">
@@ -47,18 +47,15 @@ const ParachainSpecFile = ({ data, isLoading }: ParachainSpecFileProps) => {
           })}
         >
           {data && !isLoading && (
-            <SyntaxHighlighter
-              customStyle={{
-                fontSize: "12px",
-                backgroundColor: "transparent",
-                padding: "0",
-                margin: "0",
-              }}
-              language="json"
-              style={theme.solarizedlight}
+            <Suspense
+              fallback={
+                <div className="flex h-screen items-center justify-center">
+                  <Spinner />
+                </div>
+              }
             >
-              {JSON.stringify(data, null, 4)}
-            </SyntaxHighlighter>
+              <ExtraComponent data={data} />
+            </Suspense>
           )}
           {!data && !isLoading && (
             <div className="flex h-screen items-center justify-center text-sm text-brand-gray">No data available.</div>

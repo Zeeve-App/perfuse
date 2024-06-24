@@ -1,6 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
-import BlockchainConfig from "./blockchain-config";
+import BlockchainConfig from "./_copmonents/blockchain-config";
 import { getNetworkData } from "@/db-queries";
 export const metadata: Metadata = {
   title: "Create",
