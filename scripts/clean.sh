@@ -95,5 +95,5 @@ for i in "${!binaries_name[@]}"; do
   remove_binary "${binaries_name[i]}" "$POLKA_VERSION"
 done
 
-clean_haproxy_config
+# clean_haproxy_config
 sudo rm -r /home/perfuse

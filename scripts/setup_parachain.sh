@@ -127,9 +127,6 @@ EOF
   sudo systemctl start ${service_name}.service
 }
 
-# # Create data directories
-# mkdir -p "${service_config[@]%%:*}" # Extract service names and create directories
-
 # Main loop
 count=1
 for i in "${!service_config[@]}"; do
