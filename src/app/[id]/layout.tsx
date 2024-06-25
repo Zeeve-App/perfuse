@@ -10,18 +10,20 @@ const IdPageClient: React.FC<{ children: React.ReactNode; params: { id: string }
   const id = params.id;
   const headersList = headers();
 
-  headersList.get("host");
+  const host = headersList.get("host");
+  const domain = host?.split(":")[0];
+  const explorer = `http://${domain}:8080`;
   const network = await getNetworkData(id);
   const rpcNode = await getNodeData({ network_id: id, node_type: "rpc" });
   let rpcUrl = "";
   if (rpcNode?.node_auth_method === "api_key") {
-    rpcUrl = `wss://${headersList.get("host")?.split(":")[0]}/${rpcNode.node_api_key}`;
+    rpcUrl = `wss://${host?.split(":")[0]}/${rpcNode.node_api_key}`;
   } else {
-    rpcUrl = `wss://${rpcNode?.node_username}:${rpcNode?.node_password}@${headersList.get("host")?.split(":")[0]}`;
+    rpcUrl = `wss://${rpcNode?.node_username}:${rpcNode?.node_password}@${host?.split(":")[0]}`;
   }
 
-  const paraExplorerUrl = `https://polkadot.js.org/apps/?rpc=${encodeURIComponent(`${rpcUrl}/para-rpc`)}#explorer`;
-  const relayExplorerUrl = `https://polkadot.js.org/apps/?rpc=${encodeURIComponent(`${rpcUrl}/relay-rpc`)}#explorer`;
+  const paraExplorerUrl = `${explorer}/apps/?rpc=${encodeURIComponent(`${rpcUrl}/para-rpc`)}#explorer`;
+  const relayExplorerUrl = `${explorer}/apps/?rpc=${encodeURIComponent(`${rpcUrl}/relay-rpc`)}#explorer`;
 
   const task = await getTask({ task_associated_network_id: network?.network_id, task_type: "network_provision" });
 
