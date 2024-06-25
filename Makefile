@@ -27,4 +27,7 @@ generate_nodeKeys:
 generate-genesis-wasm-spec:
 	sudo bash $(SCRIPTS_DIR)/generate_json.sh
 
-.PHONY: all initial binary_install generate-genesis-wasm-spec build-relaychain build-parachain
+polkadotjs_app:
+	sudo bash $(SCRIPTS_DIR)/local_jsapps.sh
+
+.PHONY: all initial binary_install generate-genesis-wasm-spec build-relaychain build-parachain polkadotjs_app
