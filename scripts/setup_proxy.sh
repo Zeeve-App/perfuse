@@ -82,7 +82,8 @@ update_rpc_path() {
     if [[ "$current_relay_path" != "$RPC_API_KEY" ]]; then
       echo "Updating RPC path from '$current_relay_path' to '$RPC_API_KEY'..."
       # Replace the old path with the new path
-      sudo sed -i "s|$current_relay_path|$RPC_API_KEY|" -e "s|$current_para_path|$RPC_API_KEY|" "$HAPROXY_CONFIG_FILE"
+      sudo sed -i "s|$current_relay_path|$RPC_API_KEY|" "$HAPROXY_CONFIG_FILE"
+      sudo sed -i "s|$current_para_path|$RPC_API_KEY|" "$HAPROXY_CONFIG_FILE"
       echo "RPC path updated successfully."
     else
       echo "RPC path already set to '$RPC_API_KEY'."
