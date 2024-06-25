@@ -32,7 +32,7 @@ const NodeDetailsModal = () => {
 
   const formatEndpoint = (type: "https" | "wss", endpoint?: string, credType?: CREDENTIALS_TYPE, apiKey?: string) => {
     if (endpoint && credType) {
-      return `${type}://${endpoint}${credType === "api_key" ? `/${apiKey}` : ""}/${"para-rpc"}`;
+      return `${type.slice(0, -1)}://${endpoint}${credType === "api_key" ? `/${apiKey}` : ""}/${"para-rpc"}`;
     }
     return "NA";
   };

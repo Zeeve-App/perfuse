@@ -18,4 +18,5 @@ export const createTaskHandler = async () => {
   console.log("outputChecksum", outputChecksum);
 
   await fs.writeFile("./public/output/checksum.json", JSON.stringify(outputChecksum));
+  return;
 };

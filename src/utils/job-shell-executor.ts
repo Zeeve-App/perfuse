@@ -66,6 +66,7 @@ const jobShellExecutorBG = async (
   } catch (error) {
     taskId && (await updateTask({ task_status: "failed" }, taskId));
   }
+  return;
 };
 
 export { jobShellExecutor, jobShellExecutorBG };

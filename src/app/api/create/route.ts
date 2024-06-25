@@ -2,6 +2,7 @@ import fs from "fs/promises";
 import crypto from "crypto";
 import { NextRequest } from "next/server";
 import { v4 as uuidv4 } from "uuid";
+import { headers } from "next/headers";
 import { sendDataResponse, sendErrorResponse } from "../_helpers/response";
 import { NodeDbRow, addTask, saveNetworkData, saveNodeData } from "@/db-queries";
 import { knexHandler } from "@/db-queries/knexfile";
@@ -44,6 +45,9 @@ export async function POST(req: NextRequest) {
   try {
     const formData: CreatePerfuseApiPayload = await req.json();
     console.log(formData);
+    const headersList = headers();
+    const host = headersList.get("host");
+    const domain = host?.split(":")[0];
 
     const network_id = uuidv4();
     const taskId = uuidv4();
@@ -85,7 +89,7 @@ export async function POST(req: NextRequest) {
               node_wss_enabled: !isRpc ? undefined : e.node_wss_enabled ? 1 : 0,
               node_https_enabled: !isRpc ? undefined : e.node_https_enabled ? 1 : 0,
               node_api_key: isRpc && e.node_auth_method === "api_key" ? apiKey : undefined,
-              node_endpoint: isRpc ? e.node_endpoint ?? "perfuse-testing-devnet.zeeve.net" : undefined,
+              node_endpoint: isRpc ? e.node_endpoint ?? domain : undefined,
             };
             await saveNodeData(node, trx);
           }, trx),
@@ -123,6 +127,9 @@ export async function POST(req: NextRequest) {
 }
 
 const createEnvFile = (data: CreatePerfuseApiPayload, apiKey?: string) => {
+  const headersList = headers();
+  const host = headersList.get("host");
+  const domain = host?.split(":")[0];
   const collatorNodes = data.nodes.filter((e) => e.node_type === "collator");
   const rpcNode = data.nodes.find((e) => e.node_type === "rpc");
   if (rpcNode?.node_type !== "rpc") {
@@ -140,7 +147,7 @@ const createEnvFile = (data: CreatePerfuseApiPayload, apiKey?: string) => {
     `AUTH_METHOD=${rpcNode?.node_auth_method ?? ""}\n` +
     `TEMPLATE=${data.network.network_template ?? ""}\n` +
     `SIDECAR=${data.network.network_sidecar ? 1 : 0}\n` +
-    `DOMAIN=perfuse-testing-devnet.zeeve.net\n` +
+    `DOMAIN=${domain}\n` +
     `EMAIL=rahul.meena@zeeve.io\n` +
     `SCRIPT_USER=STEM\n` +
     `SSL_TLS=0\n` +
