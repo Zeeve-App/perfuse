@@ -14,6 +14,7 @@ fi
 
 # Configuration variables
 HAPROXY_CONFIG_FILE="/etc/haproxy/haproxy.cfg"  # Adjust if your HAProxy config is in a different location
+# basic_auth_add="    http-request auth unless { http_auth(authorized_users) }"
 RELAY_RPC_PORT=9345  # Frontend port for HAProxy
 PARA_RPC_PORT=9010
 PERFUSE_PORT=3000
@@ -71,20 +72,20 @@ EOF
 
 update_rpc_path() {
   # Check if HAProxy configuration exists
-  if [ -f "/etc/haproxy/haproxy.cfg" ]; then
+  if [ -f "$HAPROXY_CONFIG_FILE" ]; then
     echo "Checking RPC path in HAProxy configuration..."
 
-    current_relay_path=$(sudo sed -n '/acl is_relay_rpc path_beg -i/p' /etc/haproxy/haproxy.cfg | awk '{print $5}' | cut -d '/' -f 2 )
-    current_para_path=$(sudo sed -n '/acl is_para_rpc path_beg -i/p' /etc/haproxy/haproxy.cfg | awk '{print $5}' | cut -d '/' -f 2 )
+    current_relay_path=$(sudo sed -n '/acl is_relay_rpc path_beg -i/p' $HAPROXY_CONFIG_FILE | awk '{print $5}' | cut -d '/' -f 2 )
+    current_para_path=$(sudo sed -n '/acl is_para_rpc path_beg -i/p' $HAPROXY_CONFIG_FILE | awk '{print $5}' | cut -d '/' -f 2 )
 
     # Check if the current path matches the expected path
-    if [[ "$current_rpc_path" != "/$RPC_API_KEY" ]]; then
-      echo "Updating RPC path from '$current_rpc_path' to '/$RPC_API_KEY'..."
+    if [[ "$current_relay_path" != "$RPC_API_KEY" ]]; then
+      echo "Updating RPC path from '$current_relay_path' to '$RPC_API_KEY'..."
       # Replace the old path with the new path
-      sudo sed -i "s|$current_relay_path|/$RPC_API_KEY|" -e "s|$current_para_path|/$RPC_API_KEY|" "$HAPROXY_CONFIG_FILE"
+      sudo sed -i "s|$current_relay_path|$RPC_API_KEY|" -e "s|$current_para_path|$RPC_API_KEY|" "$HAPROXY_CONFIG_FILE"
       echo "RPC path updated successfully."
     else
-      echo "RPC path already set to '/$RPC_API_KEY'."
+      echo "RPC path already set to '$RPC_API_KEY'."
     fi
   else
     echo "ERROR: HAProxy configuration file not found."
@@ -95,9 +96,10 @@ update_rpc_path() {
 # Function to create the HAProxy configuration
 add_frontend_backend() {
   
+  local basic_auth_line=""
   if [[ "$AUTH_METHOD" == "basic_auth" ]]; then
-  local basic_auth_line="    http-request auth unless { http_auth(authorized_users) }"
   add_basic_auth
+  local basic_auth_line="    http-request auth unless { http_auth(authorized_users) }"
   fi
   frontend_config="
 frontend rpc_frontend
@@ -156,6 +158,7 @@ backend letsencrypt-backend
   # Append the configuration blocks
   echo "$frontend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$perfuse_ui_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
+  echo "$polkadotjs_app_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$relay_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$parachain_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$certbot_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
