@@ -143,6 +143,7 @@ const createEnvFile = (data: CreatePerfuseApiPayload, apiKey?: string) => {
     `DOMAIN=perfuse-testing-devnet.zeeve.net\n` +
     `EMAIL=rahul.meena@zeeve.io\n` +
     `SCRIPT_USER=STEM\n` +
+    `SSL_TLS=0\n` +
     `REPO=\n` +
     ``;
 
