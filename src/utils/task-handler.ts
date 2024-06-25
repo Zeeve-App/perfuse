@@ -1,15 +1,15 @@
-import fs from "fs/promises";
+import { copyFile, readFile, writeFile } from "fs/promises";
 export const createTaskHandler = async () => {
-  const data = await fs.readFile("/home/perfuse/parachain/checksums.json");
+  const data = await readFile("/home/perfuse/parachain/checksums.json");
   const checksum = JSON.parse(data.toString());
   const outputChecksum = { wasm: "", genesis: "" };
   await Promise.all(
     Object.keys(checksum).map(async (file) => {
       if (file.includes("wasm")) {
-        await fs.copyFile(file, "./public/output/wasm");
+        await copyFile(file, "./public/output/wasm");
         outputChecksum.wasm = checksum[file];
       } else {
-        await fs.copyFile(file, "./public/output/genesis");
+        await copyFile(file, "./public/output/genesis");
         outputChecksum.genesis = checksum[file];
       }
     }),
@@ -17,6 +17,6 @@ export const createTaskHandler = async () => {
 
   console.log("outputChecksum", outputChecksum);
 
-  await fs.writeFile("./public/output/checksum.json", JSON.stringify(outputChecksum));
+  await writeFile("./public/output/checksum.json", JSON.stringify(outputChecksum));
   return;
 };

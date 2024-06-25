@@ -1,4 +1,4 @@
-import fs from "fs/promises";
+import { copyFile, writeFile } from "fs/promises";
 import crypto from "crypto";
 import { NextRequest } from "next/server";
 import { v4 as uuidv4 } from "uuid";
@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
         );
 
         await Promise.all(
-          formData.nodes.map(async (e, idx) => {
+          formData.nodes.map(async (e) => {
             const isRpc = e.node_type === "rpc";
 
             const node: NodeDbRow = {
@@ -96,15 +96,11 @@ export async function POST(req: NextRequest) {
         );
 
         if (formData.network.network_template === "custom")
-          await fs.copyFile(
-            formData.network.network_binary_path,
-            config.server.binaryFilePathForCopy,
-            // fs.constants.COPYFILE_EXCL,
-          );
+          await copyFile(formData.network.network_binary_path, config.server.binaryFilePathForCopy);
 
-        await fs.writeFile(config.server.envFilePathForCopy, createEnvFile(formData, apiKey));
+        await writeFile(config.server.envFilePathForCopy, createEnvFile(formData, apiKey));
 
-        await fs.writeFile(
+        await writeFile(
           config.server.chainSpecFilePathForCopy,
           JSON.stringify(formData.network.network_chain_spec_file_json),
         );

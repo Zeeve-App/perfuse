@@ -1,4 +1,4 @@
-import fs from "fs/promises";
+import { writeFile } from "fs/promises";
 import { NextRequest } from "next/server";
 import { sendDataResponse, sendErrorResponse } from "../_helpers/response";
 
@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     const file = formData.get("file") as File;
     const arrayBuffer = await file.arrayBuffer();
     const buffer = new Uint8Array(arrayBuffer);
-    await fs.writeFile(`./public/uploads/${file.name}`, buffer);
+    await writeFile(`./public/uploads/${file.name}`, buffer);
 
     return sendDataResponse({
       message: "File uploaded successfully",
