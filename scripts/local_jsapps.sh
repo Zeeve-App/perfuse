@@ -12,14 +12,15 @@ else
   exit 1
 fi
 
-
 install_and_build() {
     echo "Installing Volta and Yarn..."
-    curl https://get.volta.sh | bash
-
+    wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+    export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    npm install --global yarn
     echo "Installing dependencies and building app..."
 
-    volta install yarn
+    # /home/zeever/.volta/bin/volta install yarn
     git clone https://github.com/polkadot-js/apps.git
     cd apps
     yarn && NODE_ENV=production yarn build:www
