@@ -17,7 +17,7 @@ cd perfuse
 ```bash
 npm install
 npm run build
-npm run start
+sudo npm run start
 ```
 It will start the server in port 3000. You can go to the http://localhost:3000/ and create the parachain from UI.
 
