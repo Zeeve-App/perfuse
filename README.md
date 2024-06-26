@@ -15,6 +15,7 @@ cd perfuse
 ```
 ## Install nodejs dependency and start the server
 ```bash
+cp .env.exampe .env
 npm install
 npm run build
 sudo npm run start
