@@ -38,4 +38,4 @@ setup_nginx() {
 }
 
 # install_and_build
-setup_nginx
+# setup_nginx

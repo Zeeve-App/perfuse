@@ -25,7 +25,6 @@ create_user() {
     if ! id "${SCRIPT_USER}" &>/dev/null; then  # If user doesn't exist
         echo "Creating user '${SCRIPT_USER}'..."
         sudo useradd -d "/home/perfuse" -s "/bin/false" -m "${SCRIPT_USER}"
-        sudo chmod 
         echo "User '${SCRIPT_USER}' created successfully."
     else
         echo "User '${SCRIPT_USER}' already exists."
