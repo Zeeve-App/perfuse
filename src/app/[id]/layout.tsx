@@ -11,8 +11,8 @@ const IdPageClient: React.FC<{ children: React.ReactNode; params: { id: string }
   const headersList = headers();
 
   const host = headersList.get("host");
-  const domain = host?.split(":")[0];
-  const explorer = `http://${domain}:8080`;
+  // const domain = host?.split(":")[0];
+  const explorer = "https://polkadot.js.org/apps/"; //`http://${domain}:8080`;
   const network = await getNetworkData(id);
   const rpcNode = await getNodeData({ network_id: id, node_type: "rpc" });
   let rpcUrl = "";
