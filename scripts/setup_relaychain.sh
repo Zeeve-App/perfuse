@@ -1,25 +1,24 @@
 #!/bin/bash
 
-set -e
-set -u
+set -e  # Exit immediately if any command fails
+set -u  # Treat unset variables as errors
 
 SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
 # Load environment variables from .env file
-if [ -f ".env" ]; then
+if [ -f "$SCRIPT_DIR/../perfuse/.env" ]; then
   source "$SCRIPT_DIR/../perfuse/.env"
+  echo "Env Variables Loaded"
 else
   echo "ERROR: .env file not found."
   exit 1
 fi
 
-set -e  # Exit immediately if any command fails
-set -u  # Treat unset variables as errors
 # Configuration variables
-service_names=("relaychain-1" "relaychain-2" "relaychain-3")
-default_user=("--alice" "--bob" "--charlie")
-ports=(30333 30334 30335)
-rpc_ports=(9344 9345 9346)
-prometheus_ports=(8001 8002 8003)
+service_names=("relaychain-1" "relaychain-2")
+default_user=("--alice" "--bob")
+ports=(30333 30334)
+rpc_ports=(9344 9345)
+prometheus_ports=(8001 8002)
 
 # Common parameters (can be customized)
 relaychain_dir="/home/perfuse/relaychain"
@@ -32,7 +31,7 @@ relaychain_key_dir="${RELAYCHAIN_KEY_DIR:-/home/perfuse/relaychain_keys}"
 sudo cp $relaychain_dir/rococo_relay_chain_spec_raw.json $parachain_dir/rococo_relay_chain_spec_raw.json
 source $SCRIPT_DIR/generate_keys.sh
 # Generate Collator Node Keys
-generate_node_keys relaychain $relaychain_key_dir 3
+generate_node_keys relaychain $relaychain_key_dir 2
 
 # Function to create a service
 create_service() {
@@ -80,7 +79,7 @@ EOF
   echo "System service for $service_name created ..."
   chmod 644 /etc/systemd/system/${service_name}.service
   sudo systemctl enable ${service_name}.service
-  sudo systemctl start ${service_name}.service
+  sudo systemctl restart ${service_name}.service
 }
 
 count=1

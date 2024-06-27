@@ -5,8 +5,10 @@ set -u
 
 SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
 # Load environment variables from .env file
-if [ -f ".env" ]; then
+
+if [ -f "$SCRIPT_DIR/../perfuse/.env" ]; then
   source "$SCRIPT_DIR/../perfuse/.env"
+  echo "Env Variables Loaded"
 else
   echo "ERROR: .env file not found."
   exit 1
@@ -29,13 +31,7 @@ create_user() {
     else
         echo "User '${SCRIPT_USER}' already exists."
     fi
-    # user_group=$(id -gn "$SCRIPT_USER")
-    # echo "Adding $(whoami) to group '$user_group'..."
-    # sudo usermod -aG "$user_group" "$(whoami)"
-    # echo "$(whoami) added to group '$user_group'."
 }
-
-
 
 install_tools
 create_user
