@@ -26,7 +26,7 @@ export const configureNetworkValidationSchema = yup
       label: yup.string(),
     }),
     sidecar: yup.object({
-      value: yup.boolean().required("Select a sidecar."),
+      value: yup.number().required("Select a sidecar."),
     }),
     explorer: yup.object({
       value: yup.string().required("Select a explorer."),

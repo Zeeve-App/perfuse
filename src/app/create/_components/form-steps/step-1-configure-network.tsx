@@ -15,7 +15,7 @@ import {
 import { configureNetworkValidationSchema } from "./validation-schema";
 import { useCreateNetworkFormStore } from "@/store/create-network";
 import { ChainSpecFileType } from "@/types/chain-spec";
-import { Button } from "@/lib/components/Button";
+import { Button, IconButton } from "@/lib/components/Button";
 import { Heading } from "@/lib/components/Heading";
 import { useProgressiveFormContext, ProgressiveFormStepFooter } from "@/lib/components/ProgressiveForm";
 import { Spinner } from "@/lib/components/Spinner";
@@ -28,6 +28,9 @@ import { ReactSelect } from "@/lib/components/ReactSelect";
 import { FileUpload } from "@/lib/components/Form/FileUpload";
 import { withBasePath } from "@/utils/helpers";
 import useApi from "@/api-client";
+import { RadioCard } from "@/lib/components/RadioCard";
+import { Tooltip } from "@/lib/components/Tooltip";
+import SvgInfoCircle from "@/lib/icons/essential/outline/InfoCircle";
 
 type ConfigureNetworkSchemaType = yup.InferType<typeof configureNetworkValidationSchema>;
 
@@ -56,6 +59,7 @@ const ConfigureNetwork = () => {
     setValue,
     trigger,
     watch,
+    register,
     reset,
     getValues,
     formState: { errors, isValid, defaultValues },
@@ -251,63 +255,118 @@ const ConfigureNetwork = () => {
           <Heading as="h5">Network Config</Heading>
           <div className="grid grid-cols-12 items-start gap-3 lg:gap-6">
             {/* Network Environment */}
-            <FormField
-              className="col-span-12 md:col-span-6 lg:col-span-4"
-              helper={{
-                status: "error",
-                text: errors.networkEnviorment?.message?.toString(),
-              }}
-            >
-              <Controller
-                name="networkEnviorment"
-                control={control}
-                render={({ field }) => (
-                  <ReactSelect
-                    isRequired
-                    options={networkEnvOption}
-                    placeholder="Select Network Environment"
-                    {...field}
-                  />
-                )}
-              />
-            </FormField>
+            <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
+              <div className="flex flex-row items-center gap-1">
+                <Heading as="h5">Select Environment</Heading>
+                <Tooltip text="Select environment for your deployment." placement="top-start">
+                  <IconButton variant="text" colorScheme="gray">
+                    <SvgInfoCircle className="text-base" />
+                  </IconButton>
+                </Tooltip>
+              </div>
+              <div className="grid grid-cols-12 gap-3 lg:gap-6">
+                {networkEnvOption.length
+                  ? networkEnvOption.map((environment, index) => {
+                      return (
+                        <RadioCard
+                          key={index}
+                          value={environment.value}
+                          className="col-span-12 md:col-span-4"
+                          {...register("networkEnviorment.value")}
+                          isChecked={watch("networkEnviorment")?.value == environment?.value}
+                        >
+                          {environment.label}
+                        </RadioCard>
+                      );
+                    })
+                  : null}
+              </div>
+            </div>
             {/* Template */}
-            <FormField
-              className="col-span-12 md:col-span-6 lg:col-span-4"
-              helper={{
-                status: "error",
-                text: errors.template?.message?.toString(),
-              }}
-            >
-              <Controller
-                name="template"
-                control={control}
-                render={({ field }) => (
-                  <ReactSelect isRequired options={templateOption} placeholder="Select Template" {...field} />
-                )}
-              />
-            </FormField>
-            {/* Relay Chain */}
-            <FormField
-              className="col-span-12 md:col-span-6 lg:col-span-4"
-              helper={{
-                status: "error",
-                text: errors.relayChain?.message?.toString(),
-              }}
-            >
-              <Controller
-                name="relayChain"
-                control={control}
-                render={({ field }) => (
-                  <ReactSelect
-                    isRequired
-                    options={relayChainOption[networkEnvWatcher?.value ?? "testnet"]}
-                    placeholder="Select Relay Chain"
-                    {...field}
-                  />
-                )}
-              />
-            </FormField>
+            <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
+              <div className="flex flex-row items-center gap-1">
+                <Heading as="h5">Select Template</Heading>
+                <Tooltip text="Select environment for your deployment." placement="top-start">
+                  <IconButton variant="text" colorScheme="gray">
+                    <SvgInfoCircle className="text-base" />
+                  </IconButton>
+                </Tooltip>
+              </div>
+              <div className="grid grid-cols-12 gap-3 lg:gap-6">
+                {templateOption.length
+                  ? templateOption.map((template, index) => {
+                      return (
+                        <RadioCard
+                          key={index}
+                          value={template.value}
+                          className="col-span-12 md:col-span-4"
+                          {...register("template.value")}
+                          isChecked={watch("template")?.value == template?.value}
+                        >
+                          {template.label}
+                        </RadioCard>
+                      );
+                    })
+                  : null}
+              </div>
+            </div>
+            {/* Relay chain */}
+            <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
+              <div className="flex flex-row items-center gap-1">
+                <Heading as="h5">Select Relay chain</Heading>
+                <Tooltip text="Select environment for your deployment." placement="top-start">
+                  <IconButton variant="text" colorScheme="gray">
+                    <SvgInfoCircle className="text-base" />
+                  </IconButton>
+                </Tooltip>
+              </div>
+              <div className="grid grid-cols-12 gap-3 lg:gap-6">
+                {relayChainOption[networkEnvWatcher?.value ?? "testnet"].length
+                  ? relayChainOption[networkEnvWatcher?.value ?? "testnet"].map((relayChain, index) => {
+                      return (
+                        <RadioCard
+                          key={index}
+                          value={relayChain.value}
+                          className="col-span-12 md:col-span-4"
+                          {...register("relayChain.value")}
+                          isChecked={watch("relayChain")?.value == relayChain?.value}
+                        >
+                          {relayChain.label}
+                        </RadioCard>
+                      );
+                    })
+                  : null}
+              </div>
+            </div>
+
+            {/* Sidecar */}
+            <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
+              <div className="flex flex-row items-center gap-1">
+                <Heading as="h5">Select Sidecar</Heading>
+                <Tooltip text="Select environment for your deployment." placement="top-start">
+                  <IconButton variant="text" colorScheme="gray">
+                    <SvgInfoCircle className="text-base" />
+                  </IconButton>
+                </Tooltip>
+              </div>
+              <div className="grid grid-cols-12 gap-3 lg:gap-6">
+                {sideCardOptions.length
+                  ? sideCardOptions.map((sidecar, index) => {
+                      return (
+                        <RadioCard
+                          key={index}
+                          value={sidecar.value}
+                          className="col-span-12 md:col-span-4"
+                          {...register("sidecar.value")}
+                          isChecked={watch("sidecar")?.value == sidecar?.value}
+                        >
+                          {sidecar.label}
+                        </RadioCard>
+                      );
+                    })
+                  : null}
+              </div>
+            </div>
             {/* Sidecar */}
             <FormField
               className="col-span-12 md:col-span-6 lg:col-span-4"

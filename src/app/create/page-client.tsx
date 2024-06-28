@@ -5,8 +5,6 @@ import ConfigureNetwork from "./_components/form-steps/step-1-configure-network"
 import ConfigureRelayChain from "./_components/form-steps/step-2-configure-relay-chain";
 // import ROUTES from "@/routes";
 // import { getConfig } from "@/config";
-import { withBasePath } from "@/utils/helpers";
-import { Navigation } from "@/lib/components/navigation";
 import {
   ProgressiveForm,
   ProgressiveFormHeader,
@@ -14,6 +12,20 @@ import {
   ProgressiveFormBody,
 } from "@/lib/components/ProgressiveForm";
 import { useCreateNetworkFormStore } from "@/store/create-network";
+import { Heading } from "@/lib/components/Heading";
+
+const getIcons = (step: number) => ({
+  idle: (
+    <div className="flex size-5 items-center justify-center rounded-full border-2 border-brand-gray">
+      <span>{step}</span>
+    </div>
+  ),
+  active: (
+    <div className="flex size-5 items-center justify-center rounded-full border-2 border-brand-blue  bg-brand-blue text-white">
+      <span>{step}</span>
+    </div>
+  ),
+});
 
 const CreatePageClient = () => {
   const [activeStep, setActiveStep] = useState<number>(0);
@@ -28,12 +40,17 @@ const CreatePageClient = () => {
         console.log(JSON.stringify(createNetworkForm));
       }}
     >
+      <Heading as="h3" className="p-3 lg:p-6">
+        Set Up Your Parachain
+      </Heading>
       <ProgressiveFormHeader>
-        <ProgressiveFormHeaderItem title="Configure Network" />
-        <ProgressiveFormHeaderItem title="Configure Relay Chain" />
+        <ProgressiveFormHeaderItem title="Select Environment" icons={getIcons(1)} />
+        <ProgressiveFormHeaderItem title="Configuration" icons={getIcons(2)} />
+        <ProgressiveFormHeaderItem title="Complete Deployment" icons={getIcons(3)} />
       </ProgressiveFormHeader>
       <ProgressiveFormBody>
         <ConfigureNetwork />
+        <ConfigureRelayChain />
         <ConfigureRelayChain />
       </ProgressiveFormBody>
     </ProgressiveForm>

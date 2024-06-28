@@ -134,7 +134,7 @@ const ZeeveSidebar = (props: SidebarProps) => {
                     : null}
                 </SidebarItemGroup>
                 {/* show divider only when there is next element in the list */}
-                {ITEMS[index + 1] ? <SidebarDivider /> : null}
+                {/* {ITEMS[index + 1] ? <SidebarDivider /> : null} */}
               </Fragment>
             ))
           : null}
