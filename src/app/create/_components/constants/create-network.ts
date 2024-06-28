@@ -1,6 +1,6 @@
 export const sideCardOptions = [
-  { label: "Yes", value: 0 },
-  { label: "No", value: 1 },
+  { label: "Yes", value: 1 },
+  { label: "No", value: 0 },
 ];
 
 export type networkEnvType = "devnet" | "mainnet" | "testnet";

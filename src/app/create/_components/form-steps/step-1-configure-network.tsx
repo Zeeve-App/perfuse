@@ -367,43 +367,34 @@ const ConfigureNetwork = () => {
                   : null}
               </div>
             </div>
-            {/* Sidecar */}
-            <FormField
-              className="col-span-12 md:col-span-6 lg:col-span-4"
-              helper={{
-                status: "error",
-                text: errors.sidecar?.message?.toString(),
-              }}
-            >
-              <Controller
-                name="sidecar"
-                control={control}
-                render={({ field }) => (
-                  <ReactSelect isRequired options={sideCardOptions} placeholder="Select Sidecar" {...field} />
-                )}
-              />
-            </FormField>
-            {/* Blockchain Explorer */}
-            <FormField
-              className="col-span-12 md:col-span-6 lg:col-span-4"
-              helper={{
-                status: "error",
-                text: errors.explorer?.message?.toString(),
-              }}
-            >
-              <Controller
-                name="explorer"
-                control={control}
-                render={({ field }) => (
-                  <ReactSelect
-                    isRequired
-                    options={explorerOption}
-                    placeholder="Select Blockchain Explorer"
-                    {...field}
-                  />
-                )}
-              />
-            </FormField>
+
+            <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
+              <div className="flex flex-row items-center gap-1">
+                <Heading as="h5">Select Explorer</Heading>
+                <Tooltip text="Select environment for your deployment." placement="top-start">
+                  <IconButton variant="text" colorScheme="gray">
+                    <SvgInfoCircle className="text-base" />
+                  </IconButton>
+                </Tooltip>
+              </div>
+              <div className="grid grid-cols-12 gap-3 lg:gap-6">
+                {explorerOption.length
+                  ? explorerOption.map((explorer, index) => {
+                      return (
+                        <RadioCard
+                          key={index}
+                          value={explorer.value}
+                          className="col-span-12 md:col-span-4"
+                          {...register("explorer.value")}
+                          isChecked={watch("explorer")?.value == explorer?.value}
+                        >
+                          {explorer.label}
+                        </RadioCard>
+                      );
+                    })
+                  : null}
+              </div>
+            </div>
           </div>
         </div>
 
