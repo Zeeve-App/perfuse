@@ -31,7 +31,6 @@ const NotificationsWebSocketContextProvider = (props: NotificationsWebSocketCont
     (event: MessageEvent) => {
       try {
         const response = JSON.parse(event.data) as Data;
-        console.log(response);
 
         if (response.Action === "Message") {
           switch (response.Type) {

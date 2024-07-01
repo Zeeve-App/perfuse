@@ -104,7 +104,6 @@ const ConfigureNetwork = () => {
       const reader = new FileReader();
       reader.onload = (event) => {
         const content = event.target?.result as string;
-        console.log(content);
         const chainSpec: ChainSpecFileType = JSON.parse(content);
 
         // setting values from chain spec file
@@ -162,7 +161,6 @@ const ConfigureNetwork = () => {
         if (response.status === HTTP_STATUS.OK && response.data.success) {
           // set global network id
           // setBinaryFile()
-          console.log(response.data.data.path);
 
           setValue("binaryFile.path", response.data.data.path);
         }
@@ -181,14 +179,8 @@ const ConfigureNetwork = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(!isValid, isBinaryFileUploading);
-  }, [isBinaryFileUploading, isValid]);
-
   // action to perform while submitting the form
   const onSubmit = (data: ConfigureNetworkSchemaType) => {
-    console.log(data);
-
     setFormData({
       step: "configureNetwork",
       data: {

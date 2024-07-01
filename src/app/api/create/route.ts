@@ -44,7 +44,6 @@ export type CreatePerfuseApiPayload = {
 export async function POST(req: NextRequest) {
   try {
     const formData: CreatePerfuseApiPayload = await req.json();
-    console.log(formData);
     const headersList = headers();
     const host = headersList.get("host");
     const domain = host?.split(":")[0];

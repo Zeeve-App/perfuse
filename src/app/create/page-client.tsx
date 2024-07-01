@@ -32,16 +32,16 @@ const getIcons = (step: number) => ({
 
 const CreatePageClient = () => {
   const [activeStep, setActiveStep] = useState<number>(0);
-  const createNetworkForm = useCreateNetworkFormStore();
+  // const createNetworkForm = useCreateNetworkFormStore();
 
   return (
     <ProgressiveForm
       activeStep={activeStep}
       setActiveStep={setActiveStep}
       className="bg-white"
-      onSubmit={() => {
-        console.log(JSON.stringify(createNetworkForm));
-      }}
+      // onSubmit={() => {
+      //   console.log(JSON.stringify(createNetworkForm));
+      // }}
     >
       <Heading as="h3" className="p-3 lg:p-6">
         Set Up Your Parachain
