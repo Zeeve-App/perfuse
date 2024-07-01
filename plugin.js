@@ -56,8 +56,11 @@ module.exports = plugin(
       ".bg-brand-gradient": {
         background: "linear-gradient(130deg, #32B8B2 0%, #088DB2 100%)",
       },
-      ".bg-brand-gradient-blue": {
+      ".bg-brand-gradient-blue-48": {
         background: "linear-gradient(108deg, #868cff 6%, #4318ff 48%)",
+      },
+      ".bg-brand-gradient-blue": {
+        background: "linear-gradient(107deg, #868cff 0%, #4318ff)",
       },
       ".text-brand-gradient": {
         background: "linear-gradient(130deg, #32B8B2 0%, #088DB2 100%)",
@@ -114,11 +117,10 @@ module.exports = plugin(
             dark: "#080E12",
             cyan: "#32B8B2",
             teal: "#088DB2",
-            light: "#F8FAFA",
+            light: "#f4f7fe",
             outline: "#080E121A",
             purple: "#5E35B5",
             pink: "#B53563",
-            "blue-gradient": "linear-gradient(108deg, #868cff 6%, #4318ff 48%)",
           },
         },
         /** do not use until required */

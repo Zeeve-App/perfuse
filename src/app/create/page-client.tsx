@@ -5,6 +5,7 @@ import ConfigureNetwork from "./_components/form-steps/step-1-configure-network"
 import ConfigureRelayChain from "./_components/form-steps/step-2-configure-relay-chain";
 // import ROUTES from "@/routes";
 // import { getConfig } from "@/config";
+import DeploySucceed from "./_components/form-steps/step-3-success";
 import {
   ProgressiveForm,
   ProgressiveFormHeader,
@@ -48,12 +49,15 @@ const CreatePageClient = () => {
       <ProgressiveFormHeader>
         <ProgressiveFormHeaderItem title="Select Environment" icons={getIcons(1)} />
         <ProgressiveFormHeaderItem title="Configuration" icons={getIcons(2)} />
-        <ProgressiveFormHeaderItem title="Complete Deployment" icons={getIcons(3)} />
+        <ProgressiveFormHeaderItem
+          title="Complete Deployment"
+          icons={{ ...getIcons(3), active: getIcons(3).completed }}
+        />
       </ProgressiveFormHeader>
       <ProgressiveFormBody>
         <ConfigureNetwork />
         <ConfigureRelayChain />
-        <ConfigureRelayChain />
+        <DeploySucceed />
       </ProgressiveFormBody>
     </ProgressiveForm>
   );

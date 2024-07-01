@@ -14,29 +14,7 @@ const ListPageClient = () => {
 
   return (
     <div className="flex flex-col gap-y-3 lg:gap-y-6">
-      {/* <Navigation
-        heading={"Parachains"}
-        logo={
-          <Image
-            src={withBasePath("/assets/images/parachains-logo.svg")}
-            alt="parachains-logo"
-            width={32}
-            height={32}
-          />
-        }
-        breadcrumb={{
-          items: [
-            {
-              href: `#`,
-              label: "Dashboard",
-              isActive: true,
-            },
-          ],
-        }}
-      >
-      </Navigation> */}
-      {/* page actions */}
-      <div className="bg-brand-gradient-blue grid grid-cols-12 justify-items-center gap-4 rounded-lg border border-brand-outline p-3 lg:p-6">
+      <div className="bg-brand-gradient-blue-48 grid grid-cols-12 justify-items-center gap-4 rounded-lg border border-brand-outline p-3 lg:p-6">
         <div className="col-span-6 flex flex-col items-start justify-center gap-2">
           <Heading as="h3" className="text-white">
             Deploy New Parachain

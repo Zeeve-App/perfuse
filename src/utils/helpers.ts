@@ -61,9 +61,13 @@ const withBasePath = (url: string): string => {
  * @param path item path
  * @returns boolean
  */
-const isActive = (pathname: string, path: string): boolean => {
-  if (pathname.endsWith(path)) {
-    return true;
+const isActive = (pathname: string, paths: string[]): boolean => {
+  console.log(pathname, paths);
+
+  for (const path of paths) {
+    if (pathname.endsWith(path)) {
+      return true;
+    }
   }
 
   return false;

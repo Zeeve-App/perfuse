@@ -1,5 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 import Overview from "./overview/overview";
 import { getNetworkData, getNodes } from "@/db-queries";
 import { ChainSpecFileType } from "@/types/chain-spec";
@@ -22,18 +23,19 @@ const CreatePage = async ({
   if (!network) {
     return <>Error while loading network. Invalid network Id</>;
   }
-  return (
-    <Overview
-      isLoading={false}
-      createdAt={network.created_at}
-      env={network.network_env}
-      name={network.network_name}
-      id={network.network_id}
-      paraId={chainSpec.para_id.toString()}
-      relayCainType={network.network_relay_chain}
-      nodes={nodes}
-    />
-  );
+  return redirect(`/${params.id}/overview`);
+  // return (
+  //   <Overview
+  //     isLoading={false}
+  //     createdAt={network.created_at}
+  //     env={network.network_env}
+  //     name={network.network_name}
+  //     id={network.network_id}
+  //     paraId={chainSpec.para_id.toString()}
+  //     relayCainType={network.network_relay_chain}
+  //     nodes={nodes}
+  //   />
+  // );
 };
 
 export default CreatePage;

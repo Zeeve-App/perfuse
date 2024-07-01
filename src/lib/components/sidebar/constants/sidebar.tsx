@@ -8,15 +8,7 @@ import SvgEndpoints1 from "@/lib/icons/programming/outline/Endpoints1";
 
 const ITEMS: {
   title?: string;
-  items: {
-    icon: React.ReactElement;
-    title?: string;
-    path: string;
-    badge?: React.ReactElement;
-    children?: ZeeveSidebarItemProps[];
-    className?: string;
-    shouldOpenInNewTab?: boolean;
-  }[];
+  items: ZeeveSidebarItemProps[];
 }[] = [
   {
     items: [
@@ -24,16 +16,17 @@ const ITEMS: {
         title: "Dashboard",
         icon: <SvgElement3 />,
         path: `/`,
+        activePaths: ["/overview", "/blockchain-config", "/collator-nodes", "/rpc-nodes", "/create"],
       },
       {
-        title: "My Parachain",
+        title: "Settings",
         icon: <SvgNodes />,
-        path: `/my-parachains`,
+        path: `#`,
       },
       {
-        title: "Deploy",
+        title: "Documents",
         icon: <SvgBubbles />,
-        path: `/create`,
+        path: `#`,
       },
     ],
   },

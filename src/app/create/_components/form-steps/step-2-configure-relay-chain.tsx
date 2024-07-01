@@ -124,9 +124,9 @@ const ConfigureRelayChain = () => {
     const response = await apis.createNetwork(payload);
 
     if (response.status === HTTP_STATUS.OK && response.data.success) {
-      router.push("/" + response.data?.data?.network_id);
+      // router.push("/" + response.data?.data?.network_id);
+      goToNextStep();
     }
-    goToNextStep();
   };
 
   const watchRPCNodes = watch(["rpcNodes"])[0];
