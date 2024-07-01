@@ -15,7 +15,7 @@ export type CreatePerfuseApiPayload = {
     network_env: string;
     network_template: string;
     network_relay_chain: string;
-    network_sidecar: boolean;
+    network_sidecar: 0 | 1;
     network_blockchain_explorer: string;
     network_chain_spec_file_json: object;
     network_binary_path: string;

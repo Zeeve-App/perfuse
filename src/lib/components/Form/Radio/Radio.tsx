@@ -5,6 +5,7 @@ import { Label, LabelProps } from "../Label";
 import { RemoveProperties } from "../../core";
 import { useID } from "@/hooks";
 import { tx } from "@/utils/shared";
+import SvgApiConnect from "@/lib/icons/product/outline/ApiConnect";
 
 interface RadioLabelProps extends LabelProps {}
 
@@ -62,18 +63,35 @@ interface RadioProps
   isDisabled?: boolean;
   isChecked?: boolean;
   isRequired?: boolean;
+  hideRadioCircle?: boolean;
   radioLabelProps?: React.ComponentPropsWithRef<"label">;
 }
 
 const Radio = forwardRef<HTMLInputElement, RadioProps>((props, ref) => {
-  const { children, isDisabled, isChecked, isRequired, radioLabelProps, colorScheme, size, className, id, ...rest } =
-    props;
+  const {
+    children,
+    isDisabled,
+    isChecked,
+    isRequired,
+    radioLabelProps,
+    colorScheme,
+    size,
+    className,
+    id,
+    hideRadioCircle,
+    ...rest
+  } = props;
 
   const [_id] = useID(id, "radio");
 
   return (
     // radio label
-    <RadioLabel htmlFor={_id} isDisabled={isDisabled} {...radioLabelProps}>
+    <RadioLabel
+      htmlFor={_id}
+      isDisabled={isDisabled}
+      className={tx("flex items-center justify-center")}
+      {...radioLabelProps}
+    >
       {/* default radio */}
       <input
         type="radio"
@@ -85,9 +103,10 @@ const Radio = forwardRef<HTMLInputElement, RadioProps>((props, ref) => {
         required={isRequired}
         {...rest}
       />
-      {/* custom radio */}
-      <div className={tx(styles({ colorScheme, size, className }))} />
+
+      {!hideRadioCircle && <div className={tx(styles({ colorScheme, size, className }))} />}
       {children}
+      {/* custom radio */}
     </RadioLabel>
   );
 });

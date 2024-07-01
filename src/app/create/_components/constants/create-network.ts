@@ -43,13 +43,13 @@ export const authenticationMethods: {
 }[] = [
   {
     tooltipText: "Secret key ID gets included in the public endpoint.",
-    name: "API Key",
+    name: "API KEY",
     value: "api_key",
   },
   {
     tooltipText: "Coming soon.",
-    name: "Basic",
+    name: "Basic Auth",
     value: "basic_auth",
-    isDisabled: false,
+    isDisabled: true,
   },
 ];

@@ -13,6 +13,7 @@ import {
 } from "@/lib/components/ProgressiveForm";
 import { useCreateNetworkFormStore } from "@/store/create-network";
 import { Heading } from "@/lib/components/Heading";
+import SvgCheckCircle from "@/lib/icons/essential/outline/CheckCircle";
 
 const getIcons = (step: number) => ({
   idle: (
@@ -25,6 +26,7 @@ const getIcons = (step: number) => ({
       <span>{step}</span>
     </div>
   ),
+  completed: <SvgCheckCircle className="fill-brand-green text-white" height={25} width={25} />,
 });
 
 const CreatePageClient = () => {

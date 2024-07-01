@@ -1,17 +1,20 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
+import Link from "next/link";
 import { DashboardCard } from "./_components/dashboard-card";
 import { withBasePath } from "@/utils/helpers";
 import { Navigation } from "@/lib/components/navigation";
 import SvgEdit2 from "@/lib/icons/document/outline/Edit2";
+import { Heading } from "@/lib/components/Heading";
+import { Button } from "@/lib/components/Button";
 
 const ListPageClient = () => {
   // localStorage.setItem("from", "parachains");
 
   return (
     <div className="flex flex-col gap-y-3 lg:gap-y-6">
-      <Navigation
+      {/* <Navigation
         heading={"Parachains"}
         logo={
           <Image
@@ -31,22 +34,28 @@ const ListPageClient = () => {
           ],
         }}
       >
-        {/* page actions */}
-      </Navigation>
-      <div className="grid grid-cols-12 gap-6 rounded-lg border border-brand-outline bg-white p-3 lg:p-6">
-        <DashboardCard
-          title={"Deployment"}
-          description={"Deploy Your first parachain"}
-          href={"/create"}
-          Icon={SvgEdit2}
-        />
-        <DashboardCard
-          title={"My parachain"}
-          description={"List the deployed parachains"}
-          href={"/my-parachains"}
-          Icon={SvgEdit2}
-        />
-        <DashboardCard title={"Monitoring"} description={"Check real time analytics"} href={""} Icon={SvgEdit2} />
+      </Navigation> */}
+      {/* page actions */}
+      <div className="bg-brand-gradient-blue grid grid-cols-12 justify-items-center gap-4 rounded-lg border border-brand-outline p-3 lg:p-6">
+        <div className="col-span-6 flex flex-col items-start justify-center gap-2">
+          <Heading as="h3" className="text-white">
+            Deploy New Parachain
+          </Heading>
+          <p className="text-white">There are no deployed parachains!</p>
+          <Link href={"/create"}>
+            <Button colorScheme={"light"} className="text-brand-blue">
+              Begin Now
+            </Button>
+          </Link>
+        </div>
+        <div className="col-span-6">
+          <Image
+            src={withBasePath("/assets/images/dashboard/dashboard-1.svg")}
+            alt="parachains-logo"
+            width={425}
+            height={322}
+          />
+        </div>
       </div>
     </div>
   );

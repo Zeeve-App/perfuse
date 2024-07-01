@@ -15,7 +15,7 @@ import {
 import { configureNetworkValidationSchema } from "./validation-schema";
 import { useCreateNetworkFormStore } from "@/store/create-network";
 import { ChainSpecFileType } from "@/types/chain-spec";
-import { Button, IconButton } from "@/lib/components/Button";
+import { Button } from "@/lib/components/Button";
 import { Heading } from "@/lib/components/Heading";
 import { useProgressiveFormContext, ProgressiveFormStepFooter } from "@/lib/components/ProgressiveForm";
 import { Spinner } from "@/lib/components/Spinner";
@@ -24,13 +24,14 @@ import HTTP_STATUS from "@/constants/http";
 import { FormField } from "@/lib/components/Form/FormField";
 import SvgArrowUpFromBucket from "@/lib/icons/arrows/outline/ArrowUpFromBucket";
 import SvgChevronRightSquare from "@/lib/icons/arrows/outline/ChevronRightSquare";
-import { ReactSelect } from "@/lib/components/ReactSelect";
 import { FileUpload } from "@/lib/components/Form/FileUpload";
 import { withBasePath } from "@/utils/helpers";
 import useApi from "@/api-client";
 import { RadioCard } from "@/lib/components/RadioCard";
 import { Tooltip } from "@/lib/components/Tooltip";
 import SvgInfoCircle from "@/lib/icons/essential/outline/InfoCircle";
+import SvgApiConnect from "@/lib/icons/product/outline/ApiConnect";
+import { Radio } from "@/lib/components/Form";
 
 type ConfigureNetworkSchemaType = yup.InferType<typeof configureNetworkValidationSchema>;
 
@@ -62,7 +63,7 @@ const ConfigureNetwork = () => {
     register,
     reset,
     getValues,
-    formState: { errors, isValid, defaultValues },
+    formState: { errors, isValid, defaultValues, validatingFields },
   } = useForm<ConfigureNetworkSchemaType>({
     resolver: yupResolver(configureNetworkValidationSchema),
     mode: "all",
@@ -84,8 +85,9 @@ const ConfigureNetwork = () => {
   }, [setValue, templateWatcher?.value]);
 
   useEffect(() => {
-    setValue("relayChain", "" as unknown as { label: string; value: string });
-  }, [networkEnvWatcher]);
+    // setValue("relayChain", { label: undefined });
+    reset((e) => ({ ...e, relayChain: { value: "" } }));
+  }, [networkEnvWatcher?.value, reset]);
 
   // progressive form context
   const { goToNextStep } = useProgressiveFormContext();
@@ -252,7 +254,7 @@ const ConfigureNetwork = () => {
       <div className="flex flex-col gap-3 p-3 lg:gap-6 lg:p-6">
         {/* Network Config */}
         <div className="flex flex-col gap-3 lg:gap-6">
-          <Heading as="h5">Network Config</Heading>
+          {/* <Heading as="h5">Network Config</Heading> */}
           <div className="grid grid-cols-12 items-start gap-3 lg:gap-6">
             {/* Network Environment */}
             <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
@@ -271,10 +273,12 @@ const ConfigureNetwork = () => {
                         <RadioCard
                           key={index}
                           value={environment.value}
-                          className="col-span-12 md:col-span-4"
+                          className="col-span-12 md:col-span-3"
                           {...register("networkEnviorment.value")}
                           isChecked={watch("networkEnviorment")?.value == environment?.value}
+                          hideRadioCircle={true}
                         >
+                          <SvgApiConnect width={25} height={25} />
                           {environment.label}
                         </RadioCard>
                       );
@@ -300,9 +304,10 @@ const ConfigureNetwork = () => {
                           <RadioCard
                             key={index}
                             value={template.value}
-                            className="col-span-12 md:col-span-4"
+                            className="col-span-12 md:col-span-3"
                             {...register("template.value")}
                             isChecked={watch("template")?.value == template?.value}
+                            hideRadioCircle={true}
                           >
                             {template.label}
                           </RadioCard>
@@ -330,9 +335,10 @@ const ConfigureNetwork = () => {
                           <RadioCard
                             key={index}
                             value={relayChain.value}
-                            className="col-span-12 md:col-span-4"
+                            className="col-span-12 md:col-span-3"
                             {...register("relayChain.value")}
                             isChecked={watch("relayChain")?.value == relayChain?.value}
+                            hideRadioCircle={true}
                           >
                             {relayChain.label}
                           </RadioCard>
@@ -353,22 +359,24 @@ const ConfigureNetwork = () => {
                   {sideCardOptions.length
                     ? sideCardOptions.map((sidecar, index) => {
                         return (
-                          <RadioCard
+                          <Radio
                             key={index}
                             value={sidecar.value}
-                            className="col-span-12 md:col-span-4"
+                            className="col-span-12 md:col-span-3"
+                            colorScheme={"blue"}
                             {...register("sidecar.value")}
                             isChecked={watch("sidecar")?.value == sidecar?.value}
+                            // hideRadioCircle={true}
                           >
                             {sidecar.label}
-                          </RadioCard>
+                          </Radio>
                         );
                       })
                     : null}
                 </div>
               </div>
             ) : null}
-            {watch("sidecar")?.value == 1 ? (
+            {watch("sidecar")?.value !== undefined ? (
               <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
                 <div className="flex flex-row items-center gap-1">
                   <Heading as="h5">Select Explorer</Heading>
@@ -385,9 +393,10 @@ const ConfigureNetwork = () => {
                           <RadioCard
                             key={index}
                             value={explorer.value}
-                            className="col-span-12 md:col-span-4"
+                            className="col-span-12 md:col-span-3"
                             {...register("explorer.value")}
                             isChecked={watch("explorer")?.value == explorer?.value}
+                            hideRadioCircle={true}
                           >
                             {explorer.label}
                           </RadioCard>
