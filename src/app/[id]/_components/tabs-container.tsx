@@ -12,7 +12,8 @@ const TabContainer = ({ id }: { id: string }) => {
   const tabAndIndexMap: Record<string, number> = {
     "": 0,
     "blockchain-config": 1,
-    "my-nodes": 2,
+    "collator-nodes": 2,
+    "rpc-nodes": 3,
   };
 
   return (
@@ -30,7 +31,8 @@ const TabContainer = ({ id }: { id: string }) => {
       <TabList className="mb-4 gap-4 overflow-x-auto border-0">
         <Tab>Overview</Tab>
         <Tab>Blockchain Config</Tab>
-        <Tab>My Nodes</Tab>
+        <Tab>Collator Nodes</Tab>
+        <Tab>RPC Nodes</Tab>
       </TabList>
     </TabsContextProvider>
   );

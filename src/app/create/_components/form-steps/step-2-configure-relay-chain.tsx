@@ -227,7 +227,7 @@ const ConfigureRelayChain = () => {
             </FormField>
           </div>
 
-          <Heading as="h4">Collator Nodes</Heading>
+          <Heading as="h5">Collator Nodes</Heading>
           {collatorFields.map((e, i) => {
             return (
               <div key={i} className="grid grid-cols-12 items-start gap-3 lg:gap-6">
@@ -312,7 +312,7 @@ const ConfigureRelayChain = () => {
             );
           })}
 
-          <Heading as="h4">RPC Nodes</Heading>
+          <Heading as="h5">RPC Nodes</Heading>
           {fields.map((field, index) => (
             <div key={field.id} className="grid grid-cols-12 items-start gap-3 lg:gap-6">
               {/* Node name */}
@@ -360,7 +360,7 @@ const ConfigureRelayChain = () => {
               <hr className="col-span-12 border-brand-outline" />
               {/* authentication methods */}
               <Heading as="h5" className="col-span-12">
-                Authentication Method
+                Please Select One Authentication Method From The Below
               </Heading>
               <div className="grid grid-cols-12 gap-3 lg:gap-6">
                 {authenticationMethods.length
@@ -384,13 +384,13 @@ const ConfigureRelayChain = () => {
                           >
                             {item.name}
                           </Radio>
-                          {item.tooltipText ? (
+                          {/* {item.tooltipText ? (
                             <Tooltip text={item.tooltipText} placement="top-start">
                               <IconButton variant="text" colorScheme="gray">
                                 <SvgInfoCircle className="text-base" />
                               </IconButton>
                             </Tooltip>
-                          ) : null}
+                          ) : null} */}
                         </div>
                       );
                     })

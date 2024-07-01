@@ -257,12 +257,12 @@ const ConfigureNetwork = () => {
             {/* Network Environment */}
             <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
               <div className="flex flex-row items-center gap-1">
-                <Heading as="h5">Select Environment</Heading>
-                <Tooltip text="Select environment for your deployment." placement="top-start">
+                <Heading as="h5">Select Your Network Environment</Heading>
+                {/* <Tooltip text="Select environment for your deployment." placement="top-start">
                   <IconButton variant="text" colorScheme="gray">
                     <SvgInfoCircle className="text-base" />
                   </IconButton>
-                </Tooltip>
+                </Tooltip> */}
               </div>
               <div className="grid grid-cols-12 gap-3 lg:gap-6">
                 {networkEnvOption.length
@@ -283,118 +283,120 @@ const ConfigureNetwork = () => {
               </div>
             </div>
             {/* Template */}
-            <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
-              <div className="flex flex-row items-center gap-1">
-                <Heading as="h5">Select Template</Heading>
-                <Tooltip text="Select environment for your deployment." placement="top-start">
-                  <IconButton variant="text" colorScheme="gray">
-                    <SvgInfoCircle className="text-base" />
-                  </IconButton>
-                </Tooltip>
+            {watch("networkEnviorment")?.value ? (
+              <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
+                <div className="flex flex-row items-center gap-1">
+                  <Heading as="h5">Select Template</Heading>
+                  {/* <Tooltip text="Select environment for your deployment." placement="top-start">
+                    <IconButton variant="text" colorScheme="gray">
+                      <SvgInfoCircle className="text-base" />
+                    </IconButton>
+                  </Tooltip> */}
+                </div>
+                <div className="grid grid-cols-12 gap-3 lg:gap-6">
+                  {templateOption.length
+                    ? templateOption.map((template, index) => {
+                        return (
+                          <RadioCard
+                            key={index}
+                            value={template.value}
+                            className="col-span-12 md:col-span-4"
+                            {...register("template.value")}
+                            isChecked={watch("template")?.value == template?.value}
+                          >
+                            {template.label}
+                          </RadioCard>
+                        );
+                      })
+                    : null}
+                </div>
               </div>
-              <div className="grid grid-cols-12 gap-3 lg:gap-6">
-                {templateOption.length
-                  ? templateOption.map((template, index) => {
-                      return (
-                        <RadioCard
-                          key={index}
-                          value={template.value}
-                          className="col-span-12 md:col-span-4"
-                          {...register("template.value")}
-                          isChecked={watch("template")?.value == template?.value}
-                        >
-                          {template.label}
-                        </RadioCard>
-                      );
-                    })
-                  : null}
-              </div>
-            </div>
+            ) : null}
             {/* Relay chain */}
-            <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
-              <div className="flex flex-row items-center gap-1">
-                <Heading as="h5">Select Relay chain</Heading>
-                <Tooltip text="Select environment for your deployment." placement="top-start">
-                  <IconButton variant="text" colorScheme="gray">
-                    <SvgInfoCircle className="text-base" />
-                  </IconButton>
-                </Tooltip>
+            {watch("template")?.value ? (
+              <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
+                <div className="flex flex-row items-center gap-1">
+                  <Heading as="h5">Select Relay chain</Heading>
+                  {/* <Tooltip text="Select environment for your deployment." placement="top-start">
+                    <IconButton variant="text" colorScheme="gray">
+                      <SvgInfoCircle className="text-base" />
+                    </IconButton>
+                  </Tooltip> */}
+                </div>
+                <div className="grid grid-cols-12 gap-3 lg:gap-6">
+                  {relayChainOption[networkEnvWatcher?.value ?? "testnet"].length
+                    ? relayChainOption[networkEnvWatcher?.value ?? "testnet"].map((relayChain, index) => {
+                        return (
+                          <RadioCard
+                            key={index}
+                            value={relayChain.value}
+                            className="col-span-12 md:col-span-4"
+                            {...register("relayChain.value")}
+                            isChecked={watch("relayChain")?.value == relayChain?.value}
+                          >
+                            {relayChain.label}
+                          </RadioCard>
+                        );
+                      })
+                    : null}
+                </div>
+                {/* Sidecar */}
+                <div className="flex flex-row items-center gap-1">
+                  <Heading as="h5">Select Sidecar</Heading>
+                  {/* <Tooltip text="Select environment for your deployment." placement="top-start">
+                    <IconButton variant="text" colorScheme="gray">
+                      <SvgInfoCircle className="text-base" />
+                    </IconButton>
+                  </Tooltip> */}
+                </div>
+                <div className="grid grid-cols-12 gap-3 lg:gap-6">
+                  {sideCardOptions.length
+                    ? sideCardOptions.map((sidecar, index) => {
+                        return (
+                          <RadioCard
+                            key={index}
+                            value={sidecar.value}
+                            className="col-span-12 md:col-span-4"
+                            {...register("sidecar.value")}
+                            isChecked={watch("sidecar")?.value == sidecar?.value}
+                          >
+                            {sidecar.label}
+                          </RadioCard>
+                        );
+                      })
+                    : null}
+                </div>
               </div>
-              <div className="grid grid-cols-12 gap-3 lg:gap-6">
-                {relayChainOption[networkEnvWatcher?.value ?? "testnet"].length
-                  ? relayChainOption[networkEnvWatcher?.value ?? "testnet"].map((relayChain, index) => {
-                      return (
-                        <RadioCard
-                          key={index}
-                          value={relayChain.value}
-                          className="col-span-12 md:col-span-4"
-                          {...register("relayChain.value")}
-                          isChecked={watch("relayChain")?.value == relayChain?.value}
-                        >
-                          {relayChain.label}
-                        </RadioCard>
-                      );
-                    })
-                  : null}
+            ) : null}
+            {watch("sidecar")?.value == 1 ? (
+              <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
+                <div className="flex flex-row items-center gap-1">
+                  <Heading as="h5">Select Explorer</Heading>
+                  {/* <Tooltip text="Select environment for your deployment." placement="top-start">
+                    <IconButton variant="text" colorScheme="gray">
+                      <SvgInfoCircle className="text-base" />
+                    </IconButton>
+                  </Tooltip> */}
+                </div>
+                <div className="grid grid-cols-12 gap-3 lg:gap-6">
+                  {explorerOption.length
+                    ? explorerOption.map((explorer, index) => {
+                        return (
+                          <RadioCard
+                            key={index}
+                            value={explorer.value}
+                            className="col-span-12 md:col-span-4"
+                            {...register("explorer.value")}
+                            isChecked={watch("explorer")?.value == explorer?.value}
+                          >
+                            {explorer.label}
+                          </RadioCard>
+                        );
+                      })
+                    : null}
+                </div>
               </div>
-            </div>
-
-            {/* Sidecar */}
-            <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
-              <div className="flex flex-row items-center gap-1">
-                <Heading as="h5">Select Sidecar</Heading>
-                <Tooltip text="Select environment for your deployment." placement="top-start">
-                  <IconButton variant="text" colorScheme="gray">
-                    <SvgInfoCircle className="text-base" />
-                  </IconButton>
-                </Tooltip>
-              </div>
-              <div className="grid grid-cols-12 gap-3 lg:gap-6">
-                {sideCardOptions.length
-                  ? sideCardOptions.map((sidecar, index) => {
-                      return (
-                        <RadioCard
-                          key={index}
-                          value={sidecar.value}
-                          className="col-span-12 md:col-span-4"
-                          {...register("sidecar.value")}
-                          isChecked={watch("sidecar")?.value == sidecar?.value}
-                        >
-                          {sidecar.label}
-                        </RadioCard>
-                      );
-                    })
-                  : null}
-              </div>
-            </div>
-
-            <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
-              <div className="flex flex-row items-center gap-1">
-                <Heading as="h5">Select Explorer</Heading>
-                <Tooltip text="Select environment for your deployment." placement="top-start">
-                  <IconButton variant="text" colorScheme="gray">
-                    <SvgInfoCircle className="text-base" />
-                  </IconButton>
-                </Tooltip>
-              </div>
-              <div className="grid grid-cols-12 gap-3 lg:gap-6">
-                {explorerOption.length
-                  ? explorerOption.map((explorer, index) => {
-                      return (
-                        <RadioCard
-                          key={index}
-                          value={explorer.value}
-                          className="col-span-12 md:col-span-4"
-                          {...register("explorer.value")}
-                          isChecked={watch("explorer")?.value == explorer?.value}
-                        >
-                          {explorer.label}
-                        </RadioCard>
-                      );
-                    })
-                  : null}
-              </div>
-            </div>
+            ) : null}
           </div>
         </div>
 
