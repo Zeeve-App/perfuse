@@ -22,9 +22,13 @@ const KeyValuePairInput = ({
 }) => {
   return (
     <div
-      className={tx("mx-2 pb-1 justify-between flex flex-col col-span-12 lg:col-span-6 gap-2", className, {
-        "border-b border-gray-200": enableBorder,
-      })}
+      className={tx(
+        "mx-2 pb-1 justify-between flex flex-col col-span-12 lg:col-span-6 2xl:col-span-3 gap-2",
+        className,
+        {
+          "border-b border-gray-200": enableBorder,
+        },
+      )}
     >
       {isLoading ? (
         <Skeleton role="status" as="div" className="max-w-sm">
@@ -45,7 +49,7 @@ const KeyValuePairInput = ({
             ) : null}
           </div> */}
           <div className="relative">
-            <Input type="text" isDisabled placeholder="Address" value={value} />
+            <Input type="text" isDisabled value={value} />
             {shouldAllowCopy && (typeof value === "string" || typeof value === "number") ? (
               <CopyButton text={value.toString()} className="absolute right-3 top-5 " />
             ) : null}

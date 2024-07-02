@@ -32,9 +32,9 @@ const Parameters = ({ data, isLoading, blockHeight }: ParametersProps) => {
   }, [data?.genesis.runtime?.balances.balances, data?.genesis.runtimeGenesis?.patch.balances.balances]);
 
   return (
-    <div className="col-span-12 flex flex-col 2xl:col-span-3">
+    <div className="col-span-12 flex flex-col">
       <div className="grid grid-cols-12 gap-3 lg:gap-y-6">
-        <div className="col-span-12 lg:col-span-6 2xl:col-span-12">
+        <div className="col-span-12 lg:col-span-6">
           <CardKeyValuePair
             label={"Parchain Block Height"}
             value={blockHeight}
@@ -42,11 +42,11 @@ const Parameters = ({ data, isLoading, blockHeight }: ParametersProps) => {
             isLoading={isLoading}
           />
         </div>
-        <div className="col-span-12 lg:col-span-6 2xl:col-span-12">
+        <div className="col-span-12 lg:col-span-6">
           <CardKeyValuePair
             label={"Total Token Supply"}
             value={
-              <Heading className="font-extrabold text-brand-light" as="h4">
+              <Heading className="font-semibold text-brand-light" as="h2">
                 {tokenSupply ? (
                   <Tooltip
                     text={`${formateNumber(tokenSupply, "standard")} ${data?.properties?.tokenSymbol}`}
@@ -54,7 +54,7 @@ const Parameters = ({ data, isLoading, blockHeight }: ParametersProps) => {
                   >
                     <div>
                       {formateNumber(tokenSupply)}{" "}
-                      <span className={tx("text-sm", TOKEN_COLOR_CLASS)}>{data?.properties?.tokenSymbol}</span>
+                      <span className={tx("text-xl")}>{data?.properties?.tokenSymbol}</span>
                     </div>
                   </Tooltip>
                 ) : (
