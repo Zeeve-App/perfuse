@@ -76,6 +76,9 @@ module.exports = plugin(
       ".scrollbar-hide::-webkit-scrollbar": {
         display: "none",
       },
+      ".shadow-brand-shadow":{
+        "box-shadow": "0 18px 40px 0 rgba(112, 144, 176, 0.12)",
+      }
     });
     addComponents({
       select: {
@@ -121,6 +124,7 @@ module.exports = plugin(
             outline: "#080E121A",
             purple: "#5E35B5",
             pink: "#B53563",
+            shadow:"rgba(112, 144, 176, 0.12)",
           },
         },
         /** do not use until required */

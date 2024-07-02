@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${dmSans.variable} ${poppins.variable} font-sans`}>
+      <body className={`${dmSans.variable} ${poppins.variable} font-poppins`}>
         <ToastProvider>
           <ModalProvider />
           <LayoutProvider>{children}</LayoutProvider>
