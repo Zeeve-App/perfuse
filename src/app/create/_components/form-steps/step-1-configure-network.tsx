@@ -401,7 +401,7 @@ const ConfigureNetwork = () => {
           </div>
         </div>
 
-        <hr className="border-brand-outline" />
+        {/* <hr className="border-brand-outline" /> */}
 
         {/* Parachain Config */}
         {templateWatcher?.value === "custom" && (
@@ -486,7 +486,12 @@ const ConfigureNetwork = () => {
         )}
       </div>
       <ProgressiveFormStepFooter>
-        <Button type="submit" iconRight={<SvgChevronRightSquare />} isDisabled={!isValid || isBinaryFileUploading}>
+        <Button
+          className="bg-brand-gradient-blue"
+          type="submit"
+          iconRight={<SvgChevronRightSquare />}
+          isDisabled={!isValid || isBinaryFileUploading}
+        >
           Next
         </Button>
       </ProgressiveFormStepFooter>

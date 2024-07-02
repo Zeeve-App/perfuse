@@ -3,8 +3,8 @@
 import ZeeveSidebarItemProps from "../type";
 import SvgElement3 from "@/lib/icons/grid/outline/Element3";
 import SvgNodes from "@/lib/icons/programming/outline/Nodes";
-import SvgBubbles from "@/lib/icons/essential/outline/Bubbles";
 import SvgEndpoints1 from "@/lib/icons/programming/outline/Endpoints1";
+import SvgBook2 from "@/lib/icons/school/outline/Book2";
 
 const ITEMS: {
   title?: string;
@@ -25,7 +25,7 @@ const ITEMS: {
       },
       {
         title: "Documents",
-        icon: <SvgBubbles />,
+        icon: <SvgBook2 />,
         path: `#`,
       },
     ],

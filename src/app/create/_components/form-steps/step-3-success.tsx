@@ -4,21 +4,23 @@ import Link from "next/link";
 import { withBasePath } from "@/utils/helpers";
 import { Heading } from "@/lib/components/Heading";
 import { Button } from "@/lib/components/Button";
+import { useCreateNetworkFormStore } from "@/store/create-network";
 
 const DeploySucceed = () => {
   // localStorage.setItem("from", "parachains");
 
+  const { configureNetwork } = useCreateNetworkFormStore();
   return (
-    <div className="flex flex-col gap-y-3 lg:gap-y-6">
-      <div className="bg-brand-gradient-blue grid grid-cols-12 justify-items-center gap-4 rounded-lg border border-brand-outline p-3 lg:p-6">
-        <div className="col-span-6 flex flex-col items-start justify-center gap-2">
-          <Heading as="h3" className="text-white">
-            Deploy New Parachain
+    <div className="flex flex-col gap-y-3 p-4 lg:gap-y-6">
+      <div className="grid grid-cols-12 justify-items-start  gap-4 rounded-lg border border-brand-outline p-3 bg-brand-gradient-blue-48 lg:p-6">
+        <div className="col-span-6 flex flex-col items-start justify-center gap-2 p-4">
+          <Heading as="h3" className="font-normal text-white">
+            Congratulations! You have <br /> successfully deployed &ldquo;
+            {configureNetwork?.chainSpecFile.contents.name}&rdquo;
           </Heading>
-          <p className="text-white">There are no deployed parachains!</p>
           <Link href={"/create"}>
             <Button colorScheme={"light"} className="text-brand-blue">
-              Begin Now
+              View Parachain
             </Button>
           </Link>
         </div>

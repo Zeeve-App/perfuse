@@ -5,7 +5,6 @@ import { Label, LabelProps } from "../Label";
 import { RemoveProperties } from "../../core";
 import { useID } from "@/hooks";
 import { tx } from "@/utils/shared";
-import SvgApiConnect from "@/lib/icons/product/outline/ApiConnect";
 
 interface RadioLabelProps extends LabelProps {}
 

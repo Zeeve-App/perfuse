@@ -66,8 +66,6 @@ const ConfigureRelayChain = () => {
 
   const { goToPreviousStep, goToNextStep } = useProgressiveFormContext();
 
-  const router = useRouter();
-
   const handleBack = () => {
     const data = getValues();
     setFormData({ step: "configureRelayChain", data });
@@ -147,15 +145,7 @@ const ConfigureRelayChain = () => {
               }}
             >
               <Label>Para Id</Label>
-              <Input
-                {...register("paraId")}
-                placeholder="Para Id"
-                isRequired
-                isDisabled
-                // floatingLabel={{
-                //   labelText: "Para Id",
-                // }}
-              />
+              <Input {...register("paraId")} placeholder="Para Id" isRequired isDisabled />
             </FormField>
             {/* Chain Type */}
             <FormField
@@ -167,15 +157,7 @@ const ConfigureRelayChain = () => {
             >
               <Label>Chain Type</Label>
 
-              <Input
-                {...register("chainType")}
-                placeholder="Chain Type"
-                isDisabled
-                isRequired
-                // floatingLabel={{
-                //   labelText: "Chain Type",
-                // }}
-              />
+              <Input {...register("chainType")} placeholder="Chain Type" isDisabled isRequired />
             </FormField>
             {/* Name */}
             <FormField
@@ -392,6 +374,7 @@ const ConfigureRelayChain = () => {
                               },
                             })}
                             value={item.value}
+                            colorScheme={"blue"}
                             isDisabled={item.isDisabled}
                           >
                             {item.name}
@@ -467,7 +450,12 @@ const ConfigureRelayChain = () => {
         <Button variant="outline" iconLeft={<SvgChevronLeftSquare />} onClick={handleBack}>
           Back
         </Button>
-        <Button type="submit" iconRight={<SvgChevronRightSquare />} isDisabled={!isValid}>
+        <Button
+          className="bg-brand-gradient-blue"
+          type="submit"
+          iconRight={<SvgChevronRightSquare />}
+          isDisabled={!isValid}
+        >
           Deploy
         </Button>
       </ProgressiveFormStepFooter>

@@ -1,11 +1,7 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
 import Link from "next/link";
-import { DashboardCard } from "./_components/dashboard-card";
 import { withBasePath } from "@/utils/helpers";
-import { Navigation } from "@/lib/components/navigation";
-import SvgEdit2 from "@/lib/icons/document/outline/Edit2";
 import { Heading } from "@/lib/components/Heading";
 import { Button } from "@/lib/components/Button";
 
@@ -14,8 +10,8 @@ const ListPageClient = () => {
 
   return (
     <div className="flex flex-col gap-y-3 lg:gap-y-6">
-      <div className="bg-brand-gradient-blue-48 grid grid-cols-12 justify-items-center gap-4 rounded-lg border border-brand-outline p-3 lg:p-6">
-        <div className="col-span-6 flex flex-col items-start justify-center gap-2">
+      <div className="grid grid-cols-12 justify-items-start  gap-4 rounded-lg border border-brand-outline p-3 bg-brand-gradient-blue-48 lg:p-6">
+        <div className="col-span-6 flex flex-col items-start justify-center gap-2 p-4">
           <Heading as="h3" className="text-white">
             Deploy New Parachain
           </Heading>

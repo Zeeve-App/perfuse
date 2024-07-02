@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import React, { useState } from "react";
 import ConfigureNetwork from "./_components/form-steps/step-1-configure-network";
 import ConfigureRelayChain from "./_components/form-steps/step-2-configure-relay-chain";
@@ -12,7 +11,6 @@ import {
   ProgressiveFormHeaderItem,
   ProgressiveFormBody,
 } from "@/lib/components/ProgressiveForm";
-import { useCreateNetworkFormStore } from "@/store/create-network";
 import { Heading } from "@/lib/components/Heading";
 import SvgCheckCircle from "@/lib/icons/essential/outline/CheckCircle";
 
@@ -32,17 +30,9 @@ const getIcons = (step: number) => ({
 
 const CreatePageClient = () => {
   const [activeStep, setActiveStep] = useState<number>(0);
-  // const createNetworkForm = useCreateNetworkFormStore();
 
   return (
-    <ProgressiveForm
-      activeStep={activeStep}
-      setActiveStep={setActiveStep}
-      className="bg-white"
-      // onSubmit={() => {
-      //   console.log(JSON.stringify(createNetworkForm));
-      // }}
-    >
+    <ProgressiveForm activeStep={activeStep} setActiveStep={setActiveStep} className="bg-white">
       <Heading as="h3" className="p-3 lg:p-6">
         Set Up Your Parachain
       </Heading>

@@ -40,7 +40,7 @@ const RegisterParachainInfo = ({ className, show }: InfoProps) => {
             onClick={() => {
               openModal("registerParachain", { registerParachain: { networkId } });
             }}
-            className="bg-brand-gradient-blue rounded-full font-semibold"
+            className="font-semibold bg-brand-gradient-blue"
           >
             Register Now
           </Button>
