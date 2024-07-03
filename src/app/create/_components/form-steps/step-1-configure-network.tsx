@@ -25,11 +25,8 @@ import { FormField } from "@/lib/components/Form/FormField";
 import SvgArrowUpFromBucket from "@/lib/icons/arrows/outline/ArrowUpFromBucket";
 import SvgChevronRightSquare from "@/lib/icons/arrows/outline/ChevronRightSquare";
 import { FileUpload } from "@/lib/components/Form/FileUpload";
-import { withBasePath } from "@/utils/helpers";
 import useApi from "@/api-client";
 import { RadioCard } from "@/lib/components/RadioCard";
-import { Tooltip } from "@/lib/components/Tooltip";
-import SvgInfoCircle from "@/lib/icons/essential/outline/InfoCircle";
 import SvgApiConnect from "@/lib/icons/product/outline/ApiConnect";
 import { Radio } from "@/lib/components/Form";
 
@@ -198,6 +195,8 @@ const ConfigureNetwork = () => {
     });
 
     const chainspecContent = data.chainSpecFile.contents;
+    console.log(chainspecContent);
+
     const runtimeGenesis = chainspecContent.genesis.runtimeGenesis;
     setFormData({
       step: "configureRelayChain",
@@ -206,9 +205,11 @@ const ConfigureNetwork = () => {
         version: { value: chainspecContent.relay_chain, label: chainspecContent.relay_chain },
         paraId: chainspecContent.para_id,
         decimalValue: chainspecContent.properties?.tokenDecimals,
+        protocolId: chainspecContent.protocolId ?? undefined,
         tokenName: chainspecContent.properties?.tokenSymbol,
         telemetryEndpoint: chainspecContent.telemetryEndpoints ?? undefined,
         name: chainspecContent.name ?? undefined,
+        encoding: chainspecContent.properties ? "ss58Format" : undefined,
         chainType: chainspecContent.chainType ?? undefined,
         candidacyBond: chainspecContent.genesis.runtime?.collatorSelection.candidacyBond ?? undefined,
         collatorNodes: runtimeGenesis?.patch.aura.authorities.map((col, idx) => {

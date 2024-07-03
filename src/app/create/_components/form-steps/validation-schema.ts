@@ -52,6 +52,7 @@ export const configureRelayChainValidationSchema = yup
     tokenName: yup.string(),
     encoding: yup.string(),
     candidacyBond: yup.number(),
+    protocolId: yup.string(),
     collatorNodes: yup.array().of(
       yup.object({
         collatorName: yup.string(),

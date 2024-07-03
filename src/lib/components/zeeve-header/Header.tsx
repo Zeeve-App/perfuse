@@ -221,11 +221,17 @@ const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
           <DropdownMenu isOpen={isProfileDropdownOpen} onClose={handleProfileDropdownClose}>
             <DropdownMenuButton as={IconButton} variant="text" isRounded={true} onClick={handleProfileDropdownToggle}>
               {initials ? (
-                <div className="flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-gradient-to-r from-brand-cyan to-brand-teal text-white">
-                  {initials}
-                </div>
+                <>
+                  <div className="flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-gradient-to-r from-brand-cyan to-brand-teal text-white">
+                    {initials}
+                  </div>
+                  <span className="text-brand-dark-blue">&nbsp; Demo</span>
+                </>
               ) : (
-                <Avatar src={withBasePath("/assets/images/avatar-placeholder.svg")} />
+                <>
+                  <Avatar src={withBasePath("/assets/images/avatar-placeholder.svg")} />
+                  <span>Demo</span>
+                </>
               )}
             </DropdownMenuButton>
             <ProfileDropdownMenu profileDropdownMenu={profileDropdownMenu} name={name} email={user?.email} />

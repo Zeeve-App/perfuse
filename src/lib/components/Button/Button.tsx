@@ -4,7 +4,7 @@ import { Spinner } from "../Spinner";
 import { tx } from "@/utils/shared";
 
 const styles = cva(
-  "inline-flex select-none items-center justify-center gap-1 rounded-full border border-transparent text-center align-middle font-poppins font-medium tracking-wide outline-none transition-all duration-300 focus:ring-2 focus:ring-zinc-300 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50",
+  "inline-flex select-none items-center justify-center gap-1 rounded-full border border-transparent text-center align-middle font-poppins font-semibold tracking-wide outline-none transition-all duration-300 focus:ring-2 focus:ring-zinc-300 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
       variant: {

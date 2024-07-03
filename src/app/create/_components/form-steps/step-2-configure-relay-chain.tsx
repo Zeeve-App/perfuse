@@ -168,16 +168,51 @@ const ConfigureRelayChain = () => {
               }}
             >
               <Label>Name</Label>
-
-              <Input
-                {...register("name")}
-                placeholder="Name"
-                isDisabled
-                isRequired
-                // floatingLabel={{
-                //   labelText: "Name",
-                // }}
-              />
+              <Input {...register("name")} placeholder="Name" isDisabled isRequired />
+            </FormField>
+            {/* protocol Id */}
+            <FormField
+              className="col-span-12 md:col-span-6 lg:col-span-3"
+              helper={{
+                status: "error",
+                text: errors.protocolId?.message?.toString(),
+              }}
+            >
+              <Label>Protocol Id</Label>
+              <Input {...register("protocolId")} placeholder="NA" isDisabled isRequired />
+            </FormField>
+            {/* Decimal */}
+            <FormField
+              className="col-span-12 md:col-span-6 lg:col-span-3"
+              helper={{
+                status: "error",
+                text: errors.decimalValue?.message?.toString(),
+              }}
+            >
+              <Label>Decimal</Label>
+              <Input {...register("decimalValue")} placeholder="NA" isDisabled isRequired />
+            </FormField>
+            {/* Candidacy Bond */}
+            <FormField
+              className="col-span-12 md:col-span-6 lg:col-span-3"
+              helper={{
+                status: "error",
+                text: errors.candidacyBond?.message?.toString(),
+              }}
+            >
+              <Label>Candidacy Bond</Label>
+              <Input {...register("candidacyBond")} placeholder="NA" isDisabled isRequired />
+            </FormField>
+            {/* Encoding */}
+            <FormField
+              className="col-span-12 md:col-span-6 lg:col-span-3"
+              helper={{
+                status: "error",
+                text: errors.encoding?.message?.toString(),
+              }}
+            >
+              <Label>Encoding</Label>
+              <Input {...register("encoding")} placeholder="NA" isDisabled isRequired />
             </FormField>
             {/* Telemetry Endpoint */}
             <FormField
@@ -189,13 +224,7 @@ const ConfigureRelayChain = () => {
             >
               <Label>Telemetry</Label>
 
-              <Input
-                {...register("telemetryEndpoint")}
-                placeholder="Telemetry Endpoint"
-                floatingLabel={{
-                  labelText: "Telemetry Endpoint",
-                }}
-              />
+              <Input {...register("telemetryEndpoint")} placeholder="NA" isDisabled />
             </FormField>
 
             <FormField
@@ -356,11 +385,11 @@ const ConfigureRelayChain = () => {
               <Heading as="h5" className="col-span-12">
                 Please Select One Authentication Method From The Below
               </Heading>
-              <div className="grid grid-cols-12 gap-3 lg:gap-6">
+              <div className="col-span-12 grid grid-cols-12 gap-3 lg:gap-6">
                 {authenticationMethods.length
                   ? authenticationMethods.map((item) => {
                       return (
-                        <div key={item.name} className="col-span-6 flex flex-row items-center gap-1 lg:col-span-6">
+                        <div key={item.name} className="col-span-6 flex flex-row items-center gap-1 lg:col-span-2">
                           <Radio
                             {...register(`rpcNodes.${index}.credentials.type`, {
                               onChange: (e) => {

@@ -30,7 +30,7 @@ const SidebarItem: SidebarItemComponent = React.forwardRef(
           {
             "px-10": isChild,
             "bg-gradient-to-r from-brand-cyan/10 to-brand-teal/5": isActive,
-            "text-brand-blue": isActive,
+            "text-brand-blue ": isActive,
           },
           className,
         )}
@@ -38,7 +38,7 @@ const SidebarItem: SidebarItemComponent = React.forwardRef(
         {...rest}
       >
         {iconLeft ? iconLeft : null}
-        <span className="flex flex-col gap-y-1 text-base font-normal leading-4">
+        <span className="flex flex-col gap-y-1 text-base font-normal leading-4 ">
           {title}
           {badge ? badge : null}
         </span>

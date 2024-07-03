@@ -79,7 +79,7 @@ const ProgressiveFormHeaderItem = forwardRef<HTMLDivElement, ProgressiveFormHead
           {...rest}
           className={tx(
             "flex select-none flex-row items-start gap-2.5 p-4",
-            { "opacity-50": status === "idle" },
+            // { "opacity-50": status === "idle" },
             className,
           )}
           data-status={status}
@@ -95,13 +95,22 @@ const ProgressiveFormHeaderItem = forwardRef<HTMLDivElement, ProgressiveFormHead
             <motion.div>
               <motion.div
                 {...stepLabelProps}
-                className={tx("text-xs font-medium leading-[18px] -tracking-[0.4px]", stepLabelProps?.className)}
+                className={tx(
+                  "text-xs font-medium text-brand-gray leading-[18px] -tracking-[0.4px]",
+                  stepLabelProps?.className,
+                  {
+                    "text-brand-blue": status === "active",
+                  },
+                )}
               >
                 {getStepLabel(stepLabel, componentIndex)}
               </motion.div>
               <motion.div
                 {...titleProps}
-                className={tx("font-poppins text-sm font-semibold tracking-[0.1px]", titleProps?.className)}
+                className={tx(
+                  "font-poppins text-sm text-brand-gray font-semibold tracking-[0.1px]",
+                  titleProps?.className,
+                )}
               >
                 {title}
               </motion.div>

@@ -16,7 +16,7 @@ import SvgCheckCircle from "@/lib/icons/essential/outline/CheckCircle";
 
 const getIcons = (step: number) => ({
   idle: (
-    <div className="flex size-5 items-center justify-center rounded-full border-2 border-brand-gray">
+    <div className="flex size-5 items-center justify-center rounded-full border border-brand-gray text-brand-gray">
       <span>{step}</span>
     </div>
   ),
