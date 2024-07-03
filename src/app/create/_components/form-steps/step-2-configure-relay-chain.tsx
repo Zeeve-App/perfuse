@@ -2,23 +2,21 @@
 import * as yup from "yup";
 import { useFieldArray, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { authenticationMethods } from "../constants/create-network";
 import { configureRelayChainValidationSchema } from "./validation-schema";
+import AddCollatorForm from "./_components/add-collator";
+import AddRpcForm from "./_components/add-rpc";
 import { useCreateNetworkFormStore } from "@/store/create-network";
 import { relayChainTypeOptions } from "@/constants/parachain-options";
-import { Button, IconButton } from "@/lib/components/Button";
+import { Button } from "@/lib/components/Button";
 import { FormField } from "@/lib/components/Form/FormField";
 import { Heading } from "@/lib/components/Heading";
 import { useProgressiveFormContext, ProgressiveFormStepFooter } from "@/lib/components/ProgressiveForm";
-import { Checkbox, FormFieldStatus, Input, Label, Password, Radio } from "@/lib/components/Form";
+import { Input, Label } from "@/lib/components/Form";
 
 import HTTP_STATUS from "@/constants/http";
 import { CreatePerfuseApiPayload } from "@/app/api/create/route";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import useApi from "@/api-client";
-import { tx } from "@/utils/shared";
-import SvgPlusSquare from "@/lib/icons/essential/outline/PlusSquare";
-import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from "@/lib/components/Accordion";
 
 type ConfigureRelayChainSchemaType = yup.InferType<typeof configureRelayChainValidationSchema>;
 
@@ -246,248 +244,20 @@ const ConfigureRelayChain = () => {
             </FormField>
           </div>
 
-          <Heading as="h4" className="text-brand-dark-blue">
-            Collator Nodes
-          </Heading>
-          {collatorFields.map((e, i) => {
-            return (
-              <Accordion key={i}>
-                <AccordionItem>
-                  <AccordionHeader className="p-3 font-medium">{`Collator ${i + 1}`}</AccordionHeader>
-                  <AccordionBody>
-                    <div key={i} className="grid grid-cols-12 items-start gap-3 p-3 lg:gap-6">
-                      {/* Collator Name */}
-                      <FormField
-                        className="col-span-12 md:col-span-6 lg:col-span-3"
-                        helper={{
-                          status: "error",
-                          text: errors.collatorNodes?.[i]?.collatorName?.message?.toString(),
-                        }}
-                      >
-                        <Label>Collator Name</Label>
-                        <Input
-                          {...register(`collatorNodes.${i}.collatorName`)}
-                          type="text"
-                          isRequired
-                          isDisabled
-                          placeholder="Collator Name"
-                        />
-                      </FormField>
-                      {/* Address */}
-                      <FormField
-                        className="col-span-12 md:col-span-6 lg:col-span-3"
-                        helper={{
-                          status: "error",
-                          text: errors.collatorNodes?.[i]?.collatorAddress?.message?.toString(),
-                        }}
-                      >
-                        <Label>Address</Label>
-                        <Input
-                          {...register(`collatorNodes.${i}.collatorAddress`)}
-                          type="text"
-                          isRequired
-                          isDisabled
-                          placeholder="Address"
-                        />
-                      </FormField>
-                      {/* Balance */}
-                      <FormField
-                        className="col-span-12 md:col-span-6 lg:col-span-3"
-                        helper={{
-                          status: "error",
-                          text: errors.collatorNodes?.[i]?.collatorBalance?.message?.toString(),
-                        }}
-                      >
-                        <Label>Balance</Label>
-                        <Input
-                          {...register(`collatorNodes.${i}.collatorBalance`)}
-                          type="text"
-                          isRequired
-                          isDisabled
-                          placeholder="Balance"
-                        />
-                      </FormField>
-                      {/* Rpc Cors */}
-                      <FormField
-                        className="col-span-12 md:col-span-6 lg:col-span-3"
-                        helper={{
-                          status: "error",
-                          text: errors.collatorNodes?.[i]?.rpcCors?.message?.toString(),
-                        }}
-                      >
-                        <Label>Rpc Cors</Label>
-                        <Input
-                          {...register(`collatorNodes.${i}.rpcCors`)}
-                          type="text"
-                          isRequired
-                          isDisabled
-                          placeholder="Rpc Cors"
-                        />
-                      </FormField>
-                    </div>
-                  </AccordionBody>
-                  <hr className="col-span-12 border-brand-light" />
-                </AccordionItem>
-              </Accordion>
-            );
-          })}
-          <div className="flex justify-end">
-            <IconButton
-              size={"large"}
-              variant={"text"}
-              className="font-bold"
-              isDisabled
-              onClick={() => {
-                appendCollator({});
-              }}
-            >
-              Add More <SvgPlusSquare className="pl-2" height={30} width={30} />
-            </IconButton>
-          </div>
+          <AddCollatorForm
+            appendCollator={appendCollator}
+            collatorFields={collatorFields}
+            errors={errors}
+            register={register}
+          />
 
-          <Heading as="h4" className="text-brand-dark-blue">
-            RPC Nodes
-          </Heading>
-          {fields.map((field, index) => (
-            <div key={field.id} className="grid grid-cols-12 items-start gap-3 p-3 lg:gap-6">
-              {/* Node name */}
-              <FormField
-                className="col-span-12 md:col-span-6 lg:col-span-3"
-                helper={{
-                  status: "error",
-                  text: errors.rpcNodes?.[index]?.name?.message?.toString(),
-                }}
-              >
-                <Label>RPC Name</Label>
-                <Input
-                  {...register(`rpcNodes.${index}.name`)}
-                  type="text"
-                  isRequired
-                  placeholder="Name"
-                  floatingLabel={{
-                    labelText: "Name",
-                  }}
-                />
-              </FormField>
-              {/* Enabled Public Endpoint */}
-              <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
-                <Heading as="h5">Enabled Public Endpoint</Heading>
-                <div className="grid grid-cols-12 gap-3 lg:gap-6">
-                  <Checkbox
-                    {...register(`rpcNodes.${index}.http`)}
-                    checkboxLabelProps={{
-                      className: tx("text-xm font-poppins col-span-6 lg:col-span-2"),
-                    }}
-                  >
-                    HTTPS
-                  </Checkbox>
-                  <Checkbox
-                    {...register(`rpcNodes.${index}.ws`)}
-                    checkboxLabelProps={{
-                      className: "text-sm font-poppins col-span-6 lg:col-span-2",
-                    }}
-                    isDisabled
-                  >
-                    WSS
-                  </Checkbox>
-                </div>
-              </div>
-              {/* <hr className="col-span-12 border-brand-outline" /> */}
-              {/* authentication methods */}
-              <Heading as="h5" className="col-span-12">
-                Please Select One Authentication Method From The Below
-              </Heading>
-              <div className="col-span-12 grid grid-cols-12 gap-3  lg:gap-6">
-                {authenticationMethods.length
-                  ? authenticationMethods.map((item) => {
-                      return (
-                        <div key={item.name} className="col-span-6 flex flex-row items-center gap-1 lg:col-span-2">
-                          <Radio
-                            {...register(`rpcNodes.${index}.credentials.type`, {
-                              onChange: (e) => {
-                                if (e.target.value === "api_key") {
-                                  // unregister username and password if selected authorization method is `api_key`
-                                  unregister([
-                                    `rpcNodes.${index}.credentials.username`,
-                                    `rpcNodes.${index}.credentials.password`,
-                                  ]);
-                                }
-                              },
-                            })}
-                            value={item.value}
-                            colorScheme={"blue"}
-                            isDisabled={item.isDisabled}
-                          >
-                            {item.name}
-                          </Radio>
-                          {/* {item.tooltipText ? (
-                            <Tooltip text={item.tooltipText} placement="top-start">
-                              <IconButton variant="text" colorScheme="gray">
-                                <SvgInfoCircle className="text-base" />
-                              </IconButton>
-                            </Tooltip>
-                          ) : null} */}
-                        </div>
-                      );
-                    })
-                  : null}
-              </div>
-              {errors.rpcNodes?.[index]?.credentials && (
-                <FormFieldStatus className="text-xs lg:text-sm" status="error">
-                  {errors.rpcNodes?.[index]?.credentials?.message?.toString()}
-                </FormFieldStatus>
-              )}
-              {/* show username and password fields only in case of "basic_auth" */}
-              {watchRPCNodes?.[index]?.credentials?.type === "basic_auth" ? (
-                <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
-                  <Heading as="h5">Basic Auth</Heading>
-                  <div className="grid grid-cols-12 gap-3 lg:gap-6">
-                    {/* username */}
-                    <FormField
-                      className="col-span-12 md:col-span-6 lg:col-span-3"
-                      helper={{
-                        status: "error",
-                        text: errors.rpcNodes?.[index]?.credentials?.username?.message?.toString(),
-                      }}
-                    >
-                      <Input
-                        {...register(`rpcNodes.${index}.credentials.username`)}
-                        type="text"
-                        isRequired
-                        placeholder="Username"
-                        floatingLabel={{
-                          labelText: "Username",
-                        }}
-                      />
-                    </FormField>
-                    {/* password */}
-                    <FormField
-                      className="col-span-12 md:col-span-6 lg:col-span-3"
-                      helper={{
-                        status: "error",
-                        text: errors.rpcNodes?.[index]?.credentials?.password?.message?.toString(),
-                      }}
-                    >
-                      <Password
-                        {...register(`rpcNodes.${index}.credentials.password`)}
-                        shouldToggleMask
-                        isRequired
-                        placeholder="Password"
-                        floatingLabel={{
-                          labelText: "Password",
-                        }}
-                      />
-                    </FormField>
-                  </div>
-                </div>
-              ) : null}
-            </div>
-          ))}
-          <div className="flex justify-end">
-            <IconButton isDisabled size={"large"} variant={"text"} className="font-bold">
-              Add More <SvgPlusSquare className="pl-2" height={30} width={30} />
-            </IconButton>
-          </div>
+          <AddRpcForm
+            errors={errors}
+            fields={fields}
+            register={register}
+            unregister={unregister}
+            watchRPCNodes={watchRPCNodes}
+          />
         </div>
 
         {/* <hr className="border-brand-outline" /> */}

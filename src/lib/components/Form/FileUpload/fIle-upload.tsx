@@ -1,14 +1,11 @@
 "use client";
 import React, { forwardRef } from "react";
 import { ControllerRenderProps } from "react-hook-form";
-import ShortString from "../../utils/short-string";
 import { Heading } from "../../Heading";
 import { Button } from "../../Button";
 import { useID } from "@/hooks";
-import { Label } from "@/lib/components/Form";
 import SvgArrowUpFromBucket from "@/lib/icons/arrows/outline/ArrowUpFromBucket";
 import { Progress } from "@/lib/components/Progress";
-import SvgPhoneCheck from "@/lib/icons/phone/outline/PhoneCheck";
 import SvgCheckCircle from "@/lib/icons/essential/outline/CheckCircle";
 import { tx } from "@/utils/shared";
 
