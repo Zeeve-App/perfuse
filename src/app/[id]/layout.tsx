@@ -25,22 +25,6 @@ const IdPageClient: React.FC<{ children: React.ReactNode; params: { id: string }
 
   const task = await getTask({ task_associated_network_id: network?.network_id, task_type: "network_provision" });
 
-  const items = [
-    {
-      href: `#`,
-      label: "Dashboard",
-    },
-    {
-      href: "/my-parachains",
-      label: "My Parachains",
-    },
-    {
-      href: `/${id}`,
-      label: network?.network_name ?? "name",
-      isActive: true,
-    },
-  ];
-
   if (!network) {
     return "network not found";
   }
@@ -48,18 +32,7 @@ const IdPageClient: React.FC<{ children: React.ReactNode; params: { id: string }
   return (
     <div className="flex flex-col gap-y-3 lg:gap-y-6">
       <div className="rounded-lg border border-brand-outline bg-white px-3 pb-3 pt-6 lg:px-6 lg:pb-6">
-        <Navigation
-          heading={"Parachains"}
-          // logo={
-          //   <Image
-          //     src={withBasePath("/assets/images/parachains-logo.svg")}
-          //     alt="parachains-logo"
-          //     width={32}
-          //     height={32}
-          //   />
-          // }
-          // breadcrumb={{ items: items }}
-        >
+        <Navigation heading={"Parachains"}>
           {/* page actions */}
           <Actions network={network} task={task} explorerUrl={{ paraExplorerUrl, relayExplorerUrl }} />
         </Navigation>

@@ -71,8 +71,8 @@ interface Genesis {
   runtimeGenesis?: {
     code: string;
     patch: {
-      aura: {
-        authorities: string[];
+      aura?: {
+        authorities?: string[];
       };
       balances: {
         balances: [address: string, balance: string][];
@@ -85,6 +85,9 @@ interface Genesis {
       };
       sudo: {
         key: string;
+      };
+      session?: {
+        keys: [string, string, { aura: string }][];
       };
     };
   };

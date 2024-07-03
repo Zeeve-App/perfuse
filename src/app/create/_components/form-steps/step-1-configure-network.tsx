@@ -192,6 +192,10 @@ const ConfigureNetwork = () => {
     console.log(chainspecContent);
 
     const runtimeGenesis = chainspecContent.genesis.runtimeGenesis;
+    const collatorAddresses = runtimeGenesis?.patch?.aura?.authorities ?? [
+      runtimeGenesis?.patch.session?.keys?.[0]?.[0],
+      runtimeGenesis?.patch.session?.keys?.[0]?.[1],
+    ];
     setFormData({
       step: "configureRelayChain",
       data: {
@@ -206,7 +210,7 @@ const ConfigureNetwork = () => {
         encoding: chainspecContent.properties ? "ss58Format" : undefined,
         chainType: chainspecContent.chainType ?? undefined,
         candidacyBond: chainspecContent.genesis.runtime?.collatorSelection.candidacyBond ?? undefined,
-        collatorNodes: runtimeGenesis?.patch?.aura?.authorities.map((col, idx) => {
+        collatorNodes: collatorAddresses?.map((col, idx) => {
           const bal = runtimeGenesis?.patch?.balances?.balances?.find((e) => e[0] === col)?.[1];
           return {
             collatorName: `collator_name_${idx + 1}`,
