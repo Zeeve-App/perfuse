@@ -26,7 +26,7 @@ export const configureNetworkValidationSchema = yup
       label: yup.string(),
     }),
     sidecar: yup.object({
-      value: yup.boolean().required("Select a sidecar."),
+      value: yup.number<0 | 1>().required("Select a sidecar."),
     }),
     explorer: yup.object({
       value: yup.string().required("Select a explorer."),
@@ -52,6 +52,7 @@ export const configureRelayChainValidationSchema = yup
     tokenName: yup.string(),
     encoding: yup.string(),
     candidacyBond: yup.number(),
+    protocolId: yup.string(),
     collatorNodes: yup.array().of(
       yup.object({
         collatorName: yup.string(),

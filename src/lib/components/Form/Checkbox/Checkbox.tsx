@@ -13,7 +13,7 @@ const CheckboxLabel = forwardRef<HTMLLabelElement, CheckboxLabelProps>((props, r
 
   return (
     <Label
-      className={tx("cursor-pointer select-none gap-2 text-sm font-medium", className)}
+      className={tx("cursor-pointer select-none gap-2 text-sm font-medium ", className)}
       isRequired={isRequired}
       isDisabled={isDisabled}
       ref={ref}
@@ -25,7 +25,7 @@ const CheckboxLabel = forwardRef<HTMLLabelElement, CheckboxLabelProps>((props, r
 });
 
 const styles = cva(
-  "cursor-pointer appearance-none rounded border-2 border-brand-outline focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-1 focus-visible:outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+  "cursor-pointer appearance-none  rounded-full border-2 border-brand-outline focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-1 focus-visible:outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
       colorScheme: {

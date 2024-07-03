@@ -9,7 +9,7 @@ const Sidebar = forwardRef<HTMLDivElement, SidebarProps>((props, ref) => {
 
   return (
     <motion.aside
-      className={tx(`flex h-screen min-h-screen w-full select-none flex-col bg-brand-dark text-white`, className)}
+      className={tx(`flex h-screen min-h-screen w-full select-none flex-col text-brand-gray`, className)}
       ref={ref}
       {...rest}
     >

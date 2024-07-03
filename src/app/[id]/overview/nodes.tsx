@@ -33,51 +33,35 @@ const Nodes = ({ isLoading, nodes }: { isLoading: boolean; nodes: NodeDbRow[] })
   const networkId = params.id;
   const rowPerPage = 3;
   return (
-    <div className="col-span-12 flex flex-col overflow-hidden rounded-lg border border-brand-outline xl:col-span-6 2xl:col-span-5">
-      <div className="p-4">
-        <div className="flex items-center justify-between">
-          <Heading as="h4">Nodes</Heading>
-          <Link href={`/${networkId}/my-nodes`}>
-            <Tooltip text={"My Nodes"} placement="top-start">
-              <IconButton colorScheme="primary" variant={"ghost"} size={"small"}>
-                <SvgArrowUpRightFromSquare className="text-xl" />
-              </IconButton>
-            </Tooltip>
-          </Link>
-        </div>
+    <div className="shadow-brand-shadow col-span-12 flex flex-col gap-2 overflow-hidden rounded-lg p-4 xl:col-span-6 ">
+      <div className="flex items-center justify-between">
+        <Heading as="h4">Nodes</Heading>
+        <Link href={`/${networkId}/my-nodes`}>
+          <Tooltip text={"My Nodes"} placement="top-start">
+            <IconButton colorScheme="primary" variant={"ghost"} size={"small"}>
+              <SvgArrowUpRightFromSquare className="text-xl" />
+            </IconButton>
+          </Tooltip>
+        </Link>
       </div>
-      <div className="grid grid-cols-12 gap-3 p-2">
-        <div className="col-span-12 lg:col-span-4">
-          <div className="grid grid-cols-12 gap-3 p-2">
-            <div className="col-span-12 lg:col-span-12">
-              <CardKeyValuePair label={"Collator Nodes"} value={2} className="lg:p-4" isLoading={isLoading} />
-            </div>
-            <div className="col-span-12 lg:col-span-12">
-              <CardKeyValuePair label={"RPC Nodes"} value={1} className="lg:p-4" isLoading={isLoading} />
-            </div>
-          </div>
-        </div>
-        <div className="col-span-12 lg:col-span-8">
-          <div className="p-2">
-            <Heading as="h6" className="mb-3">
-              Recently Deployed
-            </Heading>
-            <ReactTable
-              data={
-                nodes
-                  ? nodes.filter((node, index) => {
-                      return index < rowPerPage;
-                    })
-                  : []
-              }
-              columns={nodeTableColumns}
-              isLoading={isLoading}
-              classNames={{
-                table: "table-auto lg:table-fixed",
-              }}
-            />
-          </div>
-        </div>
+      <div className="">
+        <Heading as="h6" className="mb-1">
+          Recently Deployed
+        </Heading>
+        <ReactTable
+          data={
+            nodes
+              ? nodes.filter((node, index) => {
+                  return index < rowPerPage;
+                })
+              : []
+          }
+          columns={nodeTableColumns}
+          isLoading={isLoading}
+          classNames={{
+            table: "table-auto lg:table-fixed",
+          }}
+        />
       </div>
     </div>
   );

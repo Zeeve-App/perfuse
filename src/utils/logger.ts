@@ -56,8 +56,6 @@ class Logger {
 
   // eslint-disable-next-line no-undef
   constructor(module: NodeModule, moduleName: string) {
-    console.log(module);
-
     const fileName = path.relative(module.path ?? "/default", module.filename ?? "default");
     this.meta = {
       fileName,

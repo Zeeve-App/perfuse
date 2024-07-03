@@ -7,7 +7,7 @@ const SidebarItems = forwardRef<HTMLDivElement, SidebarItemsProps>((props, ref) 
   const { className, children, ...rest } = props;
 
   return (
-    <div className={tx("flex flex-col overflow-y-scroll scrollbar-hide", className)} ref={ref} {...rest}>
+    <div className={tx("flex flex-col scrollbar-hide", className)} ref={ref} {...rest}>
       {children}
     </div>
   );

@@ -8,8 +8,10 @@ export default function ParachainChainSpecPrev({ data }: { data?: ChainSpecFileT
       customStyle={{
         fontSize: "12px",
         backgroundColor: "transparent",
-        padding: "0",
+        padding: "1em",
         margin: "0",
+        background: "#f4f7fe",
+        overflowX: "hidden",
       }}
       language="json"
       style={theme.solarizedlight}

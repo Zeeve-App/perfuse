@@ -1,7 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
 import Overview from "./overview";
-import { getNetworkData, getNodes } from "@/db-queries";
+import { getNetworkData, getNodes, getTask } from "@/db-queries";
 import { ChainSpecFileType } from "@/types/chain-spec";
 
 export const metadata: Metadata = {
@@ -17,6 +17,7 @@ const CreatePage = async ({
 }) => {
   const network = await getNetworkData(params.id);
   const nodes = await getNodes(params.id);
+  const task = await getTask({ task_associated_network_id: network?.network_id, task_type: "network_provision" });
   const chainSpec: ChainSpecFileType = JSON.parse(network?.network_chain_spec_file_json ?? "");
   if (!network) {
     return <>Error while loading network. Invalid network Id</>;
@@ -31,6 +32,7 @@ const CreatePage = async ({
       paraId={chainSpec.para_id.toString()}
       relayCainType={network.network_relay_chain}
       nodes={nodes}
+      provisionedAt={task?.task_updated_at}
     />
   );
 };

@@ -13,6 +13,7 @@ import { Heading } from "@/lib/components/Heading";
 import { Tooltip } from "@/lib/components/Tooltip";
 import { ColumnDef, ReactTable, Row, createColumnHelper } from "@/lib/components/ReactTable";
 import { NodeDbRow } from "@/db-queries";
+import SvgInfoCircle from "@/lib/icons/essential/outline/InfoCircle";
 
 const NodeTableRowActions = ({ row }: { row: Row<NodeDbRow> }) => {
   const { openModal } = useModalStore();
@@ -22,7 +23,7 @@ const NodeTableRowActions = ({ row }: { row: Row<NodeDbRow> }) => {
       <Tooltip text="View Details" placement="top-start">
         <IconButton
           colorScheme="primary"
-          variant={"ghost"}
+          variant={"text"}
           onClick={() => {
             openModal("nodeDetails", {
               nodeDetails: {
@@ -33,17 +34,17 @@ const NodeTableRowActions = ({ row }: { row: Row<NodeDbRow> }) => {
             });
           }}
         >
-          <SvgInfoSquare width={24} height={24} />
+          <SvgInfoCircle width={24} height={24} color="#1B2559" />
         </IconButton>
       </Tooltip>
       <Tooltip text="Analytics" placement="top-start">
-        <IconButton colorScheme="primary" variant={"ghost"} isDisabled={true}>
-          <SvgChart5Square width={24} height={24} />
+        <IconButton variant={"text"} isDisabled={true}>
+          <SvgChart5Square width={24} height={24} color="#1B2559" />
         </IconButton>
       </Tooltip>
       <Tooltip text="Delete" placement="top-start">
-        <IconButton colorScheme="red" variant={"ghost"} isDisabled={true}>
-          <SvgTrashSquare width={24} height={24} />
+        <IconButton variant={"text"} isDisabled={true}>
+          <SvgTrashSquare width={24} height={24} color="#1B2559" />
         </IconButton>
       </Tooltip>
     </div>

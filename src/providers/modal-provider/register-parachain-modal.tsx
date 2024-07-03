@@ -114,7 +114,6 @@ const RegisterParachainInfoModal = () => {
 
   useEffect(() => {
     getChecksum();
-    console.log("lol");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

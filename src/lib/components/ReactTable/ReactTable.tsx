@@ -81,7 +81,7 @@ const ReactTable = <T extends object>(props: ReactTableProps<T>) => {
   );
 
   /** skeleton to show when table data is loading */
-  const Skeleton = useCallback(() => <div className="h-[18px] w-auto animate-pulse bg-gray-300" />, []);
+  const Skeleton = useCallback(() => <div className="h-[18px] w-auto animate-pulse bg-brand-light" />, []);
 
   const arraySize = (pagination?.pageSize as number) > 10 ? 10 : pagination?.pageSize;
   const _data = useMemo(() => (isLoading ? Array(arraySize).fill({}) : data), [isLoading, data, arraySize]);
@@ -115,8 +115,8 @@ const ReactTable = <T extends object>(props: ReactTableProps<T>) => {
     <>
       <div className="relative">
         {/* table */}
-        <TableContainer className={tx(classNames?.tableContainer)}>
-          <Table className={tx("border-collapse overflow-hidden rounded-none border-none", classNames?.table)}>
+        <TableContainer className={tx("border rounded-md ", classNames?.tableContainer)}>
+          <Table className={tx("border-collapse overflow-hidden ", classNames?.table)}>
             <Thead className={tx("h-auto rounded-none px-4 py-3", classNames?.thead?.thead)}>
               {table.getHeaderGroups().map((headerGroup) => (
                 <Tr key={headerGroup.id} className={tx(classNames?.thead?.tr)}>
@@ -150,15 +150,12 @@ const ReactTable = <T extends object>(props: ReactTableProps<T>) => {
 
             <Tbody className={tx(classNames?.tbody?.tbody)}>
               {table.getRowModel().rows.map((row) => (
-                <Tr
-                  key={row.id}
-                  className={tx("border-b border-brand-outline hover:bg-gray-50", classNames?.tbody?.tr)}
-                >
+                <Tr key={row.id} className={tx("border-brand-outline hover:bg-gray-50", classNames?.tbody?.tr)}>
                   {row.getVisibleCells().map((cell) => (
                     <Td
                       key={cell.id}
                       className={tx(
-                        "overflow-hidden text-ellipsis p-3 text-sm first-of-type:rounded-none last-of-type:rounded-none",
+                        "overflow-hidden text-ellipsis p-3 text-sm first-of-type:rounded-none last-of-type:rounded-none border-b",
                         classNames?.tbody?.td,
                       )}
                       style={{

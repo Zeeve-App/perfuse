@@ -49,22 +49,22 @@ const IdPageClient: React.FC<{ children: React.ReactNode; params: { id: string }
 
   return (
     <div className="flex flex-col gap-y-3 lg:gap-y-6">
-      <Navigation
-        heading={"Parachains"}
-        logo={
-          <Image
-            src={withBasePath("/assets/images/parachains-logo.svg")}
-            alt="parachains-logo"
-            width={32}
-            height={32}
-          />
-        }
-        breadcrumb={{ items: items }}
-      >
-        {/* page actions */}
-        <Actions network={network} task={task} explorerUrl={{ paraExplorerUrl, relayExplorerUrl }} />
-      </Navigation>
-      <div className="rounded-lg border border-brand-outline bg-white px-3 pb-3 pt-2 lg:px-6 lg:pb-6">
+      <div className="rounded-lg border border-brand-outline bg-white px-3 pb-3 pt-6 lg:px-6 lg:pb-6">
+        <Navigation
+          heading={"Parachains"}
+          // logo={
+          //   <Image
+          //     src={withBasePath("/assets/images/parachains-logo.svg")}
+          //     alt="parachains-logo"
+          //     width={32}
+          //     height={32}
+          //   />
+          // }
+          // breadcrumb={{ items: items }}
+        >
+          {/* page actions */}
+          <Actions network={network} task={task} explorerUrl={{ paraExplorerUrl, relayExplorerUrl }} />
+        </Navigation>
         <TabContainer id={params.id} />
         <div className="mb-4 gap-4 overflow-x-auto border-0">{children}</div>
       </div>
