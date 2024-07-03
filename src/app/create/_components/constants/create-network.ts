@@ -18,19 +18,22 @@ export const templateOption = [
   { label: "Substrate", value: "substrate" },
   { label: "Evm Frontier", value: "evm_frontier" },
   { label: "Custom", value: "custom" },
+  { label: "OpenZeppelin", value: "openzeppelin", isDisabled: true },
+  { label: "Pop CLI", value: "custom", isDisabled: true },
 ];
 
-export const networkEnvOption: { label: string; value: networkEnvType }[] = [
+export const networkEnvOption: { label: string; value: networkEnvType; isDisabled?: boolean }[] = [
   { label: "Devnet", value: "devnet" },
-  { label: "Mainnet", value: "mainnet" },
-  { label: "Testnet", value: "testnet" },
+  { label: "Mainnet", value: "mainnet", isDisabled: true },
+  { label: "Testnet", value: "testnet", isDisabled: true },
 ];
 
 export const explorerOption = [
   { label: "Polkadot.js", value: "polkadotjs" },
-  { label: "Polcascan", value: "polkascan" },
-  { label: "Subscann", value: "subscan" },
-  { label: "TraceHawk", value: "tracehawk" },
+  { label: "RegionX", value: "regionx" },
+  // { label: "Polcascan", value: "polkascan" },
+  // { label: "Subscann", value: "subscan" },
+  // { label: "TraceHawk", value: "tracehawk" },
 ];
 
 export type AuthenticationMethods = "api_key" | "basic_auth";

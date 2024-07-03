@@ -266,6 +266,7 @@ const ConfigureNetwork = () => {
                           {...register("networkEnviorment.value")}
                           isChecked={watch("networkEnviorment")?.value == environment?.value}
                           hideRadioCircle={true}
+                          isDisabled={environment.isDisabled}
                         >
                           <SvgApiConnect width={25} height={25} />
                           {environment.label}
@@ -297,6 +298,7 @@ const ConfigureNetwork = () => {
                             {...register("template.value")}
                             isChecked={watch("template")?.value == template?.value}
                             hideRadioCircle={true}
+                            isDisabled={template.isDisabled}
                           >
                             {template.label}
                           </RadioCard>
