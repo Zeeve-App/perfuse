@@ -18,7 +18,7 @@ const DeploySucceed = () => {
             Congratulations! You have <br /> successfully deployed &ldquo;
             {configureNetwork?.chainSpecFile.contents.name}&rdquo;
           </Heading>
-          <Link href={"/create"}>
+          <Link href={"/"}>
             <Button colorScheme={"light"} className="text-brand-blue">
               View Parachain
             </Button>

@@ -19,7 +19,6 @@ import { Button } from "@/lib/components/Button";
 import { Heading } from "@/lib/components/Heading";
 import { useProgressiveFormContext, ProgressiveFormStepFooter } from "@/lib/components/ProgressiveForm";
 import { Spinner } from "@/lib/components/Spinner";
-import { useToast } from "@/lib/components/Toast";
 import HTTP_STATUS from "@/constants/http";
 import { FormField } from "@/lib/components/Form/FormField";
 import SvgArrowUpFromBucket from "@/lib/icons/arrows/outline/ArrowUpFromBucket";
@@ -60,8 +59,7 @@ const ConfigureNetwork = () => {
     register,
     reset,
     setError,
-    getValues,
-    formState: { errors, isValid, defaultValues, validatingFields },
+    formState: { errors, isValid },
   } = useForm<ConfigureNetworkSchemaType>({
     resolver: yupResolver(configureNetworkValidationSchema),
     mode: "all",
@@ -208,7 +206,7 @@ const ConfigureNetwork = () => {
         encoding: chainspecContent.properties ? "ss58Format" : undefined,
         chainType: chainspecContent.chainType ?? undefined,
         candidacyBond: chainspecContent.genesis.runtime?.collatorSelection.candidacyBond ?? undefined,
-        collatorNodes: runtimeGenesis?.patch.aura.authorities.map((col, idx) => {
+        collatorNodes: runtimeGenesis?.patch?.aura?.authorities.map((col, idx) => {
           const bal = runtimeGenesis?.patch?.balances?.balances?.find((e) => e[0] === col)?.[1];
           return {
             collatorName: `collator_name_${idx + 1}`,
