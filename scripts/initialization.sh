@@ -17,7 +17,7 @@ fi
 install_tools() {
     if ! command -v jq &> /dev/null; then
         echo "jq is not installed. Installing..."
-        sudo apt-get update && sudo apt-get install -y jq
+        sudo apt-get update && sudo apt-get install -y jq zip
     else
         echo "jq is already installed."
     fi

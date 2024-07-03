@@ -33,7 +33,7 @@ extra_params="--unsafe-rpc-external --rpc-methods unsafe"
 
 source $SCRIPT_DIR/generate_keys.sh
 setup_sidecar() {
-  if [[ $SIDECAR == 1 ]] then
+  if [[ $SIDECAR == 1 ]] ; then
     echo "Setting up sidecar...."
     bash $SCRIPT_DIR/setup-sidecar.sh
     echo "Sidecar is ready."

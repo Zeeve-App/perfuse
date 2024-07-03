@@ -15,11 +15,7 @@ generate_node_keys() {
     for i in $(seq 1 $key_count); do
         key_file="$key_dir/${node_name}_node_key_$i.txt"
         echo "Generating $node_name node key and saving to: $key_file"
-        if [ "$node_name" = "relaychain" ]; then
-            /usr/local/bin/polkadot key generate-node-key --file "$key_file"
-        else
-            /usr/local/bin/polkadot-parachain key generate-node-key --file "$key_file"
-        fi
+        /usr/local/bin/polkadot key generate-node-key --file "$key_file"
     done
 }
 

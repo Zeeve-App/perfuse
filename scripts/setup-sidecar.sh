@@ -2,6 +2,7 @@
 
 set -e
 set -u
+export DEBIAN_FRONTEND=noninteractive
 
 SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
 # Load environment variables from .env file
@@ -12,12 +13,6 @@ else
   echo "ERROR: .env file not found."
   exit 1
 fi
-
-#!/bin/bash
-
-set -e
-set -u
-export DEBIAN_FRONTEND=noninteractive
 
 # Add Docker's official GPG key:
 sudo apt-get update
@@ -36,5 +31,10 @@ sudo apt-get update
 #Install Docker and Docker Compose
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
+# Allow access for docker via UFW
+sudo ufw route allow out on docker0 from any to any
+sudo ufw allow in on docker0 to any port 9010 proto tcpStar
+
+#Pull and Start Sidecar Container
 docker pull docker.io/parity/substrate-api-sidecar:latest
-sudo docker run --name sidecar-perfuse --rm -it -d --read-only --env-file .env.docker -p 9099:9099 parity/substrate-api-sidecar:latest
+sudo docker run --name sidecar-perfuse --rm -it -d --read-only --env-file $SCRIPT_DIR/.env.docker -p 9099:8080 parity/substrate-api-sidecar:latest

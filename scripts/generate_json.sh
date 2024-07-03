@@ -4,13 +4,23 @@ set -e       # Exit on error
 set -u       # Fail on unset variables
 
 SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
+# Load environment variables from .env file
+if [ -f "$SCRIPT_DIR/../perfuse/.env" ]; then
+  source "$SCRIPT_DIR/../perfuse/.env"
+  echo "Env Variables Loaded"
+else
+  echo "ERROR: .env file not found."
+  exit 1
+fi
+
+SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
 RELAYCHAIN_DIR="${RELAYCHAIN_DIR:-/home/perfuse/relaychain}" # Customizable relaychain directory
 PARACHAIN_DIR="${PARACHAIN_DIR:-/home/perfuse/parachain}" # Customizable parachain directory
 if [ $TEMPLATE = "custom" ] ; then
 CHAINSPEC_FILE="$SCRIPT_DIR/../perfuse/chainspec.json"
-elif [ $TEMPLATE = "substrate" ]
+elif [ $TEMPLATE = "substrate" ] ; then
 CHAINSPEC_FILE="$SCRIPT_DIR/../public/template/substrate.json"
-else
+else 
 CHAINSPEC_FILE="$SCRIPT_DIR/../public/template/evm_frontier.json"
 fi
 PARACHAIN_ID=2000
