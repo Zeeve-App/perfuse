@@ -21,6 +21,8 @@ import { CreatePerfuseApiPayload } from "@/app/api/create/route";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import useApi from "@/api-client";
 import { tx } from "@/utils/shared";
+import SvgPlusSquare from "@/lib/icons/essential/outline/PlusSquare";
+import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from "@/lib/components/Accordion";
 
 type ConfigureRelayChainSchemaType = yup.InferType<typeof configureRelayChainValidationSchema>;
 
@@ -59,7 +61,7 @@ const ConfigureRelayChain = () => {
     name: "rpcNodes",
   });
 
-  const { fields: collatorFields } = useFieldArray({
+  const { fields: collatorFields, append: appendCollator } = useFieldArray({
     control,
     name: "collatorNodes",
   });
@@ -130,9 +132,9 @@ const ConfigureRelayChain = () => {
   const watchRPCNodes = watch(["rpcNodes"])[0];
 
   return (
-    <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+    <form autoComplete="off" className="" onSubmit={handleSubmit(onSubmit)}>
       {/* form fields */}
-      <div className="flex flex-col gap-3 p-3 lg:gap-6 lg:p-6">
+      <div className="flex flex-col gap-3 p-3 shadow-brand-shadow lg:gap-6 lg:p-6">
         <div className="flex flex-col gap-3 lg:gap-6">
           <Heading as="h5">Parachain Config</Heading>
           <div className="grid grid-cols-12 items-start gap-3 lg:gap-6">
@@ -249,91 +251,99 @@ const ConfigureRelayChain = () => {
           <Heading as="h5">Collator Nodes</Heading>
           {collatorFields.map((e, i) => {
             return (
-              <div key={i} className="grid grid-cols-12 items-start gap-3 lg:gap-6">
-                {/* Collator Name */}
-                <FormField
-                  className="col-span-12 md:col-span-6 lg:col-span-3"
-                  helper={{
-                    status: "error",
-                    text: errors.collatorNodes?.[i]?.collatorName?.message?.toString(),
-                  }}
-                >
-                  <Label>Collator Name</Label>
-                  <Input
-                    {...register(`collatorNodes.${i}.collatorName`)}
-                    type="text"
-                    isRequired
-                    isDisabled
-                    placeholder="Collator Name"
-                    // floatingLabel={{
-                    //   labelText: "Collator Name",
-                    // }}
-                  />
-                </FormField>
-                {/* Address */}
-                <FormField
-                  className="col-span-12 md:col-span-6 lg:col-span-3"
-                  helper={{
-                    status: "error",
-                    text: errors.collatorNodes?.[i]?.collatorAddress?.message?.toString(),
-                  }}
-                >
-                  <Label>Address</Label>
-                  <Input
-                    {...register(`collatorNodes.${i}.collatorAddress`)}
-                    type="text"
-                    isRequired
-                    isDisabled
-                    placeholder="Address"
-                    // floatingLabel={{
-                    //   labelText: "Address",
-                    // }}
-                  />
-                </FormField>
-                {/* Balance */}
-                <FormField
-                  className="col-span-12 md:col-span-6 lg:col-span-3"
-                  helper={{
-                    status: "error",
-                    text: errors.collatorNodes?.[i]?.collatorBalance?.message?.toString(),
-                  }}
-                >
-                  <Label>Balance</Label>
-                  <Input
-                    {...register(`collatorNodes.${i}.collatorBalance`)}
-                    type="text"
-                    isRequired
-                    isDisabled
-                    placeholder="Balance"
-                    // floatingLabel={{
-                    //   labelText: "Balance",
-                    // }}
-                  />
-                </FormField>
-                {/* Rpc Cors */}
-                <FormField
-                  className="col-span-12 md:col-span-6 lg:col-span-3"
-                  helper={{
-                    status: "error",
-                    text: errors.collatorNodes?.[i]?.rpcCors?.message?.toString(),
-                  }}
-                >
-                  <Label>Rpc Cors</Label>
-                  <Input
-                    {...register(`collatorNodes.${i}.rpcCors`)}
-                    type="text"
-                    isRequired
-                    isDisabled
-                    placeholder="Rpc Cors"
-                    // floatingLabel={{
-                    //   labelText: "Rpc Cors",
-                    // }}
-                  />
-                </FormField>
-                <hr className="col-span-12 border-brand-outline" />
-              </div>
+              <Accordion key={i}>
+                <AccordionItem>
+                  <AccordionHeader>{`Collator ${i + 1}`}</AccordionHeader>
+                  <AccordionBody>
+                    <div key={i} className="grid grid-cols-12 items-start gap-3 pt-3 lg:gap-6">
+                      {/* Collator Name */}
+                      <FormField
+                        className="col-span-12 md:col-span-6 lg:col-span-3"
+                        helper={{
+                          status: "error",
+                          text: errors.collatorNodes?.[i]?.collatorName?.message?.toString(),
+                        }}
+                      >
+                        <Label>Collator Name</Label>
+                        <Input
+                          {...register(`collatorNodes.${i}.collatorName`)}
+                          type="text"
+                          isRequired
+                          isDisabled
+                          placeholder="Collator Name"
+                        />
+                      </FormField>
+                      {/* Address */}
+                      <FormField
+                        className="col-span-12 md:col-span-6 lg:col-span-3"
+                        helper={{
+                          status: "error",
+                          text: errors.collatorNodes?.[i]?.collatorAddress?.message?.toString(),
+                        }}
+                      >
+                        <Label>Address</Label>
+                        <Input
+                          {...register(`collatorNodes.${i}.collatorAddress`)}
+                          type="text"
+                          isRequired
+                          isDisabled
+                          placeholder="Address"
+                        />
+                      </FormField>
+                      {/* Balance */}
+                      <FormField
+                        className="col-span-12 md:col-span-6 lg:col-span-3"
+                        helper={{
+                          status: "error",
+                          text: errors.collatorNodes?.[i]?.collatorBalance?.message?.toString(),
+                        }}
+                      >
+                        <Label>Balance</Label>
+                        <Input
+                          {...register(`collatorNodes.${i}.collatorBalance`)}
+                          type="text"
+                          isRequired
+                          isDisabled
+                          placeholder="Balance"
+                        />
+                      </FormField>
+                      {/* Rpc Cors */}
+                      <FormField
+                        className="col-span-12 md:col-span-6 lg:col-span-3"
+                        helper={{
+                          status: "error",
+                          text: errors.collatorNodes?.[i]?.rpcCors?.message?.toString(),
+                        }}
+                      >
+                        <Label>Rpc Cors</Label>
+                        <Input
+                          {...register(`collatorNodes.${i}.rpcCors`)}
+                          type="text"
+                          isRequired
+                          isDisabled
+                          placeholder="Rpc Cors"
+                        />
+                      </FormField>
+                      <hr className="col-span-12 border-brand-light" />
+                    </div>
+                  </AccordionBody>
+                </AccordionItem>
+              </Accordion>
             );
           })}
+          <div className="flex justify-end">
+            <IconButton
+              size={"large"}
+              variant={"text"}
+              className="font-bold"
+              isDisabled
+              onClick={() => {
+                appendCollator({});
+              }}
+            >
+              Add More <SvgPlusSquare className="pl-2" height={30} width={30} />
+            </IconButton>
+          </div>
 
           <Heading as="h5">RPC Nodes</Heading>
           {fields.map((field, index) => (
@@ -471,18 +481,24 @@ const ConfigureRelayChain = () => {
               ) : null}
             </div>
           ))}
+          <div className="flex justify-end">
+            <IconButton isDisabled size={"large"} variant={"text"} className="font-bold">
+              Add More <SvgPlusSquare className="pl-2" height={30} width={30} />
+            </IconButton>
+          </div>
         </div>
 
-        <hr className="border-brand-outline" />
+        {/* <hr className="border-brand-outline" /> */}
       </div>
       <ProgressiveFormStepFooter>
-        <Button variant="outline" iconLeft={<SvgChevronLeftSquare />} onClick={handleBack}>
+        {/* <Button variant="outline" iconLeft={<SvgChevronLeftSquare />} onClick={handleBack}>
           Back
-        </Button>
+        </Button> */}
         <Button
-          className="bg-brand-gradient-blue"
+          // className="bg-brand-gradient-blue"
           type="submit"
-          iconRight={<SvgChevronRightSquare />}
+          variant={"outline"}
+          // iconRight={<SvgChevronRightSquare />}
           isDisabled={!isValid}
         >
           Deploy
