@@ -19,7 +19,7 @@ HAPROXY_CONFIG_FILE="/etc/haproxy/haproxy.cfg"  # Adjust if your HAProxy config 
 RELAY_RPC_PORT=9345  # Frontend port for HAProxy
 PARA_RPC_PORT=9010
 PERFUSE_PORT=3000
-JSAPPS_PORT=8080
+SIDECAR_PORT=9099
 
 # Function to install HAProxy (optional)
 install_haproxy() {
@@ -111,11 +111,11 @@ frontend rpc_frontend
     acl letsencrypt-acl path_beg /.well-known/acme-challenge/
     acl is_relay_rpc path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}relay-rpc
     acl is_para_rpc path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}para-rpc
-    acl is_polkadotjs_apps path_beg -i /apps
+    acl sidecar_api path_beg -i /api
     use_backend letsencrypt-backend if letsencrypt-acl
     use_backend relay_rpc_backend if is_relay_rpc
     use_backend para_rpc_backend if is_para_rpc
-    use_backend polkadotjs_app if is_polkadotjs_apps
+    use_backend sidecar if sidecar_api
     default_backend perfuse_ui"
 
   local relay_backend_config="
@@ -140,12 +140,12 @@ backend perfuse_ui
     option forwardfor
     server perfuse_ui 127.0.0.1:${PERFUSE_PORT}"
 
-  local polkadotjs_app_config="
-backend polkadotjs_app
+  local sidecar_config="
+backend sidecar
     mode http
     balance roundrobin
     option forwardfor
-    server polkadotjs_app 127.0.0.1:${JSAPPS_PORT}"    
+    server sidecar 127.0.0.1:${SIDECAR_PORT}"    
 
   local certbot_config="
 backend letsencrypt-backend

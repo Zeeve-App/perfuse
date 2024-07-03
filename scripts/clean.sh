@@ -98,3 +98,6 @@ done
 
 # clean_haproxy_config
 sudo rm -r /home/perfuse
+
+#Remove Sidecar Container
+sudo docker rm -f $(sudo docker ps -a -q)
