@@ -56,6 +56,12 @@ module.exports = plugin(
       ".bg-brand-gradient": {
         background: "linear-gradient(130deg, #32B8B2 0%, #088DB2 100%)",
       },
+      ".bg-brand-gradient-blue-48": {
+        background: "linear-gradient(108deg, #868cff 6%, #4318ff 48%)",
+      },
+      ".bg-brand-gradient-blue": {
+        background: "linear-gradient(107deg, #868cff 0%, #4318ff)",
+      },
       ".text-brand-gradient": {
         background: "linear-gradient(130deg, #32B8B2 0%, #088DB2 100%)",
         "-webkit-background-clip": "text",
@@ -70,6 +76,9 @@ module.exports = plugin(
       ".scrollbar-hide::-webkit-scrollbar": {
         display: "none",
       },
+      ".shadow-brand-shadow":{
+        "box-shadow": "0 18px 40px 0 rgba(112, 144, 176, 0.12)",
+      }
     });
     addComponents({
       select: {
@@ -103,18 +112,22 @@ module.exports = plugin(
           },
           brand: {
             primary: "#4054B2",
-            blue: "#4054B2",
+            blue: "#4318ff",
+            "dark-blue": "#2b3674",
             red: "#C12C2C",
             green: "#2EC589",
             yellow: "#F0AC00",
-            gray: "#57647D",
+            gray: "#868686",
             dark: "#080E12",
             cyan: "#32B8B2",
             teal: "#088DB2",
-            light: "#F8FAFA",
+            "light-teal": "#a1e3cb",
+            light: "#f4f7fe",
             outline: "#080E121A",
             purple: "#5E35B5",
             pink: "#B53563",
+            // shadow:"rgba(112, 144, 176, 0.12)",
+            warning: "#fff5e6"
           },
         },
         /** do not use until required */

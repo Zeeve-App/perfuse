@@ -6,4 +6,5 @@ export default interface ZeeveSidebarItemProps {
   children?: ZeeveSidebarItemProps[];
   className?: string;
   shouldOpenInNewTab?: boolean;
+  activePaths?: string[];
 }

@@ -61,10 +61,10 @@ const jobShellExecutorBG = async (
 ) => {
   try {
     await jobShellExecutor(command, cwdPath, timeout, regex);
-    taskId && (await updateTask({ task_status: "completed" }, taskId));
+    taskId && (await updateTask({ task_status: "completed", task_updated_at: new Date().toISOString() }, taskId));
     await createTaskHandler();
   } catch (error) {
-    taskId && (await updateTask({ task_status: "failed" }, taskId));
+    taskId && (await updateTask({ task_status: "failed", task_updated_at: new Date().toISOString() }, taskId));
   }
   return;
 };

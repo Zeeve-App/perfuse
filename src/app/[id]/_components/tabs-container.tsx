@@ -2,6 +2,9 @@
 import { usePathname, useRouter } from "next/navigation";
 import { TabList, Tab } from "@/lib/components/Tabs";
 import { TabsContextProvider } from "@/lib/components/Tabs/TabsContext";
+import SvgBubbles from "@/lib/icons/essential/outline/Bubbles";
+import SvgChart5Square from "@/lib/icons/business/outline/Chart5Square";
+import SvgBox from "@/lib/icons/delivery/outline/Box";
 
 const TabContainer = ({ id }: { id: string }) => {
   const router = useRouter();
@@ -12,7 +15,8 @@ const TabContainer = ({ id }: { id: string }) => {
   const tabAndIndexMap: Record<string, number> = {
     "": 0,
     "blockchain-config": 1,
-    "my-nodes": 2,
+    "collator-nodes": 2,
+    "rpc-nodes": 3,
   };
 
   return (
@@ -28,9 +32,18 @@ const TabContainer = ({ id }: { id: string }) => {
       }}
     >
       <TabList className="mb-4 gap-4 overflow-x-auto border-0">
-        <Tab>Overview</Tab>
-        <Tab>Blockchain Config</Tab>
-        <Tab>My Nodes</Tab>
+        <Tab>
+          <SvgChart5Square width={20} height={20} /> &nbsp; Overview
+        </Tab>
+        <Tab>
+          <SvgBox width={20} height={20} /> &nbsp; Blockchain Config
+        </Tab>
+        <Tab>
+          <SvgBubbles width={20} height={20} /> &nbsp; Collator Nodes
+        </Tab>
+        <Tab>
+          <SvgBubbles width={20} height={20} /> &nbsp; RPC Nodes
+        </Tab>
       </TabList>
     </TabsContextProvider>
   );

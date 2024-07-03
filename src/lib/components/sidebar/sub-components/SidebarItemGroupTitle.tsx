@@ -10,7 +10,7 @@ const SidebarItemGroupTitle = forwardRef<HTMLHeadingElement, SidebarItemGroupTit
   return (
     <Heading
       as="h6"
-      className={tx("mb-2 px-5 text-sm font-semibold uppercase leading-5 tracking-wide text-brand-gradient", className)}
+      className={tx("mb-2 px-5 text-sm font-semibold uppercase leading-5 tracking-wide text-brand-blue", className)}
       ref={ref}
       {...rest}
     >

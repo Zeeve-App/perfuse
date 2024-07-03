@@ -3,39 +3,30 @@
 import ZeeveSidebarItemProps from "../type";
 import SvgElement3 from "@/lib/icons/grid/outline/Element3";
 import SvgNodes from "@/lib/icons/programming/outline/Nodes";
-import SvgBubbles from "@/lib/icons/essential/outline/Bubbles";
-import SvgSetting1 from "@/lib/icons/setting/outline/Setting1";
 import SvgEndpoints1 from "@/lib/icons/programming/outline/Endpoints1";
+import SvgBook2 from "@/lib/icons/school/outline/Book2";
 
 const ITEMS: {
   title?: string;
-  items: {
-    icon: React.ReactElement;
-    title?: string;
-    path: string;
-    badge?: React.ReactElement;
-    children?: ZeeveSidebarItemProps[];
-    className?: string;
-    shouldOpenInNewTab?: boolean;
-  }[];
+  items: ZeeveSidebarItemProps[];
 }[] = [
   {
-    title: "Main Menu",
     items: [
       {
         title: "Dashboard",
         icon: <SvgElement3 />,
         path: `/`,
+        activePaths: ["/overview", "/blockchain-config", "/collator-nodes", "/rpc-nodes", "/create"],
       },
       {
-        title: "My Parachain",
+        title: "Settings",
         icon: <SvgNodes />,
-        path: `/my-parachains`,
+        path: `#`,
       },
       {
-        title: "Deploy",
-        icon: <SvgBubbles />,
-        path: `/create`,
+        title: "Documents",
+        icon: <SvgBook2 />,
+        path: `#`,
       },
     ],
   },
@@ -45,16 +36,6 @@ const ITEMS: {
       {
         title: "Github",
         icon: <SvgEndpoints1 />,
-        path: `#`,
-      },
-    ],
-  },
-  {
-    title: "Others",
-    items: [
-      {
-        title: "Settings",
-        icon: <SvgSetting1 />,
         path: `#`,
       },
     ],

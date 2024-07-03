@@ -1,11 +1,8 @@
 import React from "react";
 import { Metadata } from "next";
-import Image from "next/image";
 import CreatePageClient from "./page-client";
 import NoData from "./_components/no-data";
 import { getNetworks } from "@/db-queries";
-import { withBasePath } from "@/utils/helpers";
-import { Navigation } from "@/lib/components/navigation";
 
 export const metadata: Metadata = {
   title: "Perfuse | Create Parachain",
@@ -17,7 +14,7 @@ const CreatePage = async () => {
   return (
     <>
       <div className="flex flex-col gap-y-3 lg:gap-y-6">
-        <Navigation
+        {/* <Navigation
           heading={"Perfuse"}
           logo={
             <Image
@@ -41,7 +38,8 @@ const CreatePage = async () => {
               },
             ],
           }}
-        />
+        /> */}
+
         {networks.length < 1 ? <CreatePageClient /> : <NoData />}
       </div>
     </>

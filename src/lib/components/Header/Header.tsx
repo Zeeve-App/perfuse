@@ -8,7 +8,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>((props, ref) => {
 
   return (
     <header
-      className={tx("flex h-20 w-full items-center justify-between border-b bg-white", className)}
+      className={tx("flex h-20 w-full items-center justify-between bg-brand-light", className)}
       ref={ref}
       {...rest}
     >

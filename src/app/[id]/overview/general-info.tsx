@@ -1,12 +1,13 @@
 "use client";
 
 import React from "react";
-import { formatDate, toShortString } from "@/utils/helpers";
+import { formatDate, formatIntoAge, toShortString } from "@/utils/helpers";
 import { CopyButton } from "@/lib/components/Button";
 import { Heading } from "@/lib/components/Heading";
 import { Tooltip } from "@/lib/components/Tooltip";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
 import { useNetworkStore } from "@/store/network";
+import KeyValuePairInput from "@/lib/components/utils/key-value-pair-input";
 
 const GeneralInfo = ({
   isLoading,
@@ -14,70 +15,57 @@ const GeneralInfo = ({
   id,
   env,
   createdAt,
+  provisionedAt,
 }: {
   isLoading: boolean;
   name?: string;
   id?: string;
   env?: string;
   createdAt?: string | Date;
+  provisionedAt?: string;
 }) => {
   const networkInfo = useNetworkStore((e) => e.networkInfo);
   return (
-    <div className="col-span-12 flex flex-col rounded-lg border border-brand-outline xl:col-span-6 2xl:col-span-4">
+    <div className="shadow-brand-shadow col-span-12 flex flex-col rounded-lg">
       <div className="p-4">
         <Heading as="h4">General Info</Heading>
       </div>
       <div className="grid grid-cols-12 gap-3 p-4 lg:gap-6">
-        <KeyValuePair
+        <KeyValuePairInput
           label="Name"
           value={name ?? "NA"}
-          className="col-span-12 md:col-span-6 xl:col-span-6"
+          className="col-span-12 md:col-span-6 xl:col-span-3"
           isLoading={isLoading}
         />
-        <KeyValuePair
+        <KeyValuePairInput
           label="ID"
-          value={
-            id ? (
-              <Tooltip text={id} placement={"top-start"}>
-                <div className="flex items-center gap-2">
-                  {toShortString(id)}
-                  <CopyButton text={id} />
-                </div>
-              </Tooltip>
-            ) : (
-              "NA"
-            )
-          }
-          className="col-span-12 md:col-span-6 xl:col-span-6"
+          value={id ? toShortString(id, 5, 5) : "NA"}
+          className="col-span-12 md:col-span-6 xl:col-span-3"
+          isLoading={isLoading}
+          shouldAllowCopy={true}
+        />
+        <KeyValuePairInput
+          label="Description"
+          value={"Example description"}
+          className="col-span-12 md:col-span-6 xl:col-span-3"
           isLoading={isLoading}
         />
-        {/* <KeyValuePair
-          label="Description"
-          value={
-            data?.data.generalInfo.description ? (
-              <Tooltip text={data.data.generalInfo.description} placement={"top-start"}>
-                <div className="flex items-center gap-2">
-                  {toShortString(data.data.generalInfo.description)}
-                  <CopyButton text={data.data.generalInfo.description} />
-                </div>
-              </Tooltip>
-            ) : (
-              "NA"
-            )
-          }
-          className="col-span-12 md:col-span-6 xl:col-span-6"
-          isLoading={isLoading}
-        /> */}
-        <KeyValuePair
+        <KeyValuePairInput
           label="Environment"
           value={env ? env.toUpperCase() : "NA"}
-          className="col-span-12 md:col-span-6 xl:col-span-6"
+          className="col-span-12 md:col-span-6 xl:col-span-3"
           isLoading={isLoading}
         />
-        <KeyValuePair
+        <KeyValuePairInput
+          label="Owned By"
+          value={"perfuse@perfuse.com"}
+          className="col-span-12 md:col-span-6 xl:col-span-3"
+          isLoading={isLoading}
+        />
+        <KeyValuePairInput
           label="Status"
           value={networkInfo.data?.networkStatus ? networkInfo.data?.networkStatus.toUpperCase() : "NA"}
-          className="col-span-12 md:col-span-6 xl:col-span-6"
+          className="col-span-12 md:col-span-6 xl:col-span-3"
           isLoading={isLoading}
         />
         {/* <KeyValuePair
@@ -95,25 +83,22 @@ const GeneralInfo = ({
           className="col-span-12 md:col-span-6 xl:col-span-4"
           isLoading={isLoading}
         /> */}
-        {/* <KeyValuePair
+        <KeyValuePairInput
           label="Blockchain Provision Time"
-          value={formatIntoAge(
-            data?.data.generalInfo.blockchainProvisioningStartedAt,
-            data?.data.generalInfo.blockchainProvisioningFinishedAt,
-          )}
-          className="col-span-12 md:col-span-6 xl:col-span-4"
+          value={networkInfo.data?.networkStatus === "completed" ? formatIntoAge(createdAt, provisionedAt) : "NA"}
+          className="col-span-12 md:col-span-6 xl:col-span-3"
           isLoading={isLoading}
-        /> */}
-        {/* <KeyValuePair
+        />
+        <KeyValuePairInput
           label="Duration"
-          value={formatIntoAge(data?.data.generalInfo.createdAt, new Date())}
-          className="col-span-12 md:col-span-6 xl:col-span-4"
+          value={formatIntoAge(createdAt, new Date())}
+          className="col-span-12 md:col-span-6 xl:col-span-3"
           isLoading={isLoading}
-        /> */}
-        <KeyValuePair
+        />
+        <KeyValuePairInput
           label="Created On"
           value={createdAt ? formatDate(createdAt) : "NA"}
-          className="col-span-12"
+          className="col-span-12 md:col-span-6 xl:col-span-3"
           isLoading={isLoading}
         />
       </div>

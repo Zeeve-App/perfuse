@@ -8,7 +8,7 @@ const ProgressiveFormStepFooter = forwardRef<HTMLDivElement, ProgressiveFormStep
   const { children, className, ...rest } = props;
 
   return (
-    <div className={tx("flex w-full items-center justify-end gap-4 border-t px-6 py-4", className)} ref={ref} {...rest}>
+    <div className={tx("flex w-full items-center justify-end gap-4 px-6 py-4", className)} ref={ref} {...rest}>
       {children}
     </div>
   );

@@ -18,7 +18,15 @@ import ZeeveSidebarItemProps from "./type";
 import { tx } from "@/utils/shared";
 import { isActive, withBasePath } from "@/utils/helpers";
 
-const ZeeveSidebarItemDropdown = ({ item, pathname }: { item: ZeeveSidebarItemProps; pathname: string }) => {
+const ZeeveSidebarItemDropdown = ({
+  item,
+  pathname,
+  activePaths,
+}: {
+  item: ZeeveSidebarItemProps;
+  pathname: string;
+  activePaths?: string[];
+}) => {
   return (
     <SidebarItemDropdown
       iconLeft={item.icon}
@@ -48,7 +56,7 @@ const ZeeveSidebarItemDropdown = ({ item, pathname }: { item: ZeeveSidebarItemPr
             iconLeft={child.icon}
             title={child.title || ""}
             badge={child.badge}
-            isActive={isActive(pathname, child.path)}
+            isActive={isActive(pathname, [item.path, ...(activePaths || [])])}
             className={tx("max-h-10", child.className)}
             href={child.path}
             isChild={true}
@@ -60,7 +68,15 @@ const ZeeveSidebarItemDropdown = ({ item, pathname }: { item: ZeeveSidebarItemPr
   );
 };
 
-const ZeeveSidebarItem = ({ item, pathname }: { item: ZeeveSidebarItemProps; pathname: string }) => {
+const ZeeveSidebarItem = ({
+  item,
+  pathname,
+  activePaths,
+}: {
+  item: ZeeveSidebarItemProps;
+  pathname: string;
+  activePaths?: string[];
+}) => {
   if (item.children) {
     return <ZeeveSidebarItemDropdown item={item} pathname={pathname} />;
   }
@@ -80,7 +96,7 @@ const ZeeveSidebarItem = ({ item, pathname }: { item: ZeeveSidebarItemProps; pat
       iconLeft={item.icon}
       title={item.title || ""}
       badge={item.badge}
-      isActive={isActive(pathname, item.path)}
+      isActive={isActive(pathname, [item.path, ...(activePaths || [])])}
       className={tx("max-h-10", item.className)}
       href={item.path}
       {...getProps()}
@@ -128,13 +144,14 @@ const ZeeveSidebar = (props: SidebarProps) => {
                             key={`${itemGroup.title}-${item.title}-${idx}`}
                             item={item}
                             pathname={pathname}
+                            activePaths={item.activePaths}
                           />
                         );
                       })
                     : null}
                 </SidebarItemGroup>
                 {/* show divider only when there is next element in the list */}
-                {ITEMS[index + 1] ? <SidebarDivider /> : null}
+                {/* {ITEMS[index + 1] ? <SidebarDivider /> : null} */}
               </Fragment>
             ))
           : null}

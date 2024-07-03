@@ -9,7 +9,7 @@ import { useID } from "@/hooks";
 import { tx } from "@/utils/shared";
 
 const styles = cva(
-  "peer w-full appearance-none truncate rounded-lg border border-brand-outline bg-brand-light p-4 text-sm font-medium leading-5 text-brand-dark placeholder:text-brand-dark/60 focus:border-zinc-300 focus:outline-none focus:ring-1 focus:ring-zinc-300 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+  "peer w-full appearance-none truncate rounded-lg border border-brand-outline p-4 text-sm font-medium leading-5 text-brand-dark placeholder:text-brand-dark/60 focus:border-zinc-300 focus:outline-none focus:ring-1 focus:ring-zinc-300 focus-visible:outline-none disabled:cursor-not-allowed disabled:bg-[#f3f6fd] disabled:font-normal disabled:text-brand-dark/60",
   {
     variants: {
       size: {
@@ -73,7 +73,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     // input container
     <div
       {...inputContainerProps}
-      className={tx("relative flex h-max w-full", { "cursor-not-allowed": isDisabled }, inputContainerProps?.className)}
+      className={tx(
+        "relative flex h-max w-full font-poppins",
+        { "cursor-not-allowed ": isDisabled },
+        inputContainerProps?.className,
+      )}
     >
       {/* left icon */}
       {iconLeft && (

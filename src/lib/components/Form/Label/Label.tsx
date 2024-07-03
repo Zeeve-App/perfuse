@@ -13,7 +13,7 @@ const Label = forwardRef<HTMLLabelElement, LabelProps>((props, ref) => {
   return (
     <label
       className={tx(
-        "inline-flex items-center font-poppins text-base font-semibold tracking-[0.1px] text-brand-dark",
+        "inline-flex items-center font-poppins text-base tracking-[0.1px] text-brand-dark",
         { "after:text-brand-red after:content-['*']": isRequired },
         className,
         { "cursor-not-allowed opacity-50": isDisabled },
