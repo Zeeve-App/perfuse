@@ -33,7 +33,7 @@ sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plug
 
 # Allow access for docker via UFW
 sudo ufw route allow out on docker0 from any to any
-sudo ufw allow in on docker0 to any port 9010 proto tcpStar
+sudo ufw allow in on docker0 to any port 9010 proto tcp
 
 #Pull and Start Sidecar Container
 docker pull docker.io/parity/substrate-api-sidecar:latest

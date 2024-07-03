@@ -111,7 +111,7 @@ frontend rpc_frontend
     acl letsencrypt-acl path_beg /.well-known/acme-challenge/
     acl is_relay_rpc path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}relay-rpc
     acl is_para_rpc path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}para-rpc
-    acl sidecar_api path_beg -i /api
+    acl sidecar_api path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}api
     use_backend letsencrypt-backend if letsencrypt-acl
     use_backend relay_rpc_backend if is_relay_rpc
     use_backend para_rpc_backend if is_para_rpc
