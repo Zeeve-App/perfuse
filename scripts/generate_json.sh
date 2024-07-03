@@ -6,7 +6,13 @@ set -u       # Fail on unset variables
 SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
 RELAYCHAIN_DIR="${RELAYCHAIN_DIR:-/home/perfuse/relaychain}" # Customizable relaychain directory
 PARACHAIN_DIR="${PARACHAIN_DIR:-/home/perfuse/parachain}" # Customizable parachain directory
-CHAINSPEC_FILE="$SCRIPT_DIR/../public/template/substrate.json"              # Customizable chainspec file
+if [ $TEMPLATE = "custom" ] ; then
+CHAINSPEC_FILE="$SCRIPT_DIR/../perfuse/chainspec.json"
+elif [ $TEMPLATE = "substrate" ]
+CHAINSPEC_FILE="$SCRIPT_DIR/../public/template/substrate.json"
+else
+CHAINSPEC_FILE="$SCRIPT_DIR/../public/template/evm_frontier.json"
+fi
 PARACHAIN_ID=2000
 
 mkdir -p /home/perfuse/{relaychain,parachain}
