@@ -20,3 +20,4 @@ const ListPage = async () => {
 };
 
 export default ListPage;
+export const dynamic = "force-dynamic";
