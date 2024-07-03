@@ -24,10 +24,11 @@ import HTTP_STATUS from "@/constants/http";
 import { FormField } from "@/lib/components/Form/FormField";
 import SvgArrowUpFromBucket from "@/lib/icons/arrows/outline/ArrowUpFromBucket";
 import SvgChevronRightSquare from "@/lib/icons/arrows/outline/ChevronRightSquare";
-import { ReactSelect } from "@/lib/components/ReactSelect";
 import { FileUpload } from "@/lib/components/Form/FileUpload";
-import { withBasePath } from "@/utils/helpers";
 import useApi from "@/api-client";
+import { RadioCard } from "@/lib/components/RadioCard";
+import SvgApiConnect from "@/lib/icons/product/outline/ApiConnect";
+import { Radio } from "@/lib/components/Form";
 
 type ConfigureNetworkSchemaType = yup.InferType<typeof configureNetworkValidationSchema>;
 
@@ -56,9 +57,11 @@ const ConfigureNetwork = () => {
     setValue,
     trigger,
     watch,
+    register,
     reset,
+    setError,
     getValues,
-    formState: { errors, isValid, defaultValues },
+    formState: { errors, isValid, defaultValues, validatingFields },
   } = useForm<ConfigureNetworkSchemaType>({
     resolver: yupResolver(configureNetworkValidationSchema),
     mode: "all",
@@ -80,8 +83,9 @@ const ConfigureNetwork = () => {
   }, [setValue, templateWatcher?.value]);
 
   useEffect(() => {
-    setValue("relayChain", "" as unknown as { label: string; value: string });
-  }, [networkEnvWatcher]);
+    // setValue("relayChain", { label: undefined });
+    reset((e) => ({ ...e, relayChain: { value: "" } }));
+  }, [networkEnvWatcher?.value, reset]);
 
   // progressive form context
   const { goToNextStep } = useProgressiveFormContext();
@@ -98,7 +102,6 @@ const ConfigureNetwork = () => {
       const reader = new FileReader();
       reader.onload = (event) => {
         const content = event.target?.result as string;
-        console.log(content);
         const chainSpec: ChainSpecFileType = JSON.parse(content);
 
         // setting values from chain spec file
@@ -119,12 +122,6 @@ const ConfigureNetwork = () => {
       binaryFileInputRef.current.type = "file";
     }
   };
-
-  // upload binary api
-  // const { request: uploadBinaryRequest, url: uploadBinaryUrl } = useParachainsService().file.uploadBinary();
-
-  // toast
-  const toast = useToast();
 
   /**
    * Upload binary file to server.
@@ -156,7 +153,6 @@ const ConfigureNetwork = () => {
         if (response.status === HTTP_STATUS.OK && response.data.success) {
           // set global network id
           // setBinaryFile()
-          console.log(response.data.data.path);
 
           setValue("binaryFile.path", response.data.data.path);
         }
@@ -167,22 +163,17 @@ const ConfigureNetwork = () => {
       setBinaryFile(null);
       setGlobalNetworkId(null);
 
-      toast("Error uploading binary file.", {
-        status: "error",
-      });
+      setError("binaryFile", { message: "Something Wrong" });
+      // toast("Error uploading binary file.", {
+      //   status: "error",
+      // });
     } finally {
       setIsBinaryFileUploading(false);
     }
   };
 
-  useEffect(() => {
-    console.log(!isValid, isBinaryFileUploading);
-  }, [isBinaryFileUploading, isValid]);
-
   // action to perform while submitting the form
   const onSubmit = (data: ConfigureNetworkSchemaType) => {
-    console.log(data);
-
     setFormData({
       step: "configureNetwork",
       data: {
@@ -200,6 +191,8 @@ const ConfigureNetwork = () => {
     });
 
     const chainspecContent = data.chainSpecFile.contents;
+    console.log(chainspecContent);
+
     const runtimeGenesis = chainspecContent.genesis.runtimeGenesis;
     setFormData({
       step: "configureRelayChain",
@@ -208,9 +201,11 @@ const ConfigureNetwork = () => {
         version: { value: chainspecContent.relay_chain, label: chainspecContent.relay_chain },
         paraId: chainspecContent.para_id,
         decimalValue: chainspecContent.properties?.tokenDecimals,
+        protocolId: chainspecContent.protocolId ?? undefined,
         tokenName: chainspecContent.properties?.tokenSymbol,
         telemetryEndpoint: chainspecContent.telemetryEndpoints ?? undefined,
         name: chainspecContent.name ?? undefined,
+        encoding: chainspecContent.properties ? "ss58Format" : undefined,
         chainType: chainspecContent.chainType ?? undefined,
         candidacyBond: chainspecContent.genesis.runtime?.collatorSelection.candidacyBond ?? undefined,
         collatorNodes: runtimeGenesis?.patch.aura.authorities.map((col, idx) => {
@@ -244,120 +239,177 @@ const ConfigureNetwork = () => {
   }, [errors]);
 
   return (
-    <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col gap-3 p-3 lg:gap-6 lg:p-6">
+    <form autoComplete="off" className="" onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col gap-3 p-6 shadow-brand-shadow lg:gap-6 lg:p-9">
         {/* Network Config */}
         <div className="flex flex-col gap-3 lg:gap-6">
-          <Heading as="h5">Network Config</Heading>
+          {/* <Heading as="h5">Network Config</Heading> */}
           <div className="grid grid-cols-12 items-start gap-3 lg:gap-6">
             {/* Network Environment */}
-            <FormField
-              className="col-span-12 md:col-span-6 lg:col-span-4"
-              helper={{
-                status: "error",
-                text: errors.networkEnviorment?.message?.toString(),
-              }}
-            >
-              <Controller
-                name="networkEnviorment"
-                control={control}
-                render={({ field }) => (
-                  <ReactSelect
-                    isRequired
-                    options={networkEnvOption}
-                    placeholder="Select Network Environment"
-                    {...field}
-                  />
-                )}
-              />
-            </FormField>
+            <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
+              <div className="flex flex-row items-center gap-1">
+                <Heading as="h5">Select Your Network Environment</Heading>
+                {/* <Tooltip text="Select environment for your deployment." placement="top-start">
+                  <IconButton variant="text" colorScheme="gray">
+                    <SvgInfoCircle className="text-base" />
+                  </IconButton>
+                </Tooltip> */}
+              </div>
+              <div className="grid grid-cols-12 gap-3 lg:gap-6">
+                {networkEnvOption.length
+                  ? networkEnvOption.map((environment, index) => {
+                      return (
+                        <RadioCard
+                          key={index}
+                          value={environment.value}
+                          className="col-span-12 md:col-span-3"
+                          {...register("networkEnviorment.value")}
+                          isChecked={watch("networkEnviorment")?.value == environment?.value}
+                          hideRadioCircle={true}
+                          isDisabled={environment.isDisabled}
+                        >
+                          <SvgApiConnect width={25} height={25} />
+                          {environment.label}
+                        </RadioCard>
+                      );
+                    })
+                  : null}
+              </div>
+            </div>
             {/* Template */}
-            <FormField
-              className="col-span-12 md:col-span-6 lg:col-span-4"
-              helper={{
-                status: "error",
-                text: errors.template?.message?.toString(),
-              }}
-            >
-              <Controller
-                name="template"
-                control={control}
-                render={({ field }) => (
-                  <ReactSelect isRequired options={templateOption} placeholder="Select Template" {...field} />
-                )}
-              />
-            </FormField>
-            {/* Relay Chain */}
-            <FormField
-              className="col-span-12 md:col-span-6 lg:col-span-4"
-              helper={{
-                status: "error",
-                text: errors.relayChain?.message?.toString(),
-              }}
-            >
-              <Controller
-                name="relayChain"
-                control={control}
-                render={({ field }) => (
-                  <ReactSelect
-                    isRequired
-                    options={relayChainOption[networkEnvWatcher?.value ?? "testnet"]}
-                    placeholder="Select Relay Chain"
-                    {...field}
-                  />
-                )}
-              />
-            </FormField>
-            {/* Sidecar */}
-            <FormField
-              className="col-span-12 md:col-span-6 lg:col-span-4"
-              helper={{
-                status: "error",
-                text: errors.sidecar?.message?.toString(),
-              }}
-            >
-              <Controller
-                name="sidecar"
-                control={control}
-                render={({ field }) => (
-                  <ReactSelect isRequired options={sideCardOptions} placeholder="Select Sidecar" {...field} />
-                )}
-              />
-            </FormField>
-            {/* Blockchain Explorer */}
-            <FormField
-              className="col-span-12 md:col-span-6 lg:col-span-4"
-              helper={{
-                status: "error",
-                text: errors.explorer?.message?.toString(),
-              }}
-            >
-              <Controller
-                name="explorer"
-                control={control}
-                render={({ field }) => (
-                  <ReactSelect
-                    isRequired
-                    options={explorerOption}
-                    placeholder="Select Blockchain Explorer"
-                    {...field}
-                  />
-                )}
-              />
-            </FormField>
+            {watch("networkEnviorment")?.value ? (
+              <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
+                <div className="flex flex-row items-center gap-1">
+                  <Heading as="h5">Select Template</Heading>
+                  {/* <Tooltip text="Select environment for your deployment." placement="top-start">
+                    <IconButton variant="text" colorScheme="gray">
+                      <SvgInfoCircle className="text-base" />
+                    </IconButton>
+                  </Tooltip> */}
+                </div>
+                <div className="grid grid-cols-12 gap-3 lg:gap-6">
+                  {templateOption.length
+                    ? templateOption.map((template, index) => {
+                        return (
+                          <RadioCard
+                            key={index}
+                            value={template.value}
+                            className="col-span-12 md:col-span-3"
+                            {...register("template.value")}
+                            isChecked={watch("template")?.value == template?.value}
+                            hideRadioCircle={true}
+                            isDisabled={template.isDisabled}
+                          >
+                            {template.label}
+                          </RadioCard>
+                        );
+                      })
+                    : null}
+                </div>
+              </div>
+            ) : null}
+            {/* Relay chain */}
+            {watch("template")?.value ? (
+              <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
+                <div className="flex flex-row items-center gap-1">
+                  <Heading as="h5">Select Relay chain</Heading>
+                  {/* <Tooltip text="Select environment for your deployment." placement="top-start">
+                    <IconButton variant="text" colorScheme="gray">
+                      <SvgInfoCircle className="text-base" />
+                    </IconButton>
+                  </Tooltip> */}
+                </div>
+                <div className="grid grid-cols-12 gap-3 lg:gap-6">
+                  {relayChainOption[networkEnvWatcher?.value ?? "testnet"].length
+                    ? relayChainOption[networkEnvWatcher?.value ?? "testnet"].map((relayChain, index) => {
+                        return (
+                          <RadioCard
+                            key={index}
+                            value={relayChain.value}
+                            className="col-span-12 md:col-span-3"
+                            {...register("relayChain.value")}
+                            isChecked={watch("relayChain")?.value == relayChain?.value}
+                            hideRadioCircle={true}
+                          >
+                            {relayChain.label}
+                          </RadioCard>
+                        );
+                      })
+                    : null}
+                </div>
+                {/* Sidecar */}
+                <div className="flex flex-row items-center gap-1">
+                  <Heading as="h5">Sidecar</Heading>
+                  {/* <Tooltip text="Select environment for your deployment." placement="top-start">
+                    <IconButton variant="text" colorScheme="gray">
+                      <SvgInfoCircle className="text-base" />
+                    </IconButton>
+                  </Tooltip> */}
+                </div>
+                <div className="grid grid-cols-12 gap-3 lg:gap-6">
+                  {sideCardOptions.length
+                    ? sideCardOptions.map((sidecar, index) => {
+                        return (
+                          <Radio
+                            key={index}
+                            value={sidecar.value}
+                            className="col-span-12 md:col-span-3"
+                            colorScheme={"blue"}
+                            {...register("sidecar.value")}
+                            isChecked={watch("sidecar")?.value == sidecar?.value}
+                            // hideRadioCircle={true}
+                          >
+                            {sidecar.label}
+                          </Radio>
+                        );
+                      })
+                    : null}
+                </div>
+              </div>
+            ) : null}
+            {watch("sidecar")?.value !== undefined ? (
+              <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
+                <div className="flex flex-row items-center gap-1">
+                  <Heading as="h5">Explorer</Heading>
+                  {/* <Tooltip text="Select environment for your deployment." placement="top-start">
+                    <IconButton variant="text" colorScheme="gray">
+                      <SvgInfoCircle className="text-base" />
+                    </IconButton>
+                  </Tooltip> */}
+                </div>
+                <div className="grid grid-cols-12 gap-3 lg:gap-6">
+                  {explorerOption.length
+                    ? explorerOption.map((explorer, index) => {
+                        return (
+                          <RadioCard
+                            key={index}
+                            value={explorer.value}
+                            className="col-span-12 md:col-span-3"
+                            {...register("explorer.value")}
+                            isChecked={watch("explorer")?.value == explorer?.value}
+                            hideRadioCircle={true}
+                          >
+                            {explorer.label}
+                          </RadioCard>
+                        );
+                      })
+                    : null}
+                </div>
+              </div>
+            ) : null}
           </div>
         </div>
 
-        <hr className="border-brand-outline" />
+        {/* <hr className="border-brand-outline" /> */}
 
         {/* Parachain Config */}
         {templateWatcher?.value === "custom" && (
           <div className="flex flex-col gap-3 lg:gap-6">
-            <Heading as="h5">Parachain Config</Heading>
+            <Heading as="h5">Upload</Heading>
             <div className="grid grid-cols-12 items-start gap-3 lg:gap-6">
               {/* Chain Spec File */}
               <FormField
-                className="col-span-12 md:col-span-6 lg:col-span-4"
+                className="col-span-12 2xl:col-span-6"
                 helper={{
                   status: "error",
                   text: errors.chainSpecFile?.message?.toString(),
@@ -379,9 +431,9 @@ const ConfigureNetwork = () => {
                         }}
                         progressValue={0}
                         progressTotal={0}
-                        fileName={chainSpecFile?.name ?? ""}
+                        fileName={chainSpecFile?.name}
                         id={"chainSpecFile"}
-                        floatingLabelText={"Chain Spec File"}
+                        floatingLabelText={"Upload Chain-specification"}
                       />
                     );
                   }}
@@ -390,7 +442,7 @@ const ConfigureNetwork = () => {
 
               {/* Binary File */}
               <FormField
-                className="col-span-12 md:col-span-6 lg:col-span-4"
+                className="col-span-12 2xl:col-span-6"
                 helper={{
                   status: "error",
                   text: errors.binaryFile?.name?.message?.toString(),
@@ -410,11 +462,12 @@ const ConfigureNetwork = () => {
                             await handleBinaryFile(event);
                           },
                         }}
+                        error={errors.binaryFile?.message}
                         progressValue={progressValue}
                         progressTotal={progressTotal}
-                        fileName={binaryFile?.name ?? ""}
+                        fileName={binaryFile?.name}
                         id={"binaryFile"}
-                        floatingLabelText={"Binary File"}
+                        floatingLabelText={"Upload Binary"}
                         iconRight={
                           isBinaryFileUploading ? (
                             <Spinner fontSize={24} className="mx-4" />
@@ -433,7 +486,12 @@ const ConfigureNetwork = () => {
         )}
       </div>
       <ProgressiveFormStepFooter>
-        <Button type="submit" iconRight={<SvgChevronRightSquare />} isDisabled={!isValid || isBinaryFileUploading}>
+        <Button
+          className="bg-brand-gradient-blue"
+          type="submit"
+          iconRight={<SvgChevronRightSquare />}
+          isDisabled={!isValid || isBinaryFileUploading}
+        >
           Next
         </Button>
       </ProgressiveFormStepFooter>

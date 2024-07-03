@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import RegisterParachainInfo from "../_components/register-parachain-info";
-import NodeTable from "./node-table";
+import NodeTable from "../_components/node-table";
 import { useWindowDimensions } from "@/hooks";
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@/lib/components/Tabs";
 import { NodeDbRow } from "@/db-queries";

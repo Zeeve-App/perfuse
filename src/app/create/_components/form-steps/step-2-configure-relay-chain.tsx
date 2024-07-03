@@ -2,20 +2,17 @@
 import * as yup from "yup";
 import { useFieldArray, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/navigation";
-import { authenticationMethods } from "../constants/create-network";
 import { configureRelayChainValidationSchema } from "./validation-schema";
+import AddCollatorForm from "./_components/add-collator";
+import AddRpcForm from "./_components/add-rpc";
 import { useCreateNetworkFormStore } from "@/store/create-network";
 import { relayChainTypeOptions } from "@/constants/parachain-options";
-import SvgChevronLeftSquare from "@/lib/icons/arrows/outline/ChevronLeftSquare";
-import SvgChevronRightSquare from "@/lib/icons/arrows/outline/ChevronRightSquare";
-import { Button, IconButton } from "@/lib/components/Button";
+import { Button } from "@/lib/components/Button";
 import { FormField } from "@/lib/components/Form/FormField";
 import { Heading } from "@/lib/components/Heading";
 import { useProgressiveFormContext, ProgressiveFormStepFooter } from "@/lib/components/ProgressiveForm";
-import { Checkbox, FormFieldStatus, Input, Password, Radio } from "@/lib/components/Form";
-import { Tooltip } from "@/lib/components/Tooltip";
-import SvgInfoCircle from "@/lib/icons/essential/outline/InfoCircle";
+import { Input, Label } from "@/lib/components/Form";
+
 import HTTP_STATUS from "@/constants/http";
 import { CreatePerfuseApiPayload } from "@/app/api/create/route";
 import { ChainSpecFileType } from "@/types/chain-spec";
@@ -58,14 +55,12 @@ const ConfigureRelayChain = () => {
     name: "rpcNodes",
   });
 
-  const { fields: collatorFields } = useFieldArray({
+  const { fields: collatorFields, append: appendCollator } = useFieldArray({
     control,
     name: "collatorNodes",
   });
 
   const { goToPreviousStep, goToNextStep } = useProgressiveFormContext();
-
-  const router = useRouter();
 
   const handleBack = () => {
     const data = getValues();
@@ -83,7 +78,7 @@ const ConfigureRelayChain = () => {
         network_env: configureNetwork?.networkEnviorment.value ?? "",
         network_template: configureNetwork?.template.value ?? "",
         network_relay_chain: configureNetwork?.relayChain.value ?? "",
-        network_sidecar: configureNetwork?.sidecar.value ?? false,
+        network_sidecar: configureNetwork?.sidecar.value ?? 0,
         network_blockchain_explorer: configureNetwork?.explorer.value ?? "",
         network_chain_spec_file_json: {
           ...chainspec,
@@ -123,99 +118,121 @@ const ConfigureRelayChain = () => {
     const response = await apis.createNetwork(payload);
 
     if (response.status === HTTP_STATUS.OK && response.data.success) {
-      router.push("/" + response.data?.data?.network_id);
+      // router.push("/" + response.data?.data?.network_id);
+      goToNextStep();
     }
-    goToNextStep();
   };
 
   const watchRPCNodes = watch(["rpcNodes"])[0];
 
   return (
-    <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+    <form autoComplete="off" className="" onSubmit={handleSubmit(onSubmit)}>
       {/* form fields */}
-      <div className="flex flex-col gap-3 p-3 lg:gap-6 lg:p-6">
+      <div className="flex flex-col gap-3 p-3 shadow-brand-shadow lg:gap-6 lg:p-6">
         <div className="flex flex-col gap-3 lg:gap-6">
-          <Heading as="h5">Parachain Config</Heading>
+          <Heading as="h4" className="text-brand-dark-blue">
+            Parachain Configuration
+          </Heading>
           <div className="grid grid-cols-12 items-start gap-3 lg:gap-6">
             {/* para Id */}
             <FormField
-              className="col-span-12 md:col-span-6 lg:col-span-4"
+              className="col-span-12 md:col-span-6 lg:col-span-3"
               helper={{
                 status: "error",
                 text: errors.paraId?.message?.toString(),
               }}
             >
-              <Input
-                {...register("paraId")}
-                placeholder="Para Id"
-                isRequired
-                isDisabled
-                floatingLabel={{
-                  labelText: "Para Id",
-                }}
-              />
+              <Label>Para Id</Label>
+              <Input {...register("paraId")} placeholder="Para Id" isRequired isDisabled />
             </FormField>
             {/* Chain Type */}
             <FormField
-              className="col-span-12 md:col-span-6 lg:col-span-4"
+              className="col-span-12 md:col-span-6 lg:col-span-3"
               helper={{
                 status: "error",
                 text: errors.chainType?.message?.toString(),
               }}
             >
-              <Input
-                {...register("chainType")}
-                placeholder="Chain Type"
-                isDisabled
-                isRequired
-                floatingLabel={{
-                  labelText: "Chain Type",
-                }}
-              />
+              <Label>Chain Type</Label>
+
+              <Input {...register("chainType")} placeholder="Chain Type" isDisabled isRequired />
             </FormField>
             {/* Name */}
             <FormField
-              className="col-span-12 md:col-span-6 lg:col-span-4"
+              className="col-span-12 md:col-span-6 lg:col-span-3"
               helper={{
                 status: "error",
                 text: errors.name?.message?.toString(),
               }}
             >
-              <Input
-                {...register("name")}
-                placeholder="Name"
-                isDisabled
-                isRequired
-                floatingLabel={{
-                  labelText: "Name",
-                }}
-              />
+              <Label>Name</Label>
+              <Input {...register("name")} placeholder="Name" isDisabled isRequired />
+            </FormField>
+            {/* protocol Id */}
+            <FormField
+              className="col-span-12 md:col-span-6 lg:col-span-3"
+              helper={{
+                status: "error",
+                text: errors.protocolId?.message?.toString(),
+              }}
+            >
+              <Label>Protocol Id</Label>
+              <Input {...register("protocolId")} placeholder="NA" isDisabled isRequired />
+            </FormField>
+            {/* Decimal */}
+            <FormField
+              className="col-span-12 md:col-span-6 lg:col-span-3"
+              helper={{
+                status: "error",
+                text: errors.decimalValue?.message?.toString(),
+              }}
+            >
+              <Label>Decimal</Label>
+              <Input {...register("decimalValue")} placeholder="NA" isDisabled isRequired />
+            </FormField>
+            {/* Candidacy Bond */}
+            <FormField
+              className="col-span-12 md:col-span-6 lg:col-span-3"
+              helper={{
+                status: "error",
+                text: errors.candidacyBond?.message?.toString(),
+              }}
+            >
+              <Label>Candidacy Bond</Label>
+              <Input {...register("candidacyBond")} placeholder="NA" isDisabled isRequired />
+            </FormField>
+            {/* Encoding */}
+            <FormField
+              className="col-span-12 md:col-span-6 lg:col-span-3"
+              helper={{
+                status: "error",
+                text: errors.encoding?.message?.toString(),
+              }}
+            >
+              <Label>Encoding</Label>
+              <Input {...register("encoding")} placeholder="NA" isDisabled isRequired />
             </FormField>
             {/* Telemetry Endpoint */}
             <FormField
-              className="col-span-12 md:col-span-6 lg:col-span-4"
+              className="col-span-12 md:col-span-6 lg:col-span-3"
               helper={{
                 status: "error",
                 text: errors.telemetryEndpoint?.message?.toString(),
               }}
             >
-              <Input
-                {...register("telemetryEndpoint")}
-                placeholder="Telemetry Endpoint"
-                isRequired
-                floatingLabel={{
-                  labelText: "Telemetry Endpoint",
-                }}
-              />
+              <Label>Telemetry</Label>
+
+              <Input {...register("telemetryEndpoint")} placeholder="NA" isDisabled />
             </FormField>
 
             <FormField
-              className="col-span-12 md:col-span-6 lg:col-span-4"
+              className="col-span-12 md:col-span-6 lg:col-span-3"
               helper={{
                 status: "error",
                 text: errors.tokenName?.message?.toString(),
               }}
             >
+              <Label>Token Name</Label>
               <Input
                 {...register("tokenName")}
                 placeholder="Token Symbol"
@@ -227,235 +244,35 @@ const ConfigureRelayChain = () => {
             </FormField>
           </div>
 
-          <Heading as="h4">Collator Nodes</Heading>
-          {collatorFields.map((e, i) => {
-            return (
-              <div key={i} className="grid grid-cols-12 items-start gap-3 lg:gap-6">
-                {/* Collator Name */}
-                <FormField
-                  className="col-span-12 md:col-span-6 lg:col-span-4"
-                  helper={{
-                    status: "error",
-                    text: errors.collatorNodes?.[i]?.collatorName?.message?.toString(),
-                  }}
-                >
-                  <Input
-                    {...register(`collatorNodes.${i}.collatorName`)}
-                    type="text"
-                    isRequired
-                    isDisabled
-                    placeholder="Collator Name"
-                    floatingLabel={{
-                      labelText: "Collator Name",
-                    }}
-                  />
-                </FormField>
-                {/* Address */}
-                <FormField
-                  className="col-span-12 md:col-span-6 lg:col-span-4"
-                  helper={{
-                    status: "error",
-                    text: errors.collatorNodes?.[i]?.collatorAddress?.message?.toString(),
-                  }}
-                >
-                  <Input
-                    {...register(`collatorNodes.${i}.collatorAddress`)}
-                    type="text"
-                    isRequired
-                    isDisabled
-                    placeholder="Address"
-                    floatingLabel={{
-                      labelText: "Address",
-                    }}
-                  />
-                </FormField>
-                {/* Balance */}
-                <FormField
-                  className="col-span-12 md:col-span-6 lg:col-span-4"
-                  helper={{
-                    status: "error",
-                    text: errors.collatorNodes?.[i]?.collatorBalance?.message?.toString(),
-                  }}
-                >
-                  <Input
-                    {...register(`collatorNodes.${i}.collatorBalance`)}
-                    type="text"
-                    isRequired
-                    isDisabled
-                    placeholder="Balance"
-                    floatingLabel={{
-                      labelText: "Balance",
-                    }}
-                  />
-                </FormField>
-                {/* Rpc Cors */}
-                <FormField
-                  className="col-span-12 md:col-span-6 lg:col-span-4"
-                  helper={{
-                    status: "error",
-                    text: errors.collatorNodes?.[i]?.rpcCors?.message?.toString(),
-                  }}
-                >
-                  <Input
-                    {...register(`collatorNodes.${i}.rpcCors`)}
-                    type="text"
-                    isRequired
-                    isDisabled
-                    placeholder="Rpc Cors"
-                    floatingLabel={{
-                      labelText: "Rpc Cors",
-                    }}
-                  />
-                </FormField>
-                <hr className="col-span-12 border-brand-outline" />
-              </div>
-            );
-          })}
+          <AddCollatorForm
+            appendCollator={appendCollator}
+            collatorFields={collatorFields}
+            errors={errors}
+            register={register}
+          />
 
-          <Heading as="h4">RPC Nodes</Heading>
-          {fields.map((field, index) => (
-            <div key={field.id} className="grid grid-cols-12 items-start gap-3 lg:gap-6">
-              {/* Node name */}
-              <FormField
-                className="col-span-12 md:col-span-6 lg:col-span-4"
-                helper={{
-                  status: "error",
-                  text: errors.rpcNodes?.[index]?.name?.message?.toString(),
-                }}
-              >
-                <Input
-                  {...register(`rpcNodes.${index}.name`)}
-                  type="text"
-                  isRequired
-                  placeholder="Name"
-                  floatingLabel={{
-                    labelText: "Name",
-                  }}
-                />
-              </FormField>
-              {/* Enabled Public Endpoint */}
-              <div className="col-span-12 md:col-span-6 lg:col-span-4">
-                <Heading as="h5">Enabled Public Endpoint</Heading>
-                <div className="grid grid-cols-12 gap-3 lg:gap-6">
-                  <Checkbox
-                    {...register(`rpcNodes.${index}.http`)}
-                    checkboxLabelProps={{
-                      className: "text-sm font-poppins col-span-6 lg:col-span-3",
-                    }}
-                    isDisabled
-                  >
-                    HTTPS
-                  </Checkbox>
-                  <Checkbox
-                    {...register(`rpcNodes.${index}.ws`)}
-                    checkboxLabelProps={{
-                      className: "text-sm font-poppins col-span-6 lg:col-span-3",
-                    }}
-                    isDisabled
-                  >
-                    WSS
-                  </Checkbox>
-                </div>
-              </div>
-              <hr className="col-span-12 border-brand-outline" />
-              {/* authentication methods */}
-              <Heading as="h5" className="col-span-12">
-                Authentication Method
-              </Heading>
-              <div className="grid grid-cols-12 gap-3 lg:gap-6">
-                {authenticationMethods.length
-                  ? authenticationMethods.map((item) => {
-                      return (
-                        <div key={item.name} className="col-span-6 flex flex-row items-center gap-1 lg:col-span-6">
-                          <Radio
-                            {...register(`rpcNodes.${index}.credentials.type`, {
-                              onChange: (e) => {
-                                if (e.target.value === "api_key") {
-                                  // unregister username and password if selected authorization method is `api_key`
-                                  unregister([
-                                    `rpcNodes.${index}.credentials.username`,
-                                    `rpcNodes.${index}.credentials.password`,
-                                  ]);
-                                }
-                              },
-                            })}
-                            value={item.value}
-                            isDisabled={item.isDisabled}
-                          >
-                            {item.name}
-                          </Radio>
-                          {item.tooltipText ? (
-                            <Tooltip text={item.tooltipText} placement="top-start">
-                              <IconButton variant="text" colorScheme="gray">
-                                <SvgInfoCircle className="text-base" />
-                              </IconButton>
-                            </Tooltip>
-                          ) : null}
-                        </div>
-                      );
-                    })
-                  : null}
-              </div>
-              {errors.rpcNodes?.[index]?.credentials && (
-                <FormFieldStatus className="text-xs lg:text-sm" status="error">
-                  {errors.rpcNodes?.[index]?.credentials?.message?.toString()}
-                </FormFieldStatus>
-              )}
-              {/* show username and password fields only in case of "basic_auth" */}
-              {watchRPCNodes?.[index]?.credentials?.type === "basic_auth" ? (
-                <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
-                  <Heading as="h5">Basic Auth</Heading>
-                  <div className="grid grid-cols-12 gap-3 lg:gap-6">
-                    {/* username */}
-                    <FormField
-                      className="col-span-12 md:col-span-6 lg:col-span-4"
-                      helper={{
-                        status: "error",
-                        text: errors.rpcNodes?.[index]?.credentials?.username?.message?.toString(),
-                      }}
-                    >
-                      <Input
-                        {...register(`rpcNodes.${index}.credentials.username`)}
-                        type="text"
-                        isRequired
-                        placeholder="Username"
-                        floatingLabel={{
-                          labelText: "Username",
-                        }}
-                      />
-                    </FormField>
-                    {/* password */}
-                    <FormField
-                      className="col-span-12 md:col-span-6 lg:col-span-4"
-                      helper={{
-                        status: "error",
-                        text: errors.rpcNodes?.[index]?.credentials?.password?.message?.toString(),
-                      }}
-                    >
-                      <Password
-                        {...register(`rpcNodes.${index}.credentials.password`)}
-                        shouldToggleMask
-                        isRequired
-                        placeholder="Password"
-                        floatingLabel={{
-                          labelText: "Password",
-                        }}
-                      />
-                    </FormField>
-                  </div>
-                </div>
-              ) : null}
-            </div>
-          ))}
+          <AddRpcForm
+            errors={errors}
+            fields={fields}
+            register={register}
+            unregister={unregister}
+            watchRPCNodes={watchRPCNodes}
+          />
         </div>
 
-        <hr className="border-brand-outline" />
+        {/* <hr className="border-brand-outline" /> */}
       </div>
       <ProgressiveFormStepFooter>
-        <Button variant="outline" iconLeft={<SvgChevronLeftSquare />} onClick={handleBack}>
+        {/* <Button variant="outline" iconLeft={<SvgChevronLeftSquare />} onClick={handleBack}>
           Back
-        </Button>
-        <Button type="submit" iconRight={<SvgChevronRightSquare />} isDisabled={!isValid}>
+        </Button> */}
+        <Button
+          // className="bg-brand-gradient-blue"
+          type="submit"
+          variant={"outline"}
+          // iconRight={<SvgChevronRightSquare />}
+          isDisabled={!isValid}
+        >
           Deploy
         </Button>
       </ProgressiveFormStepFooter>

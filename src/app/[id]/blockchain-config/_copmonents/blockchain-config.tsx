@@ -26,8 +26,8 @@ const BlockchainConfig = ({
   return (
     <div className="grid grid-cols-12 gap-3 text-brand-dark lg:gap-6">
       <RegisterParachainInfo show={blockHeight === 0} />
-      <ParachainConfig isLoading={isLoading} data={chainSpecJSON} />
       <Parameters isLoading={isLoading || blockRpcLoading} data={chainSpecJSON} blockHeight={blockHeight} />
+      <ParachainConfig isLoading={isLoading} data={chainSpecJSON} />
       <ParachainSpecFile isLoading={isLoading} data={chainSpecJSON} />
       <PreMiningConfig isLoading={isLoading} data={chainSpecJSON} />
       <RelayChainConfig

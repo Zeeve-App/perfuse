@@ -32,11 +32,7 @@ const ProgressiveFormHeader = forwardRef<HTMLDivElement, ProgressiveFormHeaderPr
   }, [activeStep, isCompact, children]);
 
   return (
-    <motion.div
-      className={tx("flex flex-row gap-2 overflow-auto border-b border-brand-outline px-2", className)}
-      ref={ref}
-      {...rest}
-    >
+    <motion.div className={tx("flex flex-row gap-2 overflow-auto px-2", className)} ref={ref} {...rest}>
       {indexedChildren}
     </motion.div>
   );

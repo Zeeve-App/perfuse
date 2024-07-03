@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo } from "react";
+import React, { forwardRef, useEffect, useMemo } from "react";
 import { HTMLMotionProps, motion } from "framer-motion";
 import { RemoveProperties } from "../core";
 import { FormStatus, useProgressiveFormContext } from "./ProgressiveFormContext";
@@ -18,6 +18,7 @@ interface ProgressiveFormHeaderItemProps extends RemoveProperties<HTMLMotionProp
   stepLabel?: string | ((index: number) => string);
   stepLabelProps?: HTMLMotionProps<"div">;
   componentIndex?: number;
+  isLast?: boolean;
 }
 
 const defaultIcons: ProgressiveFormHeaderItemProps["icons"] = {
@@ -41,7 +42,7 @@ const ProgressiveFormHeaderItem = forwardRef<HTMLDivElement, ProgressiveFormHead
     ...rest
   } = props;
 
-  const { formStatus, activeStep, isCompact, shouldHideHeaderIconsOnCompact } = useProgressiveFormContext();
+  const { formStatus, activeStep, isCompact, shouldHideHeaderIconsOnCompact, totalSteps } = useProgressiveFormContext();
 
   const status = useMemo(() => formStatus(componentIndex), [componentIndex, activeStep]);
 
@@ -68,41 +69,61 @@ const ProgressiveFormHeaderItem = forwardRef<HTMLDivElement, ProgressiveFormHead
     else return `Step ${index + 1}`;
   };
 
+  const isLast = totalSteps - 1 == componentIndex;
+
   return (
-    <motion.div
-      ref={ref}
-      {...rest}
-      className={tx(
-        "flex select-none flex-row items-start gap-2.5 p-4",
-        { "opacity-50": status === "idle" },
-        className,
-      )}
-      data-status={status}
-      data-component-index={componentIndex}
-      data-active-index={activeStep}
-    >
-      {!_shouldHideIcon && (
-        <motion.div {...iconProps} className={tx("self-center", iconProps?.className)}>
-          {getIcon(icons, status)}
+    <motion.div className={tx("grid grid-cols-12", isLast ? "flex-grow-0" : "flex-grow")}>
+      <motion.div className={tx(isLast ? "col-span-12" : "col-span-4")}>
+        <motion.div
+          ref={ref}
+          {...rest}
+          className={tx(
+            "flex select-none flex-row items-start gap-2.5 p-4",
+            // { "opacity-50": status === "idle" },
+            className,
+          )}
+          data-status={status}
+          data-component-index={componentIndex}
+          data-active-index={activeStep}
+        >
+          {!_shouldHideIcon && (
+            <motion.div {...iconProps} className={tx("self-center", iconProps?.className)}>
+              {getIcon(icons, status)}
+            </motion.div>
+          )}
+          {typeof title === "string" ? (
+            <motion.div>
+              <motion.div
+                {...stepLabelProps}
+                className={tx(
+                  "text-xs font-medium text-brand-gray leading-[18px] -tracking-[0.4px]",
+                  stepLabelProps?.className,
+                  {
+                    "text-brand-blue": status === "active",
+                  },
+                )}
+              >
+                {getStepLabel(stepLabel, componentIndex)}
+              </motion.div>
+              <motion.div
+                {...titleProps}
+                className={tx(
+                  "font-poppins text-sm text-brand-gray font-semibold tracking-[0.1px]",
+                  titleProps?.className,
+                )}
+              >
+                {title}
+              </motion.div>
+            </motion.div>
+          ) : (
+            title
+          )}
         </motion.div>
-      )}
-      {typeof title === "string" ? (
-        <motion.div>
-          <motion.div
-            {...stepLabelProps}
-            className={tx("text-xs font-medium leading-[18px] -tracking-[0.4px]", stepLabelProps?.className)}
-          >
-            {getStepLabel(stepLabel, componentIndex)}
-          </motion.div>
-          <motion.div
-            {...titleProps}
-            className={tx("font-poppins text-sm font-semibold tracking-[0.1px]", titleProps?.className)}
-          >
-            {title}
-          </motion.div>
+      </motion.div>
+      {!isLast && (
+        <motion.div className="col-span-8 flex items-center justify-center">
+          <div className={tx("w-full border", status === "idle" ? "" : "border-brand-blue")}></div>
         </motion.div>
-      ) : (
-        title
       )}
     </motion.div>
   );

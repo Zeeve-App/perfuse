@@ -24,13 +24,19 @@ const CardKeyValuePair = ({ label, value, className, isLoading = false }: CardKe
       ) : (
         <>
           {typeof value === "string" || typeof value === "number" || typeof value === "undefined" ? (
-            <Heading className="font-extrabold text-brand-light" as="h4">
+            <Heading className="font-bold text-brand-light" as="h2">
               {value ?? "NA"}
             </Heading>
           ) : (
             value
           )}
-          {typeof label === "string" ? <p className="text-sm">{label}</p> : { label }}
+          {typeof label === "string" ? (
+            <Heading className="font-bold text-brand-light" as="h4">
+              {label}
+            </Heading>
+          ) : (
+            { label }
+          )}
         </>
       )}
     </Card>

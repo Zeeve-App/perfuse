@@ -43,7 +43,7 @@ const NotificationBell = (props: NotificationBellProps) => {
           <span className="relative inline-flex size-2.5 rounded-full bg-red-500"></span>
         </span>
       )}
-      <SvgNotificationBell1 className="text-2xl" />
+      <SvgNotificationBell1 className="text-brand-dark-blue text-2xl" />
     </IconButton>
   );
 };

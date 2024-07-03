@@ -13,7 +13,7 @@ interface RelayChainConfigProps {
 
 const RelayChainConfig = ({ isLoading, relayChain }: RelayChainConfigProps) => {
   return (
-    <div className="col-span-12 flex flex-col overflow-hidden rounded-lg border border-brand-outline 2xl:col-span-4">
+    <div className="shadow-brand-shadow col-span-12 flex flex-col overflow-hidden rounded-lg lg:col-span-6">
       <div className="p-4">
         <Heading as="h4">Relay Chain Config</Heading>
       </div>
