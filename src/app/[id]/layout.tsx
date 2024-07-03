@@ -1,18 +1,16 @@
-import Image from "next/image";
 import { headers } from "next/headers";
 import Actions from "./_components/actions";
 import TabContainer from "./_components/tabs-container";
-import { withBasePath } from "@/utils/helpers";
 import { Navigation } from "@/lib/components/navigation";
 import { getNetworkData, getNodeData, getTask } from "@/db-queries";
+import { config } from "@/config/config";
 
 const IdPageClient: React.FC<{ children: React.ReactNode; params: { id: string } }> = async ({ children, params }) => {
   const id = params.id;
   const headersList = headers();
 
   const host = headersList.get("host");
-  // const domain = host?.split(":")[0];
-  const explorer = "https://polkadot.js.org/apps/"; //`http://${domain}:8080`;
+  const explorer = config.client.explorer || "https://polkadot.js.org/apps/";
   const network = await getNetworkData(id);
   const rpcNode = await getNodeData({ network_id: id, node_type: "rpc" });
   let rpcUrl = "";
