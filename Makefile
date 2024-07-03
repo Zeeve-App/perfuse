@@ -30,4 +30,4 @@ generate-genesis-wasm-spec:
 polkadotjs_app:
 	sudo bash $(SCRIPTS_DIR)/local_jsapps.sh
 
-.PHONY: all initial binary_install generate-genesis-wasm-spec build-relaychain build-parachain polkadotjs_app
+.PHONY: all initial binary_install generate-genesis-wasm-spec build-relaychain build-parachain
