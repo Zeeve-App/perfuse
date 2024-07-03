@@ -121,11 +121,13 @@ module.exports = plugin(
             dark: "#080E12",
             cyan: "#32B8B2",
             teal: "#088DB2",
+            "light-teal": "#a1e3cb",
             light: "#f4f7fe",
             outline: "#080E121A",
             purple: "#5E35B5",
             pink: "#B53563",
-            shadow:"rgba(112, 144, 176, 0.12)",
+            // shadow:"rgba(112, 144, 176, 0.12)",
+            warning: "#fff5e6"
           },
         },
         /** do not use until required */

@@ -59,6 +59,7 @@ const ConfigureNetwork = () => {
     watch,
     register,
     reset,
+    setError,
     getValues,
     formState: { errors, isValid, defaultValues, validatingFields },
   } = useForm<ConfigureNetworkSchemaType>({
@@ -122,12 +123,6 @@ const ConfigureNetwork = () => {
     }
   };
 
-  // upload binary api
-  // const { request: uploadBinaryRequest, url: uploadBinaryUrl } = useParachainsService().file.uploadBinary();
-
-  // toast
-  const toast = useToast();
-
   /**
    * Upload binary file to server.
    */
@@ -168,9 +163,10 @@ const ConfigureNetwork = () => {
       setBinaryFile(null);
       setGlobalNetworkId(null);
 
-      toast("Error uploading binary file.", {
-        status: "error",
-      });
+      setError("binaryFile", { message: "Something Wrong" });
+      // toast("Error uploading binary file.", {
+      //   status: "error",
+      // });
     } finally {
       setIsBinaryFileUploading(false);
     }
@@ -243,8 +239,8 @@ const ConfigureNetwork = () => {
   }, [errors]);
 
   return (
-    <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col gap-3 p-3 lg:gap-6 lg:p-6">
+    <form autoComplete="off" className="" onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col gap-3 p-6 shadow-brand-shadow lg:gap-6 lg:p-9">
         {/* Network Config */}
         <div className="flex flex-col gap-3 lg:gap-6">
           {/* <Heading as="h5">Network Config</Heading> */}
@@ -341,7 +337,7 @@ const ConfigureNetwork = () => {
                 </div>
                 {/* Sidecar */}
                 <div className="flex flex-row items-center gap-1">
-                  <Heading as="h5">Select Sidecar</Heading>
+                  <Heading as="h5">Sidecar</Heading>
                   {/* <Tooltip text="Select environment for your deployment." placement="top-start">
                     <IconButton variant="text" colorScheme="gray">
                       <SvgInfoCircle className="text-base" />
@@ -372,7 +368,7 @@ const ConfigureNetwork = () => {
             {watch("sidecar")?.value !== undefined ? (
               <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
                 <div className="flex flex-row items-center gap-1">
-                  <Heading as="h5">Select Explorer</Heading>
+                  <Heading as="h5">Explorer</Heading>
                   {/* <Tooltip text="Select environment for your deployment." placement="top-start">
                     <IconButton variant="text" colorScheme="gray">
                       <SvgInfoCircle className="text-base" />
@@ -407,11 +403,11 @@ const ConfigureNetwork = () => {
         {/* Parachain Config */}
         {templateWatcher?.value === "custom" && (
           <div className="flex flex-col gap-3 lg:gap-6">
-            <Heading as="h5">Parachain Config</Heading>
+            <Heading as="h5">Upload</Heading>
             <div className="grid grid-cols-12 items-start gap-3 lg:gap-6">
               {/* Chain Spec File */}
               <FormField
-                className="col-span-12 md:col-span-6 lg:col-span-4"
+                className="col-span-12 2xl:col-span-6"
                 helper={{
                   status: "error",
                   text: errors.chainSpecFile?.message?.toString(),
@@ -433,9 +429,9 @@ const ConfigureNetwork = () => {
                         }}
                         progressValue={0}
                         progressTotal={0}
-                        fileName={chainSpecFile?.name ?? ""}
+                        fileName={chainSpecFile?.name}
                         id={"chainSpecFile"}
-                        floatingLabelText={"Chain Spec File"}
+                        floatingLabelText={"Upload Chain-specification"}
                       />
                     );
                   }}
@@ -444,7 +440,7 @@ const ConfigureNetwork = () => {
 
               {/* Binary File */}
               <FormField
-                className="col-span-12 md:col-span-6 lg:col-span-4"
+                className="col-span-12 2xl:col-span-6"
                 helper={{
                   status: "error",
                   text: errors.binaryFile?.name?.message?.toString(),
@@ -464,11 +460,12 @@ const ConfigureNetwork = () => {
                             await handleBinaryFile(event);
                           },
                         }}
+                        error={errors.binaryFile?.message}
                         progressValue={progressValue}
                         progressTotal={progressTotal}
-                        fileName={binaryFile?.name ?? ""}
+                        fileName={binaryFile?.name}
                         id={"binaryFile"}
-                        floatingLabelText={"Binary File"}
+                        floatingLabelText={"Upload Binary"}
                         iconRight={
                           isBinaryFileUploading ? (
                             <Spinner fontSize={24} className="mx-4" />
