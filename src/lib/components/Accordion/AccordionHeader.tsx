@@ -25,6 +25,8 @@ const AccordionHeader = forwardRef<HTMLButtonElement, AccordionHeaderProps>((pro
     _icon
   ) : (
     <SvgChevronDownSquare
+      height={24}
+      width={24}
       className={`${isExpanded ? "-rotate-180" : ""} text-brand-dark-blue transition-all duration-200`}
     />
   );

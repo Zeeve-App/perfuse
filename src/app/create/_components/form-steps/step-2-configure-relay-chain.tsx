@@ -2,20 +2,16 @@
 import * as yup from "yup";
 import { useFieldArray, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/navigation";
 import { authenticationMethods } from "../constants/create-network";
 import { configureRelayChainValidationSchema } from "./validation-schema";
 import { useCreateNetworkFormStore } from "@/store/create-network";
 import { relayChainTypeOptions } from "@/constants/parachain-options";
-import SvgChevronLeftSquare from "@/lib/icons/arrows/outline/ChevronLeftSquare";
-import SvgChevronRightSquare from "@/lib/icons/arrows/outline/ChevronRightSquare";
 import { Button, IconButton } from "@/lib/components/Button";
 import { FormField } from "@/lib/components/Form/FormField";
 import { Heading } from "@/lib/components/Heading";
 import { useProgressiveFormContext, ProgressiveFormStepFooter } from "@/lib/components/ProgressiveForm";
 import { Checkbox, FormFieldStatus, Input, Label, Password, Radio } from "@/lib/components/Form";
-import { Tooltip } from "@/lib/components/Tooltip";
-import SvgInfoCircle from "@/lib/icons/essential/outline/InfoCircle";
+
 import HTTP_STATUS from "@/constants/http";
 import { CreatePerfuseApiPayload } from "@/app/api/create/route";
 import { ChainSpecFileType } from "@/types/chain-spec";
@@ -136,7 +132,9 @@ const ConfigureRelayChain = () => {
       {/* form fields */}
       <div className="flex flex-col gap-3 p-3 shadow-brand-shadow lg:gap-6 lg:p-6">
         <div className="flex flex-col gap-3 lg:gap-6">
-          <Heading as="h5">Parachain Config</Heading>
+          <Heading as="h4" className="text-brand-dark-blue">
+            Parachain Configuration
+          </Heading>
           <div className="grid grid-cols-12 items-start gap-3 lg:gap-6">
             {/* para Id */}
             <FormField
@@ -248,14 +246,16 @@ const ConfigureRelayChain = () => {
             </FormField>
           </div>
 
-          <Heading as="h5">Collator Nodes</Heading>
+          <Heading as="h4" className="text-brand-dark-blue">
+            Collator Nodes
+          </Heading>
           {collatorFields.map((e, i) => {
             return (
               <Accordion key={i}>
                 <AccordionItem>
-                  <AccordionHeader>{`Collator ${i + 1}`}</AccordionHeader>
+                  <AccordionHeader className="p-3 font-medium">{`Collator ${i + 1}`}</AccordionHeader>
                   <AccordionBody>
-                    <div key={i} className="grid grid-cols-12 items-start gap-3 pt-3 lg:gap-6">
+                    <div key={i} className="grid grid-cols-12 items-start gap-3 p-3 lg:gap-6">
                       {/* Collator Name */}
                       <FormField
                         className="col-span-12 md:col-span-6 lg:col-span-3"
@@ -324,9 +324,9 @@ const ConfigureRelayChain = () => {
                           placeholder="Rpc Cors"
                         />
                       </FormField>
-                      <hr className="col-span-12 border-brand-light" />
                     </div>
                   </AccordionBody>
+                  <hr className="col-span-12 border-brand-light" />
                 </AccordionItem>
               </Accordion>
             );
@@ -345,9 +345,11 @@ const ConfigureRelayChain = () => {
             </IconButton>
           </div>
 
-          <Heading as="h5">RPC Nodes</Heading>
+          <Heading as="h4" className="text-brand-dark-blue">
+            RPC Nodes
+          </Heading>
           {fields.map((field, index) => (
-            <div key={field.id} className="grid grid-cols-12 items-start gap-3 lg:gap-6">
+            <div key={field.id} className="grid grid-cols-12 items-start gap-3 p-3 lg:gap-6">
               {/* Node name */}
               <FormField
                 className="col-span-12 md:col-span-6 lg:col-span-3"
@@ -395,7 +397,7 @@ const ConfigureRelayChain = () => {
               <Heading as="h5" className="col-span-12">
                 Please Select One Authentication Method From The Below
               </Heading>
-              <div className="col-span-12 grid grid-cols-12 gap-3 lg:gap-6">
+              <div className="col-span-12 grid grid-cols-12 gap-3  lg:gap-6">
                 {authenticationMethods.length
                   ? authenticationMethods.map((item) => {
                       return (
