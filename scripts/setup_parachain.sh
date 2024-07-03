@@ -32,6 +32,16 @@ relay_chain_spec="$parachain_dir/rococo_relay_chain_spec_raw.json"
 extra_params="--unsafe-rpc-external --rpc-methods unsafe"
 
 source $SCRIPT_DIR/generate_keys.sh
+setup_sidecar() {
+  if [[ $SIDECAR == 1 ]] then
+    echo "Setting up sidecar...."
+    bash $SCRIPT_DIR/setup-sidecar.sh
+    echo "Sidecar is ready."
+
+  else
+    echo "Skipping Sidecar Setup..."
+}
+
 # Generate Collator Node Keys
 generate_node_keys collator $parachain_key_dir 2
 
@@ -54,13 +64,14 @@ create_service() {
   local config="$1" 
   local service_name="${config%%:*}"
   local user_flag="${config#*:}"
-
+  
   local port="$2"
   local rpc_port="$3"
   local prometheus_port="$4"
   local base_path=$(printf "$base_path_template" "$service_name")
   local relay_bootnode_id1=$(get_bootnode_id "${relaychain_key_dir}/relaychain_node_key_1.txt" )
   local relay_bootnode_id2=$(get_bootnode_id "${relaychain_key_dir}/relaychain_node_key_2.txt" )
+
   sudo mkdir -p $base_path
   sudo chown -R $SCRIPT_USER:$SCRIPT_USER $base_path
   local exec_start="/usr/local/bin/polkadot-parachain \
@@ -134,3 +145,5 @@ for i in "${!service_config[@]}"; do
   create_service "${service_config[i]}" "${ports[i]}" "${rpc_ports[i]}" "${prometheus_ports[i]}"
   count=$((count + 1))
 done
+
+setup_sidecar
