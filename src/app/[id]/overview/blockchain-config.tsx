@@ -8,7 +8,6 @@ import { IconButton } from "@/lib/components/Button";
 import { Heading } from "@/lib/components/Heading";
 import { Tooltip } from "@/lib/components/Tooltip";
 import CardKeyValuePair from "@/lib/components/utils/card-key-value-pair";
-import KeyValuePair from "@/lib/components/utils/key-value-pair";
 import SvgArrowUpRightFromSquare from "@/lib/icons/arrows/outline/ArrowUpRightFromSquare";
 import useApi from "@/api-client";
 import KeyValuePairInput from "@/lib/components/utils/key-value-pair-input";
@@ -29,18 +28,20 @@ const BlockchainConfig = ({
   const { data: blockRpcResponse, isLoading: blockRpcLoading } = apis.blockNumber();
 
   return (
-    <div className="shadow-brand-shadow col-span-12 flex flex-col gap-2 overflow-hidden rounded-lg p-4 xl:col-span-6 ">
-      <div className="flex items-center justify-between">
-        <Heading as="h4">Blockchain Config</Heading>
-        <Tooltip text={"Blockchain Config"} placement="top-start">
+    <div className="col-span-6 flex flex-col gap-3 rounded-lg p-4 shadow-brand-shadow lg:gap-6">
+      <div className="grid grid-cols-12 gap-3 lg:gap-6">
+        <div className="col-span-12 lg:col-span-6">
+          <Heading as="h4">Blockchain Config</Heading>
+        </div>
+        {/* <Tooltip text={"Blockchain Config"} placement="top-start">
           <Link href={`/${networkId}/blockchain-config`}>
             <IconButton colorScheme="primary" variant={"ghost"} size={"small"}>
               <SvgArrowUpRightFromSquare className="text-xl" />
             </IconButton>
           </Link>
-        </Tooltip>
+        </Tooltip> */}
       </div>
-      <div className="grid grid-cols-12 gap-3 lg:gap-y-6">
+      <div className="grid grid-cols-12 gap-3 lg:gap-6">
         <div className="col-span-12 lg:col-span-6">
           <KeyValuePairInput
             label={"Parachain ID"}
@@ -55,13 +56,12 @@ const BlockchainConfig = ({
             isLoading={isLoading}
           />
         </div>
-        <div className="col-span-12 lg:col-span-6">
-          <CardKeyValuePair
-            label={"Parachain Block Height"}
-            value={parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16)}
-            isLoading={blockRpcLoading}
-          />
-        </div>
+        <CardKeyValuePair
+          label={"Parachain Block Height"}
+          value={parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16)}
+          isLoading={blockRpcLoading}
+          className="col-span-12 h-full md:col-span-6 xl:col-span-6"
+        />
       </div>
     </div>
   );

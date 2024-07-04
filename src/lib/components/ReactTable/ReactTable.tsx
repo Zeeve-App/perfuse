@@ -116,7 +116,7 @@ const ReactTable = <T extends object>(props: ReactTableProps<T>) => {
       <div className="relative">
         {/* table */}
         <TableContainer className={tx("border rounded-md ", classNames?.tableContainer)}>
-          <Table className={tx("border-collapse overflow-hidden ", classNames?.table)}>
+          <Table className={tx("border-collapse overflow-hidden  ", classNames?.table)}>
             <Thead className={tx("h-auto rounded-none px-4 py-3", classNames?.thead?.thead)}>
               {table.getHeaderGroups().map((headerGroup) => (
                 <Tr key={headerGroup.id} className={tx(classNames?.thead?.tr)}>
@@ -125,7 +125,7 @@ const ReactTable = <T extends object>(props: ReactTableProps<T>) => {
                       key={header.id}
                       colSpan={header.colSpan}
                       className={tx(
-                        "group relative p-3 font-semibold uppercase first-of-type:rounded-none last-of-type:rounded-none",
+                        "group relative p-3 font-semibold first-of-type:rounded-none last-of-type:rounded-none",
                         classNames?.thead?.th,
                       )}
                       style={{

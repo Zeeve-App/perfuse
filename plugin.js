@@ -114,6 +114,7 @@ module.exports = plugin(
             primary: "#4054B2",
             blue: "#4318ff",
             "dark-blue": "#2b3674",
+            "darker-blue": "#1b2559",
             red: "#C12C2C",
             green: "#2EC589",
             yellow: "#F0AC00",
@@ -124,7 +125,7 @@ module.exports = plugin(
             "light-teal": "#a1e3cb",
             light: "#f4f7fe",
             outline: "#080E121A",
-            purple: "#5E35B5",
+            purple: "#8879e5",
             pink: "#B53563",
             // shadow:"rgba(112, 144, 176, 0.12)",
             warning: "#fff5e6"

@@ -5,6 +5,7 @@ import { TabsContextProvider } from "@/lib/components/Tabs/TabsContext";
 import SvgBubbles from "@/lib/icons/essential/outline/Bubbles";
 import SvgChart5Square from "@/lib/icons/business/outline/Chart5Square";
 import SvgBox from "@/lib/icons/delivery/outline/Box";
+import { Heading } from "@/lib/components/Heading";
 
 const TabContainer = ({ id }: { id: string }) => {
   const router = useRouter();
@@ -31,18 +32,28 @@ const TabContainer = ({ id }: { id: string }) => {
         },
       }}
     >
-      <TabList className="mb-4 gap-4 overflow-x-auto border-0">
+      <TabList className="mb-4 gap-4 overflow-x-auto border-b">
         <Tab>
-          <SvgChart5Square width={20} height={20} /> &nbsp; Overview
+          <Heading as="h5">
+            <SvgChart5Square width={20} height={20} className="inline" /> &nbsp; Overview{" "}
+          </Heading>
         </Tab>
         <Tab>
-          <SvgBox width={20} height={20} /> &nbsp; Blockchain Config
+          <Heading as="h5">
+            <SvgBox width={20} height={20} className="inline" />
+            &nbsp; Blockchain Config{" "}
+          </Heading>
         </Tab>
         <Tab>
-          <SvgBubbles width={20} height={20} /> &nbsp; Collator Nodes
+          <Heading as="h5">
+            <SvgBubbles width={20} height={20} className="inline" />
+            &nbsp; Collator Nodes{" "}
+          </Heading>
         </Tab>
         <Tab>
-          <SvgBubbles width={20} height={20} /> &nbsp; RPC Nodes
+          <Heading as="h5">
+            <SvgBubbles width={20} height={20} className="inline" /> &nbsp; RPC Nodes{" "}
+          </Heading>
         </Tab>
       </TabList>
     </TabsContextProvider>

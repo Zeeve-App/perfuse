@@ -15,7 +15,7 @@ interface CardKeyValuePairProps {
 
 const CardKeyValuePair = ({ label, value, className, isLoading = false }: CardKeyValuePairProps) => {
   return (
-    <Card className={tx("rounded-lg bg-brand-primary text-center text-brand-light", className)}>
+    <Card className={tx("rounded-lg bg-brand-purple text-center text-brand-light", className)}>
       {isLoading ? (
         <Skeleton role="status" as="div" className="max-w-sm">
           <div className="mx-auto mb-6 mt-2.5 h-3 max-w-[50px] rounded-full bg-gray-200 dark:bg-gray-700"></div>
@@ -24,14 +24,14 @@ const CardKeyValuePair = ({ label, value, className, isLoading = false }: CardKe
       ) : (
         <>
           {typeof value === "string" || typeof value === "number" || typeof value === "undefined" ? (
-            <Heading className="font-bold text-brand-light" as="h2">
+            <Heading className="text-brand-light" as="h2">
               {value ?? "NA"}
             </Heading>
           ) : (
             value
           )}
           {typeof label === "string" ? (
-            <Heading className="font-bold text-brand-light" as="h4">
+            <Heading className="text-brand-light" as="h4">
               {label}
             </Heading>
           ) : (

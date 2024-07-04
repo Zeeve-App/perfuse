@@ -9,10 +9,7 @@ const Th = forwardRef<HTMLTableCellElement, ThProps>((props, ref) => {
   return (
     <th
       scope="col"
-      className={tx(
-        "p-4 text-xs font-medium capitalize first-of-type:rounded-tl-lg last-of-type:rounded-tr-lg",
-        className,
-      )}
+      className={tx("p-4 text-xs font-medium first-of-type:rounded-tl-lg last-of-type:rounded-tr-lg", className)}
       ref={ref}
       {...rest}
     >

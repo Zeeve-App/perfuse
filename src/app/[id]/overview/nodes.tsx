@@ -9,6 +9,7 @@ import { Tooltip } from "@/lib/components/Tooltip";
 import CardKeyValuePair from "@/lib/components/utils/card-key-value-pair";
 import SvgArrowUpRightFromSquare from "@/lib/icons/arrows/outline/ArrowUpRightFromSquare";
 import { NodeDbRow } from "@/db-queries";
+import SvgPlusSquare from "@/lib/icons/essential/outline/PlusSquare";
 
 const columnHelper = createColumnHelper<NodeDbRow>();
 // table columns
@@ -33,35 +34,47 @@ const Nodes = ({ isLoading, nodes }: { isLoading: boolean; nodes: NodeDbRow[] })
   const networkId = params.id;
   const rowPerPage = 3;
   return (
-    <div className="shadow-brand-shadow col-span-12 flex flex-col gap-2 overflow-hidden rounded-lg p-4 xl:col-span-6 ">
-      <div className="flex items-center justify-between">
-        <Heading as="h4">Nodes</Heading>
-        <Link href={`/${networkId}/my-nodes`}>
-          <Tooltip text={"My Nodes"} placement="top-start">
-            <IconButton colorScheme="primary" variant={"ghost"} size={"small"}>
-              <SvgArrowUpRightFromSquare className="text-xl" />
-            </IconButton>
-          </Tooltip>
-        </Link>
+    <div className="col-span-6 flex flex-col gap-3 rounded-lg p-4 shadow-brand-shadow lg:gap-6">
+      <div className="grid grid-cols-12 gap-3 lg:gap-6">
+        <div className="col-span-6 ">
+          <Heading as="h4">Nodes</Heading>
+        </div>
+        <div className="col-span-6 text-end">
+          <IconButton
+            size={"large"}
+            variant={"text"}
+            className="font-semibold"
+            isDisabled
+            onClick={() => {
+              // appendCollator({});
+            }}
+          >
+            Add More Collator <SvgPlusSquare className="pl-2" height={30} width={30} />
+          </IconButton>
+        </div>
       </div>
-      <div className="">
-        <Heading as="h6" className="mb-1">
-          Recently Deployed
-        </Heading>
-        <ReactTable
-          data={
-            nodes
-              ? nodes.filter((node, index) => {
-                  return index < rowPerPage;
-                })
-              : []
-          }
-          columns={nodeTableColumns}
-          isLoading={isLoading}
-          classNames={{
-            table: "table-auto lg:table-fixed",
-          }}
-        />
+      <div className="grid grid-cols-12 gap-3">
+        <div className="col-span-12">
+          <Heading as="h5" className="font-medium">
+            Recently Deployed
+          </Heading>
+        </div>
+        <div className="col-span-12">
+          <ReactTable
+            data={
+              nodes
+                ? nodes.filter((node, index) => {
+                    return index < rowPerPage;
+                  })
+                : []
+            }
+            columns={nodeTableColumns}
+            isLoading={isLoading}
+            classNames={{
+              table: "table-auto lg:table-fixed",
+            }}
+          />
+        </div>
       </div>
     </div>
   );

@@ -20,7 +20,7 @@ const Heading: HeadingComponent = forwardRef(
 
     return (
       <Component
-        className={tx("font-poppins font-semibold text-brand-dark", className)}
+        className={tx("font-poppins font-semibold text-brand-darker-blue", className)}
         ref={ref}
         role="heading"
         {...rest}

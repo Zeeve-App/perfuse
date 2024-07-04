@@ -2,10 +2,7 @@
 
 import React from "react";
 import { formatDate, formatIntoAge, toShortString } from "@/utils/helpers";
-import { CopyButton } from "@/lib/components/Button";
 import { Heading } from "@/lib/components/Heading";
-import { Tooltip } from "@/lib/components/Tooltip";
-import KeyValuePair from "@/lib/components/utils/key-value-pair";
 import { useNetworkStore } from "@/store/network";
 import KeyValuePairInput from "@/lib/components/utils/key-value-pair-input";
 
@@ -26,11 +23,13 @@ const GeneralInfo = ({
 }) => {
   const networkInfo = useNetworkStore((e) => e.networkInfo);
   return (
-    <div className="shadow-brand-shadow col-span-12 flex flex-col rounded-lg">
-      <div className="p-4">
-        <Heading as="h4">General Info</Heading>
+    <div className="col-span-12 flex flex-col gap-3 rounded-lg p-4 shadow-brand-shadow lg:gap-6">
+      <div className="grid grid-cols-12 gap-3 lg:gap-6">
+        <Heading as="h4" className="col-span-12">
+          Parachain Details
+        </Heading>
       </div>
-      <div className="grid grid-cols-12 gap-3 p-4 lg:gap-6">
+      <div className="grid grid-cols-12 gap-3 lg:gap-6">
         <KeyValuePairInput
           label="Name"
           value={name ?? "NA"}

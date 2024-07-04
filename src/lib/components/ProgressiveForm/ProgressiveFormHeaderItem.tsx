@@ -109,6 +109,7 @@ const ProgressiveFormHeaderItem = forwardRef<HTMLDivElement, ProgressiveFormHead
                 {...titleProps}
                 className={tx(
                   "font-poppins text-sm text-brand-gray font-semibold tracking-[0.1px]",
+                  { "text-brand-darker-blue": status === "active" },
                   titleProps?.className,
                 )}
               >
