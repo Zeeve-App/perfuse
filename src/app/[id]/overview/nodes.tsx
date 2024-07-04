@@ -1,13 +1,8 @@
 "use client";
 import React from "react";
-import { useParams } from "next/navigation";
-import Link from "next/link";
 import { IconButton } from "@/lib/components/Button";
 import { Heading } from "@/lib/components/Heading";
 import { ColumnDef, ReactTable, createColumnHelper } from "@/lib/components/ReactTable";
-import { Tooltip } from "@/lib/components/Tooltip";
-import CardKeyValuePair from "@/lib/components/utils/card-key-value-pair";
-import SvgArrowUpRightFromSquare from "@/lib/icons/arrows/outline/ArrowUpRightFromSquare";
 import { NodeDbRow } from "@/db-queries";
 import SvgPlusSquare from "@/lib/icons/essential/outline/PlusSquare";
 
@@ -30,8 +25,6 @@ const nodeTableColumns: ColumnDef<NodeDbRow, any>[] = [
 ];
 
 const Nodes = ({ isLoading, nodes }: { isLoading: boolean; nodes: NodeDbRow[] }) => {
-  const params = useParams();
-  const networkId = params.id;
   const rowPerPage = 3;
   return (
     <div className="col-span-6 flex flex-col gap-3 rounded-lg p-4 shadow-brand-shadow lg:gap-6">

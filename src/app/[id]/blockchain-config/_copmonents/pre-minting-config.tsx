@@ -33,13 +33,13 @@ const PreMiningConfig = ({ data, isLoading }: PreMiningConfigProps) => {
   }, [data]);
 
   return (
-    <div className="shadow-brand-shadow col-span-12 flex flex-col overflow-hidden rounded-lg  md:col-span-6 lg:col-span-6">
+    <div className="col-span-12 flex flex-col overflow-hidden rounded-lg shadow-brand-shadow  md:col-span-6 lg:col-span-6">
       <div className="p-4">
         <Heading as="h4">Pre Mined Addresses ({preMintedData.length})</Heading>
       </div>
       <div className="grid grid-cols-12 gap-3 p-4 pt-0">
         <div className="col-span-12 border-b p-1">
-          <div className="flex items-center justify-between px-2 font-bold">
+          <div className="flex items-center justify-between px-2 font-semibold">
             <div>Address</div>
             <div>Balance</div>
           </div>

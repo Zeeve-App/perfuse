@@ -22,7 +22,7 @@ const KeyValuePairInput = ({
 }) => {
   return (
     <div
-      className={tx("pb-1 justify-between flex flex-col col-span-12 lg:col-span-6 2xl:col-span-3 gap-2", className, {
+      className={tx("pb-1 justify-between flex flex-col gap-2", className, {
         "border-b border-gray-200": enableBorder,
       })}
     >

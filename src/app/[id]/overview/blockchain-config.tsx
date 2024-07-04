@@ -1,14 +1,8 @@
 "use client";
 
 import React from "react";
-// import { IconArrowUpRightFromSquare } from "@zeeve-platform/icons/arrow/outline";
-import { useParams } from "next/navigation";
-import Link from "next/link";
-import { IconButton } from "@/lib/components/Button";
 import { Heading } from "@/lib/components/Heading";
-import { Tooltip } from "@/lib/components/Tooltip";
 import CardKeyValuePair from "@/lib/components/utils/card-key-value-pair";
-import SvgArrowUpRightFromSquare from "@/lib/icons/arrows/outline/ArrowUpRightFromSquare";
 import useApi from "@/api-client";
 import KeyValuePairInput from "@/lib/components/utils/key-value-pair-input";
 
@@ -21,9 +15,6 @@ const BlockchainConfig = ({
   relayChainType?: string;
   isLoading: boolean;
 }) => {
-  const params = useParams();
-  const networkId = params.id;
-
   const apis = useApi();
   const { data: blockRpcResponse, isLoading: blockRpcLoading } = apis.blockNumber();
 
