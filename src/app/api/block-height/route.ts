@@ -1,9 +1,10 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { sendErrorResponse } from "../_helpers/response";
+import { BlockHeightResponsePayload } from "@/api-client/block-number";
 
 export async function GET() {
   try {
-    const res = await axios.post("http://localhost:9010", {
+    const res: AxiosResponse<BlockHeightResponsePayload> = await axios.post("http://localhost:9010", {
       jsonrpc: "2.0",
       method: "chain_getBlock",
       params: [],

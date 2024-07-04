@@ -3,7 +3,7 @@ import useFetcher from "@/hooks/use-fetcher";
 import { withBasePath } from "@/utils/helpers";
 
 /** interface declaration of network list API response payload */
-interface ResponsePayload {
+interface BlockHeightResponsePayload {
   jsonrpc: string;
   result: Result;
   id: number;
@@ -37,12 +37,12 @@ const apiEndpoint = withBasePath("/api/block-height");
 const useBlockNumberApi = () => {
   const fetcher = useFetcher();
 
-  const request = useSWR<ResponsePayload, Record<string, string>>(apiEndpoint, fetcher, {
+  const request = useSWR<BlockHeightResponsePayload, Record<string, string>>(apiEndpoint, fetcher, {
     shouldRetryOnError: false,
   });
 
   return request;
 };
 
-export type { ResponsePayload };
+export type { BlockHeightResponsePayload };
 export default useBlockNumberApi;
