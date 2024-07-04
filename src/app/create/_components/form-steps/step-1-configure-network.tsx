@@ -294,13 +294,13 @@ const ConfigureNetwork = () => {
                     ? templateOption.map((template, index) => {
                         return (
                           <RadioCard
-                            key={index}
+                            key={template.value}
                             value={template.value}
                             className="col-span-12 md:col-span-3"
+                            isDisabled={template.isDisabled}
                             {...register("template.value")}
                             isChecked={watch("template")?.value == template?.value}
                             hideRadioCircle={true}
-                            isDisabled={template.isDisabled}
                           >
                             {template.label}
                           </RadioCard>

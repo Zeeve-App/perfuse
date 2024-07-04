@@ -14,12 +14,24 @@ export const relayChainOption: Record<networkEnvType, { label: string; value: st
   testnet: [{ label: "Rococo", value: "rococo" }],
 };
 
-export const templateOption = [
-  { label: "Substrate", value: "substrate" },
-  { label: "Evm Frontier", value: "evm_frontier" },
-  { label: "Custom", value: "custom" },
+export const templateOption: { label: string; value: string; isDisabled: boolean }[] = [
+  {
+    label: "Substrate",
+    value: "substrate",
+    isDisabled: false,
+  },
+  {
+    label: "Evm Frontier",
+    value: "evm_frontier",
+    isDisabled: false,
+  },
+  {
+    label: "Custom",
+    value: "custom",
+    isDisabled: false,
+  },
   { label: "OpenZeppelin", value: "openzeppelin", isDisabled: true },
-  { label: "Pop CLI", value: "custom", isDisabled: true },
+  { label: "Pop CLI", value: "popcli", isDisabled: true },
 ];
 
 export const networkEnvOption: { label: string; value: networkEnvType; isDisabled?: boolean }[] = [
