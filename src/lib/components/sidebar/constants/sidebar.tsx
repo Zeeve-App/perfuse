@@ -5,6 +5,7 @@ import SvgElement3 from "@/lib/icons/grid/outline/Element3";
 import SvgNodes from "@/lib/icons/programming/outline/Nodes";
 import SvgEndpoints1 from "@/lib/icons/programming/outline/Endpoints1";
 import SvgBook2 from "@/lib/icons/school/outline/Book2";
+import SvgBubbles from "@/lib/icons/essential/outline/Bubbles";
 
 const ITEMS: {
   title?: string;
@@ -19,10 +20,16 @@ const ITEMS: {
         activePaths: ["/overview", "/blockchain-config", "/collator-nodes", "/rpc-nodes", "/create"],
       },
       {
+        title: "Coretime MarketPlace",
+        icon: <SvgBubbles />,
+        path: `#`,
+      },
+      {
         title: "Settings",
         icon: <SvgNodes />,
         path: `#`,
       },
+
       {
         title: "Documents",
         icon: <SvgBook2 />,

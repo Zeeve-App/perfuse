@@ -25,26 +25,26 @@ export const templateOption: { label: string; value: string; isDisabled: boolean
     value: "evm_frontier",
     isDisabled: false,
   },
+  { label: "Contracts", value: "contracts", isDisabled: true },
+  { label: "Assets", value: "assets", isDisabled: true },
   {
     label: "Custom",
     value: "custom",
     isDisabled: false,
   },
-  { label: "OpenZeppelin", value: "openzeppelin", isDisabled: true },
-  { label: "Pop CLI", value: "popcli", isDisabled: true },
 ];
 
 export const networkEnvOption: { label: string; value: networkEnvType; isDisabled?: boolean }[] = [
   { label: "Devnet", value: "devnet" },
-  { label: "Mainnet", value: "mainnet", isDisabled: true },
   { label: "Testnet", value: "testnet", isDisabled: true },
+  { label: "Mainnet", value: "mainnet", isDisabled: true },
 ];
 
 export const explorerOption = [
-  { label: "Polkadot.js", value: "polkadotjs" },
-  { label: "RegionX", value: "regionx" },
+  { label: "Polkadot.js", value: "polkadotjs", isDisabled: false },
+  // { label: "RegionX", value: "regionx" },
   // { label: "Polcascan", value: "polkascan" },
-  // { label: "Subscann", value: "subscan" },
+  { label: "Subscan", value: "subscan", isDisabled: true },
   // { label: "TraceHawk", value: "tracehawk" },
 ];
 

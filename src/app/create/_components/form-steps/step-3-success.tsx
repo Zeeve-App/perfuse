@@ -18,11 +18,15 @@ const DeploySucceed = () => {
             Congratulations! You have <br /> successfully deployed &ldquo;
             {configureNetwork?.chainSpecFile.contents.name}&rdquo;
           </Heading>
-          <Link href={"/"}>
-            <Button colorScheme={"light"} className="text-brand-blue">
-              View Parachain
-            </Button>
-          </Link>
+          <Button
+            colorScheme={"light"}
+            className="text-brand-blue"
+            onClick={() => {
+              window.open("/", "_self");
+            }}
+          >
+            View Parachain
+          </Button>
         </div>
         <div className="col-span-6">
           <Image

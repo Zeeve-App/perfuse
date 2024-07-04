@@ -387,6 +387,7 @@ const ConfigureNetwork = () => {
                             key={index}
                             value={explorer.value}
                             className="col-span-12 md:col-span-3"
+                            isDisabled={explorer.isDisabled}
                             {...register("explorer.value")}
                             isChecked={watch("explorer")?.value == explorer?.value}
                             hideRadioCircle={true}
