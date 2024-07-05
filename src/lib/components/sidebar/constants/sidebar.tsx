@@ -20,9 +20,9 @@ const ITEMS: {
         activePaths: ["/overview", "/blockchain-config", "/collator-nodes", "/rpc-nodes", "/create"],
       },
       {
-        title: "Coretime MarketPlace",
+        title: "Coretime",
         icon: <SvgBubbles />,
-        path: `#`,
+        path: `/Coretime`,
       },
       {
         title: "Settings",
