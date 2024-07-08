@@ -2,11 +2,10 @@
 
 import ZeeveSidebarItemProps from "../type";
 import SvgElement3 from "@/lib/icons/grid/outline/Element3";
-import SvgNodes from "@/lib/icons/programming/outline/Nodes";
-import SvgEndpoints1 from "@/lib/icons/programming/outline/Endpoints1";
 import SvgBook2 from "@/lib/icons/school/outline/Book2";
 import SvgBubbles from "@/lib/icons/essential/outline/Bubbles";
 import SvgGithub from "@/lib/icons/programming/outline/github-mark-white";
+import SvgSidebarSetting from "@/lib/icons/custom/sidebar-setting";
 
 const ITEMS: {
   title?: string;
@@ -27,7 +26,7 @@ const ITEMS: {
       },
       {
         title: "Settings",
-        icon: <SvgNodes />,
+        icon: <SvgSidebarSetting />,
         path: `#`,
       },
 

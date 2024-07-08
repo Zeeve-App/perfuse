@@ -13,35 +13,7 @@ const CreatePage = async () => {
   const networks = await getNetworks();
   return (
     <>
-      <div className="flex flex-col gap-y-3 lg:gap-y-6">
-        {/* <Navigation
-          heading={"Perfuse"}
-          logo={
-            <Image
-              src={withBasePath("/assets/images/parachains-logo.svg")}
-              alt="parachains-logo"
-              width={32}
-              height={32}
-            />
-          }
-          breadcrumb={{
-            items: [
-              {
-                label: "Dashboard",
-                href: "/",
-                as: "a",
-              },
-              {
-                label: "Create",
-                href: "#",
-                isActive: true,
-              },
-            ],
-          }}
-        /> */}
-
-        {networks.length < 1 ? <CreatePageClient /> : <NoData />}
-      </div>
+      <div className="flex flex-col gap-y-3 lg:gap-y-6">{networks.length < 1 ? <CreatePageClient /> : <NoData />}</div>
     </>
   );
 };

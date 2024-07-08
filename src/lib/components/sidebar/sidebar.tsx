@@ -122,11 +122,11 @@ const ZeeveSidebar = (props: SidebarProps) => {
       <SidebarHeader className="justify-center">
         <a href={`/`}>
           <Image
-            src={withBasePath("/assets/images/parachains-logo.svg")}
+            src={withBasePath("/assets/images/perfuse-logo.svg")}
             alt="Zeeve Logo"
             width={64}
             height={64}
-            className="size-16"
+            className="size-64"
             priority
           />
         </a>

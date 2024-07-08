@@ -1,3 +1,8 @@
+import Image from "next/image";
+import SvgCreateConfig from "@/lib/icons/custom/create-config";
+import { withBasePath } from "@/utils/helpers";
+import SvgSubstrate from "@/lib/icons/custom/substrate";
+
 export const sideCardOptions = [
   { label: "Yes", value: 1 },
   { label: "No", value: 0 },
@@ -5,8 +10,8 @@ export const sideCardOptions = [
 
 export type networkEnvType = "devnet" | "mainnet" | "testnet";
 
-export const relayChainOption: Record<networkEnvType, { label: string; value: string }[]> = {
-  devnet: [{ label: "Rococo-local", value: "rococo_local" }],
+export const relayChainOption: Record<networkEnvType, { label: string; value: string; icon?: JSX.Element }[]> = {
+  devnet: [{ label: "Rococo-local", value: "rococo_local", icon: <SvgSubstrate /> }],
   mainnet: [
     { label: "Kusama", value: "kusama" },
     { label: "Polkadot", value: "polkadot" },
@@ -14,23 +19,34 @@ export const relayChainOption: Record<networkEnvType, { label: string; value: st
   testnet: [{ label: "Rococo", value: "rococo" }],
 };
 
-export const templateOption: { label: string; value: string; isDisabled: boolean }[] = [
+export const templateOption: { label: string; value: string; isDisabled: boolean; icon?: JSX.Element }[] = [
   {
     label: "Substrate",
     value: "substrate",
     isDisabled: false,
+    icon: <SvgSubstrate />,
   },
   {
     label: "Evm Frontier",
     value: "evm_frontier",
     isDisabled: false,
+    icon: (
+      <div className="flex size-10  items-center justify-center rounded-full border border-brand-gray/45 p-2">
+        <Image height={15} width={15} alt={"eth"} src={withBasePath("/assets/images/create/eth.png")}></Image>
+      </div>
+    ),
   },
-  { label: "Contracts", value: "contracts", isDisabled: true },
-  { label: "Assets", value: "assets", isDisabled: true },
+  { label: "Contracts", value: "contracts", isDisabled: true, icon: <SvgSubstrate /> },
+  { label: "Assets", value: "assets", isDisabled: true, icon: <SvgSubstrate /> },
   {
     label: "Custom",
     value: "custom",
     isDisabled: false,
+    icon: (
+      <div className="rounded-full border border-brand-gray/45 p-2">
+        <SvgCreateConfig height={24} width={24} />
+      </div>
+    ),
   },
 ];
 

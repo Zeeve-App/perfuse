@@ -22,12 +22,6 @@ const DashboardCard = ({
       <div className="flex flex-row items-center gap-3">
         <div className="rounded-lg bg-brand-outline p-2">
           <Icon />
-          {/* <Image
-            src={withBasePath("/assets/images/protocol/parachains-logo.svg")}
-            alt="parachains-logo"
-            width={24}
-            height={24}
-          /> */}
         </div>
         <div>
           <Heading as={"h5"}>{title}</Heading>

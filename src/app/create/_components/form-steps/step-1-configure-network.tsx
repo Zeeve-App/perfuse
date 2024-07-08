@@ -302,6 +302,7 @@ const ConfigureNetwork = () => {
                             isChecked={watch("template")?.value == template?.value}
                             hideRadioCircle={true}
                           >
+                            {template.icon}
                             {template.label}
                           </RadioCard>
                         );
@@ -333,6 +334,7 @@ const ConfigureNetwork = () => {
                             isChecked={watch("relayChain")?.value == relayChain?.value}
                             hideRadioCircle={true}
                           >
+                            {relayChain.icon}
                             {relayChain.label}
                           </RadioCard>
                         );
