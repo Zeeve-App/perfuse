@@ -39,7 +39,7 @@ const CopyButton = forwardRef<HTMLButtonElement, CopyButtonProps>((props, ref) =
         ref={ref}
         {...rest}
       >
-        {!isCopied ? <SvgCopy /> : <SvgCopyCheck />}
+        {!isCopied ? <SvgCopy className="size-6" /> : <SvgCopyCheck className="size-5" />}
       </IconButton>
     </Tooltip>
   );

@@ -16,18 +16,40 @@ const SvgCopy = ({ title, titleId, ...props }: SVGProps<SVGSVGElement> & SVGRPro
   >
     {title ? <title id={titleId}>{title}</title> : null}
     <path
-      stroke="currentColor"
+      d="M12.75 10.05V12.3C12.75 15.3 11.55 16.5 8.55 16.5H5.7C2.7 16.5 1.5 15.3 1.5 12.3V9.45C1.5 6.45 2.7 5.25 5.7 5.25H7.95"
+      stroke="#868686"
+      strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
-      strokeWidth={1.5}
-      d="M16 12.9v4.2c0 3.5-1.4 4.9-4.9 4.9H6.9C3.4 22 2 20.6 2 17.1v-4.2C2 9.4 3.4 8 6.9 8h4.2c3.5 0 4.9 1.4 4.9 4.9Z"
     />
     <path
-      stroke="currentColor"
+      d="M12.75 10.05H10.35C8.54995 10.05 7.94995 9.45 7.94995 7.65V5.25L12.75 10.05Z"
+      stroke="#868686"
+      strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
-      strokeWidth={1.5}
-      d="M22 6.9v4.2c0 3.5-1.4 4.9-4.9 4.9H16v-3.1C16 9.4 14.6 8 11.1 8H8V6.9C8 3.4 9.4 2 12.9 2h4.2C20.6 2 22 3.4 22 6.9Z"
+    />
+    <path d="M8.69995 1.5H11.7" stroke="#868686" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path
+      d="M5.25 3.75C5.25 2.505 6.255 1.5 7.5 1.5H9.465"
+      stroke="#868686"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M16.5001 6V10.6425C16.5001 11.805 15.5551 12.75 14.3926 12.75"
+      stroke="#868686"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M16.5 6H14.25C12.5625 6 12 5.4375 12 3.75V1.5L16.5 6Z"
+      stroke="#868686"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );
