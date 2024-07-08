@@ -113,9 +113,9 @@ const RegisterParachainInfoModal = () => {
   };
 
   useEffect(() => {
-    getChecksum();
+    isModalOpen && getChecksum();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isModalOpen]);
 
   return (
     <Modal isOpen={isModalOpen} handleClose={onClose}>
