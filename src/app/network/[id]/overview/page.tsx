@@ -22,6 +22,8 @@ const CreatePage = async ({
   if (!network) {
     return <>Error while loading network. Invalid network Id</>;
   }
+  console.log(task);
+
   return (
     <Overview
       isLoading={false}

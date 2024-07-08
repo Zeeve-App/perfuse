@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-var-requires */
 "use server";
-import knex, { Knex } from "knex";
+import knex from "knex";
 import { Database, RunResult } from "sqlite3";
 import { config } from "@/config/config";
 

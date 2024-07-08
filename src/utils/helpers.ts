@@ -11,7 +11,7 @@ const formatDate = (date?: Date | string) => {
   }
 
   const isString = typeof date == "string";
-  return format(parseISO(isString ? date : date.toISOString()), "dd MMM yyyy, hh:mm:ss a");
+  return format(parseISO(isString ? new Date(date).toISOString() : date.toISOString()), "dd MMM yyyy, hh:mm:ss a");
 };
 /**
  * to make the capitalize the first letter
@@ -34,6 +34,7 @@ const formatIntoAge = (startDate?: Date | string, endDate?: Date | string): stri
   if (!startDate || !endDate) {
     return "NA";
   }
+
   const { years, months, days, hours, minutes, seconds } = intervalToDuration({
     start: new Date(startDate).getTime(),
     end: new Date(endDate).getTime(),

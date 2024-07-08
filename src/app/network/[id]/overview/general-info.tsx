@@ -84,19 +84,24 @@ const GeneralInfo = ({
         /> */}
         <KeyValuePairInput
           label="Blockchain Provision Time"
-          value={networkInfo.data?.networkStatus === "completed" ? formatIntoAge(createdAt, provisionedAt) : "NA"}
+          value={
+            networkInfo.data?.networkStatus === "completed"
+              ? formatIntoAge(createdAt + " UTC", provisionedAt + " UTC")
+              : "NA"
+          }
           className="col-span-12 md:col-span-6 xl:col-span-3"
           isLoading={isLoading}
         />
+        {/* {createdAt} */}
         <KeyValuePairInput
           label="Duration"
-          value={formatIntoAge(createdAt, new Date())}
+          value={formatIntoAge(createdAt + " UTC", new Date())}
           className="col-span-12 md:col-span-6 xl:col-span-3"
           isLoading={isLoading}
         />
         <KeyValuePairInput
           label="Created On"
-          value={createdAt ? formatDate(createdAt) : "NA"}
+          value={createdAt ? formatDate(createdAt + " UTC") : "NA"}
           className="col-span-12 md:col-span-6 xl:col-span-3"
           isLoading={isLoading}
         />
