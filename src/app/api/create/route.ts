@@ -61,6 +61,7 @@ export async function POST(req: NextRequest) {
             network_sidecar: formData.network.network_sidecar ? 1 : 0,
             network_chain_spec_file_json: JSON.stringify(formData.network.network_chain_spec_file_json),
             network_relay_chain_version: "v1.9.0",
+            created_at: new Date().toISOString(),
           },
           trx,
         );
@@ -73,6 +74,8 @@ export async function POST(req: NextRequest) {
             task_description: "this task is to deploy network",
             task_associated_network_id: network_id,
             task_retry_count: 5,
+            task_created_at: new Date().toISOString(),
+            task_updated_at: new Date().toISOString(),
           },
           trx,
         );
@@ -89,6 +92,7 @@ export async function POST(req: NextRequest) {
               node_https_enabled: !isRpc ? undefined : e.node_https_enabled ? 1 : 0,
               node_api_key: isRpc && e.node_auth_method === "api_key" ? apiKey : undefined,
               node_endpoint: isRpc ? e.node_endpoint ?? domain : undefined,
+              created_at: new Date().toISOString(),
             };
             await saveNodeData(node, trx);
           }, trx),

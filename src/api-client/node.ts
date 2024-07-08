@@ -14,9 +14,13 @@ const useNodeApi = (networkId: string, nodeId: string) => {
   const apiEndpoint = withBasePath(`/api/network/${networkId}/node/${nodeId}`);
   const fetcher = useFetcher();
 
-  const request = useSWR<ResponsePayload, Record<string, string>>(networkId ? apiEndpoint : undefined, fetcher, {
-    shouldRetryOnError: false,
-  });
+  const request = useSWR<ResponsePayload, Record<string, string>>(
+    networkId && nodeId ? apiEndpoint : undefined,
+    fetcher,
+    {
+      shouldRetryOnError: false,
+    },
+  );
 
   return request;
 };

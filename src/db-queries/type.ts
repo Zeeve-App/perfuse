@@ -27,7 +27,7 @@ interface NodeDbRow {
   node_username?: string;
   node_password?: string;
   node_api_key?: string;
-  created_at?: Date;
+  created_at: string;
 }
 
 interface TaskDbRow {
