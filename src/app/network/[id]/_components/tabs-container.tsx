@@ -28,7 +28,7 @@ const TabContainer = ({ id }: { id: string }) => {
         setActiveIndex: (idx) => {
           const tabName = Object.entries(tabAndIndexMap).find((k, v) => v === idx);
 
-          router.push(`/${id}/${tabName?.[0] ?? ""}`);
+          router.push(`/network/${id}/${tabName?.[0] ?? ""}`);
         },
       }}
     >

@@ -3,7 +3,6 @@
 import React from "react";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import { Heading } from "@/lib/components/Heading";
-import KeyValuePair from "@/lib/components/utils/key-value-pair";
 import KeyValuePairInput from "@/lib/components/utils/key-value-pair-input";
 
 interface RelayChainConfigProps {

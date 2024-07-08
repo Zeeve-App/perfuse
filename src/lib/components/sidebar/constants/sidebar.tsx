@@ -22,7 +22,7 @@ const ITEMS: {
       {
         title: "Coretime",
         icon: <SvgBubbles />,
-        path: `/Coretime`,
+        path: `/coretime`,
       },
       {
         title: "Settings",
