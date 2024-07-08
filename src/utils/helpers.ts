@@ -13,7 +13,17 @@ const formatDate = (date?: Date | string) => {
   const isString = typeof date == "string";
   return format(parseISO(isString ? date : date.toISOString()), "dd MMM yyyy, hh:mm:ss a");
 };
-
+/**
+ * to make the capitalize the first letter
+ * @param string string to format
+ * @returns `string`
+ */
+const capitalizeFirstLetter = (string: string) => {
+  if (string.length === 0) {
+    return string; // Return an empty string if the input is empty
+  }
+  return string[0].toUpperCase() + string.slice(1);
+};
 /**
  * to convert into formatted human readable age string
  * @param startDate starting date object or ISO string
@@ -169,6 +179,7 @@ export {
   toCapitalize,
   formateNumber,
   calculateDaysLeft,
+  capitalizeFirstLetter,
   formatDate,
   formatIntoAge,
 };
