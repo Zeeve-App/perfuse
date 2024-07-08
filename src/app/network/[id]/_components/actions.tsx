@@ -43,10 +43,11 @@ const Actions = ({
           as={Button}
           onClick={handleToggle}
           // isDisabled={task?.task_status !== "completed"}
-          iconLeft={<SvgChart5Square className="text-xl" />}
+          // iconLeft={<SvgChart5Square className="text-xl" />}
+          variant={"outline"}
           isFullWidth
         >
-          Explorer
+          Monitoring
         </DropdownMenuButton>
         <DropdownMenuList>
           <Link href={relayExplorerUrl} target={"_blank"}>

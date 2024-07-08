@@ -1,4 +1,3 @@
-"use client";
 import { RegionXCard } from "./_components/regionX";
 import { Card } from "@/lib/components/Card";
 import { Heading } from "@/lib/components/Heading";

@@ -6,6 +6,7 @@ import SvgNodes from "@/lib/icons/programming/outline/Nodes";
 import SvgEndpoints1 from "@/lib/icons/programming/outline/Endpoints1";
 import SvgBook2 from "@/lib/icons/school/outline/Book2";
 import SvgBubbles from "@/lib/icons/essential/outline/Bubbles";
+import SvgGithub from "@/lib/icons/programming/outline/github-mark-white";
 
 const ITEMS: {
   title?: string;
@@ -22,7 +23,7 @@ const ITEMS: {
       {
         title: "Coretime",
         icon: <SvgBubbles />,
-        path: `/coretime`,
+        path: `/coretime-page`,
       },
       {
         title: "Settings",
@@ -42,7 +43,7 @@ const ITEMS: {
     items: [
       {
         title: "Github",
-        icon: <SvgEndpoints1 />,
+        icon: <SvgGithub />,
         path: `#`,
       },
     ],

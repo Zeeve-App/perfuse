@@ -1,9 +1,8 @@
 "use client";
 import Link from "next/link";
-import React, { ComponentPropsWithoutRef } from "react";
-import Image from "next/image";
+import React, { ComponentPropsWithoutRef, useEffect, useState } from "react";
 
-import { capitalizeFirstLetter, toShortString, withBasePath } from "@/utils/helpers";
+import { capitalizeFirstLetter } from "@/utils/helpers";
 import { Card } from "@/lib/components/Card";
 import { Heading } from "@/lib/components/Heading";
 import { Button } from "@/lib/components/Button";
@@ -18,26 +17,34 @@ interface RegionXCardProps extends ComponentPropsWithoutRef<"div"> {
 
 const RegionXCard = (props: RegionXCardProps) => {
   const { protocolId, protocolName, description, showDescription = true } = props;
+  const [hostname, setHostname] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Client-side-only code
+      setHostname(window.location.hostname);
+    }
+  }, []);
 
   return (
     <Card className="col-span-12 w-auto rounded-lg shadow-brand-shadow md:col-span-6 lg:col-span-3">
-      <div className="flex flex-col items-start justify-between gap-3">
-        {/* <div className="rounded-lg bg-brand-outline p-2">
+      <Link href={`${hostname}:3030`}>
+        <div className="flex flex-col items-start justify-between gap-3">
+          {/* <div className="rounded-lg bg-brand-outline p-2">
           <Image src={withBasePath(``)} alt={`${protocolName} Icon`} width={24} height={24} />
         </div> */}
-        <div>
-          <Heading as={"h1"}>{capitalizeFirstLetter(protocolName ?? "NA")}</Heading>
+          <div>
+            <Heading as={"h1"}>{capitalizeFirstLetter(protocolName ?? "NA")}</Heading>
+          </div>
         </div>
-      </div>
-      <div className="flex items-center justify-between py-1 text-xs">
-        <div className="flex items-baseline gap-2">
-          <SvgBubbles className="text-brand-primary" />
-          <div className="text-brand-gray">{description}</div>
+        <div className="flex items-center justify-between py-1 text-xs">
+          <div className="flex items-baseline gap-2">
+            <SvgBubbles className="text-brand-primary" />
+            <div className="text-brand-gray">{description}</div>
+          </div>
+          <div></div>
         </div>
-        <div></div>
-      </div>
-      <Link href={""}>
-        <Button className="w-full" variant={"ghost"}>
+        <Button className="w-full" variant={"outline"}>
           Visit
         </Button>
       </Link>

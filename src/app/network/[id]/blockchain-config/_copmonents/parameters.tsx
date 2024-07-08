@@ -62,7 +62,7 @@ const Parameters = ({ data, isLoading, blockHeight }: ParametersProps) => {
                 )}
               </Heading>
             }
-            className="lg:p-7"
+            className="bg-[#5281CE] lg:p-7"
             isLoading={isLoading}
           />
         </div>
