@@ -10,8 +10,8 @@ const ListPageClient = () => {
 
   return (
     <div className="flex flex-col gap-y-3 lg:gap-y-6">
-      <div className="grid grid-cols-12 justify-items-start  gap-4 rounded-lg border border-brand-outline p-3 bg-brand-gradient-blue-48 lg:p-6">
-        <div className="col-span-6 flex flex-col items-start justify-center gap-2 p-4">
+      <div className="flex grid-cols-12 justify-items-start  gap-4 rounded-lg border border-brand-outline p-3 bg-brand-gradient-blue-48 lg:p-6">
+        <div className=" flex flex-col items-start justify-center gap-2 p-4">
           <Heading as="h3" className="text-white">
             Deploy New Parachain
           </Heading>
@@ -22,7 +22,8 @@ const ListPageClient = () => {
             </Button>
           </Link>
         </div>
-        <div className="col-span-6">
+        <div className="grow"></div>
+        <div className="p-4">
           <Image
             src={withBasePath("/assets/images/dashboard/dashboard-1.svg")}
             alt="parachains-logo"

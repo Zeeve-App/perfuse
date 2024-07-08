@@ -32,7 +32,9 @@ const GeneralInfo = ({
       <div className="grid grid-cols-12 gap-3 lg:gap-6">
         <KeyValuePairInput
           label="Name"
-          value={name ?? "NA"}
+          value={name ? toShortString(name, 5, 5) : "NA"}
+          shouldAllowCopy
+          tooltipText={name}
           className="col-span-12 md:col-span-6 xl:col-span-3"
           isLoading={isLoading}
         />
@@ -41,12 +43,15 @@ const GeneralInfo = ({
           value={id ? toShortString(id, 5, 5) : "NA"}
           className="col-span-12 md:col-span-6 xl:col-span-3"
           isLoading={isLoading}
+          tooltipText={id}
           shouldAllowCopy={true}
         />
         <KeyValuePairInput
           label="Description"
-          value={"Example description"}
+          value={toShortString("Example description", 5, 5)}
           className="col-span-12 md:col-span-6 xl:col-span-3"
+          shouldAllowCopy
+          tooltipText={"Example description"}
           isLoading={isLoading}
         />
         <KeyValuePairInput

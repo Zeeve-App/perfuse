@@ -29,7 +29,7 @@ const getIcons = (step: number) => ({
 });
 
 const CreatePageClient = () => {
-  const [activeStep, setActiveStep] = useState<number>(0);
+  const [activeStep, setActiveStep] = useState<number>(2);
 
   return (
     <ProgressiveForm activeStep={activeStep} setActiveStep={setActiveStep} className="bg-white">

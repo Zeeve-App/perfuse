@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { Input, Label } from "../Form";
+import { Tooltip } from "../Tooltip";
 import { CopyButton } from "@/lib/components/Button";
 import { Skeleton } from "@/lib/components/Skeleton";
 import { tx } from "@/utils/shared";
@@ -11,6 +12,7 @@ const KeyValuePairInput = ({
   enableBorder = false,
   isLoading = false,
   className,
+  tooltipText,
   shouldAllowCopy,
 }: {
   label: string | React.ReactElement;
@@ -19,6 +21,7 @@ const KeyValuePairInput = ({
   isLoading?: boolean;
   className?: string;
   shouldAllowCopy?: boolean;
+  tooltipText?: string;
 }) => {
   return (
     <div
@@ -44,12 +47,18 @@ const KeyValuePairInput = ({
               <CopyButton text={value.toString()} />
             ) : null}
           </div> */}
-          <div className="relative">
-            <Input type="text" isDisabled value={value} />
-            {shouldAllowCopy && (typeof value === "string" || typeof value === "number") ? (
-              <CopyButton text={value.toString()} className="absolute right-3 top-5 " />
-            ) : null}
-          </div>
+          <Tooltip
+            text={tooltipText ?? ""}
+            placement="bottom-start"
+            hidden={tooltipText === undefined || tooltipText === ""}
+          >
+            <div className="relative">
+              <Input type="text" isDisabled value={value} />
+              {shouldAllowCopy && (typeof value === "string" || typeof value === "number") ? (
+                <CopyButton text={value.toString()} className="absolute right-3 top-5 " />
+              ) : null}
+            </div>
+          </Tooltip>
         </>
       )}
     </div>
