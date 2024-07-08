@@ -2,11 +2,13 @@
 import Link from "next/link";
 import React, { ComponentPropsWithoutRef, useEffect, useState } from "react";
 
-import { capitalizeFirstLetter } from "@/utils/helpers";
+import Image from "next/image";
+import { capitalizeFirstLetter, withBasePath } from "@/utils/helpers";
 import { Card } from "@/lib/components/Card";
 import { Heading } from "@/lib/components/Heading";
 import { Button } from "@/lib/components/Button";
 import SvgBubbles from "@/lib/icons/essential/outline/Bubbles";
+import { useToggle } from "@/hooks";
 
 interface RegionXCardProps extends ComponentPropsWithoutRef<"div"> {
   protocolId: string;
@@ -17,6 +19,7 @@ interface RegionXCardProps extends ComponentPropsWithoutRef<"div"> {
 
 const RegionXCard = (props: RegionXCardProps) => {
   const { protocolId, protocolName, description, showDescription = true } = props;
+  const { isOpen, handleToggle } = useToggle();
   const [hostname, setHostname] = useState("");
 
   useEffect(() => {
@@ -28,26 +31,61 @@ const RegionXCard = (props: RegionXCardProps) => {
 
   return (
     <Card className="col-span-12 w-auto rounded-lg shadow-brand-shadow md:col-span-6 lg:col-span-3">
-      <Link href={`${hostname}:3030`}>
-        <div className="flex flex-col items-start justify-between gap-3">
-          {/* <div className="rounded-lg bg-brand-outline p-2">
-          <Image src={withBasePath(``)} alt={`${protocolName} Icon`} width={24} height={24} />
-        </div> */}
-          <div>
-            <Heading as={"h1"}>{capitalizeFirstLetter(protocolName ?? "NA")}</Heading>
-          </div>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <Heading as={"h2"}>{capitalizeFirstLetter(protocolName ?? "NA")}</Heading>
         </div>
-        <div className="flex items-center justify-between py-1 text-xs">
-          <div className="flex items-baseline gap-2">
-            <SvgBubbles className="text-brand-primary" />
-            <div className="text-brand-gray">{description}</div>
-          </div>
-          <div></div>
+        <div className="rounded-lg">
+          <Image
+            src={withBasePath(`/assets/images/coretime/regionx.png`)}
+            alt={`${protocolName} Icon`}
+            width={48}
+            height={48}
+          />
         </div>
-        <Button className="w-full" variant={"outline"}>
-          Visit
-        </Button>
-      </Link>
+      </div>
+      <div className="flex items-center justify-between py-4 text-sm">
+        <div className="flex items-baseline gap-2">
+          {/* <SvgBubbles className=" text-brand-primary" /> */}
+          {!isOpen && (
+            <div className="text-brand-gray">
+              {description.slice(0, 90)}
+              <a
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleToggle();
+                }}
+                className="text-brand-blue"
+              >
+                ...see more
+              </a>
+            </div>
+          )}
+          {isOpen && (
+            <div className="text-brand-gray">
+              {description}
+              <a
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleToggle();
+                }}
+                className="text-brand-blue"
+              >
+                see less
+              </a>
+            </div>
+          )}
+        </div>
+      </div>
+      <Button
+        className="w-full"
+        variant={"outline"}
+        onClick={() => {
+          window.open(`${hostname}:3030`);
+        }}
+      >
+        Visit
+      </Button>
     </Card>
   );
 };

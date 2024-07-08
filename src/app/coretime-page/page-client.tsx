@@ -7,7 +7,13 @@ const CoreTimePageClient = () => {
     <Card className="shadow-brand-shadow ">
       <Heading as="h4">CoreTime</Heading>
       <div className="grid grid-cols-12 gap-3 rounded-lg bg-white lg:gap-6">
-        <RegionXCard protocolId={"123"} protocolName={"RegionX"} description={"this is the description"} />
+        <RegionXCard
+          protocolId={"123"}
+          protocolName={"RegionX"}
+          description={
+            "RegionX is a project dedicated to developing components for the new Agile Coretime model. The goal of the project is to enable developer teams, researchers, and enthusiasts to start trading, tracking, and analyzing the product Polkadot offers."
+          }
+        />
       </div>
     </Card>
   );
