@@ -17,6 +17,7 @@ interface FileUploadProps {
   id: string;
   floatingLabelText: string;
   error?: string;
+  fileType: string;
   iconRight?: React.ReactElement;
 }
 
@@ -25,6 +26,7 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>((props, ref) =>
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     field: { value, onChange, ...field },
     progressValue,
+    fileType,
     progressTotal,
     fileName,
     id,
@@ -45,8 +47,8 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>((props, ref) =>
           <div className="flex items-center justify-between gap-2 rounded-xl border-2 border-dashed p-3 lg:gap-4">
             {iconRight}
             <div>
-              <p className="text-brand-dark-blue font-normal">Select a file or drag and drop here</p>
-              <p className="text-brand-gray">Supported format: .json</p>
+              <p className="font-normal text-brand-dark-blue">Select a file or drag and drop here</p>
+              <p className="text-brand-gray">Supported format: {fileType}</p>
             </div>
             <Button variant={"outline"}>Select File</Button>
           </div>

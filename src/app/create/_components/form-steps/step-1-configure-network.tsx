@@ -426,6 +426,7 @@ const ConfigureNetwork = () => {
                   render={({ field: { value, onChange, ...field } }) => {
                     return (
                       <FileUpload
+                        fileType="json"
                         field={{
                           ...field,
                           onChange: (event) => {
@@ -459,6 +460,7 @@ const ConfigureNetwork = () => {
                   render={({ field: { value, onChange, ...field } }) => {
                     return (
                       <FileUpload
+                        fileType="binary"
                         field={{
                           ...field,
                           value,
