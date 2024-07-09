@@ -28,7 +28,7 @@ relaychain_key_dir="${RELAYCHAIN_KEY_DIR:-/home/perfuse/relaychain_keys}"
 parachain_key_dir="${PARACHAIN_KEY_DIR:-/home/perfuse/parachain_keys}"
 parachain_dir="/home/perfuse/parachain"
 chain_spec="$parachain_dir/raw-parachain-chainspec.json"
-relay_chain_spec="$parachain_dir/rococo_relay_chain_spec_raw.json"
+relay_chain_spec="/home/perfuse/zombienet/data/rococo-local.json"
 extra_params="--unsafe-rpc-external --rpc-methods unsafe"
 
 source $SCRIPT_DIR/generate_keys.sh
