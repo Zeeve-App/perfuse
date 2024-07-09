@@ -128,16 +128,16 @@ backend relay_rpc_backend
     mode http
     $basic_auth_line
     server relaychain_rpc_1 127.0.0.1:${RELAY_RPC_PORT}"
-  local relay_backend_config="
-backend relay_rpc_backend
+  local coretime_backend_config="
+backend coretime_rpc_backend
     mode http
     $basic_auth_line
-    server relaychain_rpc_1 127.0.0.1:${CORETIME_RPC_PORT}"
-  local relay_backend_config="
-backend relay_rpc_backend
+    server coretime_rpc_1 127.0.0.1:${CORETIME_RPC_PORT}"
+  local regionx_backend_config="
+backend regionx_rpc_backend
     mode http
     $basic_auth_line
-    server relaychain_rpc_1 127.0.0.1:${REGIONX_RPC_PORT}"
+    server regionx_rpc_1 127.0.0.1:${REGIONX_RPC_PORT}"
   local parachain_backend_config="
 backend para_rpc_backend
     mode http
@@ -171,6 +171,8 @@ backend letsencrypt-backend
   echo "$perfuse_ui_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$sidecar_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$relay_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
+  echo "$coretime_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
+  echo "$regionx_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null  
   echo "$parachain_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$certbot_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
 

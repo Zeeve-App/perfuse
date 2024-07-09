@@ -15,7 +15,8 @@ fi
 
 download_dir="/usr/local/bin"
 
-binaries_name=("polkadot" "polkadot-parachain" "polkadot-execute-worker" "polkadot-prepare-worker")
+#binaries_name=("polkadot" "polkadot-parachain" "polkadot-execute-worker" "polkadot-prepare-worker")
+binaries_name=("polkadot-parachain")
 
 # Function to download and install a binary
 download_and_install() {

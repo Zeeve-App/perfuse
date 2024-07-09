@@ -3,8 +3,10 @@
 set -e
 set -u
 
+export NVM_DIR=$HOME/.nvm;
+source $NVM_DIR/nvm.sh;
 SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
-Load environment variables from .env file
+#Load environment variables from .env file
 if [ -f "$SCRIPT_DIR/../perfuse/.env" ]; then
   source "$SCRIPT_DIR/../perfuse/.env"
   echo "Env Variables Loaded"
@@ -47,9 +49,10 @@ sudo mv zombienet-linux-x64 /usr/local/bin/zombienet-linux
 fi
 
 zombienet-linux setup -y polkadot polkadot-parachain && export PATH=/home/perfuse/regionx/Coretime-Mock:$PATH
-mkdir bin && mv polkadot* bin/
+mkdir -p bin && mv polkadot* bin/
 wget https://github.com/rahul-mnz/squid-k8s/releases/download/test/regionx-node -P bin/ && chmod +x bin/regionx-node
 
+npm i -g pm2
 pm2 start npm --name "zombienet" -- run zombienet
 
 while [ "$block_number_reached" = false ]; do

@@ -2,6 +2,10 @@
 
 set -e       # Exit on error
 set -u       # Fail on unset variables
+
+export NVM_DIR=$HOME/.nvm;
+source $NVM_DIR/nvm.sh;
+
 parachain_dir="/home/perfuse/parachain"
 SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
 
@@ -96,11 +100,11 @@ for i in "${!binaries_name[@]}"; do
   remove_binary "${binaries_name[i]}" "$POLKA_VERSION"
 done
 
-# Delete the pm2 service of RegionX
-pm2 delete all
-
 # clean_haproxy_config
 sudo rm -r /home/perfuse
+
+# Delete the pm2 service of RegionX
+pm2 delete all
 
 #Remove Sidecar Container
 sudo docker rm -f $(sudo docker ps -a -q)
