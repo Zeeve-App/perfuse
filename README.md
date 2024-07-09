@@ -4,7 +4,7 @@
 
 Before you get started, make sure your system meets the following requirements:
 
-## Minimum Requirements:
+**Minimum Requirements:**
 
 * **Operating System:**
     - Linux (Ubuntu 20.04+ recommended)
@@ -14,7 +14,7 @@ Before you get started, make sure your system meets the following requirements:
     - **Memory:** 16GB RAM or more
     - **Storage:** 100GB available disk space
 
-## Recommended Requirements:
+**Recommended Requirements:**
 
 * **Operating System:** 
     - Linux (Ubuntu 22.04 LTS) 
