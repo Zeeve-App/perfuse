@@ -28,7 +28,7 @@ const Actions = ({
     data: {
       networkId,
       networkName: network.network_name,
-      relayChainType: network.network_relay_chain,
+      relayChainType: network.network_relay_chain_type,
       networkStatus: task?.task_status,
     },
     isLoading: false,

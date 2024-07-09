@@ -32,7 +32,7 @@ const CreatePage = async ({
       name={network.network_name}
       id={network.network_id}
       paraId={chainSpec.para_id.toString()}
-      relayCainType={network.network_relay_chain}
+      relayCainType={network.network_relay_chain_type}
       nodes={nodes}
       provisionedAt={task?.task_updated_at}
     />

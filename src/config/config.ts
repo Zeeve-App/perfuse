@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 
+// TODO: check pkg liscence
 export const config = {
   server: {
     dbLocation: process.env.SQLITE_DB_LOCATION || "./perfuse.sqlite",

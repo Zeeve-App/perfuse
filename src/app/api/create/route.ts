@@ -14,9 +14,9 @@ export type CreatePerfuseApiPayload = {
     network_name: string;
     network_env: string;
     network_template: string;
-    network_relay_chain: string;
+    network_relay_chain_type: string;
     network_sidecar: 0 | 1;
-    network_blockchain_explorer: string;
+    network_blockchain_explorer_type: string;
     network_chain_spec_file_json: object;
     network_binary_path: string;
   };
@@ -61,6 +61,7 @@ export async function POST(req: NextRequest) {
             network_sidecar: formData.network.network_sidecar ? 1 : 0,
             network_chain_spec_file_json: JSON.stringify(formData.network.network_chain_spec_file_json),
             network_relay_chain_version: "v1.9.0",
+
             created_at: new Date().toISOString(),
           },
           trx,

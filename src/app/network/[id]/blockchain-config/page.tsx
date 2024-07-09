@@ -19,7 +19,7 @@ const CreatePage = async ({
     <BlockchainConfig
       chainSpecJSON={JSON.parse(network?.network_chain_spec_file_json ?? "")}
       relayChain={{
-        type: network?.network_relay_chain,
+        type: network?.network_relay_chain_type,
         version: network?.network_relay_chain_version,
       }}
     />

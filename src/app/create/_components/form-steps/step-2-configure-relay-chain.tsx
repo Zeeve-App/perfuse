@@ -77,9 +77,9 @@ const ConfigureRelayChain = () => {
         network_name: data.name,
         network_env: configureNetwork?.networkEnviorment.value ?? "",
         network_template: configureNetwork?.template.value ?? "",
-        network_relay_chain: configureNetwork?.relayChain.value ?? "",
+        network_relay_chain_type: configureNetwork?.relayChain.value ?? "",
         network_sidecar: configureNetwork?.sidecar.value ?? 0,
-        network_blockchain_explorer: configureNetwork?.explorer.value ?? "",
+        network_blockchain_explorer_type: configureNetwork?.explorer.value ?? "",
         network_chain_spec_file_json: {
           ...chainspec,
           telemetryEndpoints: data.telemetryEndpoint,

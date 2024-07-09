@@ -21,7 +21,7 @@ const ParachainSpecFile = ({ data, isLoading }: ParachainSpecFileProps) => {
   const ExtraComponent = lazy(() => import("./parachain-chainspec-preview"));
 
   return (
-    <div className="shadow-brand-shadow col-span-12 flex flex-col overflow-hidden rounded-lg ">
+    <div className="col-span-12 flex flex-col overflow-hidden rounded-lg shadow-brand-shadow ">
       <div className="p-4">
         <div className="mb-1 flex items-center justify-between">
           <Heading as="h4">Parachain Spec File</Heading>

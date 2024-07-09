@@ -14,7 +14,7 @@ const TabContainer = ({ id }: { id: string }) => {
   const tab = path.split("/").pop();
   // const [activeIndex, setActiveIndex] = useState();
   const tabAndIndexMap: Record<string, number> = {
-    "": 0,
+    overview: 0,
     "blockchain-config": 1,
     "collator-nodes": 2,
     "rpc-nodes": 3,
@@ -23,11 +23,17 @@ const TabContainer = ({ id }: { id: string }) => {
   return (
     <TabsContextProvider
       value={{
-        activeIndex: !tab ? 0 : Object.keys(tabAndIndexMap).includes(tab) ? tabAndIndexMap[tab] : 0,
+        //        if no tab present then show 0(overview), if its in the tabAndIndexMap record then show that tab, otherwise show (0)overview
+        activeIndex: !tab
+          ? tabAndIndexMap["overview"]
+          : Object.keys(tabAndIndexMap).includes(tab)
+            ? tabAndIndexMap[tab]
+            : tabAndIndexMap["overview"],
         orientation: "horizontal",
         setActiveIndex: (idx) => {
           const tabName = Object.entries(tabAndIndexMap).find((k, v) => v === idx);
 
+          // redirect to the tab which is clicked
           router.push(`/network/${id}/${tabName?.[0] ?? ""}`);
         },
       }}

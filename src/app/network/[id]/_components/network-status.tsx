@@ -5,6 +5,13 @@ import { tx } from "@/utils/shared";
 const NetworkStatus = ({ className }: { className?: string }) => {
   const networkInfo = useNetworkStore((e) => e.networkInfo);
   const status = networkInfo.data?.networkStatus ?? "pending";
+
+  const statusLabelMap: Record<TaskDbRow["task_status"], string> = {
+    pending: "Pending",
+    inprogress: "In Progress",
+    completed: "Ready",
+    failed: "Failed",
+  };
   return (
     <>
       <div
@@ -19,7 +26,7 @@ const NetworkStatus = ({ className }: { className?: string }) => {
           className,
         )}
       >
-        {status}
+        {statusLabelMap[status]}
       </div>
     </>
   );
