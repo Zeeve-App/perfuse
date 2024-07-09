@@ -52,7 +52,7 @@ const RegionXCard = (props: RegionXCardProps) => {
                   e.preventDefault();
                   handleToggle();
                 }}
-                className="text-brand-blue"
+                className="cursor-pointer text-brand-blue"
               >
                 ...see more
               </a>
@@ -66,7 +66,7 @@ const RegionXCard = (props: RegionXCardProps) => {
                   e.preventDefault();
                   handleToggle();
                 }}
-                className="text-brand-blue"
+                className="cursor-pointer text-brand-blue"
               >
                 see less
               </a>
