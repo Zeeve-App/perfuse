@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import NetworkStatus from "../_components/network-status";
 import { IconButton } from "@/lib/components/Button";
 import { Heading } from "@/lib/components/Heading";
 import { ColumnDef, ReactTable, createColumnHelper } from "@/lib/components/ReactTable";
@@ -18,10 +19,10 @@ const nodeTableColumns: ColumnDef<NodeDbRow, any>[] = [
     header: "Type",
     cell: (info) => info.getValue().toUpperCase(),
   }),
-  // columnHelper.accessor("nodeStatus", {
-  //   header: "Status",
-  //   cell: (info) => <NetworkNodeStatus status={info.getValue()} />,
-  // }),
+  columnHelper.accessor("node_id", {
+    header: "Status",
+    cell: (_info) => <NetworkStatus />,
+  }),
 ];
 
 const Nodes = ({ isLoading, nodes }: { isLoading: boolean; nodes: NodeDbRow[] }) => {

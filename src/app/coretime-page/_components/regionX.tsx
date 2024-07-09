@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import React, { ComponentPropsWithoutRef, useEffect, useState } from "react";
 
 import Image from "next/image";
@@ -7,7 +6,6 @@ import { capitalizeFirstLetter, withBasePath } from "@/utils/helpers";
 import { Card } from "@/lib/components/Card";
 import { Heading } from "@/lib/components/Heading";
 import { Button } from "@/lib/components/Button";
-import SvgBubbles from "@/lib/icons/essential/outline/Bubbles";
 import { useToggle } from "@/hooks";
 
 interface RegionXCardProps extends ComponentPropsWithoutRef<"div"> {
@@ -24,8 +22,7 @@ const RegionXCard = (props: RegionXCardProps) => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      // Client-side-only code
-      setHostname(window.location.hostname);
+      setHostname(`${window.location.protocol}//${window.location.hostname}`);
     }
   }, []);
 

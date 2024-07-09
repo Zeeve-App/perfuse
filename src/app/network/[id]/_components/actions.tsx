@@ -2,7 +2,6 @@
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useModalStore } from "@/store/modal";
-// import useAnalyticsService from "@/services/analytics/use-analytics-service";
 import { Button, IconButton } from "@/lib/components/Button";
 import { Tooltip } from "@/lib/components/Tooltip";
 import SvgTrash from "@/lib/icons/essential/outline/Trash";
@@ -10,7 +9,6 @@ import { useNetworkStore } from "@/store/network";
 import { NetworkDbRow, TaskDbRow } from "@/db-queries";
 import { DropdownMenu, DropdownMenuButton, DropdownMenuList, DropdownMenuItem } from "@/lib/components/DropdownMenu";
 import { useToggle } from "@/hooks";
-import SvgChart5Square from "@/lib/icons/business/outline/Chart5Square";
 
 const Actions = ({
   network,
@@ -42,12 +40,11 @@ const Actions = ({
         <DropdownMenuButton
           as={Button}
           onClick={handleToggle}
-          // isDisabled={task?.task_status !== "completed"}
-          // iconLeft={<SvgChart5Square className="text-xl" />}
+          isDisabled={task?.task_status !== "completed"}
           variant={"outline"}
           isFullWidth
         >
-          Monitoring
+          Explorer
         </DropdownMenuButton>
         <DropdownMenuList>
           <Link href={relayExplorerUrl} target={"_blank"}>

@@ -2,10 +2,10 @@
 "use client";
 import React from "react";
 import { useParams } from "next/navigation";
+import NetworkStatus from "./network-status";
 import { NODE_TYPE } from "@/types/node";
 import { formatDate, toShortString } from "@/utils/helpers";
 import { useModalStore } from "@/store/modal";
-import SvgInfoSquare from "@/lib/icons/essential/outline/InfoSquare";
 import SvgTrashSquare from "@/lib/icons/essential/outline/TrashSquare";
 import SvgChart5Square from "@/lib/icons/business/outline/Chart5Square";
 import { IconButton, CopyButton } from "@/lib/components/Button";
@@ -69,10 +69,10 @@ const nodeTableColumns: ColumnDef<NodeDbRow, any>[] = [
     header: "Name",
     cell: (info) => info.getValue(),
   }),
-  // columnHelper.accessor("nodeStatus", {
-  //   header: "Status",
-  //   cell: (info) => <NetworkNodeStatus status={info.getValue()} />,
-  // }),
+  columnHelper.accessor("node_id", {
+    header: "Status",
+    cell: (_info) => <NetworkStatus />,
+  }),
   columnHelper.accessor("created_at", {
     header: "Created On",
     cell: (info) => formatDate(new Date(info.getValue())),
@@ -96,7 +96,7 @@ const NodeTable = ({ heading, nodes }: { nodeType: NODE_TYPE; heading: string; n
       </Heading>
       <div>
         <ReactTable
-          data={nodes ?? []}
+          data={nodes.map((e) => ({ ...e })) ?? []}
           columns={nodeTableColumns}
           isLoading={false}
           pagination={{
