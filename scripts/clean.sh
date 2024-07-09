@@ -96,6 +96,9 @@ for i in "${!binaries_name[@]}"; do
   remove_binary "${binaries_name[i]}" "$POLKA_VERSION"
 done
 
+# Delete the pm2 service of RegionX
+pm2 delete all
+
 # clean_haproxy_config
 sudo rm -r /home/perfuse
 
