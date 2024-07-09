@@ -2,27 +2,33 @@
 
 ## System Requirements
 
-Before you get started, make sure your system meets the following requirements:
+Make sure your system is ready to harness the power of Perfuse! 🚀
 
-**Minimum Requirements:**
+### ✅ Minimum Requirements:
+
+Your project will take flight with these basic specs:
 
 * **Operating System:**
-    - Linux (Ubuntu 20.04+ recommended)
+    - 🐧 Linux (Ubuntu 20.04+ recommended)
 
 * **Hardware:**
-    - **Processor:** 4 Cores or more
-    - **Memory:** 16GB RAM or more
-    - **Storage:** 100GB available disk space
+    - **🧠 Processor:** 4 Cores or more
+    - **💾 Memory:** 16GB RAM or more
+    - **💽 Storage:** 100GB available disk space
+---
 
-**Recommended Requirements:**
+### 🚀 Recommended Requirements:
+For the smoothest, most optimal experience, we recommend:
 
 * **Operating System:** 
-    - Linux (Ubuntu 22.04 LTS) 
+    - 🐧 Linux (Ubuntu 22.04 LTS) 
 
 * **Hardware:**
-    - **Processor:** 6 Cores or more
-    - **Memory:** 32GB RAM or more
-    - **Storage:** 100GB available disk space
+    - **🧠 Processor:** 6 Cores or more
+    - **💾 Memory:** 32GB RAM or more
+    - **💽 Storage:** 100GB available disk space
+
+---
 
 ## Install nvm
 ```bash
