@@ -3,6 +3,8 @@
 set -e
 set -u
 
+export NVM_DIR=$HOME/.nvm;
+source $NVM_DIR/nvm.sh;
 SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
 # Load environment variables from .env file
 if [ -f "$SCRIPT_DIR/../perfuse/.env" ]; then
@@ -106,14 +108,14 @@ create_service() {
       --chain $relay_chain_spec \
       --execution wasm \
       --port $((port + 2022)) \
-      --rpc-port $((rpc_port + 2022)) \
+      --rpc-port $((rpc_port + 2022)) "
   else
     exec_start+=" \
       -- \
       --chain $relay_chain_spec \
       --execution wasm \
       --port $((port + 2022)) \
-      --rpc-port $((rpc_port + 2022)) \
+      --rpc-port $((rpc_port + 2022)) "
   fi
 
   cat <<EOF >/etc/systemd/system/${service_name}.service
@@ -140,6 +142,29 @@ EOF
   sudo systemctl start ${service_name}.service
 }
 
+sidecar_setup() {
+  # Check if api-sidecar is already installed
+  if ! command -v substrate-api-sidecar &> /dev/null; then 
+    echo "Installing @substrate/api-sidecar..."
+    npm i -g @substrate/api-sidecar
+  else
+    echo "@substrate/api-sidecar is already installed."
+  fi
+
+  # ENV VAR for Sidecar
+  export SAS_EXPRESS_BIND_HOST=0.0.0.0
+  export SAS_EXPRESS_PORT=9099
+  export SAS_SUBSTRATE_URL=ws://127.0.0.1:9010
+
+  if pm2 list | grep -q "substrate-api-sidecar"; then
+    echo "Restarting existing sidecar process..."
+    pm2 restart substrate-api-sidecar
+  else
+    echo "Starting sidecar..."
+    pm2 start "substrate-api-sidecar"
+  fi
+}
+
 # Main loop
 count=1
 for i in "${!service_config[@]}"; do
@@ -147,4 +172,10 @@ for i in "${!service_config[@]}"; do
   count=$((count + 1))
 done
 
-setup_sidecar
+if [[ $SIDECAR == 1 ]]; then
+  echo "Configuring the Sidecar......."
+  sidecar_setup
+  echo "Sidecar is running now."
+else
+  echo "Skipping the Sidecar Setup"
+fi
