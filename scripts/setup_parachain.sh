@@ -24,7 +24,6 @@ ports=(40334 40335 40336)
 rpc_ports=(9008 9009 9010)
 prometheus_ports=(8004 8005 8006)
 base_path_template="/home/perfuse/parachain/%s/data"  # Data directory template
-relaychain_key_dir="${RELAYCHAIN_KEY_DIR:-/home/perfuse/relaychain_keys}"
 parachain_key_dir="${PARACHAIN_KEY_DIR:-/home/perfuse/parachain_keys}"
 parachain_dir="/home/perfuse/parachain"
 chain_spec="$parachain_dir/raw-parachain-chainspec.json"
@@ -75,8 +74,6 @@ create_service() {
   local rpc_port="$3"
   local prometheus_port="$4"
   local base_path=$(printf "$base_path_template" "$service_name")
-  local relay_bootnode_id1=$(get_bootnode_id "${relaychain_key_dir}/relaychain_node_key_1.txt" )
-  local relay_bootnode_id2=$(get_bootnode_id "${relaychain_key_dir}/relaychain_node_key_2.txt" )
 
   sudo mkdir -p $base_path
   sudo chown -R $SCRIPT_USER:$SCRIPT_USER $base_path
@@ -110,7 +107,6 @@ create_service() {
       --execution wasm \
       --port $((port + 2022)) \
       --rpc-port $((rpc_port + 2022)) \
-      --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/$relay_bootnode_id1 /ip4/127.0.0.1/tcp/30334/p2p/$relay_bootnode_id2"
   else
     exec_start+=" \
       -- \
@@ -118,7 +114,6 @@ create_service() {
       --execution wasm \
       --port $((port + 2022)) \
       --rpc-port $((rpc_port + 2022)) \
-      --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/$relay_bootnode_id1 /ip4/127.0.0.1/tcp/30334/p2p/$relay_bootnode_id2"
   fi
 
   cat <<EOF >/etc/systemd/system/${service_name}.service

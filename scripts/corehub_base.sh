@@ -33,10 +33,10 @@ git clone https://github.com/RegionX-Labs/Coretime-Mock.git && cd Coretime-Mock
 
 # Check if the 2000 PARA ID exists in the file
 if grep -q "id = 2000" "./zombienet/network.toml"; then
-    # Replace the ID to 3000
-    sed -i "s/id = 2000/id = 3000/" "./zombienet/network.toml"
+    # Replace the ID to 4459
+    sed -i "s/id = 2000/id = 4459/" "./zombienet/network.toml"
     sed -i "s+zombienet_args=.*+zombienet_args=\"$NEW_ARGS\"+" ./scripts/run_zombienet.sh
-    echo "Parachain ID successfully updated from 2000 to 3000"
+    echo "Parachain ID successfully updated from 2000 to 4459"
 else
     echo "Parachain ID 2000 not found in network file"
 fi
@@ -91,9 +91,9 @@ cd ../ && git clone https://github.com/RegionX-Labs/CoreHub.git && cd CoreHub
 # sudo docker run --name corehub-ui --rm -it -d --read-only -p 3030:3000 corehub
 # Installing dependencies
 
-export WS_ROCOCO_RELAY_CHAIN="ws://$HOST_IP:9900"
-export WS_ROCOCO_CORETIME_CHAIN="ws://$HOST_IP:9910"
-export WS_REGIONX_COCOS_CHAIN="ws://$HOST_IP:9920"
+export WS_ROCOCO_RELAY_CHAIN="ws://$HOST_IP/${RPC_API_KEY:+${RPC_API_KEY}/}relay-rpc"
+export WS_ROCOCO_CORETIME_CHAIN="ws://$HOST_IP/${RPC_API_KEY:+${RPC_API_KEY}/}coretime-rpc"
+export WS_REGIONX_COCOS_CHAIN="ws://$HOST_IP/${RPC_API_KEY:+${RPC_API_KEY}/}regionx-rpc"
 export EXPERIMENTAL=false
 
 npm i && npm run build
