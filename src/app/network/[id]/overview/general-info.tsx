@@ -69,12 +69,6 @@ const GeneralInfo = ({
           className="col-span-12 md:col-span-6 xl:col-span-3"
           isLoading={isLoading}
         />
-        <KeyValuePairInput
-          label="Status"
-          value={networkInfo.data?.networkStatus ? networkInfo.data?.networkStatus.toUpperCase() : "NA"}
-          className="col-span-12 md:col-span-6 xl:col-span-3"
-          isLoading={isLoading}
-        />
         <div className={tx("pb-1 justify-between flex flex-col gap-2 col-span-12 md:col-span-6 xl:col-span-3")}>
           <Label>Status</Label>
           <div className="h-[60px] rounded-lg border border-brand-outline">

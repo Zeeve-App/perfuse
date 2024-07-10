@@ -16,7 +16,7 @@ interface RegionXCardProps extends ComponentPropsWithoutRef<"div"> {
 }
 
 const RegionXCard = (props: RegionXCardProps) => {
-  const { protocolId, protocolName, description, showDescription = true } = props;
+  const { protocolName, description } = props;
   const { isOpen, handleToggle } = useToggle();
   const [hostname, setHostname] = useState("");
 
@@ -78,7 +78,7 @@ const RegionXCard = (props: RegionXCardProps) => {
         className="w-full"
         variant={"outline"}
         onClick={() => {
-          window.open(`${hostname}:3030`);
+          window.open(`${hostname}:3030/?network=rococo`);
         }}
       >
         Visit
