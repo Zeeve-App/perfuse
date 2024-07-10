@@ -3,7 +3,6 @@ import React, { forwardRef } from "react";
 import { RemoveProperties } from "../core";
 import { Radio } from "../Form";
 import { tx } from "@/utils/shared";
-import SvgApiConnect from "@/lib/icons/product/outline/ApiConnect";
 
 interface RadioCardProps
   extends RemoveProperties<
@@ -29,6 +28,7 @@ interface RadioCardProps
     | null;
   size?: "small" | "medium" | "large";
   hideRadioCircle?: boolean;
+  tooltipText?: string;
 }
 
 const RadioCard = forwardRef<HTMLInputElement, RadioCardProps>((props, ref) => {

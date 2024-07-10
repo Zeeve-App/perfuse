@@ -270,8 +270,10 @@ const ConfigureNetwork = () => {
                           hideRadioCircle={true}
                           isDisabled={environment.isDisabled}
                         >
-                          <SvgApiConnect width={25} height={25} />
-                          {environment.label}
+                          <>
+                            <SvgApiConnect width={25} height={25} />
+                            {environment.label}
+                          </>
                         </RadioCard>
                       );
                     })
@@ -291,7 +293,7 @@ const ConfigureNetwork = () => {
                 </div>
                 <div className="grid grid-cols-12 gap-3 lg:gap-6">
                   {templateOption.length
-                    ? templateOption.map((template, index) => {
+                    ? templateOption.map((template) => {
                         return (
                           <RadioCard
                             key={template.value}

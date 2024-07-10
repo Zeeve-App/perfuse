@@ -50,18 +50,21 @@ export const templateOption: { label: string; value: string; isDisabled: boolean
   },
 ];
 
-export const networkEnvOption: { label: string; value: networkEnvType; isDisabled?: boolean }[] = [
-  { label: "Devnet", value: "devnet" },
-  { label: "Testnet", value: "testnet", isDisabled: true },
-  { label: "Mainnet", value: "mainnet", isDisabled: true },
-];
+export const networkEnvOption: { label: string; value: networkEnvType; isDisabled?: boolean; tooltipText?: string }[] =
+  [
+    { label: "Devnet", value: "devnet", tooltipText: "this is devnet" },
+    { label: "Testnet", value: "testnet", isDisabled: true, tooltipText: "this is devnet" },
+    { label: "Mainnet", value: "mainnet", isDisabled: true, tooltipText: "this is devnet" },
+  ];
 
-export const explorerOption = [
+export const explorerOption: {
+  label: string;
+  value: string;
+  isDisabled: boolean;
+  tooltipText?: string;
+}[] = [
   { label: "Polkadot.js", value: "polkadotjs", isDisabled: false },
-  // { label: "RegionX", value: "regionx" },
-  // { label: "Polcascan", value: "polkascan" },
   { label: "Subscan", value: "subscan", isDisabled: true },
-  // { label: "TraceHawk", value: "tracehawk" },
 ];
 
 export type AuthenticationMethods = "api_key" | "basic_auth";
