@@ -18,7 +18,7 @@ const RegisterParachainInfo = ({ className, show }: InfoProps) => {
   const networkInfo = useNetworkStore((e) => e.networkInfo);
   const params = useParams();
   const networkId = params.id as string;
-  return show ? (
+  return networkInfo.data?.networkStatus === "completed" && show ? (
     <Card
       className={tx(
         "col-span-12 flex flex-row items-center border border-brand-green bg-brand-green/5 gap-3",

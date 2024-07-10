@@ -69,9 +69,13 @@ const GeneralInfo = ({
           className="col-span-12 md:col-span-6 xl:col-span-3"
           isLoading={isLoading}
         />
-        <div className={tx("pb-1 justify-between flex flex-col gap-2 col-span-12 md:col-span-6 xl:col-span-3")}>
+        <div
+          className={tx(
+            "pb-1 justify-between flex flex-col gap-2 col-span-12 md:col-span-6 xl:col-span-3 border-brand-outline",
+          )}
+        >
           <Label>Status</Label>
-          <div className="h-[60px] rounded-lg border border-brand-outline">
+          <div className="h-[60px] rounded-lg border ">
             <NetworkStatus className="flex h-full items-center p-4" />
           </div>
         </div>

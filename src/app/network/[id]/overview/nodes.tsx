@@ -21,7 +21,7 @@ const nodeTableColumns: ColumnDef<NodeDbRow, any>[] = [
   }),
   columnHelper.accessor("node_id", {
     header: "Status",
-    cell: (_info) => <NetworkStatus />,
+    cell: (_info) => <NetworkStatus className="text-xs" />,
   }),
 ];
 
