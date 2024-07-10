@@ -107,4 +107,4 @@ sudo rm -r /home/perfuse
 pm2 delete all
 
 #Remove Sidecar Container
-sudo docker rm -f $(sudo docker ps -a -q)
+# sudo docker rm -f $(sudo docker ps -a -q)
