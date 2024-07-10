@@ -19,6 +19,7 @@ export type CreatePerfuseApiPayload = {
     network_blockchain_explorer_type: string;
     network_chain_spec_file_json: object;
     network_binary_path: string;
+    network_user_address: string;
   };
   nodes: Array<
     | {
@@ -63,6 +64,8 @@ export async function POST(req: NextRequest) {
             network_relay_chain_version: "v1.9.0",
 
             created_at: new Date().toISOString(),
+            network_coretime_type: "regionx",
+            network_user_address: formData.network.network_user_address,
           },
           trx,
         );
@@ -151,6 +154,7 @@ const createEnvFile = (data: CreatePerfuseApiPayload, apiKey?: string) => {
     `EMAIL=rahul.meena@zeeve.io\n` +
     `SCRIPT_USER=STEM\n` +
     `SSL_TLS=0\n` +
+    `ACCOUNT_ADDRESS=${data.network.network_user_address}\n` +
     `REPO=\n` +
     ``;
 

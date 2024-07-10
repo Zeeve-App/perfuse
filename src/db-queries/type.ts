@@ -19,6 +19,10 @@ interface NetworkDbRow {
   network_chain_spec_file_json: string;
   // netowrk binary path in local storage
   network_binary_path: string;
+  // coretime type for the network
+  network_coretime_type: "regionx";
+  // network user wallet address
+  network_user_address: string;
   // created at time stamp in iso format
   created_at: string;
 }

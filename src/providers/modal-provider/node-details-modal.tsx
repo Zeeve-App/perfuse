@@ -30,9 +30,15 @@ const NodeDetailsModal = () => {
   const { data: blockRpcResponse, isLoading: blockRpcLoading } = apis.blockNumber();
   const blockHeight = parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16);
 
-  const formatEndpoint = (type: "https" | "wss", endpoint?: string, credType?: CREDENTIALS_TYPE, apiKey?: string) => {
+  const formatEndpoint = (
+    type: "https" | "wss",
+    endpoint?: string,
+    credType?: CREDENTIALS_TYPE,
+    apiKey?: string,
+    rpcType?: "para-rpc" | "relay-rpc" | "api",
+  ) => {
     if (endpoint && credType) {
-      return `${type.slice(0, -1)}://${endpoint}${credType === "api_key" ? `/${apiKey}` : ""}/${"para-rpc"}`;
+      return `${type.slice(0, -1)}://${endpoint}${credType === "api_key" ? `/${apiKey}` : ""}/${rpcType ?? "para-rpc"}`;
     }
     return "NA";
   };
@@ -137,7 +143,7 @@ const NodeDetailsModal = () => {
                   </div>
                   <div className="grid grid-cols-12 gap-3 p-3 lg:gap-6">
                     <KeyValuePair
-                      label={"HTTPS URL"}
+                      label={"Parachain HTTP URL"}
                       value={
                         data?.data?.node_https_enabled ? (
                           data.data.node_https_enabled ? (
@@ -188,7 +194,7 @@ const NodeDetailsModal = () => {
                       isLoading={isLoading}
                     />
                     <KeyValuePair
-                      label={"WSS URL"}
+                      label={"Parachain WS URL"}
                       value={
                         data?.data ? (
                           data.data.node_wss_enabled ? (
@@ -222,6 +228,171 @@ const NodeDetailsModal = () => {
                                       data.data.node_endpoint,
                                       data.data.node_auth_method,
                                       data.data.node_api_key,
+                                    )}
+                                  />
+                                </div>
+                              </Tooltip>
+                            ) : (
+                              "NA"
+                            )
+                          ) : (
+                            <FlagState flag={data?.data.node_https_enabled} />
+                          )
+                        ) : (
+                          "NA"
+                        )
+                      }
+                      isLoading={isLoading}
+                    />
+                    <KeyValuePair
+                      label={"Relay Chain HTTP URL"}
+                      value={
+                        data?.data?.node_https_enabled ? (
+                          data.data.node_https_enabled ? (
+                            formatEndpoint(
+                              "https",
+                              data.data.node_endpoint,
+                              data.data.node_auth_method,
+                              data.data.node_api_key,
+                              "relay-rpc",
+                            ) ? (
+                              <Tooltip
+                                text={formatEndpoint(
+                                  "https",
+                                  data.data.node_endpoint,
+                                  data.data.node_auth_method,
+                                  data.data.node_api_key,
+                                  "relay-rpc",
+                                )}
+                                placement={"top-start"}
+                              >
+                                <div className="flex items-center gap-2">
+                                  {toShortString(
+                                    formatEndpoint(
+                                      "https",
+                                      data.data.node_endpoint,
+                                      data.data.node_auth_method,
+                                      data.data.node_api_key,
+                                      "relay-rpc",
+                                    ),
+                                  )}
+                                  <CopyButton
+                                    text={formatEndpoint(
+                                      "https",
+                                      data.data.node_endpoint,
+                                      data.data.node_auth_method,
+                                      data.data.node_api_key,
+                                      "relay-rpc",
+                                    )}
+                                  />
+                                </div>
+                              </Tooltip>
+                            ) : (
+                              "NA"
+                            )
+                          ) : (
+                            <FlagState flag={data?.data.node_https_enabled} />
+                          )
+                        ) : (
+                          "NA"
+                        )
+                      }
+                      isLoading={isLoading}
+                    />
+                    <KeyValuePair
+                      label={"Relay Chain WS URL"}
+                      value={
+                        data?.data ? (
+                          data.data.node_wss_enabled ? (
+                            formatEndpoint(
+                              "wss",
+                              data.data.node_endpoint,
+                              data.data.node_auth_method,
+                              data.data.node_api_key,
+                              "relay-rpc",
+                            ) ? (
+                              <Tooltip
+                                text={formatEndpoint(
+                                  "wss",
+                                  data.data.node_endpoint,
+                                  data.data.node_auth_method,
+                                  data.data.node_api_key,
+                                  "relay-rpc",
+                                )}
+                                placement={"top-start"}
+                              >
+                                <div className="flex items-center gap-2">
+                                  {toShortString(
+                                    formatEndpoint(
+                                      "wss",
+                                      data.data.node_endpoint,
+                                      data.data.node_auth_method,
+                                      data.data.node_api_key,
+                                      "relay-rpc",
+                                    ),
+                                  )}
+                                  <CopyButton
+                                    text={formatEndpoint(
+                                      "wss",
+                                      data.data.node_endpoint,
+                                      data.data.node_auth_method,
+                                      data.data.node_api_key,
+                                      "relay-rpc",
+                                    )}
+                                  />
+                                </div>
+                              </Tooltip>
+                            ) : (
+                              "NA"
+                            )
+                          ) : (
+                            <FlagState flag={data?.data.node_https_enabled} />
+                          )
+                        ) : (
+                          "NA"
+                        )
+                      }
+                      isLoading={isLoading}
+                    />
+                    <KeyValuePair
+                      label={"Sidecar HTTP URL"}
+                      value={
+                        data?.data?.node_https_enabled ? (
+                          data.data.node_https_enabled ? (
+                            formatEndpoint(
+                              "https",
+                              data.data.node_endpoint,
+                              data.data.node_auth_method,
+                              data.data.node_api_key,
+                              "api",
+                            ) ? (
+                              <Tooltip
+                                text={formatEndpoint(
+                                  "https",
+                                  data.data.node_endpoint,
+                                  data.data.node_auth_method,
+                                  data.data.node_api_key,
+                                  "api",
+                                )}
+                                placement={"top-start"}
+                              >
+                                <div className="flex items-center gap-2">
+                                  {toShortString(
+                                    formatEndpoint(
+                                      "https",
+                                      data.data.node_endpoint,
+                                      data.data.node_auth_method,
+                                      data.data.node_api_key,
+                                      "api",
+                                    ),
+                                  )}
+                                  <CopyButton
+                                    text={formatEndpoint(
+                                      "https",
+                                      data.data.node_endpoint,
+                                      data.data.node_auth_method,
+                                      data.data.node_api_key,
+                                      "api",
                                     )}
                                   />
                                 </div>

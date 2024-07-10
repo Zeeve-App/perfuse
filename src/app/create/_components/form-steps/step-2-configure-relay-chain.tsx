@@ -86,6 +86,7 @@ const ConfigureRelayChain = () => {
           properties: { ...chainspec?.properties, tokenSymbol: data.tokenName },
         } as ChainSpecFileType,
         network_binary_path: configureNetwork?.binaryFile.path ?? "",
+        network_user_address: "",
       },
       nodes: [
         ...(data.collatorNodes?.map

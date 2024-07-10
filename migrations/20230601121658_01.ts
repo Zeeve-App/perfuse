@@ -20,6 +20,8 @@ exports.up = async function (knex: Knex) {
             network_blockchain_explorer_type TEXT NOT NULL,
             network_chain_spec_file_json TEXT NOT NULL,
             network_binary_path TEXT NOT NULL,
+            network_coretime_type text,
+            network_user_address text,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
         `);
