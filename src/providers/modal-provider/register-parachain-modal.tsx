@@ -3,6 +3,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 import { useParams } from "next/navigation";
+import Link from "next/link";
 import { useModalStore } from "@/store/modal";
 import { downloadFile, toShortString, withBasePath } from "@/utils/helpers";
 // import useParachainsService from "@/services/parachains/use-parachains-service";
@@ -128,14 +129,22 @@ const RegisterParachainInfoModal = () => {
             <ModalText>
               Parachain setup will be done only when you authorize it by registering it on the relay chain. You need to
               upload the <span className="text-brand-dark">WASM</span> and{" "}
-              <span className="text-brand-dark">Genesis</span> file of the parachain by following the below
-              instructions.
+              <span className="text-brand-dark">Genesis</span> file of the parachain on{" "}
+              <Link
+                href={withBasePath("/coretime-page")}
+                className="cursor-pointer text-brand-blue"
+                onClick={() => {
+                  onClose();
+                }}
+              >
+                coretime.
+              </Link>
             </ModalText>
             <div className="grid grid-cols-12 gap-3 py-4 lg:gap-y-6">
               <FileCard name={"wasm"} checksum={checksum?.wasm} />
               <FileCard name={"genesis"} checksum={checksum?.genesis} />
             </div>
-            <div className="p-2">
+            {/* <div className="p-2">
               <Heading as="h6" className="text-brand-dark">
                 1. To Reserve ParaId
               </Heading>
@@ -187,7 +196,7 @@ const RegisterParachainInfoModal = () => {
             </div>
             <div className="text-center text-sm font-semibold">
               Your collator node will start generating blocks and finalizing them from the next or two epoch duration.
-            </div>
+            </div> */}
           </div>
         </ModalBody>
         <ModalFooter placement="end">
