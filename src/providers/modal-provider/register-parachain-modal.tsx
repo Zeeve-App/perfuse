@@ -23,6 +23,7 @@ import SvgDownload from "@/lib/icons/product/outline/Download";
 import SvgCodeDocument3 from "@/lib/icons/programming/outline/CodeDocument3";
 import useApi from "@/api-client";
 import KeyValuePairInput from "@/lib/components/utils/key-value-pair-input";
+import HyperLink from "@/lib/components/utils/hyper-link";
 
 const FileCard = ({ name, checksum }: { name: "wasm" | "genesis"; checksum?: string }) => {
   const params = useParams();
@@ -133,27 +134,25 @@ const RegisterParachainInfoModal = () => {
               Parachain setup will be done only when you authorize it by registering it on the relay chain. You need to
               upload the <span className="text-brand-dark">WASM</span> and{" "}
               <span className="text-brand-dark">Genesis</span> file of the parachain on{" "}
-              <Link
+              <HyperLink
                 href={withBasePath("/coretime-page")}
-                className="cursor-pointer text-brand-blue"
                 onClick={() => {
                   onClose();
                 }}
               >
                 coretime.
-              </Link>
+              </HyperLink>
             </ModalText>
             <ModalText>
               You can follow this github{" "}
-              <Link
+              <HyperLink
                 href={withBasePath("/coretime-page")}
-                className="cursor-pointer text-brand-blue"
                 onClick={() => {
                   onClose();
                 }}
               >
                 document
-              </Link>{" "}
+              </HyperLink>{" "}
               for the details steps to register the parachain.
             </ModalText>
             <div className="grid grid-cols-12 gap-3 py-4 lg:gap-y-6">

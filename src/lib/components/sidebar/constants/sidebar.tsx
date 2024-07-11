@@ -33,7 +33,7 @@ const ITEMS: {
       {
         title: "Documents",
         icon: <SvgBook2 />,
-        path: `#`,
+        path: `/document`,
       },
     ],
   },
@@ -43,7 +43,8 @@ const ITEMS: {
       {
         title: "Github",
         icon: <SvgGithub />,
-        path: `#`,
+        path: `https://github.com/Zeeve-App/perfuse`,
+        shouldOpenInNewTab: true,
       },
     ],
   },
