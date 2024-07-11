@@ -15,7 +15,7 @@ else
   exit 1
 fi
 
-ACCOUNT_ADDRESS="5GNWXKseTR19wMDhHxxyGkeDokTcyE42ivJgxWiZn5PFuQJ8"
+ACCOUNT_ADDRESS="5CLoLmrkX2AWarCLycCxe5RPy7tiMrHedZjipZTiyH87eZgY"
 # New zombienet_args value
 NEW_ARGS='-d /home/perfuse/zombienet/data -p native spawn ./zombienet/network.toml'
 # Ports of services which required to connect to CoreHub
