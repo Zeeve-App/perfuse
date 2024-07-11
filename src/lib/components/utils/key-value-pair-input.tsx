@@ -5,6 +5,8 @@ import { Tooltip } from "../Tooltip";
 import { CopyButton } from "@/lib/components/Button";
 import { Skeleton } from "@/lib/components/Skeleton";
 import { tx } from "@/utils/shared";
+import SvgEyeSlash from "@/lib/icons/security/outline/EyeSlash";
+import SvgEye from "@/lib/icons/security/outline/Eye";
 
 const KeyValuePairInput = ({
   label,
@@ -14,6 +16,10 @@ const KeyValuePairInput = ({
   className,
   tooltipText,
   shouldAllowCopy,
+  showPassword,
+  type = "text",
+  togglePasswordShow,
+  copyText,
 }: {
   label: string | React.ReactElement;
   value: number | string;
@@ -22,7 +28,12 @@ const KeyValuePairInput = ({
   className?: string;
   shouldAllowCopy?: boolean;
   tooltipText?: string;
+  showPassword?: boolean;
+  type?: "text" | "password";
+  togglePasswordShow?: () => void;
+  copyText?: string;
 }) => {
+  const sensitive = type === "password";
   return (
     <div
       className={tx("pb-1 justify-between flex flex-col gap-2", className, {
@@ -37,26 +48,34 @@ const KeyValuePairInput = ({
       ) : (
         <>
           {typeof label === "string" ? <Label>{label}</Label> : label}
-          {/* <div
-            className={tx("text-sm", {
-              "flex flex-row items-center gap-2": shouldAllowCopy,
-            })}
-          >
-            {value}
-            {shouldAllowCopy && (typeof value === "string" || typeof value === "number") ? (
-              <CopyButton text={value.toString()} />
-            ) : null}
-          </div> */}
+
           <Tooltip
             text={tooltipText ?? ""}
             placement="bottom-start"
             hidden={tooltipText === undefined || tooltipText === ""}
           >
-            <div className="relative">
-              <Input type="text" isDisabled value={value} />
-              {shouldAllowCopy && (typeof value === "string" || typeof value === "number") ? (
-                <CopyButton text={value.toString()} className="absolute right-3 top-5 " />
-              ) : null}
+            <div className="flex flex-row items-center justify-between rounded-lg border border-brand-outline bg-brand-light p-2 text-brand-gray lg:p-4">
+              <span>{sensitive ? (showPassword ? value : "*****") : value}</span>
+              {shouldAllowCopy && (
+                <span className="flex flex-row gap-1">
+                  <span className={tx({ "cursor-pointer text-brand-primary": true })}>
+                    <CopyButton
+                      text={copyText ?? value.toString()}
+                      className={tx({
+                        "cursor-pointer text-brand-primary": true,
+                      })}
+                    />
+                  </span>
+                  {sensitive && (
+                    <span
+                      className={tx({ "cursor-pointer text-brand-primary": true })}
+                      onClick={() => togglePasswordShow && togglePasswordShow()}
+                    >
+                      {showPassword ? <SvgEyeSlash className="size-[20px]" /> : <SvgEye className="size-[20px]" />}
+                    </span>
+                  )}
+                </span>
+              )}
             </div>
           </Tooltip>
         </>

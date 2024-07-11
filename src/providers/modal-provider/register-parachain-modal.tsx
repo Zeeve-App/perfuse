@@ -22,6 +22,7 @@ import { Tooltip } from "@/lib/components/Tooltip";
 import SvgDownload from "@/lib/icons/product/outline/Download";
 import SvgCodeDocument3 from "@/lib/icons/programming/outline/CodeDocument3";
 import useApi from "@/api-client";
+import KeyValuePairInput from "@/lib/components/utils/key-value-pair-input";
 
 const FileCard = ({ name, checksum }: { name: "wasm" | "genesis"; checksum?: string }) => {
   const params = useParams();
@@ -31,7 +32,7 @@ const FileCard = ({ name, checksum }: { name: "wasm" | "genesis"; checksum?: str
   const getFileContent = async () => {
     try {
       setIsLoading(true);
-      const mimeType = name === "wasm" ? "application/octet-stream" : "application/json";
+      const mimeType = "application/octet-stream";
       const response = await api.file(name, {
         headers: {
           Accept: mimeType,
@@ -93,6 +94,8 @@ const RegisterParachainInfoModal = () => {
 
   const [checksum, setChecksum] = useState<{ wasm: string; genesis: string }>();
 
+  const [showSeed, setShowSeed] = useState<boolean>(false);
+
   const isModalOpen = isOpen && type === "registerParachain";
 
   // const networkInfo = useNetworkStore((state) => state.networkInfo);
@@ -140,9 +143,43 @@ const RegisterParachainInfoModal = () => {
                 coretime.
               </Link>
             </ModalText>
+            <ModalText>
+              You can follow this github{" "}
+              <Link
+                href={withBasePath("/coretime-page")}
+                className="cursor-pointer text-brand-blue"
+                onClick={() => {
+                  onClose();
+                }}
+              >
+                document
+              </Link>{" "}
+              for the details steps to register the parachain.
+            </ModalText>
             <div className="grid grid-cols-12 gap-3 py-4 lg:gap-y-6">
               <FileCard name={"wasm"} checksum={checksum?.wasm} />
               <FileCard name={"genesis"} checksum={checksum?.genesis} />
+            </div>
+            <div className="grid grid-cols-12 gap-3 py-4 lg:gap-y-6">
+              <KeyValuePairInput
+                label={"Secret phrase"}
+                value={toShortString("swing load season two jealous fix car prosper grow tattoo banner beef", 5, 5)}
+                className="col-span-12 lg:col-span-6"
+                shouldAllowCopy
+                type="password"
+                copyText="swing load season two jealous fix car prosper grow tattoo banner beef"
+                showPassword={showSeed}
+                togglePasswordShow={() => {
+                  setShowSeed(!showSeed);
+                }}
+              />
+              <KeyValuePairInput
+                label={"Public key (SS58)"}
+                value={toShortString("5CLoLmrkX2AWarCLycCxe5RPy7tiMrHedZjipZTiyH87eZgY", 5, 5)}
+                className="col-span-12 lg:col-span-6"
+                shouldAllowCopy
+                copyText="5CLoLmrkX2AWarCLycCxe5RPy7tiMrHedZjipZTiyH87eZgY"
+              />
             </div>
             {/* <div className="p-2">
               <Heading as="h6" className="text-brand-dark">

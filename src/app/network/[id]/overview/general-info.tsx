@@ -38,6 +38,7 @@ const GeneralInfo = ({
           value={name ? toShortString(name, 5, 5) : "NA"}
           shouldAllowCopy
           tooltipText={name}
+          copyText={name}
           className="col-span-12 md:col-span-6 xl:col-span-3"
           isLoading={isLoading}
         />
@@ -48,6 +49,7 @@ const GeneralInfo = ({
           isLoading={isLoading}
           tooltipText={id}
           shouldAllowCopy={true}
+          copyText={id}
         />
         <KeyValuePairInput
           label="Description"
@@ -56,6 +58,7 @@ const GeneralInfo = ({
           shouldAllowCopy
           tooltipText={"Example description"}
           isLoading={isLoading}
+          copyText={"Example description"}
         />
         <KeyValuePairInput
           label="Environment"
@@ -79,28 +82,13 @@ const GeneralInfo = ({
             <NetworkStatus className="flex h-full items-center p-4" />
           </div>
         </div>
-        {/* <KeyValuePair
-          label="Owned By"
-          value={data?.data.generalInfo.ownedBy ?? "NA"}
-          className="col-span-12 md:col-span-6 xl:col-span-4"
-          isLoading={isLoading}
-        /> */}
-        {/* <KeyValuePair
-          label="Infra Provision Time"
-          value={formatIntoAge(
-            data?.data.generalInfo.infraProvisioningStartedAt,
-            data?.data.generalInfo.infraProvisioningFinishedAt,
-          )}
-          className="col-span-12 md:col-span-6 xl:col-span-4"
-          isLoading={isLoading}
-        /> */}
+
         <KeyValuePairInput
           label="Blockchain Provision Time"
           value={networkInfo.data?.networkStatus === "completed" ? formatIntoAge(createdAt, provisionedAt) : "NA"}
           className="col-span-12 md:col-span-6 xl:col-span-3"
           isLoading={isLoading}
         />
-        {/* {createdAt} */}
         <KeyValuePairInput
           label="Duration"
           value={formatIntoAge(createdAt, new Date())}

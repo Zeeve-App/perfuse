@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { Card } from "@/lib/components/Card";
 import { CopyButton } from "@/lib/components/Button";
 import { formateNumber, toShortString } from "@/utils/helpers";
 import { tx } from "@/utils/shared";

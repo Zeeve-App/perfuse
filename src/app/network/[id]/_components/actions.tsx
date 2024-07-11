@@ -36,8 +36,8 @@ const Actions = ({
         networkId,
         networkName: network.network_name,
         relayChainType: network.network_relay_chain_type,
-        networkStatus: task?.task_status,
-        blockHeight: parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16),
+        networkStatus: "completed", // task?.task_status
+        blockHeight: 0, //parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16),
       },
       isLoading: false,
     });
