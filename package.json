@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "start:prod": "next start",
     "lint": "next lint",
     "prestart": "npx knex migrate:latest --env dev",
     "prettier": "npx prettier . --write"
