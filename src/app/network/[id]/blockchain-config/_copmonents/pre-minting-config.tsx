@@ -1,9 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import PreMiningCard from "./pre-mind-address-card";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import { Heading } from "@/lib/components/Heading";
 import { Skeleton } from "@/lib/components/Skeleton";
-import PreMiningCard from "./pre-mind-address-card";
 
 interface PreMiningConfigProps {
   data?: ChainSpecFileType;
@@ -33,7 +33,7 @@ const PreMiningConfig = ({ data, isLoading }: PreMiningConfigProps) => {
       <div className="p-4">
         <Heading as="h4">Pre Mined Addresses ({preMintedData.length})</Heading>
       </div>
-      <div className="max-h-36 overflow-auto">
+      <div className="max-h-36 overflow-auto p-4">
         <div className="grid grid-cols-2 gap-6">
           {isLoading ? (
             Array.from({ length: 10 }).map((_, index) => (

@@ -13,22 +13,22 @@ interface PreMiningCardProps {
 
 const PreMiningCard = ({ accountAddress, accountBalance, tokenSymbol }: PreMiningCardProps) => {
   return (
-    <Card className="bg-brand-light">
-      <div className="flex justify-between items-center">
+    <div className="rounded-lg border border-brand-outline bg-brand-light p-2 text-sm">
+      <div className="flex items-center justify-between">
         <div className="text-brand-gray">Address</div>
         <div className="flex items-center">
           {toShortString(accountAddress)}
           <CopyButton text={accountAddress} className="ml-1" />
         </div>
       </div>
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <div className="text-brand-gray">Balance</div>
         <div className="flex items-center">
           {formateNumber(accountBalance)} <span className={tx("text-sm capitalize")}>{tokenSymbol}</span>
           <CopyButton text={accountAddress} className="ml-1" />
         </div>
       </div>
-    </Card>
+    </div>
   );
 };
 
