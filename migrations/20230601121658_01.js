@@ -1,12 +1,10 @@
 /* eslint-disable no-undef */
 
-import { Knex } from "knex";
-
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = async function (knex: Knex) {
+exports.up = async function (knex) {
   try {
     await knex.raw(`
         CREATE TABLE IF NOT EXISTS networks (
@@ -77,7 +75,7 @@ exports.up = async function (knex: Knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = async function (knex: Knex) {
+exports.down = async function (knex) {
   // NOTE: multiple queries can't be run in sqlite, need to separate it
   await knex.raw(`
         DROP TABLE IF EXIST networks;
