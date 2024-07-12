@@ -84,12 +84,14 @@ const GeneralInfo = ({
         </div>
 
         <KeyValuePairInput
+          suppressHydrationWarning={true}
           label="Blockchain Provision Time"
           value={networkInfo.data?.networkStatus === "completed" ? formatIntoAge(createdAt, provisionedAt) : "NA"}
           className="col-span-12 md:col-span-6 xl:col-span-3"
           isLoading={isLoading}
         />
         <KeyValuePairInput
+          suppressHydrationWarning={true}
           label="Duration"
           value={formatIntoAge(createdAt, new Date())}
           className="col-span-12 md:col-span-6 xl:col-span-3"

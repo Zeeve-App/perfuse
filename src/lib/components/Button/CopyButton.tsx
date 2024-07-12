@@ -19,7 +19,7 @@ const CopyButton = forwardRef<HTMLButtonElement, CopyButtonProps>((props, ref) =
 
   const handleCopyButtonClick = async () => {
     try {
-      await navigator.clipboard.writeText(text);
+      navigator.clipboard && (await navigator.clipboard.writeText(text));
       setIsCopied(true);
       setTimeout(() => {
         setIsCopied(false);

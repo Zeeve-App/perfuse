@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Input, Label } from "../Form";
+import { Label } from "../Form";
 import { Tooltip } from "../Tooltip";
 import { CopyButton } from "@/lib/components/Button";
 import { Skeleton } from "@/lib/components/Skeleton";
@@ -20,6 +20,7 @@ const KeyValuePairInput = ({
   type = "text",
   togglePasswordShow,
   copyText,
+  suppressHydrationWarning = false,
 }: {
   label: string | React.ReactElement;
   value: number | string;
@@ -32,6 +33,7 @@ const KeyValuePairInput = ({
   type?: "text" | "password";
   togglePasswordShow?: () => void;
   copyText?: string;
+  suppressHydrationWarning?: boolean;
 }) => {
   const sensitive = type === "password";
   return (
@@ -55,7 +57,9 @@ const KeyValuePairInput = ({
             hidden={tooltipText === undefined || tooltipText === ""}
           >
             <div className="flex flex-row items-center justify-between rounded-lg border border-brand-outline bg-brand-light p-2 text-brand-gray lg:p-4">
-              <span>{sensitive ? (showPassword ? value : "*****") : value}</span>
+              <span suppressHydrationWarning={suppressHydrationWarning}>
+                {sensitive ? (showPassword ? value : "*****") : value}
+              </span>
               {shouldAllowCopy && (
                 <span className="flex flex-row gap-1">
                   <span className={tx({ "cursor-pointer text-brand-primary": true })}>
