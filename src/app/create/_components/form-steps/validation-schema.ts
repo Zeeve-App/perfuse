@@ -49,7 +49,10 @@ export const configureRelayChainValidationSchema = yup
     chainType: yup.string(),
     telemetryEndpoint: yup.string(),
     decimalValue: yup.number(),
-    tokenName: yup.string(),
+    tokenName: yup
+      .string()
+      .required("Token name is required")
+      .matches(/^[A-Za-z]+$/, "Token name can only contains alphabets, no other character"),
     encoding: yup.string(),
     candidacyBond: yup.number(),
     protocolId: yup.string(),

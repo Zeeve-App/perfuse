@@ -73,7 +73,7 @@ const ProgressiveFormHeaderItem = forwardRef<HTMLDivElement, ProgressiveFormHead
 
   return (
     <motion.div className={tx("grid grid-cols-12", isLast ? "flex-grow-0" : "flex-grow")}>
-      <motion.div className={tx(isLast ? "col-span-12" : "col-span-4")}>
+      <motion.div className={tx(isLast ? "col-span-12" : "col-span-5")}>
         <motion.div
           ref={ref}
           {...rest}
@@ -122,7 +122,7 @@ const ProgressiveFormHeaderItem = forwardRef<HTMLDivElement, ProgressiveFormHead
         </motion.div>
       </motion.div>
       {!isLast && (
-        <motion.div className="col-span-8 flex items-center justify-center">
+        <motion.div className="col-span-7 flex items-center justify-center">
           <div className={tx("w-full border", status === "idle" ? "" : "border-brand-blue")}></div>
         </motion.div>
       )}

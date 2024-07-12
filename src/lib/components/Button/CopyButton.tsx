@@ -1,3 +1,4 @@
+"use client";
 import React, { forwardRef, useState } from "react";
 // import { IconCopy, IconCopyCheck } from "@zeeve-platform/icons/design-tool/outline";
 import { RemoveProperties } from "../core";

@@ -99,13 +99,13 @@ const NodeTable = ({ heading, nodes }: { nodeType: NODE_TYPE; heading: string; n
           data={nodes.map((e) => ({ ...e })) ?? []}
           columns={nodeTableColumns}
           isLoading={false}
-          pagination={{
-            pageCount: nodes.length,
-            pageIndex: pageIndex,
-            pageSize: pageSize,
-            pageSizes: [3, 5, 10, 20, 50],
-            setPagination: setPagination,
-          }}
+          // pagination={{
+          //   pageCount: nodes.length,
+          //   pageIndex: pageIndex,
+          //   pageSize: pageSize,
+          //   pageSizes: [3, 5, 10, 20, 50],
+          //   setPagination: setPagination,
+          // }}
         />
       </div>
     </div>

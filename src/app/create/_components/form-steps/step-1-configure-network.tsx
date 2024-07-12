@@ -204,7 +204,7 @@ const ConfigureNetwork = () => {
         paraId: chainspecContent.para_id,
         decimalValue: chainspecContent.properties?.tokenDecimals,
         protocolId: chainspecContent.protocolId ?? undefined,
-        tokenName: chainspecContent.properties?.tokenSymbol,
+        tokenName: chainspecContent.properties?.tokenSymbol ?? "",
         telemetryEndpoint: chainspecContent.telemetryEndpoints ?? undefined,
         name: chainspecContent.name ?? undefined,
         encoding: chainspecContent.properties ? "ss58Format" : undefined,
@@ -373,7 +373,7 @@ const ConfigureNetwork = () => {
                 </div>
               </div>
             ) : null}
-            {watch("sidecar")?.value !== undefined ? (
+            {watch("relayChain")?.value ? (
               <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
                 <div className="flex flex-row items-center gap-1">
                   <Heading as="h5">Explorer</Heading>
@@ -396,6 +396,7 @@ const ConfigureNetwork = () => {
                             isChecked={watch("explorer")?.value == explorer?.value}
                             hideRadioCircle={true}
                           >
+                            {explorer.icon}
                             {explorer.label}
                           </RadioCard>
                         );

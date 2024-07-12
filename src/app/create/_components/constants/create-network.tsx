@@ -62,8 +62,18 @@ export const explorerOption: {
   value: string;
   isDisabled: boolean;
   tooltipText?: string;
+  icon?: JSX.Element;
 }[] = [
-  { label: "Polkadot.js", value: "polkadotjs", isDisabled: false },
+  {
+    label: "Polkadot.js",
+    value: "polkadotjs",
+    isDisabled: false,
+    icon: (
+      <div className="flex size-10  items-center justify-center rounded-full border border-brand-gray/45 p-2">
+        <Image height={15} width={15} alt={"eth"} src={withBasePath("/assets/images/create/polkadot.png")}></Image>
+      </div>
+    ),
+  },
   { label: "Subscan", value: "subscan", isDisabled: true },
 ];
 
