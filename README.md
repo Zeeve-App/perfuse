@@ -53,5 +53,5 @@ sudo npm run start
 It will start the server in port 3000. You can go to the http://localhost:3000/ and create the parachain from UI.
 
 ## License
-- Larch application source is licensed under GNU GPLv3 license
+- Perfuse application source is licensed under GNU GPLv3 [license](https://github.com/Zeeve-App/perfuse/blob/main/license)
 
