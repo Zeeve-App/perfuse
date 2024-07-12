@@ -499,7 +499,7 @@ const ConfigureNetwork = () => {
           className="bg-brand-gradient-blue"
           type="submit"
           iconRight={<SvgChevronRightSquare />}
-          isDisabled={!isValid || isBinaryFileUploading}
+          isDisabled={!isValid || (templateWatcher?.value === "custom" ? isBinaryFileUploading : false)}
         >
           Next
         </Button>

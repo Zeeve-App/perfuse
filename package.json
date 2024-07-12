@@ -1,7 +1,12 @@
 {
   "name": "perfuse",
-  "version": "0.1.0",
+  "version": "0.9.0",
   "private": true,
+  "license": "GPL-3.0-or-later",
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "Md Tosif <md.tosif@zeeve.io>, Rahul Meena <rahul.meena@zeeve.io>",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
