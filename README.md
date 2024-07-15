@@ -4,7 +4,7 @@
 
 Make sure your system is ready to harness the power of Perfuse! 🚀
 
-### ✅ Minimum Requirements:
+### ✅ Minimum Requirements for Devnet:
 
 Your project will take flight with these basic specs:
 
@@ -17,7 +17,7 @@ Your project will take flight with these basic specs:
     - **💽 Storage:** 100GB available disk space
 ---
 
-### 🚀 Recommended Requirements:
+### 🚀 Recommended Requirements for Devnet:
 For the smoothest, most optimal experience, we recommend:
 
 * **Operating System:** 
@@ -29,14 +29,19 @@ For the smoothest, most optimal experience, we recommend:
     - **💽 Storage:** 100GB available disk space
 
 ---
+### ✅ Install the minimum tools required to run the Perfuse smoothly:
 
 ## Install nvm
 ```bash
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 ```
 ## Install nodejs
 ```bash
-nvm install node
+nvm install 20
+```
+## Install Make Tools
+```bash
+sudo apt install make
 ```
 ## Clone repository & change directory
 ```bash
