@@ -13,7 +13,7 @@ Your project will take flight with these basic specs:
 
 * **Hardware:**
     - **🧠 Processor:** 4 Cores or more
-    - **💾 Memory:** 16GB RAM or more
+    - **💾 Memory:** 8GB RAM or more
     - **💽 Storage:** 100GB available disk space
 ---
 
@@ -24,8 +24,8 @@ For the smoothest, most optimal experience, we recommend:
     - 🐧 Linux (Ubuntu 22.04 LTS) 
 
 * **Hardware:**
-    - **🧠 Processor:** 6 Cores or more
-    - **💾 Memory:** 32GB RAM or more
+    - **🧠 Processor:** 8 Cores or more
+    - **💾 Memory:** 16GB RAM or more
     - **💽 Storage:** 100GB available disk space
 
 ---
