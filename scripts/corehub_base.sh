@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Copyright (C) 2024 [Perfuse]
+#
+# This program is free software: you can redistribute it and/or modify 
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 set -e
 set -u
 
@@ -20,7 +32,7 @@ ACCOUNT_ADDRESS="5CLoLmrkX2AWarCLycCxe5RPy7tiMrHedZjipZTiyH87eZgY"
 NEW_ARGS='-d /home/perfuse/zombienet/data -p native spawn ./zombienet/network.toml'
 # Ports of services which required to connect to CoreHub
 export PORTS=(9900 9910 9920)
-export HOST_IP=$(curl -4 ifconfig.io)
+export HOST_IP=${DOMAIN}
 block_number_reached=false
 
 # Adding Directory and Permissions
@@ -86,9 +98,6 @@ pm2 start --no-autorestart "npm run init -- --coretimeInit --regionxInit --coret
 # Setting CoreHub UI
 cd ../ && git clone https://github.com/RegionX-Labs/CoreHub.git && cd CoreHub
 
-# sed -i "s/$HOST_IP/$HOST_IP/g" Dockerfile
-# sudo docker build -t corehub .
-# sudo docker run --name corehub-ui --rm -it -d --read-only -p 3030:3000 corehub
 # Installing dependencies
 
 export WS_ROCOCO_RELAY_CHAIN="ws://$HOST_IP/${RPC_API_KEY:+${RPC_API_KEY}/}relay-rpc"
