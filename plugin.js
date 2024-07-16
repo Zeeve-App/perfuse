@@ -1,13 +1,13 @@
 /**
-* SPDX-License-Identifier: AGPL-3.0-or-later
-* Copyright (C) 2024 [Perfuse]
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-* This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024 [Perfuse]
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
 /* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-var-requires */
@@ -87,9 +87,9 @@ module.exports = plugin(
       ".scrollbar-hide::-webkit-scrollbar": {
         display: "none",
       },
-      ".shadow-brand-shadow":{
+      ".shadow-brand-shadow": {
         "box-shadow": "0 18px 40px 0 rgba(112, 144, 176, 0.12)",
-      }
+      },
     });
     addComponents({
       select: {
@@ -139,7 +139,7 @@ module.exports = plugin(
             purple: "#8879e5",
             pink: "#B53563",
             // shadow:"rgba(112, 144, 176, 0.12)",
-            warning: "#fff5e6"
+            warning: "#fff5e6",
           },
         },
         /** do not use until required */
