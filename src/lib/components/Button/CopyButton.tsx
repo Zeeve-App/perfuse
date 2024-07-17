@@ -28,9 +28,30 @@ const CopyButton = forwardRef<HTMLButtonElement, CopyButtonProps>((props, ref) =
 
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
+  const copyUnsecure = (textToCopy: string) => {
+    // Use the 'out of viewport hidden text area' trick
+    const textArea = document.createElement("textarea");
+    textArea.value = textToCopy;
+
+    // Move textarea out of the viewport so it's not visible
+    textArea.style.position = "absolute";
+    textArea.style.left = "-999999px";
+
+    document.body.prepend(textArea);
+    textArea.select();
+
+    try {
+      document.execCommand("copy");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      textArea.remove();
+    }
+  };
+
   const handleCopyButtonClick = async () => {
     try {
-      navigator.clipboard && (await navigator.clipboard.writeText(text));
+      navigator.clipboard ? await navigator.clipboard.writeText(text) : copyUnsecure(text);
       setIsCopied(true);
       setTimeout(() => {
         setIsCopied(false);
