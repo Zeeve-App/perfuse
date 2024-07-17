@@ -34,8 +34,8 @@ const PreMiningCard = ({ accountAddress, accountBalance, tokenSymbol }: PreMinin
       <div className="flex items-center justify-between">
         <div className="text-brand-gray">Balance</div>
         <div className="flex items-center">
-          {formateNumber(accountBalance)} <span className={tx("text-sm capitalize")}>{tokenSymbol}</span>
-          <CopyButton text={accountAddress} className="ml-1" />
+          {formateNumber(accountBalance)} <span className={tx("text-xs capitalize")}>{tokenSymbol}</span>
+          <CopyButton text={accountBalance.toString()} className="ml-1" />
         </div>
       </div>
     </div>
