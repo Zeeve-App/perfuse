@@ -15,6 +15,7 @@
 set -e
 set -u
 
+PATH="$HOME/.nvm/versions/node/v20.15.1/bin:$PATH"
 export NVM_DIR=$HOME/.nvm;
 source $NVM_DIR/nvm.sh;
 SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))

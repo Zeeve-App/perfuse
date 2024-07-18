@@ -15,6 +15,7 @@
 set -e
 set -u
 
+PATH="$HOME/.nvm/versions/node/v20.15.1/bin:$PATH"
 export NVM_DIR=$HOME/.nvm;
 source $NVM_DIR/nvm.sh;
 SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
@@ -55,14 +56,14 @@ fi
 
 # Downloading Zombienet Binary
 if [ ! -f "/usr/local/bin/zombienet-linux" ]; then
-wget https://github.com/paritytech/zombienet/releases/latest/download/zombienet-linux-x64
+wget https://github.com/paritytech/zombienet/releases/latest/download/zombienet-linux-x64 >/dev/null 2>&1
 chmod +x zombienet-linux-x64
 sudo mv zombienet-linux-x64 /usr/local/bin/zombienet-linux
 fi
 
 zombienet-linux setup -y polkadot polkadot-parachain && export PATH=/home/perfuse/regionx/Coretime-Mock:$PATH
 mkdir -p bin && mv polkadot* bin/
-wget https://github.com/rahul-mnz/squid-k8s/releases/download/test/regionx-node -P bin/ && chmod +x bin/regionx-node
+wget https://github.com/rahul-mnz/squid-k8s/releases/download/test/regionx-node -P bin/ >/dev/null 2>&1 && chmod +x bin/regionx-node
 
 npm i -g pm2
 pm2 start npm --name "zombienet" -- run zombienet

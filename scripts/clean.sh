@@ -15,6 +15,7 @@
 set -e       # Exit on error
 set -u       # Fail on unset variables
 
+PATH="$HOME/.nvm/versions/node/v20.15.1/bin:$PATH"
 export NVM_DIR=$HOME/.nvm;
 source $NVM_DIR/nvm.sh;
 

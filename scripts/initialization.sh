@@ -31,11 +31,11 @@ install_nvm() {
     if [ ! -f "$HOME/.nvm/nvm.sh" ]; then
 
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-        export NVM_DIR=$HOME/.nvm;
+        export NVM_DIR=$HOME/.nvm
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
         [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-        source $NVM_DIR/nvm.sh;
-        nvm install 20
+        nvm install 20 >/dev/null 2>&1
+        echo "Node 20 installed."
     else
         echo "nvm is already installed."
     fi

@@ -15,6 +15,7 @@
 set -e
 set -u
 
+PATH="$HOME/.nvm/versions/node/v20.15.1/bin:$PATH"
 SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
 # Load environment variables from .env file
 if [ -f "$SCRIPT_DIR/../perfuse/.env" ]; then
