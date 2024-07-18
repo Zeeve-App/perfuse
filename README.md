@@ -51,7 +51,7 @@ nvm install 20
 ## Install Make Tools
 
 ```bash
-sudo apt install make
+sudo apt install make -y
 ```
 
 ## Clone repository & change directory
