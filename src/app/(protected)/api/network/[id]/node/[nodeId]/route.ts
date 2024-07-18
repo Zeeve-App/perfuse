@@ -11,7 +11,7 @@
 
 import { NextRequest } from "next/server";
 import { getNodeData } from "@/db-queries";
-import { sendDataResponse, sendErrorResponse } from "@/app/api/_helpers/response";
+import { sendDataResponse, sendErrorResponse } from "@/app/(protected)/api/_helpers/response";
 
 export async function GET(req: NextRequest, { params }: { params: { id: string; nodeId: string } }) {
   try {

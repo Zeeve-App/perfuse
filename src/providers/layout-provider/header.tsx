@@ -16,6 +16,8 @@ import React, { useMemo } from "react";
 // import { IconUser } from "@zeeve-platform/icons/user/outline";
 // import { ZeeveHeader, ZeeveHeaderDropdownMenu } from "@zeeve-platform/ui-common-components";
 // import IconArrow2Down from "@/lib/icons/arrows/Icon-arrow-2-down";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import { ZeeveHeader, ZeeveHeaderDropdownMenu } from "@/lib/components/zeeve-header";
 import SvgUser from "@/lib/icons/setting/outline/User";
 import SvgSetting1 from "@/lib/icons/setting/outline/Setting1";
@@ -32,6 +34,8 @@ interface HeaderProps {
 
 const Header = (props: HeaderProps) => {
   const { handleMobileSidebarOpen } = props;
+
+  const router = useRouter();
 
   // profile dropdown menu
   const profileDropdownMenu = useMemo<ZeeveHeaderDropdownMenu>(() => {
@@ -76,8 +80,9 @@ const Header = (props: HeaderProps) => {
             {
               icon: <SvgArrowLeftFromBucket />,
               title: "Logout",
-              onClick: () => {
-                // logout();
+              onClick: async () => {
+                await axios.post("/api/logout");
+                router.refresh();
               },
             },
           ],

@@ -33,11 +33,13 @@ const LayoutProvider = (props: React.PropsWithChildren) => {
 
   return (
     <Layout>
+      {<>
       <Sidebar isMobileSidebarOpen={isMobileSidebarOpen} handleMobileSidebarClose={handleMobileSidebarClose} />
       <LayoutRightSection>
         <Header handleMobileSidebarOpen={handleMobileSidebarOpen} />
         <LayoutMainSection>{children}</LayoutMainSection>
       </LayoutRightSection>
+      </>}
     </Layout>
   );
 };

@@ -25,9 +25,9 @@ import { useProgressiveFormContext, ProgressiveFormStepFooter } from "@/lib/comp
 import { Input, Label } from "@/lib/components/Form";
 
 import HTTP_STATUS from "@/constants/http";
-import { CreatePerfuseApiPayload } from "@/app/api/create/route";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import useApi from "@/api-client";
+import { CreatePerfuseApiPayload } from "@/app/(protected)/api/create/route";
 
 type ConfigureRelayChainSchemaType = yup.InferType<typeof configureRelayChainValidationSchema>;
 

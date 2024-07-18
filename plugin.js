@@ -70,6 +70,9 @@ module.exports = plugin(
       ".bg-brand-gradient-blue-48": {
         background: "linear-gradient(108deg, #868cff 6%, #4318ff 48%)",
       },
+      ".bg-brand-gradient-blue-20": {
+        background: "linear-gradient(108deg, #868cff 6%, #4318ff 20%)",
+      },
       ".bg-brand-gradient-blue": {
         background: "linear-gradient(107deg, #868cff 0%, #4318ff)",
       },

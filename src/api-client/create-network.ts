@@ -12,7 +12,7 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { backendAxiosInstance } from "@/utils/axios";
 import { withBasePath } from "@/utils/helpers";
-import { CreatePerfuseApiPayload } from "@/app/api/create/route";
+import { CreatePerfuseApiPayload } from "@/app/(protected)/api/create/route";
 
 type ApiRequest = CreatePerfuseApiPayload;
 type ApiResponse = {

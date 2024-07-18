@@ -10,20 +10,26 @@
  */
 
 import { NextRequest } from "next/server";
-import { deleteNetwork } from "@/db-queries";
-import { jobShellExecutorBG } from "@/utils/job-shell-executor";
-import { sendDataResponse, sendErrorResponse } from "@/app/api/_helpers/response";
+import { serialize } from "cookie";
+import { sendDataResponse, sendErrorResponse } from "../../../(protected)/api/_helpers/response";
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(req: NextRequest) {
   try {
-    const networId = params.id;
+    const tokenCookie = serialize("accessToken", "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== "development",
+      expires: new Date("Thu, 01 Jan 1970 00:00:00 GMT"),
+      path: "/",
+    });
 
-    await deleteNetwork(networId);
-    jobShellExecutorBG("make clean", process.cwd());
-    return sendDataResponse({
-      message: "deleted successfully",
+    return sendDataResponse({ message: "logout success" }, 200, {
+      headers: {
+        "Set-Cookie": [tokenCookie].join("; "),
+      },
     });
   } catch (error) {
+    console.log(error);
+
     return sendErrorResponse({
       message: "Error while uploading file",
     });

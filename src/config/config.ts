@@ -10,15 +10,19 @@
  */
 
 import dotenv from "dotenv";
+import * as yup from "yup";
 dotenv.config();
 
-// TODO: check pkg liscence
-export const config = {
+const rawConfig = {
   server: {
     dbLocation: process.env.SQLITE_DB_LOCATION || "./perfuse.sqlite",
     binaryFilePathForCopy: process.env.BINARY_FILE_PATH_FOR_COPY || "./perfuse/bin.bin",
     chainSpecFilePathForCopy: process.env.CHAIN_SPEC_FILE_PATH_FOR_COPY || "./perfuse/chainspec.json",
     envFilePathForCopy: process.env.ENV_FILE_PATH_FOR_COPY || "./perfuse/.env",
+    jwtSecret: process.env.JWT_SECRET,
+    jwtExpiresIn: process.env.JWT_EXPIRES,
+    defaultEmail: process.env.DEFAULT_EMAIL,
+    defaultPassword: process.env.DEFAULT_PASS,
   },
   client: {
     host: process.env.NEXT_PUBLIC_HOST || "localhost:3000",
@@ -26,3 +30,23 @@ export const config = {
     explorer: process.env.NEXT_PUBLIC_EXPLORER_POLKADOT || "https://polkadot.js.org/apps",
   },
 };
+
+const envSchema = yup.object({
+  server: yup.object({
+    dbLocation: yup.string().required("db file location is required"),
+    binaryFilePathForCopy: yup.string().required("binary path location is required"),
+    chainSpecFilePathForCopy: yup.string().required("chain spec path location is required"),
+    envFilePathForCopy: yup.string().required(),
+    jwtSecret: yup.string().required(),
+    jwtExpiresIn: yup.number().required(),
+    defaultEmail: yup.string().required(),
+    defaultPassword: yup.string().required(),
+  }),
+  client: yup.object({
+    host: yup.string().required(),
+    basePath: yup.string(),
+    explorer: yup.string().required(),
+  }),
+});
+
+export const config = envSchema.validateSync(rawConfig);

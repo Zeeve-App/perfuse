@@ -8,7 +8,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
+"use server";
 import { copyFile, writeFile } from "fs/promises";
 import crypto from "crypto";
 import { NextRequest } from "next/server";

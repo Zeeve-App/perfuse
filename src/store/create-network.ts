@@ -10,8 +10,8 @@
  */
 
 import { create } from "zustand";
-import { ConfigureNetworkSchemaType } from "@/app/create/_components/form-steps/step-1-configure-network";
-import { ConfigureRelayChainSchemaType } from "@/app/create/_components/form-steps/step-2-configure-relay-chain";
+import { ConfigureNetworkSchemaType } from "@/app/(protected)/create/_components/form-steps/step-1-configure-network";
+import { ConfigureRelayChainSchemaType } from "@/app/(protected)/create/_components/form-steps/step-2-configure-relay-chain";
 
 // you can add additional type properties here for each step
 type ConfigureNetwork = ConfigureNetworkSchemaType;
