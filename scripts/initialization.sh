@@ -16,9 +16,6 @@
 set -e
 set -u
 
-export NVM_DIR=$HOME/.nvm;
-source $NVM_DIR/nvm.sh;
-
 SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
 # Load environment variables from .env file
 
@@ -31,7 +28,7 @@ else
 fi
 
 install_nvm() {
-    if ! command -v nvm &> /dev/null; then
+    if [ ! -f "$HOME/.nvm/nvm.sh" ]; then
 
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
         export NVM_DIR=$HOME/.nvm;
