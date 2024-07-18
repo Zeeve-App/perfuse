@@ -16,6 +16,9 @@
 set -e
 set -u
 
+export NVM_DIR=$HOME/.nvm;
+source $NVM_DIR/nvm.sh;
+
 SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
 # Load environment variables from .env file
 
@@ -27,10 +30,26 @@ else
   exit 1
 fi
 
+install_nvm() {
+    if ! command -v nvm &> /dev/null; then
+
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+        export NVM_DIR=$HOME/.nvm;
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+        source $NVM_DIR/nvm.sh;
+        nvm install 20
+    else
+        echo "nvm is already installed."
+    fi
+}
+
+
 install_tools() {
     if ! command -v jq &> /dev/null; then
         echo "jq is not installed. Installing..."
         sudo apt-get update && sudo apt-get install -y jq zip
+        
     else
         echo "jq is already installed."
     fi
@@ -47,4 +66,5 @@ create_user() {
 }
 
 install_tools
+echo "Installing NVM......." && install_nvm
 create_user
