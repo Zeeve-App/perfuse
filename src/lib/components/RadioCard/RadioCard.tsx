@@ -13,7 +13,10 @@
 import React, { forwardRef } from "react";
 import { RemoveProperties } from "../core";
 import { Radio } from "../Form";
+import { IconButton } from "../Button";
+import { Tooltip } from "../Tooltip";
 import { tx } from "@/utils/shared";
+import SvgInfoCircle from "@/lib/icons/essential/outline/InfoCircle";
 
 interface RadioCardProps
   extends RemoveProperties<
@@ -43,7 +46,18 @@ interface RadioCardProps
 }
 
 const RadioCard = forwardRef<HTMLInputElement, RadioCardProps>((props, ref) => {
-  const { children, className, colorScheme, size, isRequired, isDisabled, isChecked, hideRadioCircle, ...rest } = props;
+  const {
+    children,
+    className,
+    colorScheme,
+    size,
+    isRequired,
+    isDisabled,
+    isChecked,
+    hideRadioCircle,
+    tooltipText,
+    ...rest
+  } = props;
 
   return (
     <Radio
@@ -71,6 +85,13 @@ const RadioCard = forwardRef<HTMLInputElement, RadioCardProps>((props, ref) => {
         })}
       >
         {children}
+        {tooltipText && (
+          <Tooltip text={tooltipText?.toString() as string} placement="top-start">
+            <IconButton variant="text" colorScheme="gray">
+              <SvgInfoCircle className="text-lg" />
+            </IconButton>
+          </Tooltip>
+        )}
       </span>
     </Radio>
   );

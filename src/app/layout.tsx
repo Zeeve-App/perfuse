@@ -28,6 +28,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/logo.png" />
+      </head>
       <body className={`${dmSans.variable} ${poppins.variable} font-poppins`}>
         <ToastProvider>
           <ModalProvider />

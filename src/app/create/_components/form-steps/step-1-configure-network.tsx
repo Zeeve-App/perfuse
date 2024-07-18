@@ -280,6 +280,7 @@ const ConfigureNetwork = () => {
                           isChecked={watch("networkEnviorment")?.value == environment?.value}
                           hideRadioCircle={true}
                           isDisabled={environment.isDisabled}
+                          // tooltipText={environment.tooltipText}
                         >
                           <>
                             <SvgApiConnect width={25} height={25} />
@@ -406,6 +407,7 @@ const ConfigureNetwork = () => {
                             {...register("explorer.value")}
                             isChecked={watch("explorer")?.value == explorer?.value}
                             hideRadioCircle={true}
+                            // tooltipText={explorer.tooltipText}
                           >
                             {explorer.icon}
                             {explorer.label}
