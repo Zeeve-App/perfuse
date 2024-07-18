@@ -61,16 +61,25 @@ git clone https://github.com/Zeeve-App/perfuse.git
 cd perfuse
 ```
 
-## Install nodejs dependency and start the server
+## Install nodejs dependency and start the server locally
 
 ```bash
 cp .env.exampe .env
 npm install
 npm run build
-sudo npm run start
+npm run start
 ```
-
 It will start the server in port 3000. You can go to the http://localhost:3000/ and create the parachain from UI.
+
+## Alternatively start the server on 0.0.0.0 using pm2
+
+```bash
+cp .env.exampe .env
+npm i
+npm run build
+npm i -g pm2
+pm2 start npm --name "perfuse" -- start -- -H 0.0.0.0
+```
 
 ## License
 
