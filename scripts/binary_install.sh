@@ -45,7 +45,7 @@ download_and_install() {
     if [ ! -f "$path" ]; then
         echo "Downloading $binary_name version $version..."
         mkdir -p "$download_dir"
-        if ! wget -O "$path" "$url"; then
+        if ! wget -O "$path" "$url" > /dev/null; then
             echo "ERROR: Download failed for $binary_name."
             exit 1
         fi
