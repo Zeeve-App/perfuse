@@ -36,6 +36,7 @@ import React, { Fragment, useMemo } from "react";
 // import Logo from "../../assets/brand/zeeve-logo-on-light-bg.svg";
 
 // import AvatarPlaceholderImage from "../../assets/brand/avatar-placeholder.svg";
+import { usePathname } from "next/navigation";
 import { NotificationBell, NotificationsWebSocketContextProvider, NotificationDrawer } from "../NotificationDrawer";
 // import { ActionMeta, ReactSelect } from "..";
 import { Button, IconButton } from "../Button";
@@ -60,11 +61,16 @@ import {
 } from "../DropdownMenu";
 import { ActionMeta, ReactSelect } from "../ReactSelect";
 import { Avatar } from "../Avatar";
+import { SidebarItems } from "../sidebar/sub-components";
+import { ZeeveSidebarItem } from "../sidebar/sidebar";
 import { useToggle } from "@/hooks";
 import { tx } from "@/utils/shared";
 import { withBasePath } from "@/utils/helpers";
 import SvgBars from "@/lib/icons/essential/outline/Bars";
 import SvgPlusSquare from "@/lib/icons/essential/outline/PlusSquare";
+import SvgBubbles from "@/lib/icons/essential/outline/Bubbles";
+import { ITEMS } from "@/constants/sidebar";
+import SvgProfile from "@/lib/icons/user/outline/Profile";
 
 interface ZeeveHeaderDropdownMenuItem {
   icon: React.ReactElement;
@@ -141,6 +147,7 @@ const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
     handleOpen: handleNotificationDrawerOpen,
     handleClose: handleNotificationDrawerClose,
   } = useToggle();
+  const pathname = usePathname();
 
   const _notificationsWSURL =
     typeof notificationsWSURL === "string" ? `${notificationsWSURL}?token=${accessToken}` : undefined;
@@ -160,20 +167,44 @@ const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
   }, [user?.firstName, user?.lastName]);
 
   return (
-    <Header className={tx("justify-between lg:justify-end", className)} {...rest}>
+    <Header className={tx("justify-between", className)} {...rest}>
       {/* left side header section, visible only in mobile view */}
-      <HeaderLogoContainer className="lg:hidden">
+      <HeaderLogoContainer>
         {/* menu button */}
-        <HeaderMenuButton onClick={onMenuButtonClick}>
-          <SvgBars className="text-2xl" />
+        <HeaderMenuButton className="lg:hidden" onClick={onMenuButtonClick}>
+          <SvgBars className=" text-2xl " />
         </HeaderMenuButton>
         {/* logo */}
         <HeaderLogo
-          logoImgSrc={withBasePath("/assets/images/zeeve-logo-on-light-bg.svg")}
+          logoImgSrc={withBasePath("/assets/images/perfuse-no-bg.svg")}
           logoImgAlt="Zeeve Logo"
+          logoImgClassName="size-30"
           logoHref="/"
         />
       </HeaderLogoContainer>
+
+      <SidebarItems className="hidden grow items-center gap-3 align-middle lg:flex lg:flex-row">
+        {ITEMS.length
+          ? ITEMS.map((itemGroup, index) => (
+              <Fragment key={index}>
+                {itemGroup.items.length
+                  ? itemGroup.items.map((item, idx) => {
+                      return (
+                        <ZeeveSidebarItem
+                          key={`${itemGroup.title}-${item.title}-${idx}`}
+                          item={item}
+                          pathname={pathname}
+                          activePaths={item.activePaths}
+                        />
+                      );
+                    })
+                  : null}
+                {/* show divider only when there is next element in the list */}
+                {/* {ITEMS[index + 1] ? <SidebarDivider /> : null} */}
+              </Fragment>
+            ))
+          : null}
+      </SidebarItems>
 
       {/* right side header nav */}
       <HeaderNavContainer>
@@ -214,6 +245,13 @@ const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
           </>
         ) : null}
         <HeaderNavGroup>
+          {/* Notifications */}
+          <NotificationsWebSocketContextProvider url={_notificationsWSURL}>
+            {/* Notifications bell */}
+            <NotificationBell handleOpen={handleNotificationDrawerOpen} />
+            {/* Notifications drawer */}
+            <NotificationDrawer isOpen={isNotificationDrawerOpen} handleClose={handleNotificationDrawerClose} />
+          </NotificationsWebSocketContextProvider>
           {/* Create Button */}
           {createDropdownMenu?.length ? (
             <DropdownMenu isOpen={isCreateDropdownOpen} onClose={handleCreateDropdownClose}>
@@ -233,8 +271,8 @@ const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
             <DropdownMenuButton as={IconButton} variant="text" isRounded={true} onClick={handleProfileDropdownToggle}>
               {initials ? (
                 <>
-                  <div className="flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-gradient-to-r from-brand-cyan to-brand-teal text-white">
-                    {initials}
+                  <div className="flex size-7  cursor-pointer items-center justify-center overflow-hidden rounded-full bg-gradient-to-r from-brand-cyan to-brand-teal text-white">
+                    <SvgProfile className="size-3" />
                   </div>
                   <span className="text-brand-dark-blue">&nbsp; Demo</span>
                 </>
@@ -247,13 +285,6 @@ const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
             </DropdownMenuButton>
             <ProfileDropdownMenu profileDropdownMenu={profileDropdownMenu} name={name} email={user?.email} />
           </DropdownMenu>
-          {/* Notifications */}
-          <NotificationsWebSocketContextProvider url={_notificationsWSURL}>
-            {/* Notifications bell */}
-            <NotificationBell handleOpen={handleNotificationDrawerOpen} />
-            {/* Notifications drawer */}
-            <NotificationDrawer isOpen={isNotificationDrawerOpen} handleClose={handleNotificationDrawerClose} />
-          </NotificationsWebSocketContextProvider>
         </HeaderNavGroup>
       </HeaderNavContainer>
     </Header>

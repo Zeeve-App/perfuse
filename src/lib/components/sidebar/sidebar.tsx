@@ -23,7 +23,7 @@ import {
   SidebarItemDropdown,
   SidebarProps,
 } from "../sidebar/sub-components";
-import { ITEMS } from "./constants/sidebar";
+import { ITEMS } from "../../../constants/sidebar";
 import ZeeveSidebarItemProps from "./type";
 import { tx } from "@/utils/shared";
 import { isActive, withBasePath } from "@/utils/helpers";
@@ -78,7 +78,7 @@ const ZeeveSidebarItemDropdown = ({
   );
 };
 
-const ZeeveSidebarItem = ({
+export const ZeeveSidebarItem = ({
   item,
   pathname,
   activePaths,

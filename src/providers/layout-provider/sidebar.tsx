@@ -27,9 +27,6 @@ const Sidebar = (props: SidebarProps) => {
   return (
     <>
       {/* sidebar */}
-      <div className="hidden lg:block lg:w-72" title="sidebar">
-        <ZeeveSidebar />
-      </div>
       {/* mobile sidebar*/}
       <SideDrawer isOpen={isMobileSidebarOpen} handleClose={handleMobileSidebarClose} placement="left">
         <SideDrawerOverlay />

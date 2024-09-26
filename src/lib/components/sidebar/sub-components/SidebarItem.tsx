@@ -37,11 +37,10 @@ const SidebarItem: SidebarItemComponent = React.forwardRef(
     return (
       <Component
         className={tx(
-          "group relative flex max-h-14 cursor-pointer items-center justify-start gap-3 px-6 py-4 text-brand-gray transition-all duration-200 ease-in-out hover:bg-gradient-to-r hover:from-brand-cyan/10 hover:to-brand-teal/5",
+          "group relative flex max-h-14 cursor-pointer items-center justify-start gap-3 px-6 py-4 text-brand-gray transition-all duration-200 ease-in-out hover:bg-gradient-to-r hover:text-brand-pink",
           {
             "px-10": isChild,
-            "bg-gradient-to-r from-brand-cyan/10 to-brand-teal/5": isActive,
-            "text-brand-blue ": isActive,
+            "text-brand-pink ": isActive,
           },
           className,
         )}
@@ -49,15 +48,15 @@ const SidebarItem: SidebarItemComponent = React.forwardRef(
         {...rest}
       >
         {iconLeft ? iconLeft : null}
-        <span className="flex flex-col gap-y-1 text-base font-normal leading-4 ">
+        <span className="flex flex-col gap-y-1 text-base font-medium leading-4 ">
           {title}
           {badge ? badge : null}
         </span>
-        <div
+        {/* <div
           className={`absolute right-0 w-[4px] rounded-l-full bg-brand-blue py-4 group-hover:block ${
             isActive ? "block" : "hidden"
           }`}
-        />
+        /> */}
       </Component>
     );
   },

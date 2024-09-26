@@ -17,6 +17,7 @@ import Header from "./header";
 import Sidebar from "./sidebar";
 import { useToggle } from "@/hooks";
 import { Layout, LayoutMainSection, LayoutRightSection } from "@/lib/components/Layout";
+import { Button } from "@/lib/components/Button";
 
 /**
  * Setup global layout for the application.
@@ -33,13 +34,15 @@ const LayoutProvider = (props: React.PropsWithChildren) => {
 
   return (
     <Layout>
-      {<>
-      <Sidebar isMobileSidebarOpen={isMobileSidebarOpen} handleMobileSidebarClose={handleMobileSidebarClose} />
-      <LayoutRightSection>
-        <Header handleMobileSidebarOpen={handleMobileSidebarOpen} />
-        <LayoutMainSection>{children}</LayoutMainSection>
-      </LayoutRightSection>
-      </>}
+      {
+        <>
+          <Sidebar isMobileSidebarOpen={isMobileSidebarOpen} handleMobileSidebarClose={handleMobileSidebarClose} />
+          <LayoutRightSection>
+            <Header handleMobileSidebarOpen={handleMobileSidebarOpen} />
+            <LayoutMainSection>{children}</LayoutMainSection>
+          </LayoutRightSection>
+        </>
+      }
     </Layout>
   );
 };

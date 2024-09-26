@@ -8,7 +8,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
+"use client";
 import { Card } from "@/lib/components/Card";
 import { Heading } from "@/lib/components/Heading";
 import HyperLink from "@/lib/components/utils/hyper-link";

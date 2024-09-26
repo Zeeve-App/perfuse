@@ -16,6 +16,7 @@ import ConfigureRelayChain from "./_components/form-steps/step-2-configure-relay
 // import ROUTES from "@/routes";
 // import { getConfig } from "@/config";
 import DeploySucceed from "./_components/form-steps/step-3-success";
+import { networkEnvOption } from "./_components/constants/create-network";
 import {
   ProgressiveForm,
   ProgressiveFormHeader,
@@ -24,6 +25,9 @@ import {
 } from "@/lib/components/ProgressiveForm";
 import { Heading } from "@/lib/components/Heading";
 import SvgCheckCircle from "@/lib/icons/essential/outline/CheckCircle";
+import { Card } from "@/lib/components/Card";
+import { RadioCard } from "@/lib/components/RadioCard";
+import SvgApiConnect from "@/lib/icons/product/outline/ApiConnect";
 
 const getIcons = (step: number) => ({
   idle: (
@@ -61,6 +65,55 @@ const CreatePageClient = () => {
         <DeploySucceed />
       </ProgressiveFormBody>
     </ProgressiveForm>
+    // <>
+    //   <span className="flex flex-col gap-4 p-4">
+    //     <Heading as="h3" className="">
+    //       Set Up Your Parachain
+    //     </Heading>
+    //     <div className="grid grid-cols-12 gap-4">
+    //       <div className="col-span-8">
+    //         <Card>
+    //           <div className="col-span-12 flex flex-col gap-3 lg:gap-6">
+    //             <div className="flex flex-row items-center gap-1">
+    //               <Heading as="h5">Select Your Network Environment</Heading>
+    //               {/* <Tooltip text="Select environment for your deployment." placement="top-start">
+    //               <IconButton variant="text" colorScheme="gray">
+    //                 <SvgInfoCircle className="text-base" />
+    //               </IconButton>
+    //             </Tooltip> */}
+    //             </div>
+    //             <div className="grid grid-cols-12 gap-3 lg:gap-6">
+    //               {networkEnvOption.length
+    //                 ? networkEnvOption.map((environment, index) => {
+    //                     return (
+    //                       <RadioCard
+    //                         key={index}
+    //                         value={environment.value}
+    //                         className="col-span-12 md:col-span-3"
+    //                         // {...register("networkEnviorment.value")}
+    //                         // isChecked={watch("networkEnviorment")?.value == environment?.value}
+    //                         hideRadioCircle={true}
+    //                         isDisabled={environment.isDisabled}
+    //                         // tooltipText={environment.tooltipText}
+    //                       >
+    //                         <>
+    //                           <SvgApiConnect width={25} height={25} />
+    //                           {environment.label}
+    //                         </>
+    //                       </RadioCard>
+    //                     );
+    //                   })
+    //                 : null}
+    //             </div>
+    //           </div>
+    //         </Card>
+    //       </div>
+    //       <div className="col-span-4">
+    //         <Card></Card>
+    //       </div>
+    //     </div>
+    //   </span>
+    // </>
   );
 };
 

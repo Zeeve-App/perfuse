@@ -9,9 +9,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-"use client";
-
-import ZeeveSidebarItemProps from "../type";
+import ZeeveSidebarItemProps from "../lib/components/sidebar/type";
 import SvgElement3 from "@/lib/icons/grid/outline/Element3";
 import SvgBook2 from "@/lib/icons/school/outline/Book2";
 import SvgBubbles from "@/lib/icons/essential/outline/Bubbles";
@@ -28,6 +26,12 @@ const ITEMS: {
         title: "Dashboard",
         icon: <SvgElement3 />,
         path: `/`,
+        activePaths: ["/overview", "/blockchain-config", "/collator-nodes", "/rpc-nodes"],
+      },
+      {
+        title: "Deploy",
+        icon: <SvgElement3 />,
+        path: `/create`,
         activePaths: ["/overview", "/blockchain-config", "/collator-nodes", "/rpc-nodes", "/create"],
       },
       {
