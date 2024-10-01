@@ -138,7 +138,7 @@ module.exports = plugin(
             teal: "#088DB2",
             "light-teal": "#a1e3cb",
             light: "#F7F0F7",
-            outline: "#080E121A",
+            outline: "var(--border)",
             purple: "#8879e5",
             pink: "#A619F7",
             "light-pink":"#F7F0F7",

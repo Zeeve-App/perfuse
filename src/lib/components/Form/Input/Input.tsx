@@ -20,7 +20,7 @@ import { useID } from "@/hooks";
 import { tx } from "@/utils/shared";
 
 const styles = cva(
-  "peer w-full appearance-none truncate rounded-lg border border-brand-outline p-4 text-sm font-medium leading-5 text-brand-dark placeholder:text-brand-dark/60 focus:border-zinc-300 focus:outline-none focus:ring-1 focus:ring-zinc-300 focus-visible:outline-none disabled:cursor-not-allowed disabled:bg-[#f3f6fd] disabled:font-normal disabled:text-brand-dark/60",
+  "placeholder:text-theme-accent-foreground/60 disabled:text-theme-accent-foreground/60 peer w-full appearance-none truncate rounded-lg border border-brand-outline bg-theme-foreground p-4 text-sm font-medium leading-5 text-theme-accent focus:border-[#E8DCFE] focus:bg-theme-accent-foreground focus:outline-none focus:ring-0 focus-visible:outline-none disabled:cursor-not-allowed disabled:bg-[#f3f6fd] disabled:font-normal",
   {
     variants: {
       size: {
@@ -130,7 +130,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
           isRequired={isRequired}
           isDisabled={isDisabled}
           className={tx(
-            "absolute left-4 right-4 top-4 origin-[0] -translate-y-4 scale-75 transform cursor-text gap-1 font-sans text-sm font-medium text-brand-dark/60 transition-all duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-base peer-focus:left-4 peer-focus:top-4 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-sm",
+            "absolute left-4 right-4 top-4 origin-[0] -translate-y-4 scale-75 transform cursor-text gap-1 font-sans text-sm font-medium text-theme-accent-foreground/60 transition-all duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-base peer-focus:left-4 peer-focus:top-4 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-sm",
             { "peer-placeholder-shown:left-12": iconLeft },
             { "right-12": iconRight },
             floatingLabel.floatingLabelProps?.className,
