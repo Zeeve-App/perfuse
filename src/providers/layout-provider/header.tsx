@@ -25,6 +25,7 @@ import SvgBook2 from "@/lib/icons/school/outline/Book2";
 import SvgPhoneVolume from "@/lib/icons/phone/outline/PhoneVolume";
 import SvgArrowLeftFromBucket from "@/lib/icons/arrows/outline/ArrowLeftFromBucket";
 import { ITEMS } from "@/constants/sidebar";
+import useDarkMode from "@/hooks/use-dark-mode";
 // import { IconArrowLeftFromBucket } from "@zeeve-platform/icons/arrow/outline";
 // import { IconPhoneVolume } from "@zeeve-platform/icons/phone/outline";
 // import { IconBook2 } from "@zeeve-platform/icons/school/outline";
@@ -35,6 +36,7 @@ interface HeaderProps {
 
 const Header = (props: HeaderProps) => {
   const { handleMobileSidebarOpen } = props;
+
 
   const router = useRouter();
 

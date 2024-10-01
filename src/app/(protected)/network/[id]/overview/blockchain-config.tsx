@@ -30,7 +30,7 @@ const BlockchainConfig = ({
   const { data: blockRpcResponse, isLoading: blockRpcLoading } = apis.blockNumber();
 
   return (
-    <div className="col-span-6 flex flex-col gap-3 rounded-lg p-4 shadow-brand-shadow lg:gap-6">
+    <div className="col-span-6 flex flex-col gap-3 rounded-lg bg-theme-foreground p-4 shadow-brand-shadow lg:gap-6">
       <div className="grid grid-cols-12 gap-3 lg:gap-6">
         <div className="col-span-12 lg:col-span-6">
           <Heading as="h4">Blockchain Config</Heading>

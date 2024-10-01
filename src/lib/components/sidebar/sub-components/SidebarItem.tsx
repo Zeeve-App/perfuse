@@ -40,7 +40,7 @@ const SidebarItem: SidebarItemComponent = React.forwardRef(
           "group relative flex max-h-14 cursor-pointer items-center justify-start gap-3 px-6 py-4 text-brand-gray transition-all duration-200 ease-in-out hover:bg-gradient-to-r hover:text-brand-pink",
           {
             "px-10": isChild,
-            "text-brand-pink ": isActive,
+            "text-theme-secondary ": isActive,
           },
           className,
         )}

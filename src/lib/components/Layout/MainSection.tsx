@@ -20,7 +20,7 @@ const LayoutMainSection = (props: LayoutMainSectionProps) => {
 
   return (
     <main
-      className={tx("max-h-full flex-1 overflow-hidden overflow-y-auto bg-brand-light p-3 lg:p-6", className)}
+      className={tx("max-h-full flex-1 overflow-hidden overflow-y-auto bg-theme-background p-3 lg:p-6", className)}
       {...rest}
     >
       {children}

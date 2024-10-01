@@ -20,6 +20,16 @@ const config: Config = {
         sans: ["var(--font-dm-sans)"], // default font
         poppins: ["var(--font-poppins)"],
       },
+      colors: {
+        theme: {
+          background: "var(--background)",
+          foreground: "var(--foreground)",
+          accent: "var(--accent)",
+          primary: "var(--primary)",
+          "primary-content": "var(--primary-content)",
+          secondary: "var(--secondary)",
+        },
+      },
     },
   },
   plugins: [

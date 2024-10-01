@@ -29,10 +29,10 @@ const ITEMS: {
         activePaths: ["/overview", "/blockchain-config", "/collator-nodes", "/rpc-nodes"],
       },
       {
-        title: "Deploy",
+        title: "Deploy Parachain",
         icon: <SvgElement3 />,
         path: `/create`,
-        activePaths: ["/overview", "/blockchain-config", "/collator-nodes", "/rpc-nodes", "/create"],
+        activePaths: ["/create"],
       },
       {
         title: "Coretime",
@@ -46,20 +46,9 @@ const ITEMS: {
       },
 
       {
-        title: "Documents",
+        title: "Support",
         icon: <SvgBook2 />,
         path: `/document`,
-      },
-    ],
-  },
-  {
-    title: "Support",
-    items: [
-      {
-        title: "Github",
-        icon: <SvgGithub />,
-        path: `https://github.com/Zeeve-App/perfuse`,
-        shouldOpenInNewTab: true,
       },
     ],
   },

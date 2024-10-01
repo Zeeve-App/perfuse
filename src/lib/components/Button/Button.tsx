@@ -32,6 +32,7 @@ const styles = cva(
       },
       colorScheme: {
         primary: "bg-brand-primary text-brand-primary",
+        accent: "bg-theme-accent text-theme-accent",
         blue: "bg-brand-blue text-brand-blue",
         dark: "bg-brand-dark text-brand-dark",
         red: "bg-brand-red text-brand-red",

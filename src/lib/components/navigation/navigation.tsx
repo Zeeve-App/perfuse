@@ -21,7 +21,7 @@ interface NavigationProps extends PropsWithChildren {
 
 const Navigation = ({ heading, logo, breadcrumb, children }: NavigationProps) => {
   return (
-    <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
+    <div className=" flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
       <div className="flex flex-row items-center gap-3">
         {/* It can be icon or image */}
         {logo ? (

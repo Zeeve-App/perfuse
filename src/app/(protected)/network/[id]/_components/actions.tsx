@@ -69,6 +69,7 @@ const Actions = ({
           onClick={handleToggle}
           isDisabled={task?.task_status !== "completed"}
           variant={"outline"}
+          colorScheme={"accent"}
           isFullWidth
         >
           Explorer

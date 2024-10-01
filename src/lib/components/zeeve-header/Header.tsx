@@ -71,6 +71,8 @@ import SvgPlusSquare from "@/lib/icons/essential/outline/PlusSquare";
 import SvgBubbles from "@/lib/icons/essential/outline/Bubbles";
 import { ITEMS } from "@/constants/sidebar";
 import SvgProfile from "@/lib/icons/user/outline/Profile";
+import useDarkMode from "@/hooks/use-dark-mode";
+import SvgMoon from "@/lib/icons/essential/outline/moon";
 
 interface ZeeveHeaderDropdownMenuItem {
   icon: React.ReactElement;
@@ -117,6 +119,8 @@ interface ZeeveHeaderProps extends HeaderProps {
 }
 
 const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
+  const { theme, toggleTheme } = useDarkMode();
+
   const {
     className,
     onMenuButtonClick,
@@ -208,43 +212,14 @@ const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
 
       {/* right side header nav */}
       <HeaderNavContainer>
-        {/* organization dropdown */}
-        {organizationDetails && (
-          <ReactSelect
-            options={[
-              {
-                label: "Organization",
-                options: organizationDetails.options.map((e) => ({
-                  label: e.name,
-                  value: e.id,
-                  role: e.role,
-                })),
-              },
-            ]}
-            placeholder="Organization"
-            onChange={organizationDetails.onChange}
-            className="w-28 md:w-64"
-            size="small"
-            value={{
-              value: organizationDetails.organization.id,
-              label: organizationDetails.organization.name,
-              role: organizationDetails.organization.role,
-            }}
-          />
-        )}
-        {/* subscription summary */}
-        {subscriptionSummary ? (
-          <>
-            <HeaderNavGroup className="hidden md:flex">
-              <div className="flex-col items-start justify-center">
-                <p className="text-xs text-brand-gray">{subscriptionSummary.label}</p>
-                <p className="text-sm font-semibold text-brand-dark">{subscriptionSummary.price}</p>
-              </div>
-            </HeaderNavGroup>
-            <HeaderDivider className="hidden md:block" />
-          </>
-        ) : null}
         <HeaderNavGroup>
+          <IconButton
+            variant={"text"}
+            className="size-10 rounded-full bg-theme-foreground"
+            onClick={() => toggleTheme()}
+          >
+            {theme === "dark" ? <SvgMoon fontSize={20} /> : <SvgMoon fontSize={24} />}
+          </IconButton>
           {/* Notifications */}
           <NotificationsWebSocketContextProvider url={_notificationsWSURL}>
             {/* Notifications bell */}
@@ -266,6 +241,7 @@ const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
               <CreateDropdownMenu createDropdownMenu={createDropdownMenu} />
             </DropdownMenu>
           ) : null}
+
           {/* Profile Dropdown */}
           <DropdownMenu isOpen={isProfileDropdownOpen} onClose={handleProfileDropdownClose}>
             <DropdownMenuButton as={IconButton} variant="text" isRounded={true} onClick={handleProfileDropdownToggle}>

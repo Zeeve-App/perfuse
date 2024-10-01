@@ -40,7 +40,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/logo.png" />
       </head>
-      <body className={`${dmSans.variable} ${poppins.variable} font-poppins`}>
+      <body className={`${dmSans.variable} ${poppins.variable} bg-theme-background font-poppins`}>
         <ToastProvider>
           <ModalProvider />
           {children}

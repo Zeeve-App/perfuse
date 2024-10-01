@@ -49,7 +49,7 @@ const TabContainer = ({ id }: { id: string }) => {
         },
       }}
     >
-      <TabList className="mb-4 gap-4 overflow-x-auto border-b">
+      <TabList className="mb-4 gap-4 overflow-x-auto rounded-lg border-b bg-theme-foreground">
         <Tab>
           <Heading as="h5">
             <SvgChart5Square width={20} height={20} className="inline" /> &nbsp; Overview{" "}

@@ -41,7 +41,7 @@ const IdPageClient: React.FC<{ children: React.ReactNode; params: { id: string }
 
   return (
     <div className="flex flex-col gap-y-3 lg:gap-y-6">
-      <div className="rounded-lg border border-brand-outline bg-white px-3 pb-3 pt-6 lg:px-6 lg:pb-6">
+      <div className="px-3 pb-3 pt-6 lg:px-6 lg:pb-6">
         <Navigation heading={"Parachains"}>
           {/* page actions */}
           <Actions network={network} task={task} explorerUrl={{ paraExplorerUrl, relayExplorerUrl }} />

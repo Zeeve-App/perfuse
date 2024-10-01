@@ -101,7 +101,7 @@ module.exports = plugin(
     });
   },
   {
-    darkMode: "class",
+    darkMode: "selector",
     /** https://tailwindcss.com/docs/theme#extending-the-default-theme */
     theme: {
       extend: {

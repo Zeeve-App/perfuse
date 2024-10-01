@@ -19,7 +19,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>((props, ref) => {
 
   return (
     <header
-      className={tx("flex h-20 w-full items-center justify-between bg-brand-light", className)}
+      className={tx("flex h-20 w-full items-center justify-between bg-theme-background", className)}
       ref={ref}
       {...rest}
     >
