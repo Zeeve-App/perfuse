@@ -22,8 +22,7 @@ import {
   relayChainOption,
   sideCardOptions,
   templateOption,
-} from "../constants/create-network";
-import { configureNetworkValidationSchema } from "./validation-schema";
+} from "../../../../../constants/create-network";
 import { useCreateNetworkFormStore } from "@/store/create-network";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import { Button } from "@/lib/components/Button";
@@ -39,6 +38,7 @@ import useApi from "@/api-client";
 import { RadioCard } from "@/lib/components/RadioCard";
 import SvgApiConnect from "@/lib/icons/product/outline/ApiConnect";
 import { Radio } from "@/lib/components/Form";
+import { configureNetworkValidationSchema } from "@/schemas/validation-schema";
 
 type ConfigureNetworkSchemaType = yup.InferType<typeof configureNetworkValidationSchema>;
 

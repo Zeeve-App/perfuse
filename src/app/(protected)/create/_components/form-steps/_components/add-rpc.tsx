@@ -10,7 +10,7 @@
  */
 
 import { FieldArrayWithId, UseFormRegister, FieldErrors, UseFormUnregister } from "react-hook-form";
-import { authenticationMethods } from "../../constants/create-network";
+import { authenticationMethods } from "../../../../../../constants/create-network";
 import { ConfigureRelayChainSchemaType } from "../step-2-configure-relay-chain";
 import { IconButton } from "@/lib/components/Button";
 import { Label, Checkbox, Radio, FormFieldStatus, Password, Input } from "@/lib/components/Form";

@@ -30,6 +30,37 @@ export const relayChainOption: Record<networkEnvType, { label: string; value: st
   testnet: [{ label: "Rococo", value: "rococo" }],
 };
 
+export const envAndRelayChainOption = [
+  {
+    environment: {
+      label: "Testnet",
+      value: "testnet",
+    },
+    relayChainOption: [
+      {
+        label: "Paseo",
+        value: "paseo",
+      },
+    ],
+  },
+  {
+    environment: {
+      label: "Mainnet",
+      value: "mainnet",
+    },
+    relayChainOption: [
+      {
+        label: "Kusama",
+        value: "kusama",
+      },
+      {
+        label: "Polkadot",
+        value: "polkadot",
+      },
+    ],
+  },
+];
+
 export const templateOption: { label: string; value: string; isDisabled: boolean; icon?: JSX.Element }[] = [
   {
     label: "Substrate",
@@ -47,8 +78,8 @@ export const templateOption: { label: string; value: string; isDisabled: boolean
       </div>
     ),
   },
-  { label: "Contracts", value: "contracts", isDisabled: true, icon: <SvgSubstrate /> },
-  { label: "Assets", value: "assets", isDisabled: true, icon: <SvgSubstrate /> },
+  // { label: "Contracts", value: "contracts", isDisabled: true, icon: <SvgSubstrate /> },
+  // { label: "Assets", value: "assets", isDisabled: true, icon: <SvgSubstrate /> },
   {
     label: "Custom",
     value: "custom",

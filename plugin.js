@@ -126,7 +126,7 @@ module.exports = plugin(
           },
           brand: {
             primary: "#4054B2",
-            blue: "#4318ff",
+            blue: "#741BEF",
             "dark-blue": "#2b3674",
             "darker-blue": "#1b2559",
             red: "#C12C2C",

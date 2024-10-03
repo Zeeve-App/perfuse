@@ -36,32 +36,32 @@ const RadioLabel = forwardRef<HTMLLabelElement, RadioLabelProps>((props, ref) =>
 });
 
 const styles = cva(
-  "inline-flex size-6 items-center justify-center rounded-full bg-brand-outline after:absolute after:rounded-full after:content-[''] after:peer-checked:block after:peer-checked:bg-white peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-zinc-300 peer-focus:ring-offset-1 peer-focus-visible:outline-none peer-disabled:pointer-events-none peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
+  "inline-flex size-6 items-center justify-center rounded-full border border-brand-blue bg-white after:rounded-full after:content-[''] after:peer-checked:block after:peer-checked:bg-white peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-zinc-300 peer-focus:ring-offset-1 peer-focus-visible:outline-none peer-disabled:pointer-events-none peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
   {
     variants: {
       colorScheme: {
-        primary: "peer-checked:bg-brand-primary",
-        blue: "peer-checked:bg-brand-blue",
-        dark: "peer-checked:bg-brand-dark",
-        red: "peer-checked:bg-brand-red",
-        green: "peer-checked:bg-brand-green",
-        yellow: "peer-checked:bg-brand-yellow",
-        gray: "peer-checked:bg-brand-gray",
-        teal: "peer-checked:bg-brand-teal",
-        cyan: "peer-checked:bg-brand-cyan",
-        light: "peer-checked:bg-brand-light",
-        purple: "peer-checked:bg-brand-purple",
-        pink: "peer-checked:bg-brand-pink",
-        gradient: "peer-checked:bg-brand-gradient",
+        primary: "after:peer-checked:bg-brand-primary",
+        blue: "after:peer-checked:bg-brand-blue",
+        dark: "after:peer-checked:bg-brand-dark",
+        red: "after:peer-checked:bg-brand-red",
+        green: "after:peer-checked:bg-brand-green",
+        yellow: "after:peer-checked:bg-brand-yellow",
+        gray: "after:peer-checked:bg-brand-gray",
+        teal: "after:peer-checked:bg-brand-teal",
+        cyan: "after:peer-checked:bg-brand-cyan",
+        light: "after:peer-checked:bg-brand-light",
+        purple: "after:peer-checked:bg-brand-purple",
+        pink: "after:peer-checked:bg-brand-pink",
+        gradient: "after:peer-checked:bg-brand-gradient",
       },
       size: {
-        small: "size-4 after:size-2",
-        medium: "size-6 after:size-3",
-        large: "size-8 after:size-4",
+        small: "size-4 after:size-3",
+        medium: "size-6 after:size-4",
+        large: "size-8 after:size-5",
       },
     },
     defaultVariants: {
-      colorScheme: "gradient",
+      colorScheme: "blue",
       size: "medium",
     },
   },
@@ -75,6 +75,7 @@ interface RadioProps
   isRequired?: boolean;
   hideRadioCircle?: boolean;
   radioLabelProps?: React.ComponentPropsWithRef<"label">;
+  rightCheckedIcon?: JSX.Element;
 }
 
 const Radio = forwardRef<HTMLInputElement, RadioProps>((props, ref) => {
@@ -89,6 +90,7 @@ const Radio = forwardRef<HTMLInputElement, RadioProps>((props, ref) => {
     className,
     id,
     hideRadioCircle,
+    rightCheckedIcon,
     ...rest
   } = props;
 
@@ -116,6 +118,7 @@ const Radio = forwardRef<HTMLInputElement, RadioProps>((props, ref) => {
 
       {!hideRadioCircle && <div className={tx(styles({ colorScheme, size, className }))} />}
       {children}
+      {isChecked && rightCheckedIcon && rightCheckedIcon}
       {/* custom radio */}
     </RadioLabel>
   );

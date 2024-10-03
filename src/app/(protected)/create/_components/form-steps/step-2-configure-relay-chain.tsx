@@ -13,7 +13,6 @@
 import * as yup from "yup";
 import { useFieldArray, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { configureRelayChainValidationSchema } from "./validation-schema";
 import AddCollatorForm from "./_components/add-collator";
 import AddRpcForm from "./_components/add-rpc";
 import { useCreateNetworkFormStore } from "@/store/create-network";
@@ -28,6 +27,7 @@ import HTTP_STATUS from "@/constants/http";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import useApi from "@/api-client";
 import { CreatePerfuseApiPayload } from "@/app/(protected)/api/create/route";
+import { configureRelayChainValidationSchema } from "@/schemas/validation-schema";
 
 type ConfigureRelayChainSchemaType = yup.InferType<typeof configureRelayChainValidationSchema>;
 

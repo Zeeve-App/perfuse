@@ -10,9 +10,9 @@
  */
 
 import * as yup from "yup";
-import { AuthenticationMethods, networkEnvType } from "../constants/create-network";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import { REGEX_NODE_NAME } from "@/constants/regex";
+import { networkEnvType, AuthenticationMethods } from "@/constants/create-network";
 
 export const configureNetworkValidationSchema = yup
   .object({
@@ -106,3 +106,27 @@ export const configureRelayChainValidationSchema = yup
     ),
   })
   .required();
+
+export const deployNetworkValidationSchema = yup
+  .object({
+    networkEnvironment: yup.object({
+      value: yup.string<networkEnvType>().required("Select a network environment."),
+    }),
+    relayChain: yup.object({
+      value: yup.string().required("Select a relay chain."),
+    }),
+    tokenName: yup
+      .string()
+      .required("Token name is required")
+      .matches(/^[A-Za-z]+$/, "Token name can only contains alphabets, no other character"),
+    chainName: yup
+      .string()
+      .required("Token name is required")
+      .matches(/^[A-Za-z]+$/, "Token name can only contains alphabets, no other character"),
+    template: yup.object({
+      value: yup.string().required("Select a template."),
+    }),
+  })
+  .required();
+
+export type DeployNetworkValidationSchemaType = yup.InferType<typeof deployNetworkValidationSchema>;
