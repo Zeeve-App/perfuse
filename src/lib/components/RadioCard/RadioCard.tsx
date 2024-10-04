@@ -74,7 +74,7 @@ const RadioCard = forwardRef<HTMLInputElement, RadioCardProps>((props, ref) => {
       isDisabled={isDisabled}
       isRequired={isRequired}
       colorScheme={colorScheme}
-      rightCheckedIcon={<SvgCheckCircle fill="#0BB63B" className="size-8" />}
+      rightCheckedIcon={<SvgCheckCircle fill="#0BB63B" className="hidden size-8 lg:inline" />}
       size={size}
       hideRadioCircle={hideRadioCircle}
       ref={ref}

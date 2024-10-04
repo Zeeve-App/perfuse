@@ -37,7 +37,7 @@ export default function Home() {
           </Heading>
         </Card>
         {/* Form */}
-        <Card variant={"grid"} className="col-span-8">
+        <Card variant={"grid"} className="col-span-12 lg:col-span-8">
           {/* 1st step */}
           <DeployStep1 formData={formData} ref={step1Ref} className={tx("col-span-12 opacity-50", focusClasses)} />
           {/* 2nd step */}
@@ -46,7 +46,7 @@ export default function Home() {
           <DeployStep3 formData={formData} ref={step3Ref} className={tx("col-span-12 opacity-50", focusClasses)} />
         </Card>
         {/* Your selects */}
-        <Card variant={"grid"} className="col-span-4">
+        <Card variant={"grid"} className="col-span-12 lg:col-span-4">
           <Card className="col-span-12"></Card>
         </Card>
       </Card>

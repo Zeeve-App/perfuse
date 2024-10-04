@@ -56,8 +56,8 @@ const styles = cva(
       },
       size: {
         small: "h-4 w-7 p-1.5 after:size-2",
-        medium: "h-6 w-10 p-2 after:size-3",
-        large: "h-8 w-12 p-2 after:size-4",
+        medium: "h-6 w-12 p-2 after:size-4",
+        large: "h-8 w-14 p-2 after:size-5",
       },
     },
     defaultVariants: {

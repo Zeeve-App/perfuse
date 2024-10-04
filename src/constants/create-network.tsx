@@ -73,7 +73,7 @@ export const templateOption: { label: string; value: string; isDisabled: boolean
     value: "evm_frontier",
     isDisabled: false,
     icon: (
-      <div className="flex size-10  items-center justify-center rounded-full border border-brand-gray/45 p-2">
+      <div className="flex size-10 items-center  justify-center rounded-full border border-brand-gray/45 bg-white p-2">
         <Image height={15} width={15} alt={"eth"} src={withBasePath("/assets/images/create/eth.png")}></Image>
       </div>
     ),
@@ -85,8 +85,8 @@ export const templateOption: { label: string; value: string; isDisabled: boolean
     value: "custom",
     isDisabled: false,
     icon: (
-      <div className="rounded-full border border-brand-gray/45 p-2">
-        <SvgCreateConfig height={24} width={24} />
+      <div className="flex items-center  justify-center rounded-full">
+        <SvgCreateConfig className="size-10" />
       </div>
     ),
   },
