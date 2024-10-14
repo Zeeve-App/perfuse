@@ -11,6 +11,7 @@
 
 import type { Config } from "tailwindcss";
 import tailwindForms from "@tailwindcss/forms";
+import { withBasePath } from "./src/utils/helpers";
 
 const config: Config = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
@@ -34,6 +35,8 @@ const config: Config = {
       },
       backgroundImage: {
         "theme-gradient": "linear-gradient(284.76deg, #6619F5 33.64%, #CE2CCA 125.73%)",
+        "theme-purple-gradient":
+          "linear-gradient(117.12deg, #A619F7 6.42%, #6119F7 91.26%), linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2))",
       },
     },
   },

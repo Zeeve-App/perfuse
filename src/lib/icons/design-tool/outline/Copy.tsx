@@ -21,44 +21,45 @@ const SvgCopy = ({ title, titleId, ...props }: SVGProps<SVGSVGElement> & SVGRPro
     width="1em"
     height="1em"
     fill="none"
-    viewBox="0 0 24 24"
+    viewBox="0 0 19 19"
     aria-labelledby={titleId}
     {...props}
   >
     {title ? <title id={titleId}>{title}</title> : null}
+    {/* <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg"> */}
     <path
-      d="M12.75 10.05V12.3C12.75 15.3 11.55 16.5 8.55 16.5H5.7C2.7 16.5 1.5 15.3 1.5 12.3V9.45C1.5 6.45 2.7 5.25 5.7 5.25H7.95"
-      stroke="#868686"
-      strokeWidth="1.5"
+      d="M13.25 10.6357V12.8857C13.25 15.8857 12.05 17.0857 9.05 17.0857H6.2C3.2 17.0857 2 15.8857 2 12.8857V10.0357C2 7.03569 3.2 5.83569 6.2 5.83569H8.45"
+      stroke="#09122D"
+      strokeWidth="1.1"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
-      d="M12.75 10.05H10.35C8.54995 10.05 7.94995 9.45 7.94995 7.65V5.25L12.75 10.05Z"
-      stroke="#868686"
-      strokeWidth="1.5"
+      d="M13.2502 10.6357H10.8502C9.0502 10.6357 8.4502 10.0357 8.4502 8.23569V5.83569L13.2502 10.6357Z"
+      stroke="#09122D"
+      strokeWidth="1.1"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
-    <path d="M8.69995 1.5H11.7" stroke="#868686" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M9.2002 2.08569H12.2002" stroke="#09122D" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
     <path
-      d="M5.25 3.75C5.25 2.505 6.255 1.5 7.5 1.5H9.465"
-      stroke="#868686"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M16.5001 6V10.6425C16.5001 11.805 15.5551 12.75 14.3926 12.75"
-      stroke="#868686"
-      strokeWidth="1.5"
+      d="M5.75 4.33569C5.75 3.09069 6.755 2.08569 8 2.08569H9.965"
+      stroke="#09122D"
+      strokeWidth="1.1"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
-      d="M16.5 6H14.25C12.5625 6 12 5.4375 12 3.75V1.5L16.5 6Z"
-      stroke="#868686"
-      strokeWidth="1.5"
+      d="M17.0001 6.58569V11.2282C17.0001 12.3907 16.0551 13.3357 14.8926 13.3357"
+      stroke="#09122D"
+      strokeWidth="1.1"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M17 6.58569H14.75C13.0625 6.58569 12.5 6.02319 12.5 4.33569V2.08569L17 6.58569Z"
+      stroke="#09122D"
+      strokeWidth="1.1"
       strokeLinecap="round"
       strokeLinejoin="round"
     />

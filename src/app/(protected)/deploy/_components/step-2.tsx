@@ -1,21 +1,22 @@
-import { RefObject } from "react";
+import { forwardRef, RefObject } from "react";
 import { UseFormReturn } from "react-hook-form";
+import { DeployStepTypes } from "../page";
 import { Card } from "@/lib/components/Card";
 import { Heading } from "@/lib/components/Heading";
 import { Input } from "@/lib/components/Form";
 import { DeployNetworkValidationSchemaType } from "@/schemas/validation-schema";
 import { FormField } from "@/lib/components/Form/FormField";
 
-export default function DeployStep2({
-  ref,
-  className,
-  formData,
-}: {
-  className: string;
-  ref: RefObject<HTMLDivElement>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  formData: UseFormReturn<DeployNetworkValidationSchemaType, any, undefined>;
-}) {
+const DeployStep2 = forwardRef<
+  HTMLDivElement,
+  {
+    className: string;
+    ref: RefObject<HTMLDivElement>;
+    focusOnComponent: (component: DeployStepTypes) => void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    formData: UseFormReturn<DeployNetworkValidationSchemaType, any, undefined>;
+  }
+>(({ className, formData }, ref) => {
   return (
     <Card tabIndex={1} ref={ref} className={className}>
       <Card variant={"grid-no-pad"} className="col-span-6 ">
@@ -53,4 +54,8 @@ export default function DeployStep2({
       </Card>
     </Card>
   );
-}
+});
+
+DeployStep2.displayName = "DeployStep2";
+
+export default DeployStep2;

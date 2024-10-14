@@ -73,6 +73,7 @@ export const addTask = (data: TaskDbRow, trx?: knex.Knex.Transaction) => {
 
 // to get the task from db
 export const getTask = (data: Partial<TaskDbRow>, trx?: knex.Knex.Transaction) => {
+  if (!data.task_associated_network_id) return undefined;
   const db = trx ?? knexHandler;
 
   return db<TaskDbRow>("tasks").select("*").where(data).first();

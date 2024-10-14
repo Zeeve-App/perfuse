@@ -18,22 +18,29 @@ import { tx } from "@/utils/shared";
 const KeyValuePair = ({
   label,
   value,
-  enableBorder = true,
+  align = "left",
+  enableBorder = false,
   isLoading = false,
   className,
+  labelClass,
   shouldAllowCopy,
 }: {
   label: string | React.ReactElement;
   value: number | string | React.ReactElement;
   enableBorder?: boolean;
+  tooltipText?: string;
   isLoading?: boolean;
   className?: string;
+  labelClass?: string;
   shouldAllowCopy?: boolean;
+  align?: "right" | "left";
+  copyText?: string;
 }) => {
   return (
     <div
-      className={tx("mx-2 pb-1 justify-between flex flex-col col-span-12 lg:col-span-6", className, {
+      className={tx("mx-2 pb-1 justify-between flex flex-col ", className, {
         "border-b border-gray-200": enableBorder,
+        "items-end": align == "right",
       })}
     >
       {isLoading ? (
@@ -43,15 +50,15 @@ const KeyValuePair = ({
         </Skeleton>
       ) : (
         <>
-          {typeof label === "string" ? <div className="text-sm text-gray-500">{label}</div> : label}
+          {typeof label === "string" ? <div className={tx("text-sm text-gray-500", labelClass)}>{label}</div> : label}
           <div
             className={tx("text-sm", {
-              "flex flex-row items-center gap-2": shouldAllowCopy,
+              "flex flex-row items-center align-middle gap-2": shouldAllowCopy,
             })}
           >
-            {value}
+            <span>{value}</span>
             {shouldAllowCopy && (typeof value === "string" || typeof value === "number") ? (
-              <CopyButton text={value.toString()} />
+              <CopyButton text={value.toString()} className="m-0" />
             ) : null}
           </div>
         </>

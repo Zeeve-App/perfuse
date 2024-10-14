@@ -135,6 +135,12 @@ export const deployNetworkValidationSchema = yup
       ws: yup.boolean(),
     }),
     sidecar: yup.boolean(),
+    accounts: yup.array(
+      yup.object({
+        address: yup.string(),
+        balance: yup.string(),
+      }),
+    ),
   })
   .required();
 

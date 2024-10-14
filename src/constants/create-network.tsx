@@ -69,7 +69,7 @@ export const templateOption: { label: string; value: string; isDisabled: boolean
     icon: <SvgSubstrate />,
   },
   {
-    label: "Evm Frontier",
+    label: "Evm",
     value: "evm_frontier",
     isDisabled: false,
     icon: (

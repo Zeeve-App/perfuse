@@ -7,11 +7,14 @@ import { useForm } from "react-hook-form";
 import DeployStep1 from "./_components/step-1";
 import DeployStep2 from "./_components/step-2";
 import DeployStep3 from "./_components/step-3";
+import DeploySummary from "./_components/summary";
 import { Card } from "@/lib/components/Card";
 import { Heading } from "@/lib/components/Heading";
 import { tx } from "@/utils/shared";
 import { deployNetworkValidationSchema, DeployNetworkValidationSchemaType } from "@/schemas/validation-schema";
 
+const componentNameForDeploy = ["step1", "step2", "step3", "summary"] as const;
+export type DeployStepTypes = (typeof componentNameForDeploy)[number];
 export default function Home() {
   const formData = useForm<DeployNetworkValidationSchemaType>({
     resolver: yupResolver(deployNetworkValidationSchema),
@@ -22,6 +25,29 @@ export default function Home() {
   const step1Ref = useRef<HTMLDivElement>(null);
   const step2Ref = useRef<HTMLDivElement>(null);
   const step3Ref = useRef<HTMLDivElement>(null);
+  const summaryRef = useRef<HTMLDivElement>(null);
+
+  const focusOnComponent = (component: DeployStepTypes) => {
+    console.log({ component, step1Ref });
+    switch (component) {
+      case "step1":
+        step1Ref.current?.focus();
+        break;
+      case "step2":
+        step2Ref.current?.focus();
+        break;
+      case "step3":
+        step3Ref.current?.focus();
+        break;
+      case "summary":
+        summaryRef.current?.focus();
+        break;
+
+      default:
+        break;
+    }
+  };
+
   const focusClasses: ClassValue =
     "focus:outline-none focus-within:outline-none focus-within:ring-none focus-within:border focus-within:border-theme-secondary focus-within:opacity-100 focus:ring-none focus:border focus:border-theme-secondary focus:opacity-100";
 
@@ -39,15 +65,35 @@ export default function Home() {
         {/* Form */}
         <Card variant={"grid"} className="col-span-12 lg:col-span-8">
           {/* 1st step */}
-          <DeployStep1 formData={formData} ref={step1Ref} className={tx("col-span-12 opacity-50", focusClasses)} />
+          <DeployStep1
+            focusOnComponent={focusOnComponent}
+            formData={formData}
+            ref={step1Ref}
+            className={tx("col-span-12 opacity-50", focusClasses)}
+          />
           {/* 2nd step */}
-          <DeployStep2 formData={formData} ref={step2Ref} className={tx("col-span-12 opacity-50", focusClasses)} />
+          <DeployStep2
+            focusOnComponent={focusOnComponent}
+            formData={formData}
+            ref={step2Ref}
+            className={tx("col-span-12 opacity-50", focusClasses)}
+          />
           {/* 3rd step  */}
-          <DeployStep3 formData={formData} ref={step3Ref} className={tx("col-span-12 opacity-50", focusClasses)} />
+          <DeployStep3
+            formData={formData}
+            focusOnComponent={focusOnComponent}
+            ref={step3Ref}
+            className={tx("col-span-12 opacity-50", focusClasses)}
+          />
         </Card>
         {/* Your selects */}
         <Card variant={"grid"} className="col-span-12 lg:col-span-4">
-          <Card className="col-span-12"></Card>
+          <DeploySummary
+            focusOnComponent={focusOnComponent}
+            formData={formData}
+            ref={summaryRef}
+            className={tx("col-span-12")}
+          />
         </Card>
       </Card>
     </>
