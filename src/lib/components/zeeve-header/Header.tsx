@@ -63,6 +63,7 @@ import { ActionMeta, ReactSelect } from "../ReactSelect";
 import { Avatar } from "../Avatar";
 import { SidebarItems } from "../sidebar/sub-components";
 import { ZeeveSidebarItem } from "../sidebar/sidebar";
+import { ProfileDropDownMenu } from "../Header/profile-menu";
 import { useToggle } from "@/hooks";
 import { tx } from "@/utils/shared";
 import { withBasePath } from "@/utils/helpers";
@@ -96,8 +97,6 @@ interface ZeeveHeaderProps extends HeaderProps {
   accessToken: string;
   /** create dropdown menu */
   createDropdownMenu?: ZeeveHeaderDropdownMenu;
-  /** profile dropdown menu */
-  profileDropdownMenu: ZeeveHeaderDropdownMenu;
   /** user info */
   user?: {
     email: string;
@@ -121,29 +120,12 @@ interface ZeeveHeaderProps extends HeaderProps {
 const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
   const { theme, toggleTheme } = useDarkMode();
 
-  const {
-    className,
-    onMenuButtonClick,
-    notificationsWSURL,
-    accessToken,
-    createDropdownMenu,
-    profileDropdownMenu,
-    user,
-    subscriptionSummary,
-    organizationDetails,
-    ...rest
-  } = props;
+  const { className, onMenuButtonClick, notificationsWSURL, accessToken, createDropdownMenu, ...rest } = props;
 
   const {
     isOpen: isCreateDropdownOpen,
     handleToggle: handleCreateDropdownToggle,
     handleClose: handleCreateDropdownClose,
-  } = useToggle();
-
-  const {
-    isOpen: isProfileDropdownOpen,
-    handleToggle: handleProfileDropdownToggle,
-    handleClose: handleProfileDropdownClose,
   } = useToggle();
 
   const {
@@ -155,20 +137,6 @@ const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
 
   const _notificationsWSURL =
     typeof notificationsWSURL === "string" ? `${notificationsWSURL}?token=${accessToken}` : undefined;
-
-  // user initials
-  const initials = useMemo(() => {
-    if (user?.firstName || user?.lastName) {
-      return `${user?.firstName?.charAt(0).toUpperCase() ?? ""}${user?.lastName?.charAt(0).toUpperCase() ?? ""}`;
-    }
-  }, [user?.firstName, user?.lastName]);
-
-  // user name
-  const name = useMemo(() => {
-    if (user?.firstName || user?.lastName) {
-      return `${user?.firstName ?? ""} ${user?.lastName ?? ""}`;
-    }
-  }, [user?.firstName, user?.lastName]);
 
   return (
     <Header className={tx("justify-between", className)} {...rest}>
@@ -241,26 +209,7 @@ const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
               <CreateDropdownMenu createDropdownMenu={createDropdownMenu} />
             </DropdownMenu>
           ) : null}
-
-          {/* Profile Dropdown */}
-          <DropdownMenu isOpen={isProfileDropdownOpen} onClose={handleProfileDropdownClose}>
-            <DropdownMenuButton as={IconButton} variant="text" isRounded={true} onClick={handleProfileDropdownToggle}>
-              {initials ? (
-                <>
-                  <div className="flex size-7  cursor-pointer items-center justify-center overflow-hidden rounded-full bg-gradient-to-r from-brand-cyan to-brand-teal text-white">
-                    <SvgProfile className="size-3" />
-                  </div>
-                  <span className="text-brand-dark-blue">&nbsp; Demo</span>
-                </>
-              ) : (
-                <>
-                  <Avatar src={withBasePath("/assets/images/avatar-placeholder.svg")} />
-                  <span>Demo</span>
-                </>
-              )}
-            </DropdownMenuButton>
-            <ProfileDropdownMenu profileDropdownMenu={profileDropdownMenu} name={name} email={user?.email} />
-          </DropdownMenu>
+          <ProfileDropDownMenu />
         </HeaderNavGroup>
       </HeaderNavContainer>
     </Header>
@@ -293,50 +242,6 @@ const CreateDropdownMenu = (props: CreateDropdownMenuProps) => {
               ) : null}
               {/* show menu divider only when there is next element in the list */}
               {createDropdownMenu[index + 1] ? <DropdownMenuDivider /> : null}
-            </Fragment>
-          ))
-        : null}
-    </DropdownMenuList>
-  );
-};
-
-interface ProfileDropdownMenuProps {
-  profileDropdownMenu: ZeeveHeaderDropdownMenu;
-  name?: string;
-  email?: string;
-}
-
-const ProfileDropdownMenu = (props: ProfileDropdownMenuProps) => {
-  const { profileDropdownMenu, name, email } = props;
-
-  return (
-    <DropdownMenuList className="flex flex-col md:min-w-[200px]">
-      {name || email ? (
-        <div className="flex flex-col px-3 py-1">
-          {name ? (
-            <p className="font-poppins text-sm font-semibold capitalize leading-4 text-brand-dark">{name}</p>
-          ) : null}
-          {email ? <p className="text-xs font-medium lowercase text-brand-gray">{email}</p> : null}
-        </div>
-      ) : null}
-      {name || email ? <hr className="my-2" /> : null}
-      {profileDropdownMenu.length
-        ? profileDropdownMenu.map((menu, index) => (
-            <Fragment key={index}>
-              {menu.group ? (
-                <DropdownMenuGroup>
-                  {menu.group.title ? <DropdownMenuGroupTitle>{menu.group.title}</DropdownMenuGroupTitle> : null}
-                  {menu.group.items.length
-                    ? menu.group.items.map((item, idx) => (
-                        <DropdownMenuItem key={idx} iconLeft={item.icon} onClick={item.onClick}>
-                          {item.title}
-                        </DropdownMenuItem>
-                      ))
-                    : null}
-                </DropdownMenuGroup>
-              ) : null}
-              {/* show menu divider only when there is next element in the list */}
-              {profileDropdownMenu[index + 1] ? <DropdownMenuDivider /> : null}
             </Fragment>
           ))
         : null}

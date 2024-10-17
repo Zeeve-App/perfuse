@@ -10,9 +10,9 @@
  */
 
 "use client";
-import React, { Fragment, useEffect, useRef } from "react";
+import React, { Fragment, useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Sidebar,
   SidebarItemGroup,
@@ -24,9 +24,13 @@ import {
   SidebarProps,
 } from "../sidebar/sub-components";
 import { ITEMS } from "../../../constants/sidebar";
+import { ZeeveHeaderDropdownMenu } from "../zeeve-header/Header";
+import { DropdownMenu } from "../DropdownMenu";
+import { ProfileDropDownMenu } from "../Header/profile-menu";
 import ZeeveSidebarItemProps from "./type";
 import { tx } from "@/utils/shared";
 import { isActive, withBasePath } from "@/utils/helpers";
+import { useToggle } from "@/hooks";
 
 const ZeeveSidebarItemDropdown = ({
   item,
@@ -129,10 +133,10 @@ const ZeeveSidebar = (props: SidebarProps) => {
 
   return (
     <Sidebar className={tx("w-full lg:w-full", className)} {...rest}>
-      <SidebarHeader className="justify-center">
-        <a href={`/`}>
-          <Image src={withBasePath("/assets/images/perfuse-no-bg.png")} alt="Zeeve Logo" width={200} height={200} />
-        </a>
+      <SidebarHeader className="justify-between px-6">
+        <ProfileDropDownMenu />
+
+        <div>Demo</div>
       </SidebarHeader>
       <SidebarItems ref={ref}>
         {ITEMS.length
