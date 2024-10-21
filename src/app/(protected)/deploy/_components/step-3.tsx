@@ -186,7 +186,7 @@ const DeployStep3 = forwardRef<
       </Card>
       {/* Parachain Config */}
       {formState?.template?.value === "custom" && (
-        <div className="flex flex-col gap-3 lg:gap-6">
+        <div className="flex flex-col gap-3 p-2 px-4 lg:gap-6">
           <Heading as="h5">Upload</Heading>
           <div className="grid grid-cols-12 items-start gap-3 lg:gap-6">
             {/* Chain Spec File */}

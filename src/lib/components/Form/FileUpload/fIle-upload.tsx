@@ -51,27 +51,29 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>((props, ref) =>
     <div className="relative flex h-max w-full">
       <label
         htmlFor={_id}
-        className=" peer w-full appearance-none truncate rounded-lg p-4 pr-12 text-sm font-medium leading-5 text-brand-dark placeholder:text-base placeholder:text-brand-dark/60 focus:border-zinc-300 focus:outline-none focus:ring-1 focus:ring-zinc-300 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+        className="peer w-full appearance-none truncate rounded-lg bg-[#F5F5F5] p-4 pr-12 text-sm font-medium leading-5 text-brand-dark placeholder:text-base placeholder:text-brand-dark/60 focus:border-zinc-300 focus:outline-none focus:ring-1 focus:ring-zinc-300 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#1E222D]"
       >
-        <div className="flex flex-col gap-2 lg:gap-4">
+        <div className="flex flex-col gap-2  lg:gap-4">
           <Heading as="h6">{floatingLabelText}</Heading>
-          <div className="flex items-center justify-between gap-2 rounded-xl border-2 border-dashed p-3 lg:gap-4">
+          <div className="flex items-center justify-between gap-2 rounded-xl border-2 border-dashed bg-white p-3 text-theme-primary-content lg:gap-4 dark:bg-[#11141C]">
             {iconRight}
             <div>
-              <p className="font-normal text-brand-dark-blue">Select a file or drag and drop here</p>
+              <p className="font-normal text-theme-primary-content">Select a file or drag and drop here</p>
               <p className="text-brand-gray">Supported format: {fileType}</p>
             </div>
-            <Button variant={"outline"}>Select File</Button>
+            <Button variant={"outline"} colorScheme={"accent"}>
+              Select File
+            </Button>
           </div>
           {fileName && (
-            <p>
+            <p className="text-theme-primary-content">
               <span className="text-brand-gray ">File Name:</span> {fileName}
             </p>
           )}
           {(error || fileName) && (
             <div>
               <span
-                className={tx("bg-brand-light-teal rounded-md  px-2 py-1 text-xs text-brand-gray", {
+                className={tx("bg-brand-light-teal  rounded-md  px-2 py-1 text-xs text-brand-gray", {
                   "bg-brand-warning": error,
                 })}
               >
