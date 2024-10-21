@@ -141,6 +141,16 @@ export const deployNetworkValidationSchema = yup
         balance: yup.string(),
       }),
     ),
+    chainSpecFile: yup
+      .object({
+        contents: yup.mixed<ChainSpecFileType>().required("Chain spec file is required."),
+        name: yup.string(),
+      })
+      .required("Chain spec file is required."),
+    binaryFile: yup.object({
+      name: yup.string(),
+      path: yup.string(),
+    }),
   })
   .required();
 

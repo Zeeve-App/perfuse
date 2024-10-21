@@ -51,7 +51,7 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>((props, ref) =>
     <div className="relative flex h-max w-full">
       <label
         htmlFor={_id}
-        className="peer w-full appearance-none truncate rounded-lg border border-brand-blue p-4 pr-12 text-sm font-medium leading-5 text-brand-dark placeholder:text-base placeholder:text-brand-dark/60 focus:border-zinc-300 focus:outline-none focus:ring-1 focus:ring-zinc-300 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+        className=" peer w-full appearance-none truncate rounded-lg p-4 pr-12 text-sm font-medium leading-5 text-brand-dark placeholder:text-base placeholder:text-brand-dark/60 focus:border-zinc-300 focus:outline-none focus:ring-1 focus:ring-zinc-300 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       >
         <div className="flex flex-col gap-2 lg:gap-4">
           <Heading as="h6">{floatingLabelText}</Heading>
