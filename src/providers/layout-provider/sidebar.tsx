@@ -37,7 +37,7 @@ const Sidebar = (props: SidebarProps) => {
           className="w-4/5  md:w-72 lg:hidden"
         >
           <div className="size-full " title="mobile sidebar">
-            <ZeeveSidebar />
+            <ZeeveSidebar handleClose={handleMobileSidebarClose} />
           </div>
         </SideDrawerContent>
       </SideDrawer>

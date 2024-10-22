@@ -77,12 +77,14 @@ export const getProfileDropdownData = (router: AppRouterInstance) => [
 
 const ProfileDropDownMenu = ({
   user,
+  className,
 }: {
   user?: {
     email: string;
     firstName: string;
     lastName?: string;
   };
+  className?: string;
 }) => {
   const router = useRouter();
   // profile dropdown menu
@@ -111,14 +113,14 @@ const ProfileDropDownMenu = ({
   const email = user?.email;
 
   return (
-    <DropdownMenu isOpen={isProfileDropdownOpen} onClose={handleProfileDropdownClose}>
+    <DropdownMenu className={className} isOpen={isProfileDropdownOpen} onClose={handleProfileDropdownClose}>
       <DropdownMenuButton as={IconButton} variant="text" isRounded={true} onClick={handleProfileDropdownToggle}>
         {true ? (
           <>
             <div className="flex size-7  cursor-pointer items-center justify-center overflow-hidden rounded-full bg-[#6119F7] text-white">
               <SvgProfile className="size-3 " />
             </div>
-            <span className="text-brand-dark-blue">&nbsp; Demo</span>
+            <span className="text-theme-primary-content">&nbsp; Demo</span>
           </>
         ) : (
           <>

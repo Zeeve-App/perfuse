@@ -27,10 +27,14 @@ import { ITEMS } from "../../../constants/sidebar";
 import { ZeeveHeaderDropdownMenu } from "../zeeve-header/Header";
 import { DropdownMenu } from "../DropdownMenu";
 import { ProfileDropDownMenu } from "../Header/profile-menu";
+import { IconButton } from "../Button";
 import ZeeveSidebarItemProps from "./type";
 import { tx } from "@/utils/shared";
 import { isActive, withBasePath } from "@/utils/helpers";
 import { useToggle } from "@/hooks";
+import SvgXMarkSquare from "@/lib/icons/essential/outline/XMarkSquare";
+import SvgMoon from "@/lib/icons/essential/outline/moon";
+import useDarkMode from "@/hooks/use-dark-mode";
 
 const ZeeveSidebarItemDropdown = ({
   item,
@@ -118,10 +122,11 @@ export const ZeeveSidebarItem = ({
   );
 };
 
-const ZeeveSidebar = (props: SidebarProps) => {
+const ZeeveSidebar = (props: SidebarProps & { handleClose: () => void }) => {
   const { className, ...rest } = props;
 
   const pathname = usePathname();
+  const { theme, toggleTheme } = useDarkMode();
 
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -132,11 +137,13 @@ const ZeeveSidebar = (props: SidebarProps) => {
   }, []);
 
   return (
-    <Sidebar className={tx("w-full lg:w-full", className)} {...rest}>
+    <Sidebar className={tx("w-full lg:w-full bg-theme-background", className)} {...rest}>
       <SidebarHeader className="justify-between px-6">
         <ProfileDropDownMenu />
 
-        <div>Demo</div>
+        <div onClick={() => props.handleClose()}>
+          <SvgXMarkSquare className="size-6 text-theme-primary" />
+        </div>
       </SidebarHeader>
       <SidebarItems ref={ref}>
         {ITEMS.length
@@ -163,6 +170,16 @@ const ZeeveSidebar = (props: SidebarProps) => {
             ))
           : null}
       </SidebarItems>
+      <div className="grow"></div>
+      <div className="p-6">
+        <IconButton
+          variant={"text"}
+          className="size-10 rounded-full  bg-theme-foreground"
+          onClick={() => toggleTheme()}
+        >
+          {theme === "dark" ? <SvgMoon fontSize={20} /> : <SvgMoon fontSize={24} />}
+        </IconButton>
+      </div>
     </Sidebar>
   );
 };

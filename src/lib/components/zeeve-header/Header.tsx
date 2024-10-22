@@ -143,15 +143,16 @@ const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
       {/* left side header section, visible only in mobile view */}
       <HeaderLogoContainer>
         {/* menu button */}
-        <HeaderMenuButton className="lg:hidden" onClick={onMenuButtonClick}>
+        <HeaderMenuButton className="text-theme-primary-content lg:hidden" variant={"text"} onClick={onMenuButtonClick}>
           <SvgBars className=" text-2xl " />
         </HeaderMenuButton>
         {/* logo */}
         <HeaderLogo
           logoImgSrc={withBasePath("/assets/images/perfuse-no-bg.svg")}
           logoImgAlt="Zeeve Logo"
-          logoImgClassName="size-30"
+          logoImgClassName="size-30 "
           logoHref="/"
+          className=""
         />
       </HeaderLogoContainer>
 
@@ -183,7 +184,7 @@ const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
         <HeaderNavGroup>
           <IconButton
             variant={"text"}
-            className="size-10 rounded-full bg-theme-foreground"
+            className="hidden size-10 rounded-full  bg-theme-foreground lg:flex"
             onClick={() => toggleTheme()}
           >
             {theme === "dark" ? <SvgMoon fontSize={20} /> : <SvgMoon fontSize={24} />}
@@ -197,7 +198,11 @@ const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
           </NotificationsWebSocketContextProvider>
           {/* Create Button */}
           {createDropdownMenu?.length ? (
-            <DropdownMenu isOpen={isCreateDropdownOpen} onClose={handleCreateDropdownClose}>
+            <DropdownMenu
+              className="hidden lg:inline"
+              isOpen={isCreateDropdownOpen}
+              onClose={handleCreateDropdownClose}
+            >
               <DropdownMenuButton
                 as={Button}
                 colorScheme="blue"
@@ -209,7 +214,7 @@ const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
               <CreateDropdownMenu createDropdownMenu={createDropdownMenu} />
             </DropdownMenu>
           ) : null}
-          <ProfileDropDownMenu />
+          <ProfileDropDownMenu className="hidden lg:inline" />
         </HeaderNavGroup>
       </HeaderNavContainer>
     </Header>
