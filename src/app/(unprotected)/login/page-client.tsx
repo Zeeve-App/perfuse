@@ -22,6 +22,7 @@ import { Input, Label } from "@/lib/components/Form";
 import { Heading } from "@/lib/components/Heading";
 import { Button } from "@/lib/components/Button";
 import { withBasePath } from "@/utils/helpers";
+import { tx } from "@/utils/shared";
 
 const loginSchema = yup.object({
   email: yup.string(),
@@ -52,8 +53,13 @@ const Login = () => {
   };
 
   return (
-    <div className={`grid h-screen grid-cols-12 gap-3 bg-[#100628] text-[#D2D2D2]`}>
-      <div className="col-span-6 flex items-center justify-center rounded-lg">
+    <div
+      className={tx(`grid h-screen grid-cols-12 gap-3 bg-[#100628] text-[#D2D2D2] bg-cover`)}
+      style={{
+        backgroundImage: `URL("${withBasePath("/assets/images/login/login-bg.png")}")`,
+      }}
+    >
+      <div className="col-span-6 flex max-w-fit items-center justify-center rounded-lg p-6 lg:p-12">
         <div className="m-auto flex flex-col   justify-evenly gap-3 align-middle lg:gap-6 lg:p-6">
           <div className="flex items-center justify-center gap-4">
             {
@@ -62,7 +68,7 @@ const Login = () => {
                 alt="Zeeve Logo"
                 width={200}
                 height={200}
-                className="w-64"
+                className="w-72"
               />
             }
             <p>| Powered by Zeeve</p>
@@ -78,16 +84,24 @@ const Login = () => {
           <p className="">Save up to 97% in time and 60%+ in costs using Zeeve</p>
         </div>
       </div>
-      <div className="col-span-12 rounded-lg  bg-white shadow-brand-shadow lg:col-span-5">
-        <form autoComplete="off" className="" onSubmit={handleSubmit(onSubmit)}>
+      <div className="col-span-12 flex h-full items-center justify-center  lg:col-span-5">
+        <form
+          autoComplete="off"
+          className="rounded-2xl border-2 border-transparent bg-[linear-gradient(180deg,rgba(57,19,147,0.3)_0%,rgba(17,6,45,0)_100%)] p-6 lg:p-12"
+          onSubmit={handleSubmit(onSubmit)}
+          style={{
+            borderImageSource: "linear-gradient(162.28deg, #AA25D9 12.8%, rgba(14, 4, 38, 0) 62.41%)",
+            borderImageSlice: 1,
+          }}
+        >
           {/* form fields */}
-          <div className="flex flex-col gap-3 p-3 lg:gap-6 lg:p-6">
-            <Heading className="text-[#D2D2D2]" as="h2">
-              Welcome To Perfuse
-            </Heading>
-            <Heading className="text-[#D2D2D2]" as="h3">
-              Login to your account
-            </Heading>
+          <div className="flex flex-col gap-3 lg:gap-6">
+            <div>
+              <Heading className="text-[#D2D2D2]" as="h2">
+                Welcome To Perfuse
+              </Heading>
+              <p className="text-white">Login to your account</p>
+            </div>
             <FormField
               className="col-span-12 md:col-span-6 lg:col-span-3"
               helper={{
@@ -95,16 +109,8 @@ const Login = () => {
                 text: errors.email?.message,
               }}
             >
-              <Label>Email Address</Label>
-              <Input
-                {...register("email")}
-                type="text"
-                isRequired
-                placeholder="Email"
-                floatingLabel={{
-                  labelText: "Email",
-                }}
-              />
+              <Label className="text-white">Email Address</Label>
+              <Input {...register("email")} type="text" isRequired placeholder="Email" />
             </FormField>
             <FormField
               className="col-span-12 md:col-span-6 lg:col-span-3"
@@ -113,21 +119,18 @@ const Login = () => {
                 text: errors.password?.message,
               }}
             >
-              <Label>Password</Label>
-              <Input
-                {...register("password")}
-                type="text"
-                isRequired
-                placeholder="Password"
-                floatingLabel={{
-                  labelText: "Password",
-                }}
-              />
+              <Label className="text-white">Password</Label>
+              <Input {...register("password")} type="text" isRequired placeholder="Password" />
             </FormField>
-          </div>
-          <div className="flex w-full items-center justify-end gap-4 px-6 py-4">
-            <Button type="submit" variant={"outline"} isDisabled={!isValid} size={"large"}>
-              Login
+            <Button
+              type="submit"
+              variant={"solid"}
+              colorScheme={"primary"}
+              isDisabled={!isValid}
+              size={"large"}
+              className="w-full rounded-sm bg-theme-purple-gradient"
+            >
+              Sign in
             </Button>
           </div>
         </form>
