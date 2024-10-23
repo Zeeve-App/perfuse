@@ -16,7 +16,6 @@ import ConfigureRelayChain from "./_components/form-steps/step-2-configure-relay
 // import ROUTES from "@/routes";
 // import { getConfig } from "@/config";
 import DeploySucceed from "./_components/form-steps/step-3-success";
-import { networkEnvOption } from "../../../constants/create-network";
 import {
   ProgressiveForm,
   ProgressiveFormHeader,

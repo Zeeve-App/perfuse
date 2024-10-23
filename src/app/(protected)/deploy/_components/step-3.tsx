@@ -63,18 +63,21 @@ const DeployStep3 = forwardRef<
     const runtimeGenesis = chainSpec.genesis.runtimeGenesis;
 
     formData.setValue("paraId", chainSpec.para_id);
-    formData.setValue("decimalValue", chainSpec.properties?.tokenDecimals);
-    formData.setValue("ss58Format", chainSpec.properties?.ss58Format?.toString());
+    formData.setValue("decimalValue", chainSpec.properties?.tokenDecimals ?? 12);
+    formData.setValue("ss58Format", chainSpec.properties?.ss58Format?.toString() ?? "42");
 
     const collatorAddresses = runtimeGenesis?.patch?.aura?.authorities?.length
       ? runtimeGenesis?.patch?.aura?.authorities
       : [runtimeGenesis?.patch.session?.keys?.[0]?.[0], runtimeGenesis?.patch.session?.keys?.[0]?.[1]];
 
     collatorAddresses?.forEach((col, idx) => {
-      const balance = runtimeGenesis?.patch?.balances?.balances?.find((e) => e[0] === col)?.[1];
-      console.log({ address: col, balance });
+      const balance = runtimeGenesis?.patch?.balances?.balances?.forEach((e) => {
+        const address = e[0];
+        const balance = e[1];
 
-      col && appendAccount({ address: col, balance });
+        appendAccount({ address, balance });
+      });
+      console.log({ address: col, balance });
     });
 
     console.log(chainSpec);
@@ -349,7 +352,7 @@ const DeployStep3 = forwardRef<
                 return (
                   <>
                     <FormField
-                      className="col-span-6"
+                      className="col-span-7"
                       key={e.id + "address"}
                       helper={{
                         status: "error",
@@ -357,7 +360,12 @@ const DeployStep3 = forwardRef<
                       }}
                     >
                       <Label>Address {idx + 1}</Label>
-                      <Input placeholder="DOT" {...formData.register(`accounts.${idx}.address`)} isRequired />
+                      <Input
+                        isDisabled
+                        placeholder="DOT"
+                        {...formData.register(`accounts.${idx}.address`)}
+                        isRequired
+                      />
                     </FormField>
                     <FormField
                       className="col-span-5"
@@ -369,9 +377,14 @@ const DeployStep3 = forwardRef<
                     >
                       <Label>Balance {idx + 1}</Label>
 
-                      <Input placeholder="DOT" {...formData.register(`accounts.${idx}.balance`)} isRequired />
+                      <Input
+                        isDisabled
+                        placeholder="DOT"
+                        {...formData.register(`accounts.${idx}.balance`)}
+                        isRequired
+                      />
                     </FormField>
-                    <FormField className="col-span-1">
+                    {/* <FormField className="col-span-1">
                       <Label>&nbsp;</Label>
                       <IconButton
                         colorScheme={"blue"}
@@ -383,7 +396,7 @@ const DeployStep3 = forwardRef<
                       >
                         <SvgTrash fontSize={30} />
                       </IconButton>
-                    </FormField>
+                    </FormField> */}
                   </>
                 );
               })}
@@ -392,6 +405,7 @@ const DeployStep3 = forwardRef<
                   variant={"outline"}
                   colorScheme={"blue"}
                   className="rounded-md"
+                  isDisabled
                   onClick={() => {
                     appendAccount({});
                   }}

@@ -127,9 +127,9 @@ export const deployNetworkValidationSchema = yup
     template: yup.object({
       value: yup.string().required("Select a template."),
     }),
-    paraId: yup.number(),
-    decimalValue: yup.number(),
-    ss58Format: yup.string(),
+    paraId: yup.number().required(),
+    decimalValue: yup.number().required(),
+    ss58Format: yup.string().required(),
     rpcNode: yup.object({
       http: yup.boolean(),
       ws: yup.boolean(),

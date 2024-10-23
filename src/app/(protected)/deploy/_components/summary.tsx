@@ -1,12 +1,18 @@
 import { RefObject } from "react";
 import { UseFormReturn } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { DeployStepTypes } from "../page";
+import { CreatePerfuseApiPayload } from "../../api/create/route";
 import { Card } from "@/lib/components/Card";
 import { DeployNetworkValidationSchemaType } from "@/schemas/validation-schema";
 import { Heading } from "@/lib/components/Heading";
 import { Button } from "@/lib/components/Button";
 import { envAndRelayChainOption, templateOption } from "@/constants/create-network";
 import { Checkbox, Switch } from "@/lib/components/Form";
+import HTTP_STATUS from "@/constants/http";
+import { ChainSpecFileType } from "@/types/chain-spec";
+import useApi from "@/api-client";
+import { Typography } from "@/lib/components/Typography/Typography";
 
 export default function DeploySummary({
   ref,
@@ -21,11 +27,53 @@ export default function DeploySummary({
   formData: UseFormReturn<DeployNetworkValidationSchemaType, any, undefined>;
 }) {
   const formWatchState = formData.watch();
+  const router = useRouter();
+  const apis = useApi();
+
+  const onSubmit = async (data: DeployNetworkValidationSchemaType) => {
+    const chainSpec = data.chainSpecFile.contents;
+    if (chainSpec.para_id) chainSpec.para_id = data.paraId;
+    if (chainSpec.properties?.tokenDecimals) chainSpec.properties.tokenDecimals = data.decimalValue;
+    if (chainSpec.properties?.tokenSymbol) chainSpec.properties.tokenSymbol = data.tokenName;
+    // if (chainSpec.) chainSpec.properties.tokenSymbol = data.tokenName;
+
+    const payload: CreatePerfuseApiPayload = {
+      network: {
+        network_name: data.chainName,
+        network_env: data?.networkEnvironment.value ?? "",
+        network_template: data?.template.value ?? "",
+        network_relay_chain_type: data?.relayChain.value ?? "",
+        network_sidecar: Boolean(data?.sidecar) ? 1 : 0,
+        network_blockchain_explorer_type: "polkdotjs",
+        network_chain_spec_file_json: chainSpec,
+        network_binary_path: data?.binaryFile.path ?? "",
+        network_user_address: "",
+      },
+      nodes: [
+        {
+          node_name: "rpc-node",
+          node_type: "rpc",
+          node_auth_method: "api_key",
+          node_password: "",
+          node_username: "",
+          node_https_enabled: data.rpcNode.http ?? false,
+          node_wss_enabled: data.rpcNode.ws ?? false,
+        },
+      ],
+    };
+
+    const response = await apis.createNetwork(payload);
+
+    if (response.status === HTTP_STATUS.OK && response.data.success) {
+      router.push("/" + response.data?.data?.network_id);
+      // goToNextStep();
+    }
+  };
   return (
     <Card tabIndex={3} ref={ref} className={className}>
-      <div className="col-span-12 flex flex-col gap-3">
-        <p>Your Selection</p>
-        <Heading as="h4">Your environment</Heading>
+      <div className="col-span-12 flex flex-col gap-3 text-theme-primary-content">
+        <Typography variant="heading">Your Selection</Typography>
+        <Typography variant="subtitle">Environment</Typography>
         {formWatchState.relayChain?.value && formWatchState.networkEnvironment?.value && (
           <div
             onClick={() => {
@@ -50,22 +98,26 @@ export default function DeploySummary({
             </Button>
           </div>
         )}
-        <hr />
-        <div onClick={() => focusOnComponent("step2")}>
-          {formWatchState.chainName && (
-            <div className="flex justify-between text-sm">
-              <span className="font-semibold">Chain name</span>
-              <span>{formWatchState.chainName}</span>
+        {(formWatchState.chainName || formWatchState.tokenName) && (
+          <>
+            <hr />
+            <div onClick={() => focusOnComponent("step2")}>
+              {formWatchState.chainName && (
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">Chain name</span>
+                  <span>{formWatchState.chainName}</span>
+                </div>
+              )}
+              {formWatchState.tokenName && (
+                <div className="flex justify-between text-sm">
+                  <span className="font-semibold">Token Symbol</span>
+                  <span>{formWatchState.tokenName}</span>
+                </div>
+              )}
             </div>
-          )}
-          {formWatchState.tokenName && (
-            <div className="flex justify-between text-sm">
-              <span className="font-semibold">Token Symbol</span>
-              <span>{formWatchState.tokenName}</span>
-            </div>
-          )}
-        </div>
-        <hr />
+            <hr />
+          </>
+        )}
         <div
           className="flex flex-col gap-3 rounded-md bg-theme-background p-3"
           onClick={() => {
@@ -136,6 +188,19 @@ export default function DeploySummary({
             </div>
           )}
         </div>
+        <form action="" className="" onSubmit={formData.handleSubmit(onSubmit)}>
+          <Button
+            className="w-full rounded-md"
+            colorScheme="gradient"
+            type="submit"
+            isDisabled={!formData.formState.isValid}
+          >
+            Deploy
+          </Button>
+        </form>
+        <Button className="w-full rounded-md" variant={"outline"} colorScheme="accent">
+          Docs
+        </Button>
       </div>
     </Card>
   );

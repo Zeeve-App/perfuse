@@ -44,7 +44,7 @@ const styles = cva(
         light: "bg-brand-light text-brand-light",
         purple: "bg-brand-purple text-brand-purple",
         pink: "bg-brand-pink text-brand-pink",
-        gradient: "bg-brand-gradient text-brand-gradient",
+        gradient: "bg-theme-gradient text-white",
       },
       isFullWidth: {
         true: "w-full",

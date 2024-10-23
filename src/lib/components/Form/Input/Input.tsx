@@ -13,14 +13,14 @@ import { VariantProps, cva } from "class-variance-authority";
 import React, { forwardRef } from "react";
 // import { IconInfoCircle } from "@zeeve-platform/icons/essential/outline";
 import { Label } from "../Label";
-import { IconButton } from "../../Button";
+import { Button, IconButton } from "../../Button";
 import { Tooltip } from "../../Tooltip";
 import { RemoveProperties } from "../../core";
 import { useID } from "@/hooks";
 import { tx } from "@/utils/shared";
 
 const styles = cva(
-  "placeholder:text-theme-accent-foreground/60 disabled:text-theme-accent-foreground/60 peer w-full appearance-none truncate rounded-lg border border-brand-outline bg-theme-foreground p-4 text-sm font-medium leading-5 text-theme-accent-content focus:border-[#E8DCFE] focus:bg-theme-accent-foreground focus:outline-none focus:ring-0 focus-visible:outline-none disabled:cursor-not-allowed disabled:bg-[#f3f6fd] disabled:font-normal",
+  "placeholder:text-theme-accent-foreground/60 disabled:text-theme-accent-foreground/60 disabled:bg-theme-foreground/60 peer w-full appearance-none truncate rounded-lg border border-brand-outline bg-theme-foreground p-4 text-sm font-medium leading-5 text-theme-accent-content focus:border-[#E8DCFE] focus:bg-theme-accent-foreground focus:outline-none focus:ring-0 focus-visible:outline-none disabled:cursor-not-allowed disabled:font-normal disabled:opacity-50",
   {
     variants: {
       size: {
