@@ -83,6 +83,13 @@ module.exports = plugin(
         "-webkit-text-fill-color": "transparent",
         "text-fill-color": "transparent",
       },
+      ".text-theme-gradient": {
+        "background": "linear-gradient(42.61deg, #5C18F9 1.04%, #ED32BE 86.06%)",
+        "-webkit-background-clip": "text",
+        "background-clip": "text",
+        "-webkit-text-fill-color": "transparent",
+        "text-fill-color": "transparent",
+      },
       ".scrollbar-hide": {
         "-ms-overflow-style": "none",
         "scrollbar-width": "none",
@@ -141,7 +148,7 @@ module.exports = plugin(
             outline: "var(--border)",
             purple: "#8879e5",
             pink: "#A619F7",
-            "light-pink":"#F7F0F7",
+            "light-pink": "#F7F0F7",
             // shadow:"rgba(112, 144, 176, 0.12)",
             warning: "#fff5e6",
           },

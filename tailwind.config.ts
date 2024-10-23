@@ -11,7 +11,6 @@
 
 import type { Config } from "tailwindcss";
 import tailwindForms from "@tailwindcss/forms";
-import { withBasePath } from "./src/utils/helpers";
 
 const config: Config = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
