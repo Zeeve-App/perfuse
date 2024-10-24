@@ -137,7 +137,7 @@ module.exports = plugin(
             "dark-blue": "#2b3674",
             "darker-blue": "#1b2559",
             red: "#C12C2C",
-            green: "#2EC589",
+            green: "#05CD99",
             yellow: "#F0AC00",
             gray: "#868686",
             dark: "#080E12",

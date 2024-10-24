@@ -52,7 +52,7 @@ const Typography: TypographyComponent = forwardRef(
     { className, children, variant = "default", ...rest }: TypographyProps<C>,
     ref?: PolymorphicRef<C>,
   ) => {
-    const Component = "p";
+    const Component = "span";
 
     return (
       <Component

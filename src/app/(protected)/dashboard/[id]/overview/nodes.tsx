@@ -18,6 +18,8 @@ import { ColumnDef, ReactTable, createColumnHelper } from "@/lib/components/Reac
 import { NodeDbRow } from "@/db-queries";
 import SvgPlusSquare from "@/lib/icons/essential/outline/PlusSquare";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
+import { Typography } from "@/lib/components/Typography";
+import { Badge } from "@/lib/components/Badge/Badge";
 
 const columnHelper = createColumnHelper<NodeDbRow>();
 // table columns
@@ -62,24 +64,38 @@ const Nodes = ({ isLoading, nodes }: { isLoading: boolean; nodes: NodeDbRow[] })
       <div className="grid grid-cols-12 gap-3">
         <div className="col-span-12 flex flex-col gap-3">
           <div className="grid grid-cols-12 justify-between gap-3 px-4">
-            <div className="col-span-6">name</div>
-            <div className="col-span-3">node type</div>
-            <div className="col-span-3">status</div>
+            <Typography variant="heading" className="col-span-6">
+              Name
+            </Typography>
+            <Typography variant="heading" className="col-span-3">
+              Node Type
+            </Typography>
+            <Typography variant="heading" className="col-span-3">
+              Status
+            </Typography>
           </div>
           <hr />
           <div className="grid grid-cols-12 justify-between gap-3 px-4">
-            <div className="col-span-6">Test</div>
-            <div className="col-span-3">Type</div>
-            <div className="col-span-3">Ready</div>
+            <Typography variant="paragraph" className="col-span-6">
+              Test
+            </Typography>
+            <Typography variant="paragraph" className="col-span-3">
+              Type
+            </Typography>
+            <div className="col-span-3">
+              <Badge variant="green">Ready</Badge>
+            </div>
           </div>
-          <div className="grid grid-cols-12 justify-between gap-3 bg-theme-background px-4">
+          <div className="grid grid-cols-12 justify-between gap-3 bg-theme-background p-4">
             <KeyValuePair className="col-span-6 mx-0" label={"Wss Url"} value={"http://perfuse.io/ws"} />
             <KeyValuePair className="col-span-6 mx-0" label={"Https Url"} value={"http://perfuse.io/rpc"} />
             <KeyValuePair className="col-span-6 mx-0" label={"Authentication type"} value={"API Key"} />
             <KeyValuePair className="col-span-6 mx-0" label={"API Key"} value={"f023dcd-ewf0cmo0e-12n320"} />
           </div>
           <div className="grid grid-cols-12 justify-evenly gap-3 px-4">
-            <div className="col-span-6">Collator Nodes: 4</div>
+            <Typography variant="heading" className="col-span-6">
+              Collator Nodes: <Typography variant="paragraph">4</Typography>
+            </Typography>
             <div className="col-span-6 text-right">
               <Button variant="text">View all</Button>
             </div>

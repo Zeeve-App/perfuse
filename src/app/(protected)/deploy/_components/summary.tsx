@@ -1,6 +1,7 @@
 import { RefObject } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { DeployStepTypes } from "../page";
 import { CreatePerfuseApiPayload } from "../../api/create/route";
 import { Card } from "@/lib/components/Card";
@@ -13,6 +14,8 @@ import HTTP_STATUS from "@/constants/http";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import useApi from "@/api-client";
 import { Typography } from "@/lib/components/Typography/Typography";
+import { Badge } from "@/lib/components/Badge/Badge";
+import { withBasePath } from "@/utils/helpers";
 
 export default function DeploySummary({
   ref,
@@ -81,21 +84,21 @@ export default function DeploySummary({
             }}
           >
             <p>Network Environment</p>
-            <Button variant={"outline"} className="h-5">
+            <Badge variant={"purple"}>
               {
                 envAndRelayChainOption
                   .filter((e) => e.environment.value === formWatchState.networkEnvironment.value)?.[0]
                   .relayChainOption.filter((e) => e.value === formWatchState.relayChain.value)?.[0]?.label
               }
-            </Button>{" "}
+            </Badge>{" "}
             on{" "}
-            <Button variant={"outline"} className="h-5">
+            <Badge variant={"default"}>
               {
                 envAndRelayChainOption.filter(
                   (e) => e.environment.value === formWatchState.networkEnvironment.value,
                 )?.[0].environment.label
               }
-            </Button>
+            </Badge>
           </div>
         )}
         {(formWatchState.chainName || formWatchState.tokenName) && (
@@ -118,76 +121,87 @@ export default function DeploySummary({
             <hr />
           </>
         )}
-        <div
-          className="flex flex-col gap-3 rounded-md bg-theme-background p-3"
-          onClick={() => {
-            focusOnComponent("step3");
-          }}
-        >
-          {formWatchState.template?.value && (
-            <div className="flex justify-between text-sm">
-              <span className="font-bold">Chain Template</span>
-              <span>{templateOption.filter((e) => e.value === formWatchState.template.value)?.[0]?.label}</span>
-            </div>
-          )}
-          <hr />
-          {formWatchState.paraId && (
-            <div className="flex justify-between text-sm">
-              <span className="font-semibold">ParaID</span>
-              <span>{formWatchState.paraId}</span>
-            </div>
-          )}
-
-          {(formWatchState.rpcNode?.http !== undefined || formWatchState.rpcNode?.ws !== undefined) && (
-            <div className="flex justify-between text-sm">
-              <span className="font-semibold">RPC API</span>
-              <span className="flex flex-row gap-4">
-                <Checkbox isChecked={formWatchState.rpcNode?.http} isDisabled>
-                  HTTPS
-                </Checkbox>
-                <Checkbox isChecked={formWatchState.rpcNode?.ws} isDisabled>
-                  WSS
-                </Checkbox>
-              </span>
-            </div>
-          )}
-
-          {formWatchState.sidecar !== undefined && (
-            <div className="flex justify-between text-sm">
-              <span className="font-semibold">Sidecar </span>
-
-              <div className="col-span-12 flex items-center justify-start">
-                <Switch isChecked={formWatchState.sidecar} colorScheme={"blue"} isDisabled>
-                  Enable
-                </Switch>
+        {formWatchState.template?.value ? (
+          <div
+            className="flex flex-col gap-3 rounded-md bg-theme-background p-3"
+            onClick={() => {
+              focusOnComponent("step3");
+            }}
+          >
+            {formWatchState.template?.value && (
+              <div className="flex justify-between text-sm">
+                <span className="font-bold">Chain Template</span>
+                <span>{templateOption.filter((e) => e.value === formWatchState.template.value)?.[0]?.label}</span>
               </div>
-            </div>
-          )}
-          <hr />
-          <p>Network Environment</p>
-          <div className="flex justify-between text-sm">
-            <span className="font-semibold">Collator nodes</span>
-            <span>4</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="font-semibold">Rpc nodes</span>
-            <span>1</span>
-          </div>
-          <hr />
-          <p> Gas Configuration</p>
-          {formWatchState.decimalValue && (
+            )}
+            <hr />
+            {formWatchState.paraId && (
+              <div className="flex justify-between text-sm">
+                <span className="font-semibold">ParaID</span>
+                <span>{formWatchState.paraId}</span>
+              </div>
+            )}
+
+            {(formWatchState.rpcNode?.http !== undefined || formWatchState.rpcNode?.ws !== undefined) && (
+              <div className="flex justify-between text-sm">
+                <span className="font-semibold">RPC API</span>
+                <span className="flex flex-row gap-4">
+                  <Checkbox isChecked={formWatchState.rpcNode?.http} isDisabled>
+                    HTTPS
+                  </Checkbox>
+                  <Checkbox isChecked={formWatchState.rpcNode?.ws} isDisabled>
+                    WSS
+                  </Checkbox>
+                </span>
+              </div>
+            )}
+
+            {formWatchState.sidecar !== undefined && (
+              <div className="flex justify-between text-sm">
+                <span className="font-semibold">Sidecar </span>
+
+                <div className="col-span-12 flex items-center justify-start">
+                  <Switch isChecked={formWatchState.sidecar} colorScheme={"blue"} isDisabled>
+                    Enable
+                  </Switch>
+                </div>
+              </div>
+            )}
+            <hr />
+            <p>Network Environment</p>
             <div className="flex justify-between text-sm">
-              <span className="font-semibold">Token Decimal</span>
-              <span>{formWatchState.decimalValue}</span>
+              <span className="font-semibold">Collator nodes</span>
+              <span>4</span>
             </div>
-          )}
-          {formWatchState.ss58Format && (
             <div className="flex justify-between text-sm">
-              <span className="font-semibold">ss58Format</span>
-              <span>{formWatchState.ss58Format}</span>
+              <span className="font-semibold">Rpc nodes</span>
+              <span>1</span>
             </div>
-          )}
-        </div>
+            <hr />
+            <p> Gas Configuration</p>
+            {formWatchState.decimalValue && (
+              <div className="flex justify-between text-sm">
+                <span className="font-semibold">Token Decimal</span>
+                <span>{formWatchState.decimalValue}</span>
+              </div>
+            )}
+            {formWatchState.ss58Format && (
+              <div className="flex justify-between text-sm">
+                <span className="font-semibold">ss58Format</span>
+                <span>{formWatchState.ss58Format}</span>
+              </div>
+            )}
+          </div>
+        ) : (
+          <>
+            <Image
+              src={withBasePath("/assets/images/create/summary.svg")}
+              alt="parachains-logo"
+              width={400}
+              height={300}
+            />
+          </>
+        )}
         <form action="" className="" onSubmit={formData.handleSubmit(onSubmit)}>
           <Button
             className="w-full rounded-md"

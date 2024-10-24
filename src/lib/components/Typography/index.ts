@@ -8,5 +8,5 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
-export { type HeadingProps, Heading } from "./Typography";
+export { Typography } from "./Typography";
+export type { TypographyProps } from "./Typography";

@@ -11,6 +11,7 @@
 
 "use client";
 import React from "react";
+import { Typography } from "../Typography";
 import { CopyButton } from "@/lib/components/Button";
 import { Skeleton } from "@/lib/components/Skeleton";
 import { tx } from "@/utils/shared";
@@ -50,15 +51,21 @@ const KeyValuePair = ({
         </Skeleton>
       ) : (
         <>
-          {typeof label === "string" ? <div className={tx("text-sm text-gray-500", labelClass)}>{label}</div> : label}
+          {typeof label === "string" ? (
+            <Typography variant="heading" className={tx("", labelClass)}>
+              {label}
+            </Typography>
+          ) : (
+            label
+          )}
           <div
             className={tx("text-sm", {
               "flex flex-row items-center align-middle gap-2": shouldAllowCopy,
             })}
           >
-            <span>{value}</span>
+            <Typography variant="paragraph">{value}</Typography>
             {shouldAllowCopy && (typeof value === "string" || typeof value === "number") ? (
-              <CopyButton text={value.toString()} className="m-0" />
+              <CopyButton text={value.toString()} className="m-0 text-theme-primary-content" />
             ) : null}
           </div>
         </>

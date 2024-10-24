@@ -19,7 +19,13 @@ export default function Home() {
   const formData = useForm<DeployNetworkValidationSchemaType>({
     resolver: yupResolver(deployNetworkValidationSchema),
     mode: "all",
-    defaultValues: {},
+    defaultValues: {
+      rpcNode: {
+        http: true,
+        ws: true,
+      },
+      sidecar: true,
+    },
   });
 
   const step1Ref = useRef<HTMLDivElement>(null);
