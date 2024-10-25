@@ -42,7 +42,7 @@ const PreMiningConfig = ({ data, isLoading }: PreMiningConfigProps) => {
   }, [data]);
 
   return (
-    <Card className="col-span-12 h-72 overflow-y-auto rounded-lg shadow-brand-shadow md:col-span-6 lg:col-span-6">
+    <Card className="col-span-12 h-56 overflow-y-auto rounded-lg shadow-brand-shadow">
       <Typography variant="subtitle" className="col-span-12">
         Pre Mined Addresses ({preMintedData.length})
       </Typography>
@@ -57,13 +57,16 @@ const PreMiningConfig = ({ data, isLoading }: PreMiningConfigProps) => {
         ))
       ) : preMintedData.length > 0 ? (
         preMintedData.map((element) => (
-          <PreMiningCard
-            className="col-span-12"
-            key={element.accountAddress}
-            tokenSymbol={data?.properties?.tokenSymbol ?? ""}
-            accountAddress={element.accountAddress}
-            accountBalance={element.accountBalance}
-          />
+          <>
+            <PreMiningCard
+              className="col-span-12"
+              key={element.accountAddress}
+              tokenSymbol={data?.properties?.tokenSymbol ?? ""}
+              accountAddress={element.accountAddress}
+              accountBalance={element.accountBalance}
+            />
+            <hr className="col-span-12 border-0 border-b border-theme-primary-content" />
+          </>
         ))
       ) : (
         <div className="col-span-12 text-center text-brand-gray">

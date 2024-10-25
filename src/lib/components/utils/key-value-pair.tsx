@@ -74,12 +74,12 @@ const KeyValuePair = ({
           )}
           <div
             className={tx("text-sm", {
-              "flex flex-row items-center align-middle gap-2": shouldAllowCopy,
+              // "flex flex-row items-center align-middle gap-2": shouldAllowCopy,
             })}
           >
             <WrapperTooltip>
               <Typography variant="paragraph" className={tx(valueClass)}>
-                {value}
+                {value} &nbsp;
               </Typography>
             </WrapperTooltip>
             {shouldAllowCopy && (typeof value === "string" || typeof value === "number") ? (

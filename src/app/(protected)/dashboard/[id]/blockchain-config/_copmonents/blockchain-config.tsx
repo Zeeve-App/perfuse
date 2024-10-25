@@ -21,6 +21,7 @@ import RelayChainConfig from "./relay-chain-config";
 import TokenInfo from "./token-info";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import useApi from "@/api-client";
+import { Card } from "@/lib/components/Card";
 
 const BlockchainConfig = ({
   chainSpecJSON,
@@ -42,14 +43,16 @@ const BlockchainConfig = ({
       <ParachainConfig isLoading={isLoading} data={chainSpecJSON} />
       <TokenInfo isLoading={isLoading} data={chainSpecJSON} />
       <ParachainSpecFile isLoading={isLoading} data={chainSpecJSON} />
-      <PreMiningConfig isLoading={isLoading} data={chainSpecJSON} />
-      <RelayChainConfig
-        isLoading={isLoading}
-        relayChain={{
-          type: relayChain.type,
-          version: relayChain.version,
-        }}
-      />
+      <Card variant={"grid-no-pad"} className="col-span-12 lg:col-span-6">
+        <PreMiningConfig isLoading={isLoading} data={chainSpecJSON} />
+        <RelayChainConfig
+          isLoading={isLoading}
+          relayChain={{
+            type: relayChain.type,
+            version: relayChain.version,
+          }}
+        />
+      </Card>
     </div>
   );
 };

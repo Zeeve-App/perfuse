@@ -65,7 +65,7 @@ const CopyButton = forwardRef<HTMLButtonElement, CopyButtonProps>((props, ref) =
     <Tooltip text={!isCopied ? "Copy" : "Copied"} placement="bottom-start">
       <IconButton
         variant="text"
-        className={tx("rounded-md text-base text-brand-primary focus:ring-offset-0 m-auto", className, {
+        className={tx("rounded-md text-base text-brand-primary focus:ring-offset-0 m-auto ", className, {
           "text-green-500": isCopied,
         })}
         onClick={handleCopyButtonClick}

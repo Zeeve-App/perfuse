@@ -15,6 +15,9 @@ import React from "react";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import { Heading } from "@/lib/components/Heading";
 import KeyValuePairInput from "@/lib/components/utils/key-value-pair-input";
+import { Card } from "@/lib/components/Card";
+import { Typography } from "@/lib/components/Typography";
+import KeyValuePair from "@/lib/components/utils/key-value-pair";
 
 interface RelayChainConfigProps {
   data?: ChainSpecFileType;
@@ -24,27 +27,23 @@ interface RelayChainConfigProps {
 
 const RelayChainConfig = ({ isLoading, relayChain }: RelayChainConfigProps) => {
   return (
-    <div className="col-span-12 flex flex-col gap-3 rounded-lg p-4 shadow-brand-shadow lg:col-span-6 lg:gap-6">
-      <div className="grid grid-cols-12 gap-3 lg:gap-6">
-        <Heading as="h4" className="col-span-12">
-          Relay Chain Config
-        </Heading>
-      </div>
-      <div className="grid grid-cols-12 gap-3 lg:gap-6">
-        <KeyValuePairInput
-          className="col-span-6"
-          label={"Relay Chain Type"}
-          value={relayChain.type ?? "NA"}
-          isLoading={isLoading}
-        />
-        <KeyValuePairInput
-          className="col-span-6"
-          label={"Relay Chain Version"}
-          value={relayChain.version ?? "NA"}
-          isLoading={isLoading}
-        />
-      </div>
-    </div>
+    <Card className="col-span-12 overflow-y-auto rounded-lg shadow-brand-shadow">
+      <Typography variant="subtitle" className="col-span-12">
+        Relay Chain Configuration
+      </Typography>
+      <KeyValuePair
+        className="col-span-6"
+        label={"Relay Chain Type"}
+        value={relayChain.type ?? "NA"}
+        isLoading={isLoading}
+      />
+      <KeyValuePair
+        className="col-span-6 text-right"
+        label={"Relay Chain Version"}
+        value={relayChain.version ?? "NA"}
+        isLoading={isLoading}
+      />
+    </Card>
   );
 };
 

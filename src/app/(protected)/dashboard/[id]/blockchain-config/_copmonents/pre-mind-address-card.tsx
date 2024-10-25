@@ -38,6 +38,7 @@ const PreMiningCard = ({ accountAddress, accountBalance, tokenSymbol, className 
         label={"Balance"}
         tooltipText={accountBalance.toString()}
         value={formateNumber(accountBalance) + " " + tokenSymbol.toUpperCase()}
+        shouldAllowCopy
       />
     </div>
   );

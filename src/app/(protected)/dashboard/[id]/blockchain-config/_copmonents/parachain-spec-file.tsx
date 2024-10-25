@@ -34,7 +34,7 @@ const ParachainSpecFile = ({ data, isLoading }: ParachainSpecFileProps) => {
   const ExtraComponent = lazy(() => import("./parachain-chainspec-preview"));
 
   return (
-    <Card className="col-span-12 flex h-72 flex-col overflow-hidden rounded-lg shadow-brand-shadow lg:col-span-6">
+    <Card className="col-span-12 flex h-96 flex-col overflow-hidden rounded-lg shadow-brand-shadow lg:col-span-6">
       <div className="mb-1 flex items-center justify-between">
         <Typography variant="subtitle">Parachain Spec File</Typography>
         <Tooltip text={"Download Parachain Spec File"} placement="top-start">
