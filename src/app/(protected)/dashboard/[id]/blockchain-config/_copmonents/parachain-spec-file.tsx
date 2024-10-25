@@ -54,14 +54,14 @@ const ParachainSpecFile = ({ data, isLoading }: ParachainSpecFileProps) => {
         </Tooltip>
       </div>
       <div
-        className={tx("col-span-12 row-span-3 flex max-h-52 flex-col rounded-lg border border-brand-outline", {
+        className={tx("col-span-12 row-span-3 flex h-72 flex-col rounded-lg border border-brand-outline", {
           "h-52": !data,
         })}
       >
         {data && !isLoading && (
           <Suspense
             fallback={
-              <div className="flex h-screen items-center justify-center">
+              <div className="flex  items-center justify-center">
                 <Spinner />
               </div>
             }
@@ -70,10 +70,10 @@ const ParachainSpecFile = ({ data, isLoading }: ParachainSpecFileProps) => {
           </Suspense>
         )}
         {!data && !isLoading && (
-          <div className="flex h-screen items-center justify-center text-sm text-brand-gray">No data available.</div>
+          <div className="flex  items-center justify-center text-sm text-brand-gray">No data available.</div>
         )}
         {isLoading && (
-          <div className="flex h-screen items-center justify-center">
+          <div className="flex items-center justify-center">
             <Spinner />
           </div>
         )}
