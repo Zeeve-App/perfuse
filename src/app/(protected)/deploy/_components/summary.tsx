@@ -18,13 +18,12 @@ import { Badge } from "@/lib/components/Badge/Badge";
 import { withBasePath } from "@/utils/helpers";
 
 export default function DeploySummary({
-  ref,
   className,
   formData,
   focusOnComponent,
 }: {
   className: string;
-  ref: RefObject<HTMLDivElement>;
+  // ref: RefObject<HTMLDivElement>;
   focusOnComponent: (component: DeployStepTypes) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formData: UseFormReturn<DeployNetworkValidationSchemaType, any, undefined>;
@@ -73,7 +72,7 @@ export default function DeploySummary({
     }
   };
   return (
-    <Card tabIndex={3} ref={ref} className={className}>
+    <Card tabIndex={3} className={className}>
       <div className="col-span-12 flex flex-col gap-3 text-theme-primary-content">
         <Typography variant="heading">Your Selection</Typography>
         <Typography variant="subtitle">Environment</Typography>

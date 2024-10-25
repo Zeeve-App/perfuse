@@ -14,7 +14,7 @@ import React, { useState } from "react";
 
 import { useParams } from "next/navigation";
 import { useModalStore } from "@/store/modal";
-import { formatDate, toCapitalize, toShortString } from "@/utils/helpers";
+import { formatDate, formatEndpoint, toCapitalize, toShortString } from "@/utils/helpers";
 import { CREDENTIALS_TYPE } from "@/types/node";
 import { CopyButton } from "@/lib/components/Button";
 import { Heading } from "@/lib/components/Heading";
@@ -40,19 +40,6 @@ const NodeDetailsModal = () => {
 
   const { data: blockRpcResponse, isLoading: blockRpcLoading } = apis.blockNumber();
   const blockHeight = parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16);
-
-  const formatEndpoint = (
-    type: "https" | "wss",
-    endpoint?: string,
-    credType?: CREDENTIALS_TYPE,
-    apiKey?: string,
-    rpcType?: "para-rpc" | "relay-rpc" | "api",
-  ) => {
-    if (endpoint && credType) {
-      return `${type.slice(0, -1)}://${endpoint}${credType === "api_key" ? `/${apiKey}` : ""}/${rpcType ?? "para-rpc"}`;
-    }
-    return "NA";
-  };
 
   const network = useNetworkStore((e) => e.networkInfo);
 

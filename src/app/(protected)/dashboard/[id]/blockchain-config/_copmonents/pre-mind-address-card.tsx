@@ -14,30 +14,31 @@ import React from "react";
 import { CopyButton } from "@/lib/components/Button";
 import { formateNumber, toShortString } from "@/utils/helpers";
 import { tx } from "@/utils/shared";
+import KeyValuePair from "@/lib/components/utils/key-value-pair";
 
 interface PreMiningCardProps {
   accountAddress: string;
   accountBalance: number;
   tokenSymbol: string;
+  className?: string;
 }
 
-const PreMiningCard = ({ accountAddress, accountBalance, tokenSymbol }: PreMiningCardProps) => {
+const PreMiningCard = ({ accountAddress, accountBalance, tokenSymbol, className }: PreMiningCardProps) => {
   return (
-    <div className="rounded-lg border border-brand-outline bg-brand-light p-2 text-sm">
-      <div className="flex items-center justify-between">
-        <div className="text-brand-gray">Address</div>
-        <div className="flex items-center">
-          {toShortString(accountAddress)}
-          <CopyButton text={accountAddress} className="ml-1" />
-        </div>
-      </div>
-      <div className="flex items-center justify-between">
-        <div className="text-brand-gray">Balance</div>
-        <div className="flex items-center">
-          {formateNumber(accountBalance)} <span className={tx("text-xs capitalize")}>{tokenSymbol}</span>
-          <CopyButton text={accountBalance.toString()} className="ml-1" />
-        </div>
-      </div>
+    <div className={tx("text-sm grid grid-cols-12", className)}>
+      <KeyValuePair
+        className="col-span-6"
+        label={"Address"}
+        value={toShortString(accountAddress, 10, 12)}
+        tooltipText={accountAddress}
+        shouldAllowCopy
+      />
+      <KeyValuePair
+        className="col-span-6 text-right"
+        label={"Balance"}
+        tooltipText={accountBalance.toString()}
+        value={formateNumber(accountBalance) + " " + tokenSymbol.toUpperCase()}
+      />
     </div>
   );
 };

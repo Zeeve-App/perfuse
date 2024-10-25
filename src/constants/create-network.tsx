@@ -40,6 +40,11 @@ export const envAndRelayChainOption = [
       {
         label: "Paseo",
         value: "paseo",
+        isDisabled: true,
+      },
+      {
+        label: "Local",
+        value: "local",
       },
     ],
   },
@@ -47,13 +52,16 @@ export const envAndRelayChainOption = [
     environment: {
       label: "Mainnet",
       value: "mainnet",
+      isDisabled: true,
     },
     relayChainOption: [
       {
+        isDisabled: true,
         label: "Kusama",
         value: "kusama",
       },
       {
+        isDisabled: true,
         label: "Polkadot",
         value: "polkadot",
       },

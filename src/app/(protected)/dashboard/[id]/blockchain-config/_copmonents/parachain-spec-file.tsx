@@ -20,6 +20,8 @@ import { Heading } from "@/lib/components/Heading";
 import { Spinner } from "@/lib/components/Spinner";
 import { Tooltip } from "@/lib/components/Tooltip";
 import { tx } from "@/utils/shared";
+import { Typography } from "@/lib/components/Typography";
+import { Card } from "@/lib/components/Card";
 
 interface ParachainSpecFileProps {
   data?: ChainSpecFileType;
@@ -32,53 +34,51 @@ const ParachainSpecFile = ({ data, isLoading }: ParachainSpecFileProps) => {
   const ExtraComponent = lazy(() => import("./parachain-chainspec-preview"));
 
   return (
-    <div className="col-span-12 flex flex-col overflow-hidden rounded-lg shadow-brand-shadow ">
-      <div className="p-4">
-        <div className="mb-1 flex items-center justify-between">
-          <Heading as="h4">Parachain Spec File</Heading>
-          <Tooltip text={"Download Parachain Spec File"} placement="top-start">
-            <IconButton
-              colorScheme="primary"
-              variant={"ghost"}
-              size={"small"}
-              isDisabled={!data}
-              onClick={() => {
-                if (data) {
-                  downloadFile(JSON.stringify(data, null, 4), `${networkId}-parachain-spec-file.json`);
-                }
-              }}
-            >
-              <SvgDownload className="text-lg" />
-            </IconButton>
-          </Tooltip>
-        </div>
-        <div
-          className={tx("col-span-12 row-span-3 flex max-h-52 flex-col rounded-lg border border-brand-outline", {
-            "h-52": !data,
-          })}
-        >
-          {data && !isLoading && (
-            <Suspense
-              fallback={
-                <div className="flex h-screen items-center justify-center">
-                  <Spinner />
-                </div>
+    <Card className="col-span-12 flex h-72 flex-col overflow-hidden rounded-lg shadow-brand-shadow lg:col-span-6">
+      <div className="mb-1 flex items-center justify-between">
+        <Typography variant="subtitle">Parachain Spec File</Typography>
+        <Tooltip text={"Download Parachain Spec File"} placement="top-start">
+          <IconButton
+            colorScheme="primary"
+            variant={"ghost"}
+            size={"small"}
+            isDisabled={!data}
+            onClick={() => {
+              if (data) {
+                downloadFile(JSON.stringify(data, null, 4), `${networkId}-parachain-spec-file.json`);
               }
-            >
-              <ExtraComponent data={data} />
-            </Suspense>
-          )}
-          {!data && !isLoading && (
-            <div className="flex h-screen items-center justify-center text-sm text-brand-gray">No data available.</div>
-          )}
-          {isLoading && (
-            <div className="flex h-screen items-center justify-center">
-              <Spinner />
-            </div>
-          )}
-        </div>
+            }}
+          >
+            <SvgDownload className="text-lg" />
+          </IconButton>
+        </Tooltip>
       </div>
-    </div>
+      <div
+        className={tx("col-span-12 row-span-3 flex max-h-52 flex-col rounded-lg border border-brand-outline", {
+          "h-52": !data,
+        })}
+      >
+        {data && !isLoading && (
+          <Suspense
+            fallback={
+              <div className="flex h-screen items-center justify-center">
+                <Spinner />
+              </div>
+            }
+          >
+            <ExtraComponent data={data} />
+          </Suspense>
+        )}
+        {!data && !isLoading && (
+          <div className="flex h-screen items-center justify-center text-sm text-brand-gray">No data available.</div>
+        )}
+        {isLoading && (
+          <div className="flex h-screen items-center justify-center">
+            <Spinner />
+          </div>
+        )}
+      </div>
+    </Card>
   );
 };
 

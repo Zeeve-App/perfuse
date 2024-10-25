@@ -24,7 +24,7 @@ const ListPage = async () => {
   const networks = await getNetworks();
 
   if (networks.length > 0 && networks?.[0]?.network_id) {
-    redirect("/network/" + networks?.[0]?.network_id);
+    redirect("/dashboard/" + networks?.[0]?.network_id);
   }
 
   return <ListPageClient />;

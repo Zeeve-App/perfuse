@@ -45,7 +45,7 @@ const TabContainer = ({ id }: { id: string }) => {
           const tabName = Object.entries(tabAndIndexMap).find((k, v) => v === idx);
 
           // redirect to the tab which is clicked
-          router.push(`/network/${id}/${tabName?.[0] ?? ""}`);
+          router.push(`/dashboard/${id}/${tabName?.[0] ?? ""}`);
         },
       }}
     >

@@ -15,6 +15,8 @@ import PreMiningCard from "./pre-mind-address-card";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import { Heading } from "@/lib/components/Heading";
 import { Skeleton } from "@/lib/components/Skeleton";
+import { Typography } from "@/lib/components/Typography";
+import { Card } from "@/lib/components/Card";
 
 interface PreMiningConfigProps {
   data?: ChainSpecFileType;
@@ -40,37 +42,35 @@ const PreMiningConfig = ({ data, isLoading }: PreMiningConfigProps) => {
   }, [data]);
 
   return (
-    <div className="col-span-12 flex flex-col overflow-hidden rounded-lg shadow-brand-shadow md:col-span-6 lg:col-span-6">
-      <div className="p-4">
-        <Heading as="h4">Pre Mined Addresses ({preMintedData.length})</Heading>
-      </div>
-      <div className="max-h-36 overflow-auto p-4">
-        <div className="grid grid-cols-2 gap-6">
-          {isLoading ? (
-            Array.from({ length: 10 }).map((_, index) => (
-              <div key={index} className="col-span-6">
-                <Skeleton role="status" as="div">
-                  <div className="h-4 bg-gray-200 dark:bg-gray-700"></div>
-                </Skeleton>
-              </div>
-            ))
-          ) : preMintedData.length > 0 ? (
-            preMintedData.map((element) => (
-              <PreMiningCard
-                key={element.accountAddress}
-                tokenSymbol={data?.properties?.tokenSymbol ?? ""}
-                accountAddress={element.accountAddress}
-                accountBalance={element.accountBalance}
-              />
-            ))
-          ) : (
-            <div className="col-span-12 text-center text-brand-gray">
-              <div className="flex h-32 items-center justify-center text-sm">No data available.</div>
-            </div>
-          )}
+    <Card className="col-span-12 h-72 overflow-y-auto rounded-lg shadow-brand-shadow md:col-span-6 lg:col-span-6">
+      <Typography variant="subtitle" className="col-span-12">
+        Pre Mined Addresses ({preMintedData.length})
+      </Typography>
+
+      {isLoading ? (
+        Array.from({ length: 10 }).map((_, index) => (
+          <div key={index} className="col-span-6">
+            <Skeleton role="status" as="div">
+              <div className="h-4 bg-gray-200 dark:bg-gray-700"></div>
+            </Skeleton>
+          </div>
+        ))
+      ) : preMintedData.length > 0 ? (
+        preMintedData.map((element) => (
+          <PreMiningCard
+            className="col-span-12"
+            key={element.accountAddress}
+            tokenSymbol={data?.properties?.tokenSymbol ?? ""}
+            accountAddress={element.accountAddress}
+            accountBalance={element.accountBalance}
+          />
+        ))
+      ) : (
+        <div className="col-span-12 text-center text-brand-gray">
+          <div className="flex h-32 items-center justify-center text-sm">No data available.</div>
         </div>
-      </div>
-    </div>
+      )}
+    </Card>
   );
 };
 

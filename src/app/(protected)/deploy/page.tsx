@@ -25,6 +25,12 @@ export default function Home() {
         ws: true,
       },
       sidecar: true,
+      networkEnvironment: {
+        value: "testnet",
+      },
+      relayChain: {
+        value: "local",
+      },
     },
   });
 
@@ -97,7 +103,7 @@ export default function Home() {
           <DeploySummary
             focusOnComponent={focusOnComponent}
             formData={formData}
-            ref={summaryRef}
+            // ref={summaryRef}
             className={tx("col-span-12")}
           />
         </Card>

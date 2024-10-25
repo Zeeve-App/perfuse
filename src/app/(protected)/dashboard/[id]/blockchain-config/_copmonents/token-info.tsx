@@ -9,10 +9,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import Image from "next/image";
+import { Card } from "@/lib/components/Card";
 import { Heading } from "@/lib/components/Heading";
-import KeyValuePairInput from "@/lib/components/utils/key-value-pair-input";
+import { Typography } from "@/lib/components/Typography";
+import KeyValuePair from "@/lib/components/utils/key-value-pair";
 import { ChainSpecFileType } from "@/types/chain-spec";
-import { formateNumber } from "@/utils/helpers";
+import { formateNumber, withBasePath } from "@/utils/helpers";
 
 interface ParachainConfigProps {
   data?: ChainSpecFileType;
@@ -21,43 +24,61 @@ interface ParachainConfigProps {
 
 const TokenInfo = ({ data, isLoading }: ParachainConfigProps) => {
   return (
-    <div className="col-span-12 flex flex-col gap-3 rounded-lg p-4 shadow-brand-shadow lg:gap-6">
-      <div className="grid grid-cols-12 gap-3 lg:gap-6">
-        <Heading as="h4" className="col-span-12">
-          Token Info
-        </Heading>
-      </div>
-      <div className="grid grid-cols-12 gap-3 lg:gap-6">
-        <KeyValuePairInput
-          className="col-span-3"
-          label={"Name"}
-          value={data?.properties?.tokenSymbol ?? "NA"}
-          isLoading={isLoading}
-        />
-        <KeyValuePairInput
-          className="col-span-3"
-          label={"Decimal"}
-          value={data?.properties?.tokenDecimals ?? "NA"}
-          isLoading={isLoading}
-        />
-        <KeyValuePairInput
-          className="col-span-3"
-          label={"Encoding"}
-          value={data?.properties ? "ss58Format" : "NA"}
-          isLoading={isLoading}
-        />
-        <KeyValuePairInput
-          className="col-span-3"
-          label={"Candidacy Bond"}
-          value={
-            data?.genesis.runtime?.collatorSelection?.candidacyBond
-              ? formateNumber(data.genesis.runtime.collatorSelection.candidacyBond, "standard")
-              : "NA"
-          }
-          isLoading={isLoading}
-        />
-      </div>
-    </div>
+    <Card
+      variant={"default"}
+      className="relative col-span-12 gap-3 rounded-lg p-4 pb-36 lg:col-span-6 lg:gap-6 lg:pb-28"
+    >
+      <Typography variant="subtitle" className="col-span-12">
+        Token Info
+      </Typography>
+      <KeyValuePair
+        className="col-span-6"
+        label={"Name"}
+        value={data?.properties?.tokenSymbol ?? "NA"}
+        isLoading={isLoading}
+      />
+      <KeyValuePair
+        className="col-span-6 text-right"
+        label={"Decimal"}
+        value={data?.properties?.tokenDecimals ?? "NA"}
+        isLoading={isLoading}
+      />
+      <KeyValuePair
+        className="col-span-6"
+        label={"Encoding"}
+        value={data?.properties ? "ss58Format" : "NA"}
+        isLoading={isLoading}
+      />
+      <KeyValuePair
+        className="col-span-6 text-right"
+        label={"Candidacy Bond"}
+        value={
+          data?.genesis.runtime?.collatorSelection?.candidacyBond
+            ? formateNumber(data.genesis.runtime.collatorSelection.candidacyBond, "standard")
+            : "NA"
+        }
+        isLoading={isLoading}
+      />
+      <KeyValuePair
+        className="col-span-6"
+        label={"Protocol ID"}
+        value={data?.protocolId ?? "NA"}
+        isLoading={isLoading}
+      />
+      <KeyValuePair
+        className="col-span-6 text-right"
+        label={"Telemetry Endpoint"}
+        value={data?.telemetryEndpoints ?? "NA"}
+        isLoading={isLoading}
+      />
+      <Image
+        className="absolute bottom-0 right-0 col-span-12 w-48 md:col-span-6"
+        src={withBasePath("/assets/images/dashboard/vertical-card.png")}
+        alt={`Card Thumbnail`}
+        width={300}
+        height={300}
+      />
+    </Card>
   );
 };
 

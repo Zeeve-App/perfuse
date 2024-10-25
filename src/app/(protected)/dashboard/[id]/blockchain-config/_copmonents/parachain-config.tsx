@@ -12,7 +12,8 @@
 "use client";
 
 import React from "react";
-import { formateNumber, toShortString } from "@/utils/helpers";
+import Image from "next/image";
+import { formateNumber, toShortString, withBasePath } from "@/utils/helpers";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import { TOKEN_COLOR_CLASS } from "@/constants/token";
 import { Heading } from "@/lib/components/Heading";
@@ -20,7 +21,8 @@ import { CopyButton } from "@/lib/components/Button";
 import { Tooltip } from "@/lib/components/Tooltip";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
 import { tx } from "@/utils/shared";
-import KeyValuePairInput from "@/lib/components/utils/key-value-pair-input";
+import { Card } from "@/lib/components/Card";
+import { Typography } from "@/lib/components/Typography";
 interface ParachainConfigProps {
   data?: ChainSpecFileType;
   isLoading: boolean;
@@ -28,55 +30,47 @@ interface ParachainConfigProps {
 
 const ParachainConfig = ({ data, isLoading }: ParachainConfigProps) => {
   return (
-    <div className="col-span-12 flex flex-col gap-3 rounded-lg p-4 shadow-brand-shadow lg:gap-6">
-      <div className="grid grid-cols-12 gap-3 lg:gap-6">
-        <Heading as="h4" className="col-span-12">
-          Parachain Config
-        </Heading>
-      </div>
-      <div className="grid grid-cols-12 gap-3 lg:gap-6">
-        <div className="col-span-12 flex flex-col border-0 2xl:border-r">
-          <div className="grid grid-cols-12 gap-3 lg:gap-6">
-            <KeyValuePairInput
-              className="col-span-3"
-              label={"Parachain Name"}
-              value={data?.name ?? "NA"}
-              isLoading={isLoading}
-            />
-            <KeyValuePairInput
-              className="col-span-3"
-              label={"Parachain ID"}
-              value={data?.para_id ?? "NA"}
-              isLoading={isLoading}
-            />
-            <KeyValuePairInput
-              className="col-span-3"
-              label={"Network ID"}
-              value={data?.id ?? "NA"}
-              isLoading={isLoading}
-            />
-            <KeyValuePairInput
-              className="col-span-3"
-              label={"Chain Type"}
-              value={data?.chainType ?? "NA"}
-              isLoading={isLoading}
-            />
-            <KeyValuePairInput
-              className="col-span-3"
-              label={"Protocol ID"}
-              value={data?.protocolId ?? "NA"}
-              isLoading={isLoading}
-            />
-            <KeyValuePairInput
-              className="col-span-3"
-              label={"Telemetry Endpoint"}
-              value={data?.telemetryEndpoints ?? "NA"}
-              isLoading={isLoading}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
+    <Card
+      variant={"default"}
+      className="relative col-span-12 gap-3 rounded-lg p-4 pb-36 lg:col-span-6 lg:gap-6 lg:pb-28"
+    >
+      <Typography variant="subtitle" className="col-span-12">
+        Parachain Config
+      </Typography>
+      <KeyValuePair className="col-span-6" label={"Parachain Name"} value={data?.name ?? "NA"} isLoading={isLoading} />
+      <KeyValuePair
+        className="col-span-6 text-right"
+        label={"Parachain ID"}
+        value={data?.para_id ?? "NA"}
+        isLoading={isLoading}
+      />
+      <KeyValuePair className="col-span-6" label={"Network ID"} value={data?.id ?? "NA"} isLoading={isLoading} />
+      <KeyValuePair
+        className="col-span-6 text-right"
+        label={"Chain Type"}
+        value={data?.chainType ?? "NA"}
+        isLoading={isLoading}
+      />
+      <KeyValuePair
+        className="col-span-6"
+        label={"Protocol ID"}
+        value={data?.protocolId ?? "NA"}
+        isLoading={isLoading}
+      />
+      <KeyValuePair
+        className="col-span-6 text-right"
+        label={"Telemetry Endpoint"}
+        value={data?.telemetryEndpoints ?? "NA"}
+        isLoading={isLoading}
+      />
+      <Image
+        className="absolute bottom-0 right-0 col-span-12 w-48 md:col-span-6"
+        src={withBasePath("/assets/images/dashboard/vertical-card.png")}
+        alt={`Card Thumvnail`}
+        width={300}
+        height={300}
+      />
+    </Card>
   );
 };
 

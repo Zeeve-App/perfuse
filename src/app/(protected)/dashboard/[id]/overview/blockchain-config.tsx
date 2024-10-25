@@ -17,6 +17,7 @@ import { Heading } from "@/lib/components/Heading";
 import useApi from "@/api-client";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
 import { withBasePath } from "@/utils/helpers";
+import { Typography } from "@/lib/components/Typography";
 
 const BlockchainConfig = ({
   paraId,
@@ -31,12 +32,10 @@ const BlockchainConfig = ({
   const { data: blockRpcResponse, isLoading: blockRpcLoading } = apis.blockNumber();
 
   return (
-    <div className="relative col-span-10 flex flex-col gap-3 rounded-lg bg-theme-purple-gradient p-4 shadow-brand-shadow lg:col-span-2 lg:gap-6">
+    <div className="dark relative col-span-10 flex flex-col gap-3 rounded-lg bg-theme-purple-gradient p-4 shadow-brand-shadow lg:col-span-2 lg:gap-6">
       <div className="grid grid-cols-12 gap-3 lg:gap-6">
         <div className="col-span-12 lg:col-span-6">
-          <Heading as="h4" className="text-white">
-            Blockchain Config
-          </Heading>
+          <Typography variant="subtitle">Blockchain&nbsp;Config</Typography>
         </div>
         {/* <Tooltip text={"Blockchain Config"} placement="top-start">
           <Link href={`/${networkId}/blockchain-config`}>
@@ -51,14 +50,16 @@ const BlockchainConfig = ({
           labelClass="text-white"
           label={"Parachain ID"}
           value={paraId ?? "NA"}
-          className="col-span-12 text-white"
+          className="col-span-12"
+          valueClass="font-semibold text-white"
           isLoading={isLoading}
         />
         <KeyValuePair
           labelClass="text-white"
           label={"Relay Chain"}
           value={relayChainType ?? "NA"}
-          className="col-span-12 text-white"
+          className="col-span-12"
+          valueClass="font-semibold text-white"
           isLoading={isLoading}
         />
         <KeyValuePair
@@ -66,7 +67,8 @@ const BlockchainConfig = ({
           label={"Parachain Block Height"}
           value={parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16)}
           isLoading={blockRpcLoading}
-          className="col-span-12 text-white"
+          className="col-span-12"
+          valueClass="font-semibold text-white"
         />
         <Image
           className="absolute bottom-0 right-0 "

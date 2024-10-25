@@ -44,7 +44,7 @@ const Card: CardComponent = forwardRef(
     const { variant } = rest;
 
     return (
-      <Component className={tx(styles({ variant, className }))} {...rest} ref={ref}>
+      <Component className={tx(styles({ variant }), className)} {...rest} ref={ref}>
         {children}
       </Component>
     );

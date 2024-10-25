@@ -10,6 +10,7 @@
  */
 
 import { format, parseISO, intervalToDuration } from "date-fns";
+import { CREDENTIALS_TYPE } from "@/types/node";
 
 /**
  * to show standard formatted time and make it common throughout the application
@@ -91,6 +92,19 @@ const isActive = (pathname: string, paths: string[]): boolean => {
   }
 
   return false;
+};
+
+const formatEndpoint = (
+  type: "https" | "wss",
+  endpoint?: string,
+  credType?: CREDENTIALS_TYPE,
+  apiKey?: string,
+  rpcType?: "para-rpc" | "relay-rpc" | "api",
+) => {
+  if (endpoint && credType) {
+    return `${type.slice(0, -1)}://${endpoint}${credType === "api_key" ? `/${apiKey}` : ""}/${rpcType ?? "para-rpc"}`;
+  }
+  return "NA";
 };
 
 /**
@@ -194,4 +208,5 @@ export {
   capitalizeFirstLetter,
   formatDate,
   formatIntoAge,
+  formatEndpoint,
 };

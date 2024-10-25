@@ -49,7 +49,7 @@ const Parameters = ({ data, isLoading, blockHeight }: ParametersProps) => {
           <CardKeyValuePair
             label={"Parchain Block Height"}
             value={blockHeight}
-            className="lg:p-7"
+            className="bg-theme-purple-gradient lg:p-7"
             isLoading={isLoading}
           />
         </div>
@@ -73,7 +73,7 @@ const Parameters = ({ data, isLoading, blockHeight }: ParametersProps) => {
                 )}
               </Heading>
             }
-            className="bg-[#5281CE] lg:p-7"
+            className="bg-theme-gradient lg:p-7"
             isLoading={isLoading}
           />
         </div>

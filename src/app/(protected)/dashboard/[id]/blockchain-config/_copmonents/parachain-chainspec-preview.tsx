@@ -21,7 +21,7 @@ export default function ParachainChainSpecPrev({ data }: { data?: ChainSpecFileT
         backgroundColor: "transparent",
         padding: "1em",
         margin: "0",
-        background: "#f4f7fe",
+        background: "var(--background)",
         overflowX: "hidden",
       }}
       language="json"

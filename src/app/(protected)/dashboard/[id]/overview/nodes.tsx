@@ -20,6 +20,7 @@ import SvgPlusSquare from "@/lib/icons/essential/outline/PlusSquare";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
 import { Typography } from "@/lib/components/Typography";
 import { Badge } from "@/lib/components/Badge/Badge";
+import { formatEndpoint, toShortString } from "@/utils/helpers";
 
 const columnHelper = createColumnHelper<NodeDbRow>();
 // table columns
@@ -41,25 +42,14 @@ const nodeTableColumns: ColumnDef<NodeDbRow, any>[] = [
 
 const Nodes = ({ isLoading, nodes }: { isLoading: boolean; nodes: NodeDbRow[] }) => {
   const rowPerPage = 3;
+  console.log(nodes);
+
   return (
     <div className="col-span-10 flex flex-col gap-3 rounded-lg bg-theme-foreground shadow-brand-shadow lg:col-span-4 lg:gap-6">
       <div className="grid grid-cols-12 gap-3 lg:gap-6">
         <div className="col-span-6 px-4 pt-4">
           <Heading as="h4">Nodes</Heading>
         </div>
-        {/* <div className="col-span-6 text-end">
-          <IconButton
-            size={"large"}
-            variant={"text"}
-            className="font-semibold"
-            isDisabled
-            onClick={() => {
-              // appendCollator({});
-            }}
-          >
-            Add More Collator <SvgPlusSquare className="pl-2" height={30} width={30} />
-          </IconButton>
-        </div> */}
       </div>
       <div className="grid grid-cols-12 gap-3">
         <div className="col-span-12 flex flex-col gap-3">
@@ -75,23 +65,62 @@ const Nodes = ({ isLoading, nodes }: { isLoading: boolean; nodes: NodeDbRow[] })
             </Typography>
           </div>
           <hr />
-          <div className="grid grid-cols-12 justify-between gap-3 px-4">
-            <Typography variant="paragraph" className="col-span-6">
-              Test
-            </Typography>
-            <Typography variant="paragraph" className="col-span-3">
-              Type
-            </Typography>
-            <div className="col-span-3">
-              <Badge variant="green">Ready</Badge>
-            </div>
-          </div>
-          <div className="grid grid-cols-12 justify-between gap-3 bg-theme-background p-4">
-            <KeyValuePair className="col-span-6 mx-0" label={"Wss Url"} value={"http://perfuse.io/ws"} />
-            <KeyValuePair className="col-span-6 mx-0" label={"Https Url"} value={"http://perfuse.io/rpc"} />
-            <KeyValuePair className="col-span-6 mx-0" label={"Authentication type"} value={"API Key"} />
-            <KeyValuePair className="col-span-6 mx-0" label={"API Key"} value={"f023dcd-ewf0cmo0e-12n320"} />
-          </div>
+          {nodes
+            .filter((e) => e.node_type === "rpc")
+            .map((e) => (
+              <>
+                <div className="grid grid-cols-12 justify-between gap-3 px-4">
+                  <>
+                    <Typography variant="paragraph" className="col-span-6">
+                      {e.node_name}
+                    </Typography>
+                    <Typography variant="paragraph" className="col-span-3">
+                      {e.node_type.toUpperCase()}
+                    </Typography>
+                    <div className="col-span-3">
+                      <Badge variant="green">Ready</Badge>
+                    </div>
+                  </>
+                </div>
+                <div className="grid grid-cols-12 justify-between gap-3 bg-theme-background p-4">
+                  <KeyValuePair
+                    className="col-span-6 mx-0"
+                    label={"Wss Url"}
+                    value={toShortString(
+                      formatEndpoint("wss", e.node_endpoint, e.node_auth_method, e.node_api_key),
+                      5,
+                      5,
+                    )}
+                    shouldAllowCopy
+                    tooltipText={formatEndpoint("wss", e.node_endpoint, e.node_auth_method, e.node_api_key)}
+                  />
+                  <KeyValuePair
+                    className="col-span-6 mx-0"
+                    label={"Https Url"}
+                    value={toShortString(
+                      formatEndpoint("https", e.node_endpoint, e.node_auth_method, e.node_api_key),
+                      5,
+                      5,
+                    )}
+                    shouldAllowCopy
+                    tooltipText={formatEndpoint("https", e.node_endpoint, e.node_auth_method, e.node_api_key)}
+                  />
+                  <KeyValuePair
+                    className="col-span-6 mx-0"
+                    label={"Authentication type"}
+                    value={e.node_auth_method ?? ""}
+                  />
+                  <KeyValuePair
+                    className="col-span-6 mx-0"
+                    label={"API Key"}
+                    shouldAllowCopy
+                    tooltipText={e.node_api_key ?? ""}
+                    value={toShortString(e.node_api_key ?? "", 5, 5)}
+                  />
+                </div>
+              </>
+            ))}
+
           <div className="grid grid-cols-12 justify-evenly gap-3 px-4">
             <Typography variant="heading" className="col-span-6">
               Collator Nodes: <Typography variant="paragraph">4</Typography>

@@ -12,6 +12,7 @@
 "use client";
 import React from "react";
 import { Typography } from "../Typography";
+import { Tooltip } from "../Tooltip";
 import { CopyButton } from "@/lib/components/Button";
 import { Skeleton } from "@/lib/components/Skeleton";
 import { tx } from "@/utils/shared";
@@ -24,6 +25,9 @@ const KeyValuePair = ({
   isLoading = false,
   className,
   labelClass,
+  copyText,
+  valueClass,
+  tooltipText,
   shouldAllowCopy,
 }: {
   label: string | React.ReactElement;
@@ -32,14 +36,24 @@ const KeyValuePair = ({
   tooltipText?: string;
   isLoading?: boolean;
   className?: string;
+  valueClass?: string;
   labelClass?: string;
   shouldAllowCopy?: boolean;
   align?: "right" | "left";
   copyText?: string;
 }) => {
+  const WrapperTooltip = ({ children }: { children: React.ReactNode }) =>
+    tooltipText ? (
+      <Tooltip text={tooltipText} placement="top-end">
+        {children}
+      </Tooltip>
+    ) : (
+      <>{children}</>
+    );
+
   return (
     <div
-      className={tx("mx-2 pb-1 justify-between flex flex-col ", className, {
+      className={tx("pb-1 justify-between flex flex-col ", className, {
         "border-b border-gray-200": enableBorder,
         "items-end": align == "right",
       })}
@@ -63,9 +77,16 @@ const KeyValuePair = ({
               "flex flex-row items-center align-middle gap-2": shouldAllowCopy,
             })}
           >
-            <Typography variant="paragraph">{value}</Typography>
+            <WrapperTooltip>
+              <Typography variant="paragraph" className={tx(valueClass)}>
+                {value}
+              </Typography>
+            </WrapperTooltip>
             {shouldAllowCopy && (typeof value === "string" || typeof value === "number") ? (
-              <CopyButton text={value.toString()} className="m-0 text-theme-primary-content" />
+              <CopyButton
+                text={copyText ?? tooltipText ?? value.toString()}
+                className="m-0 text-theme-primary-content"
+              />
             ) : null}
           </div>
         </>

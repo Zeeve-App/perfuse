@@ -36,7 +36,7 @@ const GeneralInfo = ({
   createdAt?: string | Date;
   provisionedAt?: string;
 }) => {
-  const networkInfo = useNetworkStore((e) => e.networkInfo);
+  // const networkInfo = useNetworkStore((e) => e.networkInfo);
   return (
     <div className="relative col-span-10 flex h-96 flex-col gap-3 rounded-lg bg-theme-foreground bg-right p-4 shadow-brand-shadow lg:col-span-4 lg:gap-6">
       <div className="grid grid-cols-12 gap-3 lg:gap-6">
