@@ -22,15 +22,15 @@ import SvgChart5Square from "@/lib/icons/business/outline/Chart5Square";
 import { IconButton, CopyButton } from "@/lib/components/Button";
 import { Heading } from "@/lib/components/Heading";
 import { Tooltip } from "@/lib/components/Tooltip";
-import { ColumnDef, ReactTable, Row, createColumnHelper } from "@/lib/components/ReactTable";
+import { ColumnDef, ReactTable, createColumnHelper } from "@/lib/components/ReactTable";
 import { NodeDbRow } from "@/db-queries";
 import SvgInfoCircle from "@/lib/icons/essential/outline/InfoCircle";
 
-const NodeTableRowActions = ({ row }: { row: Row<NodeDbRow> }) => {
+export const NodeTableRowActions = ({ node }: { node: NodeDbRow }) => {
   const { openModal } = useModalStore();
   const params = useParams();
   return (
-    <div className="flex gap-4 lg:flex-row">
+    <div className="flex gap-1 lg:flex-row">
       <Tooltip text="View Details" placement="top-start">
         <IconButton
           colorScheme="primary"
@@ -39,23 +39,23 @@ const NodeTableRowActions = ({ row }: { row: Row<NodeDbRow> }) => {
             openModal("nodeDetails", {
               nodeDetails: {
                 networkId: params.id as string,
-                nodeId: row.original.node_id,
-                nodeType: row.original.node_type,
+                nodeId: node.node_id,
+                nodeType: node.node_type,
               },
             });
           }}
         >
-          <SvgInfoCircle width={24} height={24} color="#1B2559" />
+          <SvgInfoCircle width={24} height={24} color="#CE2CCA" />
         </IconButton>
       </Tooltip>
       <Tooltip text="Analytics" placement="top-start">
         <IconButton variant={"text"} isDisabled={true}>
-          <SvgChart5Square width={24} height={24} color="#1B2559" />
+          <SvgChart5Square width={24} height={24} color="#CE2CCA" />
         </IconButton>
       </Tooltip>
       <Tooltip text="Delete" placement="top-start">
         <IconButton variant={"text"} isDisabled={true}>
-          <SvgTrashSquare width={24} height={24} color="#1B2559" />
+          <SvgTrashSquare width={24} height={24} color="#CE2CCA" />
         </IconButton>
       </Tooltip>
     </div>
@@ -69,8 +69,8 @@ const nodeTableColumns: ColumnDef<NodeDbRow, any>[] = [
     header: "ID",
     cell: (info) => (
       <Tooltip text={info.getValue()} placement="top-start">
-        <div className="flex items-center">
-          <div className="mr-2">{toShortString(info.getValue())}</div>
+        <div className="flex flex-row items-center space-x-2">
+          <div>{toShortString(info.getValue())}</div>
           <CopyButton text={info.getValue()} />
         </div>
       </Tooltip>
@@ -90,7 +90,7 @@ const nodeTableColumns: ColumnDef<NodeDbRow, any>[] = [
   }),
   columnHelper.display({
     header: "Actions",
-    cell: (info) => <NodeTableRowActions row={info.row} />,
+    cell: (info) => <NodeTableRowActions node={info.row.original} />,
   }),
 ];
 
@@ -101,15 +101,26 @@ const NodeTable = ({ heading, nodes }: { nodeType: NODE_TYPE; heading: string; n
   });
 
   return (
-    <div className="flex flex-col gap-2 overflow-hidden p-4 lg:gap-4">
-      <Heading as="h5">
-        {heading} ({pageSize})
+    <div className="flex flex-col gap-4 overflow-hidden rounded-lg bg-theme-foreground p-6 shadow-lg">
+      <Heading as="h5" className="text-lg font-semibold">
+        {heading}
       </Heading>
       <div>
         <ReactTable
           data={nodes.map((e) => ({ ...e })) ?? []}
           columns={nodeTableColumns}
           isLoading={false}
+          classNames={{
+            tableContainer: "w-full border-none",
+            thead: {
+              thead: "bg-theme-foreground border-b-2 border-gray-300",
+              th: "px-4 py-2 text-left text-gray-600 font-medium text-sm",
+            },
+            tbody: {
+              tbody: "bg-theme-foreground border-none",
+              td: "px-4 py-3 text-gray-700 align-middle border-none",
+            },
+          }}
           // pagination={{
           //   pageCount: nodes.length,
           //   pageIndex: pageIndex,
