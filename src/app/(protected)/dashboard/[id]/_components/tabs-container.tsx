@@ -51,26 +51,26 @@ const TabContainer = ({ id }: { id: string }) => {
     >
       <TabList className="mb-4 gap-4 overflow-x-auto rounded-lg border-b bg-theme-foreground">
         <Tab>
-          <Heading as="h5">
+          <span className="text-base font-semibold">
             <SvgChart5Square width={20} height={20} className="inline" /> &nbsp; Overview{" "}
-          </Heading>
+          </span>
         </Tab>
         <Tab>
-          <Heading as="h5">
+          <span className="text-base font-semibold">
             <SvgBox width={20} height={20} className="inline" />
             &nbsp; Blockchain Config{" "}
-          </Heading>
+          </span>
         </Tab>
         <Tab>
-          <Heading as="h5">
+          <span className="text-base font-semibold">
             <SvgBubbles width={20} height={20} className="inline" />
             &nbsp; Collator Nodes{" "}
-          </Heading>
+          </span>
         </Tab>
         <Tab>
-          <Heading as="h5">
+          <span className="text-base font-semibold">
             <SvgBubbles width={20} height={20} className="inline" /> &nbsp; RPC Nodes{" "}
-          </Heading>
+          </span>
         </Tab>
       </TabList>
     </TabsContextProvider>

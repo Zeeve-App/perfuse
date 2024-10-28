@@ -11,6 +11,7 @@
 
 import React, { PropsWithChildren } from "react";
 import { Heading } from "../Heading";
+import { Badge } from "../Badge/Badge";
 import { Breadcrumb, BreadcrumbProps } from "./breadcrumb";
 
 interface NavigationProps extends PropsWithChildren {

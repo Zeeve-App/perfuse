@@ -15,6 +15,7 @@ import TabContainer from "./_components/tabs-container";
 import { Navigation } from "@/lib/components/navigation";
 import { getNetworkData, getNodeData, getTask } from "@/db-queries";
 import { config } from "@/config/config";
+import { Badge } from "@/lib/components/Badge/Badge";
 
 const IdPageClient: React.FC<{ children: React.ReactNode; params: { id: string } }> = async ({ children, params }) => {
   const id = params.id;
@@ -38,7 +39,16 @@ const IdPageClient: React.FC<{ children: React.ReactNode; params: { id: string }
 
   return (
     <div className="flex flex-col gap-3 px-3 lg:px-6">
-      <Navigation heading={"Parachains"}>
+      <Navigation
+        heading={
+          <>
+            <span className="capitalize">{network?.network_name} </span>
+            <Badge variant="purple" className="text-base font-normal capitalize">
+              {network?.network_env}
+            </Badge>
+          </>
+        }
+      >
         {/* page actions */}
         <Actions network={network} task={task} explorerUrl={{ paraExplorerUrl, relayExplorerUrl }} />
       </Navigation>

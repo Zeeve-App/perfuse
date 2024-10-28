@@ -44,10 +44,11 @@ const Tab = forwardRef<HTMLButtonElement, TabProps>((props, ref) => {
       className={tx(
         styles({ orientation, className }),
         {
-          [activeTabClassName ?? "border-brand-primary text-brand-primary"]: isActive && orientation === "horizontal",
+          [activeTabClassName ?? "border-theme-secondary text-theme-secondary"]:
+            isActive && orientation === "horizontal",
         },
         {
-          [activeTabClassName ?? "text-brand-primary"]: isActive && orientation === "vertical",
+          [activeTabClassName ?? "text-theme-secondary"]: isActive && orientation === "vertical",
         },
       )}
       ref={ref}

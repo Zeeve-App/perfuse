@@ -34,7 +34,7 @@ const styles = cva(
     variants: {
       variant: {
         green: "border border-[#064232] bg-brand-green text-[#064232]",
-        purple: "border border-theme-secondary bg-theme-background text-theme-secondary",
+        purple: "border border-theme-secondary bg-[#A619F71C] text-theme-secondary",
         default: "dark:text-white",
       },
     },
