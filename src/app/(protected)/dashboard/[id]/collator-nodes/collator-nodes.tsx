@@ -12,6 +12,7 @@
 "use client";
 import RegisterParachainInfo from "../_components/register-parachain-info";
 import NodeTable from "../_components/node-table";
+import CollatorNodeCard from "../_components/collator-node-card";
 import { NodeDbRow } from "@/db-queries";
 import useApi from "@/api-client";
 
@@ -23,7 +24,14 @@ const CollatorNodes = ({ nodes }: { nodes: { collator: NodeDbRow[] } }) => {
   return (
     <div className="flex flex-col gap-3 lg:gap-6">
       <RegisterParachainInfo show={blockHeight === 0} />
-      <NodeTable nodeType={"collator"} heading="Collator Nodes" nodes={nodes.collator} />
+      <div className="hidden lg:block">
+        <NodeTable nodeType={"collator"} heading="Collator Nodes" nodes={nodes.collator} />
+      </div>
+      <div className="grid gap-4 sm:grid-cols-1 lg:hidden">
+        {nodes.collator.map((node, index) => (
+          <CollatorNodeCard key={index} node={node} />
+        ))}
+      </div>
     </div>
   );
 };
