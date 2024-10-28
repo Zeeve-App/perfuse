@@ -13,8 +13,6 @@ import ZeeveSidebarItemProps from "../lib/components/sidebar/type";
 import SvgElement3 from "@/lib/icons/grid/outline/Element3";
 import SvgBook2 from "@/lib/icons/school/outline/Book2";
 import SvgBubbles from "@/lib/icons/essential/outline/Bubbles";
-import SvgGithub from "@/lib/icons/programming/outline/github-mark-white";
-import SvgSidebarSetting from "@/lib/icons/custom/sidebar-setting";
 
 const ITEMS: {
   title?: string;
@@ -31,19 +29,19 @@ const ITEMS: {
       {
         title: "Deploy Parachain",
         icon: <SvgElement3 />,
-        path: `/create`,
-        activePaths: ["/create"],
+        path: `/deploy`,
+        activePaths: ["/deploy"],
       },
       {
         title: "Coretime",
         icon: <SvgBubbles />,
         path: `/coretime-page`,
       },
-      {
-        title: "Settings",
-        icon: <SvgSidebarSetting />,
-        path: `#`,
-      },
+      // {
+      //   title: "Settings",
+      //   icon: <SvgSidebarSetting />,
+      //   path: `#`,
+      // },
 
       {
         title: "Support",

@@ -20,6 +20,7 @@ import { Tooltip } from "@/lib/components/Tooltip";
 import { tx } from "@/utils/shared";
 import { useNetworkStore } from "@/store/network";
 import { Heading } from "@/lib/components/Heading";
+import { Typography } from "@/lib/components/Typography";
 interface InfoProps {
   className?: string;
   show: boolean;
@@ -39,11 +40,11 @@ const RegisterParachainInfo = ({ className, show }: InfoProps) => {
       {/* <StatusIcon status={"warning"} />  */}
       <div className="2xl:flex 2xl:grow 2xl:flex-row 2xl:items-center 2xl:justify-between">
         <div className="flex flex-col gap-2 text-brand-dark">
-          <Heading as="h6">Important</Heading>
-          <p>
+          <Typography variant="subtitle">Important</Typography>
+          <Typography className="font-normal">
             Parachain setup is pending, please <span className="font-bold">authorize</span> your parachain by completing
             its <span className="font-bold">registration</span>
-          </p>
+          </Typography>
         </div>
         <Tooltip text={"Click here to see the registration process"} placement={"top-start"}>
           <Button
@@ -51,7 +52,7 @@ const RegisterParachainInfo = ({ className, show }: InfoProps) => {
             onClick={() => {
               openModal("registerParachain", { registerParachain: { networkId } });
             }}
-            className="font-semibold bg-brand-gradient-blue"
+            colorScheme={"gradient"}
           >
             Register Now
           </Button>

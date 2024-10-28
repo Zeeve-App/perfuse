@@ -18,7 +18,7 @@ const ModalText = forwardRef<HTMLParagraphElement, ModalTextProps>((props, ref) 
   const { children, className, ...rest } = props;
 
   return (
-    <p className={tx("break-words text-sm text-brand-gray", className)} ref={ref} {...rest}>
+    <p className={tx("break-words text-sm text-theme-primary-content", className)} ref={ref} {...rest}>
       {children}
     </p>
   );

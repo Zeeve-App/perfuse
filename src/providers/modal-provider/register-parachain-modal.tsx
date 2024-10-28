@@ -35,6 +35,7 @@ import SvgCodeDocument3 from "@/lib/icons/programming/outline/CodeDocument3";
 import useApi from "@/api-client";
 import KeyValuePairInput from "@/lib/components/utils/key-value-pair-input";
 import HyperLink from "@/lib/components/utils/hyper-link";
+import { Typography } from "@/lib/components/Typography";
 
 const FileCard = ({ name, checksum }: { name: "wasm" | "genesis"; checksum?: string }) => {
   const params = useParams();
@@ -64,7 +65,7 @@ const FileCard = ({ name, checksum }: { name: "wasm" | "genesis"; checksum?: str
       <SvgCodeDocument3 className="text-5xl text-brand-primary" />
       <div>
         <div className="flex flex-row items-start gap-1">
-          <div>{name} File</div>
+          <Typography variant="heading">{name} File</Typography>
           <Tooltip text={`Download ${name} File`} placement="top-start">
             <IconButton
               className="h-5 border-0"
@@ -80,17 +81,17 @@ const FileCard = ({ name, checksum }: { name: "wasm" | "genesis"; checksum?: str
           </Tooltip>
         </div>
         <div className="flex flex-row items-center gap-2">
-          <div className="text-xs text-brand-gray">
+          <div className="text-xs text-theme-primary-content">
             {checksum ? (
               <Tooltip text={checksum} placement={"top-start"}>
                 <div>
-                  MD5 Checksum: <span className="text-brand-dark">{toShortString(checksum)}</span>
+                  MD5 Checksum: <span className="font-semibold">{toShortString(checksum)}</span>
                   <CopyButton text={checksum} />
                 </div>
               </Tooltip>
             ) : (
               <div>
-                MD5 Checksum: <span className="text-brand-dark">NA</span>
+                MD5 Checksum: <span className="font-semibold">NA</span>
               </div>
             )}
           </div>
@@ -143,8 +144,8 @@ const RegisterParachainInfoModal = () => {
             <ModalTitle className="text-xl">Register Parachain</ModalTitle>
             <ModalText>
               Parachain setup will be done only when you authorize it by registering it on the relay chain. You need to
-              upload the <span className="text-brand-dark">WASM</span> and{" "}
-              <span className="text-brand-dark">Genesis</span> file of the parachain on{" "}
+              upload the <span className="font-semibold">WASM</span> and <span className="font-semibold">Genesis</span>{" "}
+              file of the parachain on{" "}
               <HyperLink
                 href={withBasePath("/coretime-page")}
                 onClick={() => {
@@ -247,7 +248,7 @@ const RegisterParachainInfoModal = () => {
           </div>
         </ModalBody>
         <ModalFooter placement="end">
-          <Button variant="ghost" colorScheme={"primary"} onClick={onClose}>
+          <Button variant="ghost" colorScheme={"accent"} onClick={onClose}>
             Close
           </Button>
         </ModalFooter>
