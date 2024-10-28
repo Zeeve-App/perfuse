@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
 
     const tokenCookie = serialize("accessToken", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV !== "development",
+      secure: false,
       maxAge: 60 * 60 * config.server.jwtExpiresIn,
       path: "/",
     });
