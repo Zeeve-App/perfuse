@@ -18,6 +18,7 @@ import { Card } from "@/lib/components/Card";
 import { Heading } from "@/lib/components/Heading";
 import { Button } from "@/lib/components/Button";
 import { useToggle } from "@/hooks";
+import { Typography } from "@/lib/components/Typography";
 
 interface RegionXCardProps extends ComponentPropsWithoutRef<"div"> {
   protocolId: string;
@@ -38,41 +39,42 @@ const RegionXCard = (props: RegionXCardProps) => {
   }, []);
 
   return (
-    <Card className="col-span-12 w-auto rounded-lg shadow-brand-shadow md:col-span-6 lg:col-span-3">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <Heading as={"h2"}>{capitalizeFirstLetter(protocolName ?? "NA")}</Heading>
-        </div>
-        <div className="rounded-lg">
-          <Image
-            src={withBasePath(`/assets/images/coretime/regionx.png`)}
-            alt={`${protocolName} Icon`}
-            width={48}
-            height={48}
-          />
-        </div>
-      </div>
-      <div className="flex items-center justify-between py-4 text-sm">
-        <div className="flex items-baseline gap-2">
+    <Card variant={"grid"} className="col-span-12 items-center justify-between rounded-lg bg-theme-foreground">
+      <div className="col-span-10">
+        <div className="flex flex-col items-baseline gap-3">
+          <div className="flex gap-3">
+            <Image
+              src={withBasePath(`/assets/images/coretime/regionx.png`)}
+              alt={`${protocolName} Icon`}
+              width={25}
+              height={25}
+              className=" inline"
+            />
+            <Typography variant="subtitle" className="col-span-12 inline">
+              {capitalizeFirstLetter(protocolName ?? "NA")}
+            </Typography>
+          </div>
           {/* <SvgBubbles className=" text-brand-primary" /> */}
           {!isOpen && (
-            <div className="text-brand-gray">
-              {description.slice(0, 90)}
-              <a
+            <>
+              <Typography variant="paragraph">{description.slice(0, 90)}</Typography>
+              <Typography
+                variant="paragraph"
                 onClick={(e) => {
                   e.preventDefault();
                   handleToggle();
                 }}
-                className="cursor-pointer text-brand-blue"
+                className="cursor-pointer text-theme-secondary"
               >
-                ...see more
-              </a>
-            </div>
+                see more
+              </Typography>
+            </>
           )}
           {isOpen && (
-            <div className="text-brand-gray">
-              {description}
-              <a
+            <>
+              <Typography variant="paragraph">{description}</Typography>
+              <Typography
+                variant="paragraph"
                 onClick={(e) => {
                   e.preventDefault();
                   handleToggle();
@@ -80,14 +82,15 @@ const RegionXCard = (props: RegionXCardProps) => {
                 className="cursor-pointer text-brand-blue"
               >
                 see less
-              </a>
-            </div>
+              </Typography>
+            </>
           )}
         </div>
       </div>
       <Button
-        className="w-full"
-        variant={"outline"}
+        className="col-span-2 w-full"
+        variant={"solid"}
+        colorScheme={"gradient"}
         onClick={() => {
           window.open(`${hostname}:3030/?network=rococo`);
         }}

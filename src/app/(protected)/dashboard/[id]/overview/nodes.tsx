@@ -68,7 +68,7 @@ const Nodes = ({ isLoading, nodes }: { isLoading: boolean; nodes: NodeDbRow[] })
           {nodes
             .filter((e) => e.node_type === "rpc")
             .map((e) => (
-              <>
+              <div key={e.node_id}>
                 <div className="grid grid-cols-12 justify-between gap-3 px-4">
                   <>
                     <Typography variant="paragraph" className="col-span-6">
@@ -118,7 +118,7 @@ const Nodes = ({ isLoading, nodes }: { isLoading: boolean; nodes: NodeDbRow[] })
                     value={toShortString(e.node_api_key ?? "", 5, 5)}
                   />
                 </div>
-              </>
+              </div>
             ))}
 
           <div className="grid grid-cols-12 justify-evenly gap-3 px-4">

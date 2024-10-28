@@ -56,7 +56,10 @@ const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>((props, ref) 
           initial="initial"
           animate="animate"
           exit="exit"
-          className={tx("flex w-max max-w-xl flex-col rounded-lg bg-white shadow-lg outline-none", className)}
+          className={tx(
+            "flex w-max max-w-xl flex-col rounded-lg bg-theme-foreground shadow-lg outline-none",
+            className,
+          )}
           {...modalProps}
         >
           {children}

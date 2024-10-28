@@ -15,17 +15,19 @@ import { Heading } from "@/lib/components/Heading";
 
 const CoreTimePageClient = () => {
   return (
-    <Card className="shadow-brand-shadow ">
-      <Heading as="h4">CoreTime</Heading>
-      <div className="grid grid-cols-12 gap-3 rounded-lg bg-white lg:gap-6">
-        <RegionXCard
-          protocolId={"123"}
-          protocolName={"RegionX"}
-          description={
-            "RegionX is a project dedicated to developing components for the new Agile Coretime model. The goal of the project is to enable developer teams, researchers, and enthusiasts to start trading, tracking, and analyzing the product Polkadot offers."
-          }
-        />
-      </div>
+    <Card variant={"grid"} className="">
+      <Heading as="h4" className="col-span-12">
+        CoreTime
+      </Heading>
+
+      <RegionXCard
+        protocolId={"123"}
+        protocolName={"RegionX"}
+        className="col-span-12"
+        description={
+          "RegionX is a project dedicated to developing components for the new Agile Coretime model. The goal of the project is to enable developer teams, researchers, and enthusiasts to start trading, tracking, and analyzing the product Polkadot offers."
+        }
+      />
     </Card>
   );
 };
