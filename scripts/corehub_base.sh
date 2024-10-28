@@ -43,12 +43,12 @@ sudo chown -R $USER: /home/perfuse/{regionx,zombienet}
 # Moving to Regionx Dir
 pushd /home/perfuse/regionx
 git clone https://github.com/RegionX-Labs/Coretime-Mock.git && cd Coretime-Mock
+sed -i "s+zombienet_args=.*+zombienet_args=\"$NEW_ARGS\"+" ./scripts/run_zombienet.sh
 
 # Check if the 2000 PARA ID exists in the file
 if grep -q "id = 2000" "./zombienet/network.toml"; then
     # Replace the ID to 4459
     sed -i "s/id = 2000/id = 4459/" "./zombienet/network.toml"
-    sed -i "s+zombienet_args=.*+zombienet_args=\"$NEW_ARGS\"+" ./scripts/run_zombienet.sh
     echo "Parachain ID successfully updated from 2000 to 4459"
 else
     echo "Parachain ID 2000 not found in network file"
