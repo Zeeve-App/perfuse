@@ -10,6 +10,7 @@
  */
 
 import { TaskDbRow } from "@/db-queries";
+import { Badge } from "@/lib/components/Badge/Badge";
 import { useNetworkStore } from "@/store/network";
 import { tx } from "@/utils/shared";
 
@@ -26,7 +27,8 @@ const NetworkStatus = ({ className }: { className?: string }) => {
   };
   return (
     <>
-      <div
+      <Badge
+        variant="green"
         className={tx(
           {
             "capitalize text-center font-semibold ": true,
@@ -43,7 +45,7 @@ const NetworkStatus = ({ className }: { className?: string }) => {
           : authorizationStatus
             ? "Authentication Pending"
             : statusLabelMap[status]}
-      </div>
+      </Badge>
     </>
   );
 };
