@@ -26,6 +26,7 @@ import SvgEye from "@/lib/icons/security/outline/Eye";
 import FlagState from "@/lib/components/utils/flag-state";
 import useApi from "@/api-client";
 import { useNetworkStore } from "@/store/network";
+import NetworkStatus from "@/app/(protected)/dashboard/[id]/_components/network-status";
 
 const NodeDetailsModal = () => {
   const params = useParams();
@@ -75,7 +76,7 @@ const NodeDetailsModal = () => {
               />
               <KeyValuePair
                 label={"Status"}
-                value={network.data?.networkStatus?.toUpperCase() ?? "NA"}
+                value={<NetworkStatus />}
                 className="col-span-12 md:col-span-6 lg:col-span-4"
                 isLoading={isLoading}
               />

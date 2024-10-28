@@ -28,15 +28,15 @@ const NetworkStatus = ({ className }: { className?: string }) => {
   return (
     <>
       <Badge
-        variant="green"
+        variant={status === "completed" ? "green" : "purple"}
         className={tx(
-          {
-            "capitalize text-center font-semibold ": true,
-            "bg-brand-green/10 text-brand-green": status === "completed",
-            "bg-brand-teal/10 text-brand-teal": status === "inprogress",
-            "bg-brand-gray/10 text-brand-gray": status === "pending",
-            "bg-brand-red/10 text-brand-red ": status === "failed" || (status === "completed" && authorizationStatus),
-          },
+          // {
+          //   "capitalize text-center font-semibold ": true,
+          //   "bg-brand-green/10 text-brand-green": status === "completed",
+          //   "bg-brand-teal/10 text-brand-teal": status === "inprogress",
+          //   "bg-brand-gray/10 text-brand-gray": status === "pending",
+          //   "bg-brand-red/10 text-brand-red ": status === "failed" || (status === "completed" && authorizationStatus),
+          // },
           className,
         )}
       >

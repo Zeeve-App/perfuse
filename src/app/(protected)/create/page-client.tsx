@@ -35,7 +35,7 @@ const getIcons = (step: number) => ({
     </div>
   ),
   active: (
-    <div className="flex size-5 items-center justify-center rounded-full border-2 border-brand-blue  bg-brand-blue text-white">
+    <div className="flex size-5 items-center justify-center rounded-full border-2 border-theme-secondary  bg-theme-secondary text-white">
       <span>{step}</span>
     </div>
   ),

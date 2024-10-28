@@ -17,6 +17,13 @@ import SvgBubbles from "@/lib/icons/essential/outline/Bubbles";
 import SvgChart5Square from "@/lib/icons/business/outline/Chart5Square";
 import SvgBox from "@/lib/icons/delivery/outline/Box";
 import { Heading } from "@/lib/components/Heading";
+import SvgCheckCircle from "@/lib/icons/essential/outline/CheckCircle";
+
+const GetIcons = ({ step }: { step: number }) => (
+  <span className="flex size-4 items-center justify-center rounded-full bg-theme-secondary text-xs text-white">
+    {step}
+  </span>
+);
 
 const TabContainer = ({ id }: { id: string }) => {
   const router = useRouter();
@@ -64,13 +71,15 @@ const TabContainer = ({ id }: { id: string }) => {
         <Tab>
           <span className="text-base font-semibold">
             <SvgBubbles width={20} height={20} className="inline" />
-            &nbsp; Collator Nodes{" "}
+            &nbsp; Collator Nodes
           </span>
+          &nbsp; <GetIcons step={2} />
         </Tab>
         <Tab>
           <span className="text-base font-semibold">
             <SvgBubbles width={20} height={20} className="inline" /> &nbsp; RPC Nodes{" "}
           </span>
+          &nbsp; <GetIcons step={1} />
         </Tab>
       </TabList>
     </TabsContextProvider>

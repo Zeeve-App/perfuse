@@ -64,20 +64,12 @@ const GeneralInfo = ({
           shouldAllowCopy={true}
           copyText={id}
         />
-        <KeyValuePair
-          label="Description"
-          value={toShortString("Example description", 5, 5)}
-          className="col-span-6 "
-          shouldAllowCopy
-          tooltipText={"Example description"}
-          isLoading={isLoading}
-          copyText={"Example description"}
-        />
+        <KeyValuePair label="Status" value={<NetworkStatus />} className="col-span-6 " isLoading={isLoading} />
         <KeyValuePair
           label="Environment"
-          value={env ? env.toUpperCase() : "NA"}
+          value={env ? env : "NA"}
           align="right"
-          className="col-span-6 "
+          className="col-span-6 capitalize"
           isLoading={isLoading}
         />
         <KeyValuePair label="Owned By" value={"perfuse@perfuse.com"} className="col-span-6 " isLoading={isLoading} />

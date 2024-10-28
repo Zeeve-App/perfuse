@@ -25,6 +25,7 @@ import { Tooltip } from "@/lib/components/Tooltip";
 import { ColumnDef, ReactTable, createColumnHelper } from "@/lib/components/ReactTable";
 import { NodeDbRow } from "@/db-queries";
 import SvgInfoCircle from "@/lib/icons/essential/outline/InfoCircle";
+import { Typography } from "@/lib/components/Typography";
 
 export const NodeTableRowActions = ({ node }: { node: NodeDbRow }) => {
   const { openModal } = useModalStore();
@@ -70,15 +71,18 @@ const nodeTableColumns: ColumnDef<NodeDbRow, any>[] = [
     cell: (info) => (
       <Tooltip text={info.getValue()} placement="top-start">
         <div className="flex flex-row items-center space-x-2">
-          <div>{toShortString(info.getValue())}</div>
-          <CopyButton text={info.getValue()} />
+          <Typography variant="paragraph">
+            {toShortString(info.getValue())}
+            &nbsp;
+            <CopyButton className="text-theme-primary-content" text={info.getValue()} />
+          </Typography>
         </div>
       </Tooltip>
     ),
   }),
   columnHelper.accessor("node_name", {
     header: "Name",
-    cell: (info) => info.getValue(),
+    cell: (info) => <Typography variant="paragraph">{info.getValue()}</Typography>,
   }),
   columnHelper.accessor("node_id", {
     header: "Status",
@@ -86,7 +90,7 @@ const nodeTableColumns: ColumnDef<NodeDbRow, any>[] = [
   }),
   columnHelper.accessor("created_at", {
     header: "Created On",
-    cell: (info) => formatDate(new Date(info.getValue())),
+    cell: (info) => <Typography variant="paragraph">{formatDate(new Date(info.getValue()))}</Typography>,
   }),
   columnHelper.display({
     header: "Actions",

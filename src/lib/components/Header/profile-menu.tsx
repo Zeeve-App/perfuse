@@ -28,40 +28,43 @@ export const getProfileDropdownData = (router: AppRouterInstance) => [
   {
     group: {
       items: [
-        {
-          icon: <SvgUser />,
-          title: "Profile",
-          onClick: () => {
-            window.open(`#`, "_self");
-          },
-        },
-        {
-          icon: <SvgSetting1 />,
-          title: "Settings",
-          onClick: () => {
-            window.open(`#`, "_self");
-          },
-        },
-        {
-          icon: <SvgPhoneVolume />,
-          title: "Helpdesk",
-          onClick: () => {
-            window.open("#", "_self");
-          },
-        },
-        {
-          icon: <SvgBook2 />,
-          title: "Documentation",
-          onClick: () => {
-            window.open("#", "_self");
-          },
-        },
-      ],
-    },
-  },
-  {
-    group: {
-      items: [
+        // {
+        //   icon: <SvgUser />,
+        //   title: "Profile",
+        //   onClick: () => {
+        //     window.open(`#`, "_self");
+        //   },
+        // },
+        // {
+        //   icon: <SvgSetting1 />,
+        //   title: "Settings",
+        //   onClick: () => {
+        //     window.open(`#`, "_self");
+        //   },
+        // },
+        // {
+        //   icon: <SvgPhoneVolume />,
+        //   title: "Helpdesk",
+        //   onClick: () => {
+        //     window.open("#", "_self");
+        //   },
+        // },
+        // {
+        //   icon: <SvgBook2 />,
+        //   title: "Documentation",
+        //   onClick: () => {
+        //     window.open("#", "_self");
+        //   },
+        // },
+
+        // {
+        //   icon: <SvgArrowLeftFromBucket />,
+        //   title: "Change Password",
+        //   onClick: async () => {
+        //     // await axios.post("/api/logout");
+        //     // router.refresh();
+        //   },
+        // },
         {
           icon: <SvgArrowLeftFromBucket />,
           title: "Logout",
@@ -73,6 +76,20 @@ export const getProfileDropdownData = (router: AppRouterInstance) => [
       ],
     },
   },
+  // {
+  // group: {
+  //   items: [
+  //     {
+  //       icon: <SvgArrowLeftFromBucket />,
+  //       title: "Logout",
+  //       onClick: async () => {
+  //         await axios.post("/api/logout");
+  //         router.refresh();
+  //       },
+  //     },
+  //   ],
+  // },
+  // },
 ];
 
 const ProfileDropDownMenu = ({
