@@ -69,7 +69,7 @@ export default function DeploySummary({
     const response = await apis.createNetwork(payload);
 
     if (response.status === HTTP_STATUS.OK && response.data.success) {
-      router.push("/" + response.data?.data?.network_id);
+      router.push("/dashboard/" + response.data?.data?.network_id);
       // goToNextStep();
     }
   };

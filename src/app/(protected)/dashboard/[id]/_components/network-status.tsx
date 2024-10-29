@@ -25,10 +25,20 @@ const NetworkStatus = ({ className }: { className?: string }) => {
     completed: "Ready",
     failed: "Failed",
   };
+
+  const getVariant = (status: TaskDbRow["task_status"]) => {
+    if (status == "completed" && authorizationStatus) {
+      return "red";
+    }
+    if (status == "completed") {
+      return "green";
+    }
+    return "purple";
+  };
   return (
     <>
       <Badge
-        variant={status === "completed" ? "green" : "purple"}
+        variant={getVariant(status)}
         className={tx(
           // {
           //   "capitalize text-center font-semibold ": true,

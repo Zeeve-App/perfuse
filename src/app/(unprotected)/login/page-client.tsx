@@ -54,26 +54,26 @@ const Login = () => {
 
   return (
     <div
-      className={tx(`grid h-screen grid-cols-12 gap-3 bg-[#100628] text-[#D2D2D2] bg-cover`)}
+      className={tx(`grid grid-cols-12 gap-3 bg-[#100628] text-[#D2D2D2] bg-cover`)}
       style={{
         backgroundImage: `URL("${withBasePath("/assets/images/login/login-bg.png")}")`,
       }}
     >
-      <div className="col-span-6 flex max-w-fit items-center justify-center rounded-lg p-6 lg:p-12">
-        <div className="m-auto flex flex-col   justify-evenly gap-3 align-middle lg:gap-6 lg:p-6">
-          <div className="flex items-center justify-center gap-4">
+      <div className="col-span-12 flex items-center justify-center rounded-lg p-6 pt-12 lg:col-span-6 lg:p-12">
+        <div className="m-auto flex flex-col justify-evenly gap-3 align-middle lg:gap-6 lg:p-6">
+          <div className="flex items-center justify-center gap-4 lg:justify-start">
             {
               <Image
                 src={withBasePath("/assets/images/perfuse-no-bg.svg")}
                 alt="Zeeve Logo"
                 width={200}
                 height={200}
-                className="w-72"
+                className="  w-28 lg:w-48"
               />
             }
             <p>| Powered by Zeeve</p>
           </div>
-          <Heading className="text-6xl text-[#D2D2D2]" as="h1">
+          <Heading className="text-4xl text-[#D2D2D2] lg:text-6xl" as="h1">
             <span className="text-theme-gradient">
               Build, Deploy <br />
             </span>
@@ -84,7 +84,7 @@ const Login = () => {
           <p className="">Save up to 97% in time and 60%+ in costs using Zeeve</p>
         </div>
       </div>
-      <div className="col-span-12 flex h-full items-center justify-center  lg:col-span-5">
+      <div className="col-span-12 flex h-screen items-start justify-center lg:col-span-5  lg:items-center">
         <form
           autoComplete="off"
           className="rounded-2xl border-2 border-transparent bg-[linear-gradient(180deg,rgba(57,19,147,0.3)_0%,rgba(17,6,45,0)_100%)] p-6 lg:p-12"
@@ -120,7 +120,7 @@ const Login = () => {
               }}
             >
               <Label className="text-white">Password</Label>
-              <Input {...register("password")} type="text" isRequired placeholder="Password" />
+              <Input {...register("password")} type="password" isRequired placeholder="Password" />
             </FormField>
             <Button
               type="submit"
