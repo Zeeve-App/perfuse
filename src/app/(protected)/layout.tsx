@@ -31,7 +31,7 @@ export default async function RootLayout({
 }>) {
   const header = headers();
   const data = await authFromHeader(header);
-  const theme = await themeFromHeader(header);
+  const theme = themeFromHeader(header);
   if (!data?.email) {
     return redirect("/login");
   }
@@ -41,7 +41,7 @@ export default async function RootLayout({
       <head>
         <link rel="icon" href="/logo.png" />
       </head>
-      <body className={`${dmSans.variable} ${poppins.variable} ${theme} font-poppins`}>
+      <body className={`${dmSans.variable} ${poppins.variable} ${theme === "dark" ? "dark" : ""} font-poppins`}>
         <ToastProvider>
           <ModalProvider />
           <LayoutProvider>{children}</LayoutProvider>
