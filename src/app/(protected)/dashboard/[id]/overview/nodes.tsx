@@ -78,7 +78,7 @@ const Nodes = ({ isLoading, nodes }: { isLoading: boolean; nodes: NodeDbRow[] })
                       {e.node_type.toUpperCase()}
                     </Typography>
                     <div className="col-span-3">
-                      <NetworkStatus />
+                      <NetworkStatus className="text-sm" />
                     </div>
                   </>
                 </div>

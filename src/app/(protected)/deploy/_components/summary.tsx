@@ -61,8 +61,8 @@ export default function DeploySummary({
           node_https_enabled: data.rpcNode.http ?? false,
           node_wss_enabled: data.rpcNode.ws ?? false,
         },
-        { node_name: "collator_name_1", node_rpc_cors: "*", node_type: "collator", node_address: "", node_balance: 0 },
-        { node_name: "collator_name_2", node_rpc_cors: "*", node_type: "collator", node_address: "", node_balance: 0 },
+        { node_name: "collator_1", node_rpc_cors: "*", node_type: "collator", node_address: "", node_balance: 0 },
+        { node_name: "collator_2", node_rpc_cors: "*", node_type: "collator", node_address: "", node_balance: 0 },
       ],
     };
 
