@@ -50,11 +50,13 @@ const NetworkStatus = ({ className }: { className?: string }) => {
           className,
         )}
       >
-        {status !== "completed"
-          ? statusLabelMap[status]
-          : authorizationStatus
-            ? "Auth. Pending"
-            : statusLabelMap[status]}
+        {status !== "completed" ? (
+          statusLabelMap[status]
+        ) : authorizationStatus ? (
+          <>Auth.&nbsp;Pending</>
+        ) : (
+          statusLabelMap[status]
+        )}
       </Badge>
     </>
   );
