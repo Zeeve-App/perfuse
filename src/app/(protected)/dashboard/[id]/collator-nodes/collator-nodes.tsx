@@ -12,7 +12,7 @@
 "use client";
 import RegisterParachainInfo from "../_components/register-parachain-info";
 import NodeTable from "../_components/node-table";
-import CollatorNodeCard from "../_components/collator-node-card";
+import NodeListCard from "../_components/node-list-card";
 import { NodeDbRow } from "@/db-queries";
 import useApi from "@/api-client";
 
@@ -29,7 +29,7 @@ const CollatorNodes = ({ nodes }: { nodes: { collator: NodeDbRow[] } }) => {
       </div>
       <div className="grid gap-4 sm:grid-cols-1 lg:hidden">
         {nodes.collator.map((node, index) => (
-          <CollatorNodeCard key={index} node={node} />
+          <NodeListCard key={index} node={node} />
         ))}
       </div>
     </div>

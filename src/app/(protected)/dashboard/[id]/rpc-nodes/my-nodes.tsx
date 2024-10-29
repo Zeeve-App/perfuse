@@ -13,6 +13,7 @@
 import { useEffect, useState } from "react";
 import RegisterParachainInfo from "../_components/register-parachain-info";
 import NodeTable from "../_components/node-table";
+import NodeListCard from "../_components/node-list-card";
 import { useWindowDimensions } from "@/hooks";
 import { NodeDbRow } from "@/db-queries";
 import useApi from "@/api-client";
@@ -36,7 +37,14 @@ const RpcNodes = ({ nodes }: { nodes: { rpc: NodeDbRow[] } }) => {
   return (
     <div className="flex flex-col gap-3 lg:gap-6">
       <RegisterParachainInfo show={blockHeight === 0} />
-      <NodeTable nodeType={"rpc"} heading="RPC Nodes" nodes={nodes.rpc} />
+      <div className="hidden lg:block">
+        <NodeTable nodeType={"rpc"} heading="RPC Nodes" nodes={nodes.rpc} />
+      </div>
+      <div className="grid gap-4 sm:grid-cols-1 lg:hidden">
+        {nodes.rpc.map((node, index) => (
+          <NodeListCard key={index} node={node} />
+        ))}
+      </div>
     </div>
   );
 };
