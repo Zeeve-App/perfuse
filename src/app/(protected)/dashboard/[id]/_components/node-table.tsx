@@ -117,12 +117,13 @@ const NodeTable = ({ heading, nodes }: { nodeType: NODE_TYPE; heading: string; n
           classNames={{
             tableContainer: "w-full border-none",
             thead: {
-              thead: "bg-theme-foreground border-b-2 border-gray-300",
-              th: "px-4 py-2 text-left text-gray-600 font-medium text-sm",
+              thead: "bg-theme-foreground border-b-2 border-brand-outline",
+              th: "px-4 py-2 text-left text-theme-primary font-medium text-sm",
             },
             tbody: {
-              tbody: "bg-theme-foreground border-none",
-              td: "px-4 py-3 text-gray-700 align-middle border-none",
+              tbody: "bg-theme-foreground",
+              tr: "hover:bg-theme-background",
+              td: "px-4 py-3 align-middle border-brand-outline",
             },
           }}
           // pagination={{
