@@ -17,7 +17,7 @@ import { dmSans, poppins } from "@/utils/fonts";
 import LayoutProvider from "@/providers/layout-provider";
 import ToastProvider from "@/providers/toast-provider";
 import ModalProvider from "@/providers/modal-provider";
-import { authFromHeader } from "@/middleware";
+import { authFromHeader, themeFromHeader } from "@/middleware";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -31,6 +31,7 @@ export default async function RootLayout({
 }>) {
   const header = headers();
   const data = await authFromHeader(header);
+  const theme = await themeFromHeader(header);
   if (!data?.email) {
     return redirect("/login");
   }
@@ -40,7 +41,7 @@ export default async function RootLayout({
       <head>
         <link rel="icon" href="/logo.png" />
       </head>
-      <body className={`${dmSans.variable} ${poppins.variable} font-poppins`}>
+      <body className={`${dmSans.variable} ${poppins.variable} ${theme} font-poppins`}>
         <ToastProvider>
           <ModalProvider />
           <LayoutProvider>{children}</LayoutProvider>

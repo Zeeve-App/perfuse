@@ -25,6 +25,8 @@ const ListPage = async () => {
 
   if (networks.length > 0 && networks?.[0]?.network_id) {
     redirect("/dashboard/" + networks?.[0]?.network_id);
+  } else {
+    redirect("/deploy");
   }
 
   return <ListPageClient />;

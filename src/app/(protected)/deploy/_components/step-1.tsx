@@ -33,7 +33,7 @@ const DeployStep1 = forwardRef<
       {envAndRelayChainOption.map((e) => {
         const isChecked = formData.watch("networkEnvironment.value") === e.environment.value;
         return (
-          <div key={e.environment.value} className="col-span-6">
+          <div key={e.environment.value} className="col-span-12 lg:col-span-6">
             <RadioCard
               value={e.environment.value}
               {...formData.register("networkEnvironment.value")}
@@ -48,7 +48,7 @@ const DeployStep1 = forwardRef<
                 <Radio
                   key={relayChain.value}
                   radioLabelProps={{
-                    className: "col-span-4",
+                    className: "col-span-6 lg:col-span-4",
                   }}
                   value={relayChain.value}
                   {...formData.register("relayChain.value")}

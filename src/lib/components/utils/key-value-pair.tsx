@@ -79,14 +79,17 @@ const KeyValuePair = ({
           >
             <WrapperTooltip>
               <Typography variant="paragraph" className={tx(valueClass)}>
-                {value} &nbsp;
+                {value}
               </Typography>
             </WrapperTooltip>
             {shouldAllowCopy && (typeof value === "string" || typeof value === "number") ? (
-              <CopyButton
-                text={copyText ?? tooltipText ?? value.toString()}
-                className="m-0 text-theme-primary-content"
-              />
+              <>
+                &nbsp;
+                <CopyButton
+                  text={copyText ?? tooltipText ?? value.toString()}
+                  className="m-0 text-theme-primary-content"
+                />
+              </>
             ) : null}
           </div>
         </>

@@ -60,3 +60,16 @@ export async function authFromHeader(header: ReadonlyHeaders) {
     return undefined;
   }
 }
+
+export function themeFromHeader(header: ReadonlyHeaders): "dark" | "light" {
+  try {
+    const rawCookie = header.get("cookie");
+    const cookie = parse(rawCookie ?? "");
+    const theme = cookie["theme"];
+    return theme == "dark" ? "dark" : "light";
+  } catch (error) {
+    console.log(error);
+
+    return "light";
+  }
+}

@@ -19,7 +19,7 @@ const DeployStep2 = forwardRef<
 >(({ className, formData }, ref) => {
   return (
     <Card tabIndex={1} ref={ref} className={className}>
-      <Card variant={"grid-no-pad"} className="col-span-6 ">
+      <Card variant={"grid-no-pad"} className="col-span-12 lg:col-span-6 ">
         <FormField
           className="col-span-12"
           helper={{
@@ -38,7 +38,7 @@ const DeployStep2 = forwardRef<
           />
         </FormField>
       </Card>
-      <Card variant={"grid-no-pad"} className="col-span-6 ">
+      <Card variant={"grid-no-pad"} className="col-span-12 lg:col-span-6 ">
         <FormField
           className="col-span-12"
           helper={{
