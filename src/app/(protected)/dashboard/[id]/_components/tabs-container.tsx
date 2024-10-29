@@ -56,30 +56,33 @@ const TabContainer = ({ id }: { id: string }) => {
         },
       }}
     >
-      <TabList className="mb-4 gap-4 overflow-x-auto rounded-lg border-b bg-theme-foreground">
-        <Tab>
-          <span className="text-base font-semibold">
-            <SvgChart5Square width={20} height={20} className="inline" /> &nbsp; Overview{" "}
+      <TabList className="mb-4 gap-4 overflow-x-auto rounded-lg border-b bg-theme-foreground scrollbar-hide">
+        <Tab className="min-w-36 lg:min-w-32">
+          <span className=" text-base font-semibold">
+            <SvgChart5Square width={20} height={20} className="inline" /> &nbsp;Overview
           </span>
         </Tab>
-        <Tab>
-          <span className="text-base font-semibold">
+        <Tab className="min-w-56 lg:min-w-48">
+          <span className=" text-base font-semibold">
             <SvgBox width={20} height={20} className="inline" />
-            &nbsp; Blockchain Config{" "}
+            &nbsp; Blockchain&nbsp;Config{" "}
           </span>
         </Tab>
-        <Tab>
-          <span className="text-base font-semibold">
+        <Tab className="min-w-52 lg:min-w-48">
+          <span className=" text-base font-semibold">
             <SvgBubbles width={20} height={20} className="inline" />
-            &nbsp; Collator Nodes
+            &nbsp;Collator&nbsp;Nodes
           </span>
-          &nbsp; <GetIcons step={2} />
+          &nbsp;
+          <GetIcons step={2} />
         </Tab>
-        <Tab>
-          <span className="text-base font-semibold">
-            <SvgBubbles width={20} height={20} className="inline" /> &nbsp; RPC Nodes{" "}
+        <Tab className="min-w-52 lg:min-w-48">
+          <span className=" text-base font-semibold">
+            <SvgBubbles width={20} height={20} className="inline" />
+            &nbsp;RPC&nbsp;Nodes
           </span>
-          &nbsp; <GetIcons step={1} />
+          &nbsp;
+          <GetIcons step={1} />
         </Tab>
       </TabList>
     </TabsContextProvider>
