@@ -27,7 +27,7 @@ const GeneralInfo = ({
   id,
   env,
   createdAt,
-  provisionedAt,
+  ownedBy,
 }: {
   isLoading: boolean;
   name?: string;
@@ -35,6 +35,7 @@ const GeneralInfo = ({
   env?: string;
   createdAt?: string | Date;
   provisionedAt?: string;
+  ownedBy?: string;
 }) => {
   // const networkInfo = useNetworkStore((e) => e.networkInfo);
   return (
@@ -72,7 +73,7 @@ const GeneralInfo = ({
           className="col-span-6 capitalize"
           isLoading={isLoading}
         />
-        <KeyValuePair label="Owned By" value={"perfuse@perfuse.com"} className="col-span-6 " isLoading={isLoading} />
+        <KeyValuePair label="Owned By" value={ownedBy ?? "NA"} className="col-span-6 " isLoading={isLoading} />
         {/* <div
           className={tx(
             "pb-1 justify-between flex flex-col gap-2 col-span-6  border-brand-outline",

@@ -27,6 +27,7 @@ const Overview = ({
   paraId,
   relayCainType,
   provisionedAt,
+  ownedBy,
 }: {
   isLoading: boolean;
   createdAt: string;
@@ -37,6 +38,7 @@ const Overview = ({
   paraId: string;
   relayCainType: string;
   nodes: NodeDbRow[];
+  ownedBy: string;
 }) => {
   const apis = useApi();
   const { data: blockRpcResponse } = apis.blockNumber();
@@ -50,6 +52,7 @@ const Overview = ({
         name={name}
         id={id}
         provisionedAt={provisionedAt}
+        ownedBy={ownedBy}
       />
       <BlockchainConfig isLoading={isLoading} paraId={paraId} relayChainType={relayCainType} />
       <Nodes isLoading={isLoading} nodes={nodes} />

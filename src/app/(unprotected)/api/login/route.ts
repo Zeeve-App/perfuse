@@ -19,15 +19,18 @@ export async function POST(req: NextRequest) {
   try {
     const formData = await req.json();
 
-    if (config.server.defaultEmail !== formData.email || config.server.defaultPassword !== formData.password)
+    if (
+      config.server.defaultEmail.toLocaleLowerCase() !== formData.email.toLocaleLowerCase() ||
+      config.server.defaultPassword !== formData.password
+    )
       throw new Error("Invalid user/password");
 
-    const token = await sign({ email: formData.email });
+    const token = await sign({ email: formData.email }, formData.remember);
 
     const tokenCookie = serialize("accessToken", token, {
       httpOnly: true,
       secure: false,
-      maxAge: 60 * 60 * config.server.jwtExpiresIn,
+      maxAge: 60 * 60 * config.server.jwtExpiresIn * (formData.remember ? 12 : 1),
       path: "/",
     });
 

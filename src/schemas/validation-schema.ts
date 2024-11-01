@@ -13,7 +13,6 @@ import * as yup from "yup";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import { REGEX_NODE_NAME } from "@/constants/regex";
 import { networkEnvType, AuthenticationMethods } from "@/constants/create-network";
-import RpcNodes from "@/app/(protected)/network/[id]/rpc-nodes/my-nodes";
 
 export const configureNetworkValidationSchema = yup
   .object({

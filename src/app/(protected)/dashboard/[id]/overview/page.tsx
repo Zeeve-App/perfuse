@@ -14,6 +14,7 @@ import { Metadata } from "next";
 import Overview from "./overview";
 import { getNetworkData, getNodes, getTask } from "@/db-queries";
 import { ChainSpecFileType } from "@/types/chain-spec";
+import { config } from "@/config/config";
 
 export const metadata: Metadata = {
   title: "Perfuse | Parachain Details",
@@ -43,6 +44,7 @@ const CreatePage = async ({
       relayCainType={network?.network_relay_chain_type ?? "NA"}
       nodes={nodes}
       provisionedAt={task?.task_updated_at}
+      ownedBy={config.server.defaultEmail}
     />
   );
 };

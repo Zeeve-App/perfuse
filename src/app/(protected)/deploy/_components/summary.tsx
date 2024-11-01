@@ -2,8 +2,9 @@ import { RefObject } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { DeployStepTypes } from "../page";
+import Link from "next/link";
 import { CreatePerfuseApiPayload } from "../../api/create/route";
+import { DeployStepTypes } from "../page-client";
 import { Card } from "@/lib/components/Card";
 import { DeployNetworkValidationSchemaType } from "@/schemas/validation-schema";
 import { Heading } from "@/lib/components/Heading";
@@ -21,12 +22,14 @@ export default function DeploySummary({
   className,
   formData,
   focusOnComponent,
+  deployed,
 }: {
   className: string;
   // ref: RefObject<HTMLDivElement>;
   focusOnComponent: (component: DeployStepTypes) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formData: UseFormReturn<DeployNetworkValidationSchemaType, any, undefined>;
+  deployed: boolean;
 }) {
   const formWatchState = formData.watch();
   const router = useRouter();
@@ -208,14 +211,16 @@ export default function DeploySummary({
             className="w-full rounded-md"
             colorScheme="gradient"
             type="submit"
-            isDisabled={!formData.formState.isValid}
+            isDisabled={!formData.formState.isValid || deployed}
           >
             Deploy
           </Button>
         </form>
-        <Button className="w-full rounded-md" variant={"outline"} colorScheme="accent">
-          Docs
-        </Button>
+        <Link rel="stylesheet" href="https://github.com/Zeeve-App/perfuse/tree/main/docs/tutorial" target="_blank">
+          <Button className="w-full rounded-md" variant={"outline"} colorScheme="accent">
+            Docs
+          </Button>
+        </Link>
       </div>
     </Card>
   );

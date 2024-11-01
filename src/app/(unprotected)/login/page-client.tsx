@@ -18,15 +18,17 @@ import Image from "next/image";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { FormField } from "@/lib/components/Form/FormField";
-import { Input, Label } from "@/lib/components/Form";
+import { Checkbox, Input, Label } from "@/lib/components/Form";
 import { Heading } from "@/lib/components/Heading";
 import { Button } from "@/lib/components/Button";
 import { withBasePath } from "@/utils/helpers";
 import { tx } from "@/utils/shared";
+import { Typography } from "@/lib/components/Typography";
 
 const loginSchema = yup.object({
   email: yup.string(),
   password: yup.string(),
+  remember: yup.bool(),
 });
 
 type LoginSchemaType = yup.InferType<typeof loginSchema>;
@@ -48,6 +50,7 @@ const Login = () => {
     await axios.post("/api/login", {
       email: data.email,
       password: data.password,
+      remember: data.remember,
     });
     router.push("/");
   };
@@ -122,6 +125,12 @@ const Login = () => {
               <Label className="text-white">Password</Label>
               <Input {...register("password")} type="password" isRequired placeholder="Password" />
             </FormField>
+            <span className="flex items-center gap-2">
+              <Checkbox {...register("remember")} />{" "}
+              <Typography variant="paragraph" className="text-white">
+                Remember me
+              </Typography>
+            </span>
             <Button
               type="submit"
               variant={"solid"}

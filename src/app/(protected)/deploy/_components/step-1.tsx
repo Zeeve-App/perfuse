@@ -1,6 +1,6 @@
 import { forwardRef, useEffect } from "react";
 import { UseFormReturn } from "react-hook-form";
-import { DeployStepTypes } from "../page";
+import { DeployStepTypes } from "../page-client";
 import { Card } from "@/lib/components/Card";
 import { Heading } from "@/lib/components/Heading";
 import { RadioCard } from "@/lib/components/RadioCard";

@@ -2,7 +2,7 @@ import { forwardRef, RefObject, useEffect, useRef, useState } from "react";
 import { Controller, useFieldArray, UseFormReturn } from "react-hook-form";
 import { errors } from "jose";
 import axios from "axios";
-import { DeployStepTypes } from "../page";
+import { DeployStepTypes } from "../page-client";
 import { Card } from "@/lib/components/Card";
 import { RadioCard } from "@/lib/components/RadioCard";
 import { DeployNetworkValidationSchemaType } from "@/schemas/validation-schema";

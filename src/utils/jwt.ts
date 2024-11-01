@@ -17,9 +17,9 @@ export type JwtPayloadType = {
   email: string;
 };
 
-export async function sign(payload: JwtPayloadType): Promise<string> {
+export async function sign(payload: JwtPayloadType, remember: boolean): Promise<string> {
   const iat = Math.floor(Date.now() / 1000);
-  const exp = iat + 60 * 60 * parseInt(process.env.JWT_EXPIRES ?? "2"); // one hour
+  const exp = iat + 60 * 60 * parseInt(process.env.JWT_EXPIRES ?? "2") * (remember ? 12 : 1); // one hour
 
   return new SignJWT({ ...payload })
     .setProtectedHeader({ alg: "HS256", typ: "JWT" })
