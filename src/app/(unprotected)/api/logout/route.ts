@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
   try {
     const tokenCookie = serialize("accessToken", "", {
       httpOnly: true,
-      secure: process.env.NODE_ENV !== "development",
+      secure: false,
       expires: new Date("Thu, 01 Jan 1970 00:00:00 GMT"),
       path: "/",
     });
