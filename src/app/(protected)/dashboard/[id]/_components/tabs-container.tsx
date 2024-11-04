@@ -25,7 +25,15 @@ const GetIcons = ({ step }: { step: number }) => (
   </span>
 );
 
-const TabContainer = ({ id }: { id: string }) => {
+const TabContainer = ({
+  id,
+  collatorNodesCount,
+  rpcNodesCount,
+}: {
+  id: string;
+  collatorNodesCount: number;
+  rpcNodesCount: number;
+}) => {
   const router = useRouter();
   // router.
   const path = usePathname();
@@ -74,7 +82,7 @@ const TabContainer = ({ id }: { id: string }) => {
             &nbsp;Collator&nbsp;Nodes
           </span>
           &nbsp;
-          <GetIcons step={2} />
+          <GetIcons step={collatorNodesCount} />
         </Tab>
         <Tab className="min-w-52 lg:min-w-48">
           <span className=" text-base font-semibold">
@@ -82,7 +90,7 @@ const TabContainer = ({ id }: { id: string }) => {
             &nbsp;RPC&nbsp;Nodes
           </span>
           &nbsp;
-          <GetIcons step={1} />
+          <GetIcons step={rpcNodesCount} />
         </Tab>
       </TabList>
     </TabsContextProvider>

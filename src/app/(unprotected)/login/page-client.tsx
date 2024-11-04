@@ -15,7 +15,7 @@ import * as yup from "yup";
 import React from "react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
-import axios from "axios";
+import axios, { Axios } from "axios";
 import { useRouter } from "next/navigation";
 import { FormField } from "@/lib/components/Form/FormField";
 import { Checkbox, Input, Label } from "@/lib/components/Form";
@@ -24,6 +24,7 @@ import { Button } from "@/lib/components/Button";
 import { withBasePath } from "@/utils/helpers";
 import { tx } from "@/utils/shared";
 import { Typography } from "@/lib/components/Typography";
+import { useToast } from "@/lib/components/Toast";
 
 const loginSchema = yup.object({
   email: yup.string(),
@@ -35,6 +36,7 @@ type LoginSchemaType = yup.InferType<typeof loginSchema>;
 
 const Login = () => {
   const router = useRouter();
+  const toast = useToast();
   const {
     handleSubmit,
     register,
@@ -46,13 +48,20 @@ const Login = () => {
   });
 
   const onSubmit = async (data: LoginSchemaType) => {
-    console.log(data);
-    await axios.post("/api/login", {
-      email: data.email,
-      password: data.password,
-      remember: data.remember,
-    });
-    router.push("/");
+    // console.log(data);
+    try {
+      await axios.post("/api/login", {
+        email: data.email,
+        password: data.password,
+        remember: data.remember,
+      });
+      router.push("/");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      toast("Error while login", {
+        message: error.response?.data?.data?.message ?? error.message,
+      });
+    }
   };
 
   return (

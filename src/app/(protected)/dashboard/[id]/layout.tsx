@@ -13,7 +13,7 @@ import { headers } from "next/headers";
 import Actions from "./_components/actions";
 import TabContainer from "./_components/tabs-container";
 import { Navigation } from "@/lib/components/navigation";
-import { getNetworkData, getNodeData, getTask } from "@/db-queries";
+import { getNetworkData, getNodeData, getNodes, getTask } from "@/db-queries";
 import { config } from "@/config/config";
 import { Badge } from "@/lib/components/Badge/Badge";
 
@@ -24,7 +24,8 @@ const IdPageClient: React.FC<{ children: React.ReactNode; params: { id: string }
   const host = headersList.get("host");
   const explorer = config.client.explorer || "https://polkadot.js.org/apps/";
   const network = await getNetworkData(id);
-  const rpcNode = await getNodeData({ network_id: id, node_type: "rpc" });
+  const nodes = await getNodes(id);
+  const rpcNode = nodes.filter((e) => e.node_type === "rpc")?.[0];
   let rpcUrl = "";
   if (rpcNode?.node_auth_method === "api_key") {
     rpcUrl = `ws://${host?.split(":")[0]}/${rpcNode.node_api_key}`;
@@ -52,7 +53,11 @@ const IdPageClient: React.FC<{ children: React.ReactNode; params: { id: string }
         {/* page actions */}
         <Actions network={network} task={task} explorerUrl={{ paraExplorerUrl, relayExplorerUrl }} />
       </Navigation>
-      <TabContainer id={params.id} />
+      <TabContainer
+        id={params.id}
+        collatorNodesCount={nodes.filter((e) => e.node_type === "collator").length}
+        rpcNodesCount={nodes.filter((e) => e.node_type === "rpc").length}
+      />
       <div className="mb-4 gap-4 overflow-x-auto border-0">{children}</div>
     </div>
   );

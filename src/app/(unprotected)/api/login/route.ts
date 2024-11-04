@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
       config.server.defaultEmail.toLocaleLowerCase() !== formData.email.toLocaleLowerCase() ||
       config.server.defaultPassword !== formData.password
     )
-      throw new Error("Invalid user/password");
+      throw new Error("Invalid email or password");
 
     const token = await sign({ email: formData.email }, formData.remember);
 
@@ -39,9 +39,10 @@ export async function POST(req: NextRequest) {
         "Set-Cookie": [tokenCookie].join("; "),
       },
     });
-  } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
     return sendErrorResponse({
-      message: "Error while uploading file",
+      message: error.message ?? "Internal server error",
     });
   }
 }

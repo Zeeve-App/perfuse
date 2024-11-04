@@ -11,6 +11,7 @@
 
 "use client";
 import React from "react";
+import Link from "next/link";
 import NetworkStatus from "../_components/network-status";
 import { Button, IconButton } from "@/lib/components/Button";
 import { Heading } from "@/lib/components/Heading";
@@ -20,7 +21,7 @@ import SvgPlusSquare from "@/lib/icons/essential/outline/PlusSquare";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
 import { Typography } from "@/lib/components/Typography";
 import { Badge } from "@/lib/components/Badge/Badge";
-import { formatEndpoint, toShortString } from "@/utils/helpers";
+import { formatEndpoint, toShortString, withBasePath } from "@/utils/helpers";
 
 const columnHelper = createColumnHelper<NodeDbRow>();
 // table columns
@@ -123,10 +124,13 @@ const Nodes = ({ isLoading, nodes }: { isLoading: boolean; nodes: NodeDbRow[] })
 
           <div className="grid grid-cols-12 justify-evenly gap-3 px-4">
             <Typography variant="heading" className="col-span-6">
-              Collator Nodes: <Typography variant="paragraph">4</Typography>
+              Collator Nodes:{" "}
+              <Typography variant="paragraph">{nodes.filter((e) => e.node_type === "collator").length}</Typography>
             </Typography>
             <div className="col-span-6 text-right">
-              <Button variant="text">View all</Button>
+              <Link href={withBasePath(`/dashboard/${nodes?.[0]?.network_id}/collator-nodes`)}>
+                <Button variant="text">View all</Button>
+              </Link>
             </div>
           </div>
         </div>
