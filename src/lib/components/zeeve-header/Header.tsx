@@ -64,6 +64,7 @@ import { Avatar } from "../Avatar";
 import { SidebarItems } from "../sidebar/sub-components";
 import { ZeeveSidebarItem } from "../sidebar/sidebar";
 import { ProfileDropDownMenu } from "../Header/profile-menu";
+import BalanceChecker from "../wallet/balance";
 import { useToggle } from "@/hooks";
 import { tx } from "@/utils/shared";
 import { withBasePath } from "@/utils/helpers";
@@ -143,7 +144,7 @@ const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
       {/* left side header section, visible only in mobile view */}
       <HeaderLogoContainer>
         {/* menu button */}
-        <HeaderMenuButton className="text-theme-primary-content lg:hidden" variant={"text"} onClick={onMenuButtonClick}>
+        <HeaderMenuButton className="text-theme-primary-content xl:hidden" variant={"text"} onClick={onMenuButtonClick}>
           <SvgBars className=" text-2xl " />
         </HeaderMenuButton>
         {/* logo */}
@@ -156,7 +157,7 @@ const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
         />
       </HeaderLogoContainer>
 
-      <SidebarItems className="hidden grow items-center gap-3 align-middle lg:flex lg:flex-row">
+      <SidebarItems className="hidden grow items-center gap-3 align-middle xl:flex xl:flex-row">
         {ITEMS.length
           ? ITEMS.map((itemGroup, index) => (
               <Fragment key={index}>
@@ -182,9 +183,10 @@ const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
       {/* right side header nav */}
       <HeaderNavContainer>
         <HeaderNavGroup>
+          <BalanceChecker />
           <IconButton
             variant={"text"}
-            className="hidden size-10 rounded-full  bg-theme-foreground lg:flex"
+            className="hidden size-10 rounded-full  bg-theme-foreground xl:flex"
             onClick={() => toggleTheme()}
           >
             {theme === "dark" ? <SvgMoon fontSize={20} /> : <SvgMoon fontSize={24} />}
@@ -199,7 +201,7 @@ const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
           {/* Create Button */}
           {createDropdownMenu?.length ? (
             <DropdownMenu
-              className="hidden lg:inline"
+              className="hidden xl:inline"
               isOpen={isCreateDropdownOpen}
               onClose={handleCreateDropdownClose}
             >
@@ -214,7 +216,7 @@ const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
               <CreateDropdownMenu createDropdownMenu={createDropdownMenu} />
             </DropdownMenu>
           ) : null}
-          <ProfileDropDownMenu className="hidden lg:inline" />
+          <ProfileDropDownMenu className="hidden xl:inline" />
         </HeaderNavGroup>
       </HeaderNavContainer>
     </Header>
@@ -229,7 +231,7 @@ const CreateDropdownMenu = (props: CreateDropdownMenuProps) => {
   const { createDropdownMenu } = props;
 
   return (
-    <DropdownMenuList className="flex flex-col md:min-w-[200px]">
+    <DropdownMenuList className="flex flex-col xl:min-w-[200px]">
       {createDropdownMenu.length
         ? createDropdownMenu.map((menu, index) => (
             <Fragment key={index}>

@@ -34,7 +34,7 @@ const Sidebar = (props: SidebarProps) => {
           focusLockProps={{
             disabled: true,
           }}
-          className="w-4/5  md:w-72 lg:hidden"
+          className="w-4/5  md:w-72 xl:hidden"
         >
           <div className="size-full " title="mobile sidebar">
             <ZeeveSidebar handleClose={handleMobileSidebarClose} />

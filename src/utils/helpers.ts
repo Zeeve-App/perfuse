@@ -112,7 +112,8 @@ const formatEndpoint = (
  * @param string string to format
  * @returns `string`
  */
-const toShortString = (string: string, startCharCount = 5, endCharCount = 5) => {
+const toShortString = (string: string | undefined, startCharCount = 5, endCharCount = 5) => {
+  if (!string) return "";
   if (string.length < startCharCount + 3) return string;
   const finalEndCharCount =
     string.length - startCharCount > endCharCount

@@ -29,6 +29,7 @@ const KeyValuePair = ({
   valueClass,
   tooltipText,
   shouldAllowCopy,
+  onClick,
 }: {
   label: string | React.ReactElement;
   value: number | string | React.ReactElement;
@@ -41,6 +42,7 @@ const KeyValuePair = ({
   shouldAllowCopy?: boolean;
   align?: "right" | "left";
   copyText?: string;
+  onClick?: () => void;
 }) => {
   const WrapperTooltip = ({ children }: { children: React.ReactNode }) =>
     tooltipText ? (
@@ -57,6 +59,7 @@ const KeyValuePair = ({
         "border-b border-gray-200": enableBorder,
         "items-end": align == "right",
       })}
+      onClick={onClick}
     >
       {isLoading ? (
         <Skeleton role="status" as="div" className="max-w-sm">
