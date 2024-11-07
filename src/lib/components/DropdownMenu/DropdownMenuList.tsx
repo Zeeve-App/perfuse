@@ -48,7 +48,7 @@ const DropdownMenuList = forwardRef<HTMLDivElement, DropdownMenuListProps>((prop
               exit="initial"
               ref={refs}
               className={tx(
-                "mt-2 w-max min-w-[148px] rounded-lg border border-brand-outline bg-white py-2 shadow-lg",
+                "mt-2 w-max min-w-[148px] rounded-lg border border-brand-outline bg-theme-foreground py-2 shadow-lg",
                 className,
               )}
               style={styles.popper}

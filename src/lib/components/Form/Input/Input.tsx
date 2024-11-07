@@ -10,7 +10,7 @@
  */
 
 import { VariantProps, cva } from "class-variance-authority";
-import React, { forwardRef } from "react";
+import React, { forwardRef, useState } from "react";
 // import { IconInfoCircle } from "@zeeve-platform/icons/essential/outline";
 import { Label } from "../Label";
 import { Button, IconButton } from "../../Button";
@@ -18,6 +18,8 @@ import { Tooltip } from "../../Tooltip";
 import { RemoveProperties } from "../../core";
 import { useID } from "@/hooks";
 import { tx } from "@/utils/shared";
+import SvgEye from "@/lib/icons/security/outline/Eye";
+import SvgEyeSlash from "@/lib/icons/security/outline/EyeSlash";
 
 const styles = cva(
   "placeholder:text-theme-accent-foreground/60 disabled:text-theme-accent-foreground/60 disabled:bg-theme-foreground/60 peer w-full appearance-none truncate rounded-lg border border-brand-outline bg-theme-foreground p-4 text-sm font-medium leading-5 text-theme-accent-content focus:border-[#E8DCFE] focus:bg-theme-accent-foreground focus:outline-none focus:ring-0 focus-visible:outline-none disabled:cursor-not-allowed disabled:font-normal disabled:opacity-50",
@@ -75,8 +77,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     isRequired,
     id,
     tooltip,
+    type,
     ...rest
   } = props;
+
+  const [showPassword, toggleShowPassword] = useState(false);
 
   const [_id] = useID(id, "input");
 
@@ -117,6 +122,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
         )}
         required={isRequired}
         disabled={isDisabled}
+        type={type === "password" ? (showPassword ? "text" : "password") : type}
         placeholder={floatingLabel === undefined ? placeholder : " "}
         ref={ref}
         {...rest}
@@ -150,6 +156,15 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
         </Label>
       )}
 
+      {type === "password" &&
+        (showPassword ? (
+          <SvgEyeSlash
+            onClick={() => toggleShowPassword((e) => !e)}
+            className="absolute  right-4 top-5 size-6 text-black"
+          />
+        ) : (
+          <SvgEye onClick={() => toggleShowPassword((e) => !e)} className="absolute  right-4 top-5 size-6 text-black" />
+        ))}
       {/* right icon */}
       {iconRight && (
         <div

@@ -22,7 +22,7 @@ const DropdownMenuItem = forwardRef<HTMLButtonElement, DropdownMenuItemProps>((p
   return (
     <Button
       className={tx(
-        "flex w-full cursor-pointer items-center justify-start gap-3 rounded-none bg-transparent px-4 py-2 font-medium text-brand-dark hover:bg-brand-primary hover:text-white focus:bg-brand-primary focus:text-white",
+        "flex w-full cursor-pointer items-center justify-start gap-3 rounded-none bg-transparent px-4 py-2 font-medium text-theme-primary-content hover:bg-brand-primary hover:text-white focus:bg-brand-primary focus:text-white",
         className,
       )}
       ref={ref}

@@ -21,7 +21,10 @@ const DropdownMenuGroupTitle = forwardRef<HTMLParagraphElement, DropdownMenuGrou
 
   return (
     <motion.p
-      className={tx("select-none px-3 py-2 font-poppins text-sm font-bold uppercase text-dark-600", className)}
+      className={tx(
+        "select-none px-3 py-2 font-poppins text-sm font-bold uppercase text-theme-primary-content",
+        className,
+      )}
       ref={ref}
       {...rest}
     >

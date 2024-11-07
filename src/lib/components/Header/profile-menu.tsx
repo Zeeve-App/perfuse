@@ -150,9 +150,11 @@ const ProfileDropDownMenu = ({
         {name || email ? (
           <div className="flex flex-col px-3 py-1">
             {name ? (
-              <p className="font-poppins text-sm font-semibold capitalize leading-4 text-brand-dark">{name}</p>
+              <p className="font-poppins text-sm font-semibold capitalize leading-4 text-theme-primary-content">
+                {name}
+              </p>
             ) : null}
-            {email ? <p className="text-xs font-medium lowercase text-brand-gray">{email}</p> : null}
+            {email ? <p className="text-xs font-medium lowercase text-theme-primary-content">{email}</p> : null}
           </div>
         ) : null}
         {name || email ? <hr className="my-2" /> : null}
