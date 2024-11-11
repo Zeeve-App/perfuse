@@ -58,12 +58,18 @@ const CollatorAddKey = () => {
     defaultValues: {},
   });
 
-  const onSubmit = async (data: CollatorAddKeySchemaType) => {
+  const onSubmit = async (formData: CollatorAddKeySchemaType) => {
     try {
-      setLoading(true);
-      console.log(data);
+      console.log(data, formData);
 
-      // router.push("/");
+      if (data.addKey && formData.key) {
+        setLoading(true);
+        console.log(formData);
+        apis.addKey(data.addKey?.networkId, data.addKey?.nodeId, { key: formData.key });
+        router.refresh();
+      } else {
+        console.log("undefined values in important variables");
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<ParachainsServiceError>;

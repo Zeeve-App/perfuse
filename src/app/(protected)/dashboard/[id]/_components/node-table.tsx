@@ -40,7 +40,7 @@ export const NodeTableRowActions = ({ node }: { node: NodeDbRow }) => {
             variant={"text"}
             onClick={() => {
               openModal("addKey", {
-                nodeDetails: {
+                addKey: {
                   networkId: params.id as string,
                   nodeId: node.node_id,
                   nodeType: node.node_type,

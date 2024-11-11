@@ -36,6 +36,14 @@ export const getNodeData = async (data: Partial<NodeDbRow>, trx?: knex.Knex.Tran
   return db<NodeDbRow>("nodes").select("*").where(data).first();
 };
 
+// to get node data from db
+export const updateNodeData = async (data: Partial<NodeDbRow>, trx?: knex.Knex.Transaction) => {
+  const db = trx ?? knexHandler;
+  if (!data.node_id) throw new Error("Node id is required");
+
+  return db<NodeDbRow>("nodes").update(data).where(data).returning("*");
+};
+
 // to get nodes[] by network ID
 export const getNodes = async (networkId?: string, trx?: knex.Knex.Transaction) => {
   const db = trx ?? knexHandler;

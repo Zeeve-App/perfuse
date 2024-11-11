@@ -9,6 +9,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import useAddKey from "./add-key";
 import useBlockNumberApi from "./block-number";
 import useCreateNetworkApi from "./create-network";
 import useDeleteApi from "./delete";
@@ -23,6 +24,7 @@ const useApi = () => ({
   delete: useDeleteApi,
   file: useFileApi,
   node: useNodeApi,
+  addKey: useAddKey,
 });
 
 export default useApi;

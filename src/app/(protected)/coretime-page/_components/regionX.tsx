@@ -33,7 +33,7 @@ const RegionXCard = (props: RegionXCardProps) => {
   const [hostname, setHostname] = useState("");
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== undefined) {
       setHostname(`${window.location.protocol}//${window.location.hostname}`);
     }
   }, []);
