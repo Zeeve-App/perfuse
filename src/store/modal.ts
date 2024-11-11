@@ -13,7 +13,7 @@ import { create } from "zustand";
 import { NODE_TYPE } from "@/types/node";
 
 // types
-type ModalType = "purchase" | "deleteNetwork" | "registerParachain" | "nodeDetails";
+type ModalType = "purchase" | "deleteNetwork" | "registerParachain" | "nodeDetails" | "addKey";
 
 type ModalData = {
   purchase?: {
@@ -27,6 +27,11 @@ type ModalData = {
     networkId: string;
   };
   nodeDetails?: {
+    nodeId: string;
+    networkId: string;
+    nodeType: NODE_TYPE;
+  };
+  addKey?: {
     nodeId: string;
     networkId: string;
     nodeType: NODE_TYPE;

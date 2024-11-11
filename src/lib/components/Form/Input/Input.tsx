@@ -160,10 +160,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
         (showPassword ? (
           <SvgEyeSlash
             onClick={() => toggleShowPassword((e) => !e)}
-            className="absolute  right-4 top-5 size-6 text-black"
+            className="absolute  right-4 top-5 size-6 text-theme-primary-content"
           />
         ) : (
-          <SvgEye onClick={() => toggleShowPassword((e) => !e)} className="absolute  right-4 top-5 size-6 text-black" />
+          <SvgEye
+            onClick={() => toggleShowPassword((e) => !e)}
+            className="absolute  right-4 top-5 size-6 text-theme-primary-content"
+          />
         ))}
       {/* right icon */}
       {iconRight && (

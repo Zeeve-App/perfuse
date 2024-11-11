@@ -14,6 +14,7 @@ import React from "react";
 import DeleteNetworkModal from "./delete-network-modal";
 import RegisterParachainInfoModal from "./register-parachain-modal";
 import NodeDetailsModal from "./node-details-modal";
+import CollatorAddKey from "./collator-add-key";
 
 const ModalProvider = () => {
   return (
@@ -22,6 +23,7 @@ const ModalProvider = () => {
       <DeleteNetworkModal />
       <RegisterParachainInfoModal />
       <NodeDetailsModal />
+      <CollatorAddKey />
     </>
   );
 };

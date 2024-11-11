@@ -26,12 +26,32 @@ import { ColumnDef, ReactTable, createColumnHelper } from "@/lib/components/Reac
 import { NodeDbRow } from "@/db-queries";
 import SvgInfoCircle from "@/lib/icons/essential/outline/InfoCircle";
 import { Typography } from "@/lib/components/Typography";
+import SvgPlusSquare from "@/lib/icons/essential/outline/PlusSquare";
 
 export const NodeTableRowActions = ({ node }: { node: NodeDbRow }) => {
   const { openModal } = useModalStore();
   const params = useParams();
   return (
     <div className="flex gap-1 lg:flex-row">
+      {node.node_type === "collator" && (
+        <Tooltip text="Add Key" placement="top-start">
+          <IconButton
+            colorScheme="primary"
+            variant={"text"}
+            onClick={() => {
+              openModal("addKey", {
+                nodeDetails: {
+                  networkId: params.id as string,
+                  nodeId: node.node_id,
+                  nodeType: node.node_type,
+                },
+              });
+            }}
+          >
+            <SvgPlusSquare width={24} height={24} color="#CE2CCA" />
+          </IconButton>
+        </Tooltip>
+      )}
       <Tooltip text="View Details" placement="top-start">
         <IconButton
           colorScheme="primary"
