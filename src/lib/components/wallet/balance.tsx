@@ -4,13 +4,15 @@ import { ApiPromise, WsProvider } from "@polkadot/api";
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 import KeyValuePair from "../utils/key-value-pair";
 import { Button } from "../Button";
-import { DropdownMenu, DropdownMenuButton, DropdownMenuItem, DropdownMenuList } from "../DropdownMenu";
+import { DropdownMenu, DropdownMenuButton, DropdownMenuList } from "../DropdownMenu";
+import { useSelectedAccount } from "./use-wallet";
 import { toShortString } from "@/utils/helpers";
-import SvgPlusSquare from "@/lib/icons/essential/outline/PlusSquare";
 import { useToggle } from "@/hooks";
 
 const BalanceChecker = () => {
   const [accounts, setAccounts] = useState<(InjectedAccountWithMeta & { balance: string })[]>([]);
+  // Custom hook to manage selected account with local storage
+  const { selectedAccount, selectAccount } = useSelectedAccount(accounts);
 
   const [tokenSymbol, setTokenSymbol] = useState<string | null>(null);
 
@@ -38,23 +40,20 @@ const BalanceChecker = () => {
 
       // Set the currency symbol from the chain registry
       const symbol = api.registry.chainTokens[0];
-
       setTokenSymbol(symbol);
 
+      // Get account balances and store them
       const accs = await Promise.all(
         allAccounts.map(async (e) => {
           const data = await api.query.system.account(e.address);
-
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const d = data.toJSON() as any;
-
           return {
             ...e,
             balance: d.data.free,
           };
         }),
       );
-
       setAccounts(accs);
     };
 
@@ -63,22 +62,23 @@ const BalanceChecker = () => {
 
   return (
     <>
-      {tokenSymbol && accounts?.[0]?.address && (
+      {tokenSymbol && selectedAccount?.address && (
         <DropdownMenu className="" isOpen={isAddressDropdownOpen} onClose={handleAddressDropdownClose}>
           <DropdownMenuButton as={Button} variant={"text"} onClick={handleAddressDropdownToggle}>
             <KeyValuePair
               className="text-right"
-              label={toShortString(accounts?.[0]?.address)}
-              value={accounts?.[0]?.balance + " " + tokenSymbol}
+              label={toShortString(selectedAccount?.address)}
+              value={selectedAccount?.balance + " " + tokenSymbol}
             />
           </DropdownMenuButton>
           <DropdownMenuList className="flex flex-col gap-2 p-4">
             {accounts.map((e) => (
               <KeyValuePair
                 key={e.address}
-                className=" text-right"
+                className=" cursor-pointer text-right"
                 label={toShortString(e?.address, 8, 12)}
                 value={e?.balance + " " + tokenSymbol}
+                onClick={() => selectAccount(e)}
               />
             ))}
           </DropdownMenuList>
