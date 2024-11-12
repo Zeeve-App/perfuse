@@ -28,13 +28,7 @@ fi
 SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
 RELAYCHAIN_DIR="${RELAYCHAIN_DIR:-/home/perfuse/relaychain}" # Customizable relaychain directory
 PARACHAIN_DIR="${PARACHAIN_DIR:-/home/perfuse/parachain}" # Customizable parachain directory
-if [ $TEMPLATE = "custom" ] ; then
 CHAINSPEC_FILE="$SCRIPT_DIR/../perfuse/chainspec.json"
-elif [ $TEMPLATE = "substrate" ] ; then
-CHAINSPEC_FILE="$SCRIPT_DIR/../public/template/substrate.json"
-else 
-CHAINSPEC_FILE="$SCRIPT_DIR/../public/template/"$POLKA_VERSION"/evm_frontier.json"
-fi
 
 
 mkdir -p /home/perfuse/{relaychain,parachain}
@@ -47,63 +41,12 @@ build_relaychain_spec() {
     echo "Relay chain spec created."
 }
 
-build_parachain_spec() {
-    echo "Building parachain spec..."
-    /usr/local/bin/polkadot-parachain build-spec \
-    --disable-default-bootnode | sudo tee ${PARACHAIN_DIR}/plain-parachain-chainspec.json &> /dev/null
-
-    echo 'Plain Parachain Specs Created................'
-    echo "Modifying chain spec..."
-    if command -v jq &> /dev/null; then
-            jq ".genesis.runtimeGenesis.parachainInfo.parachainId = $PARACHAIN_ID | .para_id = $PARACHAIN_ID" ${PARACHAIN_DIR}/plain-parachain-chainspec.json | sudo tee "$PARACHAIN_DIR/new-parachain-chainspec.json" &> /dev/null
-            /usr/local/bin/polkadot-parachain build-spec \
-                --chain $PARACHAIN_DIR/new-parachain-chainspec.json \
-                --disable-default-bootnode --raw | sudo tee "$PARACHAIN_DIR/raw-parachain-chainspec.json" &> /dev/null
-        else
-            echo "WARNING: 'jq' not found. Chainspec modification skipped. Please install 'jq' if you need to modify the chainspec."
-        fi
-    echo "Chain spec modified."
-}
-
-modify_chainspec() {
-    echo "Modifying chain spec..."
+build_raw_chainspec() {
+    echo "Building raw chain spec..."
     sudo cp "$CHAINSPEC_FILE" "$PARACHAIN_DIR/plain-parachain-chainspec.json"
 
-    jq \
-    --arg paraID "$paraID" \
-    --arg tokenSymbol "$tokenSymbol" \
-    --arg id "$id" \
-    --arg name "$name" \
-    --arg protocolId "$protocolId" \
-    --arg sudoKey "$sudoKey" \
-    --arg sessionKey1 "$sessionKey1" \
-    --arg sessionKey2 "$sessionKey2" \
-    --arg SS58_STASH_ACCOUNT_KEY_COLLATOR_1 "$SS58_STASH_ACCOUNT_KEY_COLLATOR_1" \
-    --arg SS58_STASH_ACCOUNT_KEY_COLLATOR_2 "$SS58_STASH_ACCOUNT_KEY_COLLATOR_2" \
-    '
-    .name = $name |
-    .id = $id |
-    .protocolId = $protocolId |
-    .properties.tokenSymbol = $tokenSymbol |
-    .para_id = ($paraID | tonumber) |
-    .genesis.runtimeGenesis.patch.collatorSelection.invulnerables = [$SS58_STASH_ACCOUNT_KEY_COLLATOR_1, $SS58_STASH_ACCOUNT_KEY_COLLATOR_2] |
-    .genesis.runtimeGenesis.patch.session.keys[0][0] = $SS58_STASH_ACCOUNT_KEY_COLLATOR_1 |
-    .genesis.runtimeGenesis.patch.session.keys[0][1] = $SS58_STASH_ACCOUNT_KEY_COLLATOR_1 |
-#    .genesis.runtimeGenesis.patch.session.keys[0][2].aura = $sessionKey1 |
-    .genesis.runtimeGenesis.patch.session.keys[1][0] = $SS58_STASH_ACCOUNT_KEY_COLLATOR_2 |
-    .genesis.runtimeGenesis.patch.session.keys[1][1] = $SS58_STASH_ACCOUNT_KEY_COLLATOR_2 |
-#    .genesis.runtimeGenesis.patch.session.keys[1][2].aura = $sessionKey2 |
-    .genesis.runtimeGenesis.patch.balances.balances[0][0] = $SS58_STASH_ACCOUNT_KEY_COLLATOR_1 |
-    .genesis.runtimeGenesis.patch.balances.balances[1][0] = $SS58_STASH_ACCOUNT_KEY_COLLATOR_2 |
-    .genesis.runtimeGenesis.patch.sudo.key = $sudoKey |
-    .genesis.runtimeGenesis.patch.parachainInfo.parachainId = ($paraID | tonumber)
-    ' "$PARACHAIN_DIR/plain-parachain-chainspec.json" > "$PARACHAIN_DIR/plain-parachain-chainspec-updated.json"
-
-echo "Updated JSON file saved as plain-parachain-chainspec-updated.json"
-
-
     /usr/local/bin/polkadot-parachain build-spec \
-        --chain $PARACHAIN_DIR/plain-parachain-chainspec-updated.json \
+        --chain $PARACHAIN_DIR/plain-parachain-chainspec.json \
         --disable-default-bootnode --raw | sudo tee "$PARACHAIN_DIR/raw-parachain-chainspec.json" &> /dev/null
     echo "Chain spec modified."
 }
@@ -138,9 +81,10 @@ build_relaychain_spec
 
 # Step 2: Modify or Build Chain Spec
 if [ -f "$CHAINSPEC_FILE" ]; then  # Check if chainspec file exists
-    modify_chainspec
+    echo "Chainspec file for parachain not found"
+    exit 1
 else
-    build_parachain_spec
+    build_raw_chainspec
 fi
 
 # Step 3: Create Genesis and WASM
