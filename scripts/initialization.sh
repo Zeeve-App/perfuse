@@ -27,21 +27,6 @@ else
   exit 1
 fi
 
-install_nvm() {
-    if [ ! -f "$HOME/.nvm/nvm.sh" ]; then
-
-        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-        export NVM_DIR=$HOME/.nvm
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-        nvm install 20 >/dev/null 2>&1
-        echo "Node 20 installed."
-    else
-        echo "nvm is already installed."
-    fi
-}
-
-
 install_tools() {
     if ! command -v jq &> /dev/null; then
         echo "jq is not installed. Installing..."
@@ -63,5 +48,4 @@ create_user() {
 }
 
 install_tools
-echo "Installing NVM......." && install_nvm
 create_user

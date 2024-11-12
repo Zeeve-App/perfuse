@@ -33,9 +33,9 @@ CHAINSPEC_FILE="$SCRIPT_DIR/../perfuse/chainspec.json"
 elif [ $TEMPLATE = "substrate" ] ; then
 CHAINSPEC_FILE="$SCRIPT_DIR/../public/template/substrate.json"
 else 
-CHAINSPEC_FILE="$SCRIPT_DIR/../public/template/evm_frontier.json"
+CHAINSPEC_FILE="$SCRIPT_DIR/../public/template/evm_frontier_m2.json"
 fi
-PARACHAIN_ID=2000
+
 
 mkdir -p /home/perfuse/{relaychain,parachain}
 
@@ -43,10 +43,7 @@ mkdir -p /home/perfuse/{relaychain,parachain}
 
 build_relaychain_spec() {
     echo "Building relay chain spec..."
-    "/usr/local/bin/polkadot" build-spec \
-        --chain rococo-local \
-        --raw \
-        --disable-default-bootnode | sudo tee "$RELAYCHAIN_DIR/rococo_relay_chain_spec_raw.json" &> /dev/null
+    wget -O "$RELAYCHAIN_DIR/paseo_relay_chain_spec_raw.json" https://github.com/paseo-network/paseo-chain-specs/raw/refs/heads/main/paseo.raw.json &> /dev/null
     echo "Relay chain spec created."
 }
 
@@ -71,15 +68,49 @@ build_parachain_spec() {
 modify_chainspec() {
     echo "Modifying chain spec..."
     sudo cp "$CHAINSPEC_FILE" "$PARACHAIN_DIR/plain-parachain-chainspec.json"
+
+    jq \
+    --arg paraID "$paraID" \
+    --arg tokenSymbol "$tokenSymbol" \
+    --arg id "$id" \
+    --arg name "$name" \
+    --arg protocolId "$protocolId" \
+    --arg sudoKey "$sudoKey" \
+    --arg sessionKey1 "$sessionKey1" \
+    --arg sessionKey2 "$sessionKey2" \
+    --arg SS58_STASH_ACCOUNT_KEY_COLLATOR_1 "$SS58_STASH_ACCOUNT_KEY_COLLATOR_1" \
+    --arg SS58_STASH_ACCOUNT_KEY_COLLATOR_2 "$SS58_STASH_ACCOUNT_KEY_COLLATOR_2" \
+    '
+    .name = $name |
+    .id = $id |
+    .protocolId = $protocolId |
+    .properties.tokenSymbol = $tokenSymbol |
+    .para_id = ($paraID | tonumber) |
+    .genesis.runtimeGenesis.patch.collatorSelection.invulnerables = [$SS58_STASH_ACCOUNT_KEY_COLLATOR_1, $SS58_STASH_ACCOUNT_KEY_COLLATOR_2] |
+    .genesis.runtimeGenesis.patch.session.keys[0][0] = $SS58_STASH_ACCOUNT_KEY_COLLATOR_1 |
+    .genesis.runtimeGenesis.patch.session.keys[0][1] = $SS58_STASH_ACCOUNT_KEY_COLLATOR_1 |
+#    .genesis.runtimeGenesis.patch.session.keys[0][2].aura = $sessionKey1 |
+    .genesis.runtimeGenesis.patch.session.keys[1][0] = $SS58_STASH_ACCOUNT_KEY_COLLATOR_2 |
+    .genesis.runtimeGenesis.patch.session.keys[1][1] = $SS58_STASH_ACCOUNT_KEY_COLLATOR_2 |
+#    .genesis.runtimeGenesis.patch.session.keys[1][2].aura = $sessionKey2 |
+    .genesis.runtimeGenesis.patch.balances.balances[0][0] = $SS58_STASH_ACCOUNT_KEY_COLLATOR_1 |
+    .genesis.runtimeGenesis.patch.balances.balances[1][0] = $SS58_STASH_ACCOUNT_KEY_COLLATOR_2 |
+    .genesis.runtimeGenesis.patch.sudo.key = $sudoKey |
+    .genesis.runtimeGenesis.patch.parachainInfo.parachainId = ($paraID | tonumber)
+    ' "$PARACHAIN_DIR/plain-parachain-chainspec.json" > "$PARACHAIN_DIR/plain-parachain-chainspec-updated.json"
+
+echo "Updated JSON file saved as plain-parachain-chainspec-updated.json"
+
+
     /usr/local/bin/polkadot-parachain build-spec \
-        --chain $PARACHAIN_DIR/plain-parachain-chainspec.json \
+        --chain $PARACHAIN_DIR/plain-parachain-chainspec-updated.json \
         --disable-default-bootnode --raw | sudo tee "$PARACHAIN_DIR/raw-parachain-chainspec.json" &> /dev/null
     echo "Chain spec modified."
 }
 
-generate_genesis_wasm() {
+generate_genesis_state_wasm() {
     echo "Generating genesis state and WASM..."
-    "/usr/local/bin/polkadot-parachain" export-genesis-state --chain $PARACHAIN_DIR/raw-parachain-chainspec.json "$PARACHAIN_DIR/para-genesis-state"
+    "/usr/local/bin/polkadot-parachain" export-genesis-head --chain $PARACHAIN_DIR/raw-parachain-chainspec.json "$PARACHAIN_DIR/para-genesis-state"
     "/usr/local/bin/polkadot-parachain" export-genesis-wasm --chain $PARACHAIN_DIR/raw-parachain-chainspec.json "$PARACHAIN_DIR/para-wasm"
 
     if [ ! -f "$PARACHAIN_DIR/para-genesis-state" ]; then
@@ -109,4 +140,4 @@ else
 fi
 
 # Step 3: Create Genesis and WASM
-generate_genesis_wasm
+generate_genesis_state_wasm
