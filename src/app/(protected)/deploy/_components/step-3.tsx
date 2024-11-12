@@ -41,6 +41,7 @@ const DeployStep3 = forwardRef<
     fields: accountFields,
     append: appendAccount,
     remove: removeAccount,
+    update: updateAccount,
   } = useFieldArray({
     control: formData.control,
     name: "accounts",
@@ -49,7 +50,7 @@ const DeployStep3 = forwardRef<
   useEffect(() => {
     if (formState.template?.value === "substrate" || formState.template?.value === "evm_frontier") {
       axios
-        .get(`/template/${formState.template?.value}.json`)
+        .get(`/template/stable2407/${formState.template?.value}.json`)
         .then((res) => res.data)
         .then((e) => {
           formData.setValue("chainSpecFile.contents", e);
@@ -60,32 +61,36 @@ const DeployStep3 = forwardRef<
   }, [formData, formState.template?.value]);
 
   const fillValuesWithChainSpecData = (chainSpec: ChainSpecFileType) => {
-    const runtimeGenesis = chainSpec.genesis.runtimeGenesis;
+    try {
+      const runtimeGenesis = chainSpec.genesis.runtimeGenesis;
 
-    formData.setValue("paraId", chainSpec.para_id);
-    formData.setValue("decimalValue", chainSpec.properties?.tokenDecimals ?? 12);
-    formData.setValue("ss58Format", chainSpec.properties?.ss58Format?.toString() ?? "42");
+      formData.setValue("paraId", chainSpec.para_id);
+      formData.setValue("decimalValue", chainSpec.properties?.tokenDecimals ?? 12);
+      formData.setValue("protocolId", chainSpec.protocolId ?? "m2perfuse");
+      formData.setValue("id", chainSpec.id ?? "new_testnet");
+      formData.setValue("ss58Format", chainSpec.properties?.ss58Format ?? 42);
 
-    const collatorAddresses = runtimeGenesis?.patch?.aura?.authorities?.length
-      ? runtimeGenesis?.patch?.aura?.authorities
-      : [runtimeGenesis?.patch.session?.keys?.[0]?.[0], runtimeGenesis?.patch.session?.keys?.[0]?.[1]];
+      const collatorAddresses = runtimeGenesis?.patch?.balances.balances;
 
-    collatorAddresses?.forEach((col, idx) => {
-      const balance = runtimeGenesis?.patch?.balances?.balances?.forEach((e) => {
-        const address = e[0];
-        const balance = e[1];
+      collatorAddresses?.forEach((col, idx) => {
+        const balance = runtimeGenesis?.patch?.balances?.balances?.forEach((e) => {
+          const address = e[0].toString();
+          const balance = e[1].toString();
 
-        appendAccount({ address, balance });
+          updateAccount(idx, { address, balance });
+        });
+        console.log({ address: col, balance });
       });
-      console.log({ address: col, balance });
-    });
 
-    console.log(chainSpec);
+      console.log(chainSpec);
 
-    // setting values from chain spec file
-    formData.setValue("chainSpecFile.contents", chainSpec);
-    // trigger validation
-    // formData.trigger();
+      // setting values from chain spec file
+      formData.setValue("chainSpecFile.contents", chainSpec);
+      // trigger validation
+      // formData.trigger();
+    } catch (error) {
+      console.log("error while importing chain spec file");
+    }
   };
 
   /**
@@ -137,8 +142,6 @@ const DeployStep3 = forwardRef<
           },
         });
 
-        console.log("---------");
-
         if (response.status === HTTP_STATUS.OK && response.data.success) {
           // set global network id
           // setBinaryFile()
@@ -161,7 +164,16 @@ const DeployStep3 = forwardRef<
     }
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    appendAccount({
+      address: "",
+      balance: "",
+    });
+    appendAccount({
+      address: "",
+      balance: "",
+    });
+  }, []);
 
   return (
     <div tabIndex={2} ref={ref} className={tx(className, "bg-theme-foreground rounded-lg")}>
@@ -345,6 +357,30 @@ const DeployStep3 = forwardRef<
                 </Heading>
                 <Input placeholder="DOT" {...formData.register("ss58Format")} isRequired />
               </FormField>
+              <FormField
+                className="col-span-6"
+                helper={{
+                  status: "error",
+                  text: formData.formState.errors.protocolId?.message?.toString(),
+                }}
+              >
+                <Heading as="h5" className="">
+                  Protocol Id
+                </Heading>
+                <Input placeholder="Protocol Id" {...formData.register("protocolId")} isRequired />
+              </FormField>
+              <FormField
+                className="col-span-6"
+                helper={{
+                  status: "error",
+                  text: formData.formState.errors.id?.message?.toString(),
+                }}
+              >
+                <Heading as="h5" className="">
+                  id
+                </Heading>
+                <Input placeholder="Id" {...formData.register("id")} isRequired />
+              </FormField>
               <Heading as="h5" className="col-span-12">
                 Accounts
               </Heading>
@@ -360,12 +396,7 @@ const DeployStep3 = forwardRef<
                       }}
                     >
                       <Label>Address {idx + 1}</Label>
-                      <Input
-                        isDisabled
-                        placeholder="DOT"
-                        {...formData.register(`accounts.${idx}.address`)}
-                        isRequired
-                      />
+                      <Input placeholder="DOT" {...formData.register(`accounts.${idx}.address`)} isRequired />
                     </FormField>
                     <FormField
                       className="col-span-5"
@@ -377,12 +408,7 @@ const DeployStep3 = forwardRef<
                     >
                       <Label>Balance {idx + 1}</Label>
 
-                      <Input
-                        isDisabled
-                        placeholder="DOT"
-                        {...formData.register(`accounts.${idx}.balance`)}
-                        isRequired
-                      />
+                      <Input placeholder="DOT" {...formData.register(`accounts.${idx}.balance`)} isRequired />
                     </FormField>
                     {/* <FormField className="col-span-1">
                       <Label>&nbsp;</Label>
@@ -407,7 +433,10 @@ const DeployStep3 = forwardRef<
                   className="rounded-md"
                   isDisabled
                   onClick={() => {
-                    appendAccount({});
+                    appendAccount({
+                      address: "",
+                      balance: "",
+                    });
                   }}
                 >
                   + Add Address

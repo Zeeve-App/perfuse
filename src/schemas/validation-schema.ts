@@ -128,7 +128,9 @@ export const deployNetworkValidationSchema = yup
     }),
     paraId: yup.number().required(),
     decimalValue: yup.number().required(),
-    ss58Format: yup.string().required(),
+    id: yup.string().required(),
+    protocolId: yup.string().required(),
+    ss58Format: yup.number().required(),
     rpcNode: yup.object({
       http: yup.boolean(),
       ws: yup.boolean(),
@@ -136,8 +138,8 @@ export const deployNetworkValidationSchema = yup
     sidecar: yup.boolean(),
     accounts: yup.array(
       yup.object({
-        address: yup.string(),
-        balance: yup.string(),
+        address: yup.string().required(),
+        balance: yup.string().required(),
       }),
     ),
     chainSpecFile: yup

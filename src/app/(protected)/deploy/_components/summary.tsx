@@ -1,4 +1,3 @@
-import { RefObject } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -7,12 +6,10 @@ import { CreatePerfuseApiPayload } from "../../api/create/route";
 import { DeployStepTypes } from "../page-client";
 import { Card } from "@/lib/components/Card";
 import { DeployNetworkValidationSchemaType } from "@/schemas/validation-schema";
-import { Heading } from "@/lib/components/Heading";
 import { Button } from "@/lib/components/Button";
 import { envAndRelayChainOption, templateOption } from "@/constants/create-network";
 import { Checkbox, Switch } from "@/lib/components/Form";
 import HTTP_STATUS from "@/constants/http";
-import { ChainSpecFileType } from "@/types/chain-spec";
 import useApi from "@/api-client";
 import { Typography } from "@/lib/components/Typography/Typography";
 import { Badge } from "@/lib/components/Badge/Badge";
@@ -40,6 +37,38 @@ export default function DeploySummary({
     if (chainSpec.para_id) chainSpec.para_id = data.paraId;
     if (chainSpec.properties?.tokenDecimals) chainSpec.properties.tokenDecimals = data.decimalValue;
     if (chainSpec.properties?.tokenSymbol) chainSpec.properties.tokenSymbol = data.tokenName;
+    if (chainSpec.protocolId) chainSpec.protocolId = data.protocolId;
+    if (chainSpec.id) chainSpec.id = data.id;
+    if (chainSpec.properties.ss58Format) chainSpec.properties.ss58Format = data.ss58Format;
+    const runtimeGenesis = chainSpec.genesis.runtimeGenesis;
+    const collatorAddresses = runtimeGenesis?.patch?.balances.balances;
+
+    collatorAddresses[0] = [data.accounts?.[0]?.address ?? "", data.accounts?.[0].balance ?? ""];
+    collatorAddresses[1] = [data.accounts?.[1]?.address ?? "", data.accounts?.[1].balance ?? ""];
+
+    runtimeGenesis.patch.session = {
+      keys: [
+        [
+          data.accounts?.[0]?.address ?? "",
+          data.accounts?.[0]?.address ?? "",
+          {
+            aura: data.accounts?.[0]?.address ?? "",
+          },
+        ],
+        [
+          data.accounts?.[1]?.address ?? "",
+          data.accounts?.[1]?.address ?? "",
+          {
+            aura: data.accounts?.[1]?.address ?? "",
+          },
+        ],
+      ],
+    };
+
+    runtimeGenesis.patch.sudo = {
+      key: data.accounts?.[0]?.address ?? "",
+    };
+
     // if (chainSpec.) chainSpec.properties.tokenSymbol = data.tokenName;
 
     const payload: CreatePerfuseApiPayload = {

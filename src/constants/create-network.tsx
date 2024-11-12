@@ -40,12 +40,12 @@ export const envAndRelayChainOption = [
       {
         label: "Paseo",
         value: "paseo",
-        isDisabled: true,
+        isDisabled: false,
       },
-      {
-        label: "Local",
-        value: "local",
-      },
+      // {
+      //   label: "Local",
+      //   value: "local",
+      // },
     ],
   },
   {
