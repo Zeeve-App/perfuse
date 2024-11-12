@@ -33,7 +33,7 @@ CHAINSPEC_FILE="$SCRIPT_DIR/../perfuse/chainspec.json"
 elif [ $TEMPLATE = "substrate" ] ; then
 CHAINSPEC_FILE="$SCRIPT_DIR/../public/template/substrate.json"
 else 
-CHAINSPEC_FILE="$SCRIPT_DIR/../public/template/evm_frontier_m2.json"
+CHAINSPEC_FILE="$SCRIPT_DIR/../public/template/"$POLKA_VERSION"/evm_frontier.json"
 fi
 
 

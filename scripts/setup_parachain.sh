@@ -108,7 +108,6 @@ create_service() {
   # Add extra parameters (e.g., prometheus-port, rpc-max-connections)
   exec_start+=" \
     --prometheus-port $prometheus_port \
-    --rpc-max-connections 50000 \
     --port $port \
     --rpc-port $rpc_port \
     $extra_params"
@@ -125,9 +124,12 @@ create_service() {
       --rpc-port $((rpc_port + 2022)) "
   else
     exec_start+=" \
+      --rpc-max-connections 50000 \
+      --state-pruning archive \
       -- \
       --chain $relay_chain_spec \
       --sync warp \
+      --state-pruning 1000 \
       --port $((port + 2022)) \
       --rpc-port $((rpc_port + 2022)) "
   fi
