@@ -29,7 +29,7 @@ const PreMiningConfig = ({ data, isLoading }: PreMiningConfigProps) => {
   const [preMintedData, setPremintedData] = useState<PreMintedAddress[]>([]);
 
   useEffect(() => {
-    const balances: Array<[string, number]> = (data?.genesis?.runtime?.balances?.balances ??
+    const balances: Array<[string, number]> = (data?.genesis?.runtimeGenesis.patch?.balances?.balances ??
       data?.genesis?.runtimeGenesis?.patch?.balances?.balances ??
       []) as Array<[string, number]>;
 

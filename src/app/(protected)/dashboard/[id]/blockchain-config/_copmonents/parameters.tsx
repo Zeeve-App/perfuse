@@ -31,16 +31,21 @@ const Parameters = ({ data, isLoading, blockHeight }: ParametersProps) => {
   const [tokenSupply, setTokenSupply] = useState<number | undefined>(undefined);
 
   useEffect(() => {
-    if (data?.genesis?.runtime?.balances?.balances || data?.genesis.runtimeGenesis?.patch.balances.balances) {
+    if (
+      data?.genesis.runtimeGenesis.patch?.balances?.balances ||
+      data?.genesis.runtimeGenesis.patch?.balances?.balances
+    ) {
       const balances =
-        data.genesis.runtime?.balances.balances ?? data?.genesis.runtimeGenesis?.patch.balances.balances ?? [];
+        data?.genesis.runtimeGenesis.patch?.balances?.balances ??
+        data?.genesis.runtimeGenesis?.patch.balances.balances ??
+        [];
       let tokenSupplyCounter = 0;
       balances.map((balance) => {
         tokenSupplyCounter += typeof balance[1] === "string" ? parseFloat(balance[1]) : balance[1];
       });
       setTokenSupply(tokenSupplyCounter);
     }
-  }, [data?.genesis.runtime?.balances.balances, data?.genesis.runtimeGenesis?.patch.balances.balances]);
+  }, [data?.genesis.runtimeGenesis.patch.balances.balances]);
 
   return (
     <div className="col-span-12 flex flex-col">

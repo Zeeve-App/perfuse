@@ -53,8 +53,8 @@ const TokenInfo = ({ data, isLoading }: ParachainConfigProps) => {
         className="col-span-6 text-right"
         label={"Candidacy Bond"}
         value={
-          data?.genesis.runtime?.collatorSelection?.candidacyBond
-            ? formateNumber(data.genesis.runtime.collatorSelection.candidacyBond, "standard")
+          data?.genesis.runtimeGenesis.patch?.collatorSelection?.candidacyBond
+            ? formateNumber(data?.genesis.runtimeGenesis.patch.collatorSelection.candidacyBond, "standard")
             : "NA"
         }
         isLoading={isLoading}
