@@ -81,10 +81,10 @@ build_relaychain_spec
 
 # Step 2: Modify or Build Chain Spec
 if [ -f "$CHAINSPEC_FILE" ]; then  # Check if chainspec file exists
+    build_raw_chainspec
+else
     echo "Chainspec file for parachain not found"
     exit 1
-else
-    build_raw_chainspec
 fi
 
 # Step 3: Create Genesis and WASM
