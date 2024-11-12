@@ -43,8 +43,8 @@ export default function DeploySummary({
     const runtimeGenesis = chainSpec.genesis.runtimeGenesis;
     const collatorAddresses = runtimeGenesis?.patch?.balances.balances;
 
-    collatorAddresses[0] = [data.accounts?.[0]?.address ?? "", data.accounts?.[0].balance ?? ""];
-    collatorAddresses[1] = [data.accounts?.[1]?.address ?? "", data.accounts?.[1].balance ?? ""];
+    collatorAddresses[0] = [data.accounts?.[0]?.address ?? "", parseInt(data.accounts?.[0].balance ?? "0")];
+    collatorAddresses[1] = [data.accounts?.[1]?.address ?? "", parseInt(data.accounts?.[1].balance ?? "0")];
 
     runtimeGenesis.patch.session = {
       keys: [

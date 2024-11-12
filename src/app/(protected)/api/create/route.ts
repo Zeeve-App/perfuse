@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
             network_id,
             network_sidecar: formData.network.network_sidecar ? 1 : 0,
             network_chain_spec_file_json: JSON.stringify(formData.network.network_chain_spec_file_json),
-            network_relay_chain_version: "v1.9.0",
+            network_relay_chain_version: "stable2407",
 
             created_at: new Date().toISOString(),
             network_coretime_type: "regionx",
@@ -150,17 +150,18 @@ const createEnvFile = (data: CreatePerfuseApiPayload, apiKey?: string) => {
     throw new Error("rpc node not exist");
   }
   const envFile =
-    `POLKA_VERSION=${"v1.9.0"}\n` +
-    `NETWORK_TYPE=${data.network.network_env ?? ""}\n` +
+    `POLKA_VERSION=${"stable2407"}\n` +
+    `NETWORK_TYPE=${data.network.network_env.toUpperCase() ?? ""}\n` +
     `COL_NAME_1=${collatorNodes[0]?.node_name ?? ""}\n` +
     `COL_NAME_2=${collatorNodes[1]?.node_name ?? ""}\n` +
     `RPC_NAME=${rpcNode?.node_name ?? ""}\n` +
+    `ENDPOINT_AUTH=${rpcNode?.node_auth_method ?? ""}\n` +
     `RPC_USER=${rpcNode?.node_username ?? ""}\n` +
     `RPC_PASS=${rpcNode?.node_password ?? ""}\n` +
     `RPC_API_KEY=${apiKey ?? ""}\n` +
     `AUTH_METHOD=${rpcNode?.node_auth_method ?? ""}\n` +
-    `TEMPLATE=${data.network.network_template ?? ""}\n` +
     `SIDECAR=${data.network.network_sidecar ? 1 : 0}\n` +
+    `TEMPLATE=${data.network.network_template ?? ""}\n` +
     `DOMAIN=${domain}\n` +
     `EMAIL=rahul.meena@zeeve.io\n` +
     `SCRIPT_USER=STEM\n` +
