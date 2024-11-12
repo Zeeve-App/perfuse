@@ -125,6 +125,10 @@ generate_genesis_state_wasm() {
     echo "}" | sudo tee -a "$PARACHAIN_DIR/checksums.json" &> /dev/null
 
     # Create ZIP archive (optional, for easier distribution)
+    if ! command -v zip &> /dev/null; then
+        echo "zip not found, installing ..."
+        sudo apt-get update -y && sudo apt-get install -y zip
+    fi
     sudo zip -0 -q "$PARACHAIN_DIR/genesis.zip" "$PARACHAIN_DIR/para-genesis-state" "$PARACHAIN_DIR/para-wasm" "$PARACHAIN_DIR/checksums.json"
     echo "Genesis state and WASM files created."
 }
