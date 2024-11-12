@@ -30,4 +30,3 @@ generate_node_keys() {
         /usr/local/bin/polkadot key generate-node-key --file "$key_file"
     done
 }
-

@@ -35,8 +35,7 @@ download_and_install() {
     local binary_name="$1"
     local version="$2"
   if [[ $TEMPLATE == "evm_frontier" && $binary_name == "polkadot-parachain" ]] ; then
-    # local url="https://github.com/Zeeve-App/perfuse/releases/download/v0.0.2-alpha/popcli-evm-substrate"
-    local url="https://github.com/rahul-mnz/squid-k8s/releases/download/test/popcli-evm-substrate"
+    local url="https://github.com/Mrigesh901/pop/releases/download/0.1.0-06eb946759f/popcli-evm-substrate"
   else 
     local url="https://github.com/paritytech/polkadot-sdk/releases/download/polkadot-${version}/${binary_name}"
   fi

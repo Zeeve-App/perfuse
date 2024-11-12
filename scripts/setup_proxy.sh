@@ -28,8 +28,6 @@ fi
 # Configuration variables
 HAPROXY_CONFIG_FILE="/etc/haproxy/haproxy.cfg"  # Adjust if your HAProxy config is in a different location
 RELAY_RPC_PORT=9900
-CORETIME_RPC_PORT=9910
-REGIONX_RPC_PORT=9920
 PARA_RPC_PORT=9010
 PERFUSE_PORT=3000
 SIDECAR_PORT=9099
@@ -123,14 +121,10 @@ frontend rpc_frontend
 #    http-request redirect scheme https unless { ssl_fc }
     acl letsencrypt-acl path_beg /.well-known/acme-challenge/
     acl is_relay_rpc path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}relay-rpc
-    acl is_coretime_rpc path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}coretime-rpc
-    acl is_regionx_rpc path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}regionx-rpc
     acl is_para_rpc path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}para-rpc
     acl sidecar_api path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}api
     use_backend letsencrypt-backend if letsencrypt-acl
     use_backend relay_rpc_backend if is_relay_rpc
-    use_backend coretime_rpc_backend if is_coretime_rpc
-    use_backend regionx_rpc_backend if is_regionx_rpc
     use_backend para_rpc_backend if is_para_rpc
     use_backend sidecar if sidecar_api
     default_backend perfuse_ui"
@@ -140,16 +134,6 @@ backend relay_rpc_backend
     mode http
     $basic_auth_line
     server relaychain_rpc_1 127.0.0.1:${RELAY_RPC_PORT}"
-  local coretime_backend_config="
-backend coretime_rpc_backend
-    mode http
-    $basic_auth_line
-    server coretime_rpc_1 127.0.0.1:${CORETIME_RPC_PORT}"
-  local regionx_backend_config="
-backend regionx_rpc_backend
-    mode http
-    $basic_auth_line
-    server regionx_rpc_1 127.0.0.1:${REGIONX_RPC_PORT}"
   local parachain_backend_config="
 backend para_rpc_backend
     mode http
@@ -182,9 +166,7 @@ backend letsencrypt-backend
   echo "$frontend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$perfuse_ui_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$sidecar_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
-  echo "$relay_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
-  echo "$coretime_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
-  echo "$regionx_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null  
+  echo "$relay_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null 
   echo "$parachain_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$certbot_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
 

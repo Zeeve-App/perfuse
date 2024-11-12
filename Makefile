@@ -13,7 +13,7 @@
 SCRIPTS_DIR = scripts
 
 # Targets
-all:  initial proxy_setup binary_install generate-genesis-wasm-spec corehub_setup build-parachain 
+all:  initial proxy_setup binary_install generate-genesis-wasm-spec build-parachain 
 
 clean:
 	sudo bash $(SCRIPTS_DIR)/clean.sh
@@ -27,8 +27,6 @@ initial:
 corehub_setup:
 	sudo bash $(SCRIPTS_DIR)/corehub_base.sh
 
-build-relaychain:
-	sudo bash $(SCRIPTS_DIR)/setup_relaychain.sh 
 
 build-parachain:
 	sudo bash $(SCRIPTS_DIR)/setup_parachain.sh 
@@ -45,4 +43,4 @@ generate-genesis-wasm-spec:
 polkadotjs_app:
 	sudo bash $(SCRIPTS_DIR)/local_jsapps.sh
 
-.PHONY: all initial proxy_setup binary_install generate-genesis-wasm-spec corehub_setup build-parachain
+.PHONY: all initial proxy_setup binary_install generate-genesis-wasm-spec build-parachain
