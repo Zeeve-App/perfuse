@@ -10,10 +10,11 @@
  */
 
 import { RegionXCard } from "./_components/regionX";
+import { NetworkDbRow } from "@/db-queries";
 import { Card } from "@/lib/components/Card";
 import { Heading } from "@/lib/components/Heading";
 
-const CoreTimePageClient = () => {
+const CoreTimePageClient = ({ network }: { network?: NetworkDbRow }) => {
   return (
     <Card variant={"grid"} className="">
       <Heading as="h4" className="col-span-12">
@@ -27,6 +28,7 @@ const CoreTimePageClient = () => {
         description={
           "RegionX is a project dedicated to developing components for the new Agile Coretime model. The goal of the project is to enable developer teams, researchers, and enthusiasts to start trading, tracking, and analyzing the product Polkadot offers."
         }
+        regionXLink={`https://app.regionx.tech/regions?network=${network?.network_relay_chain_type}`}
       />
     </Card>
   );

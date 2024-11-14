@@ -25,6 +25,7 @@ interface RegionXCardProps extends ComponentPropsWithoutRef<"div"> {
   protocolName: string;
   description: string;
   showDescription?: boolean;
+  regionXLink: string;
 }
 
 const RegionXCard = (props: RegionXCardProps) => {
@@ -92,7 +93,7 @@ const RegionXCard = (props: RegionXCardProps) => {
         variant={"solid"}
         colorScheme={"gradient"}
         onClick={() => {
-          window.open(`${hostname}:3030/?network=rococo`);
+          window.open(props.regionXLink);
         }}
       >
         Visit

@@ -174,7 +174,7 @@ const NodeDetailsModal = () => {
                         )}
                         isLoading={isLoading}
                       />
-                      <KeyValuePair
+                      {/* <KeyValuePair
                         className="col-span-6 lg:col-span-4"
                         label={"Relay Chain HTTP URL"}
                         tooltipText={formatEndpoint(
@@ -217,7 +217,7 @@ const NodeDetailsModal = () => {
                           ),
                         )}
                         isLoading={isLoading}
-                      />
+                      /> */}
                       <KeyValuePair
                         className="col-span-6 lg:col-span-4"
                         label={"Sidecar HTTP URL"}

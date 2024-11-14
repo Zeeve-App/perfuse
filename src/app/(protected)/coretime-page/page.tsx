@@ -12,6 +12,7 @@
 import { Metadata } from "next";
 import React from "react";
 import CoreTimePageClient from "./page-client";
+import { getNetworks } from "@/db-queries";
 
 export const metadata: Metadata = {
   title: "Perfuse | CoreTime",
@@ -19,7 +20,9 @@ export const metadata: Metadata = {
 };
 
 const CoreTimePage = async () => {
-  return <CoreTimePageClient />;
+  const networks = await getNetworks();
+
+  return <CoreTimePageClient network={networks[0]} />;
 };
 
 export default CoreTimePage;

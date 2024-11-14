@@ -75,9 +75,9 @@ const Actions = ({
           Explorer
         </DropdownMenuButton>
         <DropdownMenuList>
-          <Link href={relayExplorerUrl} target={"_blank"}>
+          {/* <Link href={relayExplorerUrl} target={"_blank"}>
             <DropdownMenuItem>Relay Chain Explorer</DropdownMenuItem>
-          </Link>
+          </Link> */}
           <Link href={paraExplorerUrl} target={"_blank"}>
             <DropdownMenuItem>Parachain Explorer</DropdownMenuItem>
           </Link>
