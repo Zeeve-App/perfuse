@@ -36,6 +36,16 @@ download_and_install() {
     local version="$2"
   if [[ $TEMPLATE == "evm_frontier" && $binary_name == "polkadot-parachain" ]] ; then
     local url="https://github.com/Mrigesh901/pop/releases/download/0.1.0-06eb946759f/popcli-evm-substrate"
+
+  elif [[ $TEMPLATE == "contracts" && $binary_name == "polkadot-parachain" ]] ; then
+    local url="https://github.com/Mrigesh901/pop/releases/download/0.1.0-06eb946759f/popcli-$TEMPLATE-substrate"
+
+  elif [[ $TEMPLATE == "assets" && $binary_name == "polkadot-parachain" ]] ; then
+    local url="https://github.com/Mrigesh901/pop/releases/download/0.1.0-06eb946759f/popcli-$TEMPLATE-substrate"
+    
+  elif [[ $TEMPLATE == "standard" && $binary_name == "polkadot-parachain" ]] ; then
+    local url="https://github.com/Mrigesh901/pop/releases/download/0.1.0-06eb946759f/popcli-$TEMPLATE-substrate"
+  
   else 
     local url="https://github.com/paritytech/polkadot-sdk/releases/download/polkadot-${version}/${binary_name}"
   fi
