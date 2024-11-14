@@ -11,25 +11,32 @@
 
 import { NextRequest } from "next/server";
 import axios from "axios";
-import { updateNodeData } from "@/db-queries";
+import { getNodeData, updateNodeData } from "@/db-queries";
 import { sendDataResponse, sendErrorResponse } from "@/app/(protected)/api/_helpers/response";
-import { derivePublicSessionKey } from "@/utils/wallet";
+import { addressToHexPublicKey, derivePublicSessionKey } from "@/utils/wallet";
 
 export async function POST(req: NextRequest, { params }: { params: { id: string; nodeId: string } }) {
   try {
-    const formData: { key: string } = await req.json();
+    const { seed, pubKey }: { seed: string; pubKey: string } = await req.json();
     const nodeId = params.nodeId;
 
-    const pubKey = derivePublicSessionKey(formData.key);
+    const key = addressToHexPublicKey(pubKey);
+
+    const jsonData = {
+      jsonrpc: "2.0",
+      method: "author_insertKey",
+      params: ["aura", seed, key],
+      id: 1,
+    };
+
+    console.log({ jsonData });
+
+    const node = await getNodeData({ node_id: nodeId });
+    if (!node) throw new Error("invalid node id");
 
     const response = await axios.post(
-      "http://localhost:8845",
-      {
-        jsonrpc: "2.0",
-        method: "author_insertKey",
-        params: ["aura", formData.key, pubKey],
-        id: 1,
-      },
+      node.node_name.endsWith("1") ? `http://localhost:9008` : `http://localhost:9009`,
+      jsonData,
       {
         headers: {
           "Content-Type": "application/json",
@@ -39,11 +46,10 @@ export async function POST(req: NextRequest, { params }: { params: { id: string;
 
     console.log(response.data); // Handle the response data
 
-    const node = await updateNodeData({ node_id: nodeId });
-    console.log("key added", formData);
+    // const node = await updateNodeData({ node_id: nodeId });
 
     return sendDataResponse({
-      node: node?.[0],
+      node: node,
     });
     // eslint-disable-next-line prettier/prettier, @typescript-eslint/no-explicit-any
   } catch (error: any) {

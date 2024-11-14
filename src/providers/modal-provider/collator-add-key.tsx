@@ -16,6 +16,8 @@ import { useRouter } from "next/navigation";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import { hexToU8a, isHex } from "@polkadot/util";
+import { isAddress, mnemonicValidate } from "@polkadot/util-crypto";
 import { useModalStore } from "@/store/modal";
 import { ParachainsServiceError } from "@/api-client/types";
 import { Button } from "@/lib/components/Button";
@@ -36,8 +38,25 @@ import { Input } from "@/lib/components/Form";
 import { Typography } from "@/lib/components/Typography";
 
 const collatorAddKeySchema = yup.object({
-  seed: yup.string().required(),
-  pubKey: yup.string().required(),
+  seed: yup
+    .string()
+    .required()
+    .test({
+      test: (seedPhrase: string) => {
+        return mnemonicValidate(seedPhrase);
+      },
+      message: "invalid seed phrase",
+    }),
+  pubKey: yup
+    .string()
+    .required()
+    .test({
+      test: (publicKey: string) => {
+        // Ensure it's a hex string, has 64 characters (32 bytes) and that the length is correct when converted to U8 array
+        return isAddress(publicKey);
+      },
+      message: "invalid public key",
+    }),
 });
 
 export type CollatorAddKeySchemaType = yup.InferType<typeof collatorAddKeySchema>;
@@ -125,6 +144,7 @@ const CollatorAddKey = () => {
                   <Typography variant="subtitle">Public Key</Typography>
                   <Input
                     placeholder="Enter Your Public Key"
+                    {...formData.register("pubKey")}
                     inputContainerProps={{ className: "col-span-12" }}
                     type="text"
                     isRequired
