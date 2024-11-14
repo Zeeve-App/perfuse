@@ -12,7 +12,7 @@
 import * as yup from "yup";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import { REGEX_NODE_NAME } from "@/constants/regex";
-import { networkEnvType, AuthenticationMethods } from "@/constants/create-network";
+import { networkEnvType, AuthenticationMethods, templateOption } from "@/constants/create-network";
 
 export const configureNetworkValidationSchema = yup
   .object({
@@ -140,7 +140,7 @@ export const deployNetworkValidationSchema = yup
       .required("Token name is required")
       .matches(/^[A-Za-z]+$/, "Token name can only contains alphabets, no other character"),
     template: yup.object({
-      value: yup.string().required("Select a template."),
+      value: yup.string<(typeof templateOption)[number]["value"]>().required("Select a template."),
     }),
     paraId: yup.number().required(),
     decimalValue: yup.number().required(),

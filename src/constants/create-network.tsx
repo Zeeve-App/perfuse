@@ -69,10 +69,16 @@ export const envAndRelayChainOption = [
   },
 ];
 
-export const templateOption: { label: string; value: string; isDisabled: boolean; icon?: JSX.Element }[] = [
+export const templateOption = [
+  // {
+  //   label: "Substrate",
+  //   value: "substrate",
+  //   isDisabled: true,
+  //   icon: <SvgSubstrate />,
+  // },
   {
-    label: "Substrate",
-    value: "substrate",
+    label: "Standard",
+    value: "standard",
     isDisabled: false,
     icon: <SvgSubstrate />,
   },
@@ -86,8 +92,8 @@ export const templateOption: { label: string; value: string; isDisabled: boolean
       </div>
     ),
   },
-  // { label: "Contracts", value: "contracts", isDisabled: true, icon: <SvgSubstrate /> },
-  // { label: "Assets", value: "assets", isDisabled: true, icon: <SvgSubstrate /> },
+  { label: "Contracts", value: "contracts", isDisabled: true, icon: <SvgSubstrate /> },
+  { label: "Assets", value: "assets", isDisabled: true, icon: <SvgSubstrate /> },
   {
     label: "Custom",
     value: "custom",
@@ -98,7 +104,7 @@ export const templateOption: { label: string; value: string; isDisabled: boolean
       </div>
     ),
   },
-];
+] as const;
 
 export const networkEnvOption: { label: string; value: networkEnvType; isDisabled?: boolean; tooltipText?: string }[] =
   [

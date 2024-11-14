@@ -21,6 +21,15 @@ import { FileUpload } from "@/lib/components/Form/FileUpload";
 import { Spinner } from "@/lib/components/Spinner";
 import SvgArrowUpFromBucket from "@/lib/icons/arrows/outline/ArrowUpFromBucket";
 
+const templatesMap: Record<(typeof templateOption)[number]["value"], string> = {
+  // substrate: "standard/stable2409/standard.json",
+  evm_frontier: "evm_frontier/stable2407/evm_frontier.json",
+  standard: "standard/stable2409/standard.json",
+  custom: "",
+  assets: "assets/stable2409/assets.json",
+  contracts: "contracts/stable2409/contracts.json",
+};
+
 const DeployStep3 = forwardRef<
   HTMLDivElement,
   {
@@ -48,9 +57,9 @@ const DeployStep3 = forwardRef<
   });
 
   useEffect(() => {
-    if (formState.template?.value === "substrate" || formState.template?.value === "evm_frontier") {
+    if (formState.template?.value !== "custom") {
       axios
-        .get(`/template/stable2407/${formState.template?.value}.json`)
+        .get(`/template/${templatesMap[formState.template?.value]}`)
         .then((res) => res.data)
         .then((e) => {
           formData.setValue("chainSpecFile.contents", e);
