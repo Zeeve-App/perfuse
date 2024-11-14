@@ -45,6 +45,7 @@ chain_spec="$parachain_dir/raw-parachain-chainspec.json"
 RELAYCHAIN_DIR="${RELAYCHAIN_DIR:-/home/perfuse/relaychain}"
 relay_chain_spec="$RELAYCHAIN_DIR/paseo_relay_chain_spec_raw.json"
 extra_params="--unsafe-rpc-external --rpc-methods unsafe"
+network="$NETWORK_TYPE"
 
 source $SCRIPT_DIR/generate_keys.sh
 setup_sidecar() {
@@ -118,7 +119,7 @@ create_service() {
       --collator \
       --node-key-file $parachain_key_dir/collator_node_key_$count.txt \
       -- \
-      --chain $relay_chain_spec \
+      --chain $network \
       --sync warp \
       --port $((port + 2022)) \
       --rpc-port $((rpc_port + 2022)) "
@@ -127,7 +128,7 @@ create_service() {
       --rpc-max-connections 50000 \
       --state-pruning archive \
       -- \
-      --chain $relay_chain_spec \
+      --chain $network \
       --sync warp \
       --state-pruning 1000 \
       --port $((port + 2022)) \
