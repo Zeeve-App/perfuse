@@ -72,14 +72,14 @@ const DeployStep3 = forwardRef<
 
       const collatorAddresses = runtimeGenesis?.patch?.balances.balances;
 
-      collatorAddresses?.forEach((col, idx) => {
-        const balance = runtimeGenesis?.patch?.balances?.balances?.forEach((e) => {
-          const address = e[0].toString();
-          const balance = e[1].toString();
+      updateAccount(0, {
+        address: collatorAddresses?.[0]?.[0].toString() ?? "",
+        balance: parseInt(collatorAddresses?.[0]?.[1].toString() ?? "0").toString(),
+      });
 
-          updateAccount(idx, { address, balance });
-        });
-        console.log({ address: col, balance });
+      updateAccount(1, {
+        address: collatorAddresses?.[1]?.[0].toString() ?? "",
+        balance: parseInt(collatorAddresses?.[1]?.[1].toString() ?? "0").toString(),
       });
 
       console.log(chainSpec);
@@ -174,6 +174,10 @@ const DeployStep3 = forwardRef<
       balance: "",
     });
   }, []);
+
+  useEffect(() => {
+    console.log(formData.formState.errors);
+  }, [formState]);
 
   return (
     <div tabIndex={2} ref={ref} className={tx(className, "bg-theme-foreground rounded-lg")}>
@@ -392,23 +396,26 @@ const DeployStep3 = forwardRef<
                       key={e.id + "address"}
                       helper={{
                         status: "error",
-                        text: formData.formState.errors.ss58Format?.message?.toString(),
+                        text:
+                          formData.formState.errors.accounts?.message?.toString() ||
+                          formData.formState.errors.accounts?.[idx]?.address?.message?.toString() ||
+                          formData.formState.errors.accounts?.[idx]?.message?.toString(),
                       }}
                     >
                       <Label>Address {idx + 1}</Label>
-                      <Input placeholder="DOT" {...formData.register(`accounts.${idx}.address`)} isRequired />
+                      <Input placeholder="Address" {...formData.register(`accounts.${idx}.address`)} isRequired />
                     </FormField>
                     <FormField
                       className="col-span-5"
                       key={e.id + "balance"}
                       helper={{
                         status: "error",
-                        text: formData.formState.errors.ss58Format?.message?.toString(),
+                        text: formData.formState.errors.accounts?.[idx]?.balance?.message?.toString(),
                       }}
                     >
                       <Label>Balance {idx + 1}</Label>
 
-                      <Input placeholder="DOT" {...formData.register(`accounts.${idx}.balance`)} isRequired />
+                      <Input placeholder="Balance" {...formData.register(`accounts.${idx}.balance`)} isRequired />
                     </FormField>
                     {/* <FormField className="col-span-1">
                       <Label>&nbsp;</Label>

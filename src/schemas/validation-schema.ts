@@ -107,6 +107,22 @@ export const configureRelayChainValidationSchema = yup
   })
   .required();
 
+// Custom method to check for unique addresses
+const uniqueAddresses = (accounts: Array<{ address: string; balance: string }>): boolean => {
+  if (accounts.length <= 1) return true; // Empty or single item arrays are unique by default
+
+  const seenAddresses = new Set<string>();
+
+  for (const account of accounts) {
+    if (seenAddresses.has(account.address)) {
+      return false; // Duplicate found
+    }
+    seenAddresses.add(account.address);
+  }
+
+  return true; // All addresses are unique
+};
+
 export const deployNetworkValidationSchema = yup
   .object({
     networkEnvironment: yup.object({
@@ -136,12 +152,19 @@ export const deployNetworkValidationSchema = yup
       ws: yup.boolean(),
     }),
     sidecar: yup.boolean(),
-    accounts: yup.array(
-      yup.object({
-        address: yup.string().required(),
-        balance: yup.string().required(),
-      }),
-    ),
+    accounts: yup
+      .array(
+        yup.object({
+          address: yup.string().required(),
+          balance: yup.string().required(),
+        }),
+      )
+      .test(
+        "unique-addresses",
+        "All addresses must be unique",
+        (value) => Array.isArray(value) && uniqueAddresses(value),
+      )
+      .required(),
     chainSpecFile: yup
       .object({
         contents: yup.mixed<ChainSpecFileType>().required("Chain spec file is required."),
