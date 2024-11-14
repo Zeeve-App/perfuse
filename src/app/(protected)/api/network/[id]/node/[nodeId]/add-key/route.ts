@@ -10,13 +10,34 @@
  */
 
 import { NextRequest } from "next/server";
+import axios from "axios";
 import { updateNodeData } from "@/db-queries";
 import { sendDataResponse, sendErrorResponse } from "@/app/(protected)/api/_helpers/response";
+import { derivePublicSessionKey } from "@/utils/wallet";
 
 export async function POST(req: NextRequest, { params }: { params: { id: string; nodeId: string } }) {
   try {
-    const formData = await req.json();
+    const formData: { key: string } = await req.json();
     const nodeId = params.nodeId;
+
+    const pubKey = derivePublicSessionKey(formData.key);
+
+    const response = await axios.post(
+      "http://localhost:8845",
+      {
+        jsonrpc: "2.0",
+        method: "author_insertKey",
+        params: ["aura", formData.key, pubKey],
+        id: 1,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    console.log(response.data); // Handle the response data
 
     const node = await updateNodeData({ node_id: nodeId });
     console.log("key added", formData);

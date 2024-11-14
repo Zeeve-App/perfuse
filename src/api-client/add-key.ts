@@ -14,7 +14,8 @@ import { withBasePath } from "@/utils/helpers";
 import { backendAxiosInstance } from "@/utils/axios";
 
 type ApiRequest = {
-  key: string;
+  seed: string;
+  pubKey: string;
 };
 type ApiResponse = {
   success: boolean;

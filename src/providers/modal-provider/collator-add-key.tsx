@@ -28,16 +28,16 @@ import {
   ModalText,
   ModalFooter,
 } from "@/lib/components/Modal";
-import { StatusIcon } from "@/lib/components/StatusIcon";
 import { useToast } from "@/lib/components/Toast";
 import useApi from "@/api-client";
 import { Card } from "@/lib/components/Card";
 import { FormField } from "@/lib/components/Form/FormField";
-import { Heading } from "@/lib/components/Heading";
 import { Input } from "@/lib/components/Form";
+import { Typography } from "@/lib/components/Typography";
 
 const collatorAddKeySchema = yup.object({
-  key: yup.string(),
+  seed: yup.string().required(),
+  pubKey: yup.string().required(),
 });
 
 export type CollatorAddKeySchemaType = yup.InferType<typeof collatorAddKeySchema>;
@@ -62,10 +62,10 @@ const CollatorAddKey = () => {
     try {
       console.log(data, formData);
 
-      if (data.addKey && formData.key) {
+      if (data.addKey) {
         setLoading(true);
         console.log(formData);
-        apis.addKey(data.addKey?.networkId, data.addKey?.nodeId, { key: formData.key });
+        apis.addKey(data.addKey?.networkId, data.addKey?.nodeId, formData);
         router.refresh();
       } else {
         console.log("undefined values in important variables");
@@ -92,25 +92,41 @@ const CollatorAddKey = () => {
     <Modal isOpen={isModalOpen} handleClose={onClose} shouldBackdropDismiss={false}>
       <ModalOverlay />
       <form action="" className="" onSubmit={formData.handleSubmit(onSubmit)}>
-        <ModalContent>
-          <ModalBody>
+        <ModalContent className="max-h-screen w-full max-w-3xl overflow-y-auto">
+          <ModalBody className="grid grid-cols-12">
             {/* <StatusIcon status="info" /> */}
-            <div className="flex flex-col gap-y-1">
-              <ModalTitle>Add Key</ModalTitle>
+            <div className="col-span-12 flex flex-col gap-y-1">
+              <ModalTitle className="text-xl">Add Key</ModalTitle>
               <ModalText>Add Key in the collator</ModalText>
-              <Card variant={"grid-no-pad"} className="col-span-12 lg:col-span-6 ">
+              <Card variant={"grid-no-pad"} className="col-span-12 lg:col-span-12 ">
                 <FormField
-                  className="col-span-12"
+                  className="col-span-12 lg:col-span-6"
                   helper={{
                     status: "error",
-                    text: formData.formState.errors.key?.message?.toString(),
+                    text: formData.formState.errors.seed?.message?.toString(),
                   }}
                 >
+                  <Typography variant="subtitle">Seed</Typography>
                   <Input
-                    placeholder="Enter Your Key"
-                    {...formData.register("key")}
+                    placeholder="Enter Your Seed"
+                    {...formData.register("seed")}
                     inputContainerProps={{ className: "col-span-12" }}
                     type="password"
+                    isRequired
+                  />
+                </FormField>
+                <FormField
+                  className="col-span-12 lg:col-span-6"
+                  helper={{
+                    status: "error",
+                    text: formData.formState.errors.pubKey?.message?.toString(),
+                  }}
+                >
+                  <Typography variant="subtitle">Public Key</Typography>
+                  <Input
+                    placeholder="Enter Your Public Key"
+                    inputContainerProps={{ className: "col-span-12" }}
+                    type="text"
                     isRequired
                   />
                 </FormField>
