@@ -41,32 +41,24 @@ export default function DeploySummary({
     if (chainSpec.id) chainSpec.id = data.id;
     if (chainSpec.properties.ss58Format) chainSpec.properties.ss58Format = data.ss58Format;
     const runtimeGenesis = chainSpec.genesis.runtimeGenesis;
-    const collatorAddresses = runtimeGenesis?.patch?.balances.balances;
 
-    collatorAddresses[0] = [data.accounts?.[0]?.address ?? "", parseInt(data.accounts?.[0].balance ?? "0")];
-    collatorAddresses[1] = [data.accounts?.[1]?.address ?? "", parseInt(data.accounts?.[1].balance ?? "0")];
+    runtimeGenesis.patch.balances.balances =
+      data.accounts?.map((account) => [account?.address ?? "", parseInt(account?.balance ?? "0")]) || [];
+
+    runtimeGenesis.patch.collatorSelection.invulnerables = data.accounts.map((e) => e.address);
 
     runtimeGenesis.patch.session = {
-      keys: [
-        [
-          data.accounts?.[0]?.address ?? "",
-          data.accounts?.[0]?.address ?? "",
-          {
-            aura: data.accounts?.[0]?.address ?? "",
-          },
-        ],
-        [
-          data.accounts?.[1]?.address ?? "",
-          data.accounts?.[1]?.address ?? "",
-          {
-            aura: data.accounts?.[1]?.address ?? "",
-          },
-        ],
-      ],
+      keys: data.accounts.map((e) => [
+        e.address,
+        e.address,
+        {
+          aura: e.sessionKey,
+        },
+      ]),
     };
 
     runtimeGenesis.patch.sudo = {
-      key: data.accounts?.[0]?.address ?? "",
+      key: data.sudoKey ?? "",
     };
 
     // if (chainSpec.) chainSpec.properties.tokenSymbol = data.tokenName;

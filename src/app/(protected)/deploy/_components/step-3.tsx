@@ -12,8 +12,7 @@ import { tx } from "@/utils/shared";
 import { Heading } from "@/lib/components/Heading";
 import { FormField } from "@/lib/components/Form/FormField";
 import { Checkbox, Input, Label, Switch } from "@/lib/components/Form";
-import { Button, IconButton } from "@/lib/components/Button";
-import SvgTrash from "@/lib/icons/essential/outline/Trash";
+import { Button } from "@/lib/components/Button";
 import HTTP_STATUS from "@/constants/http";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import useApi from "@/api-client";
@@ -29,6 +28,20 @@ const templatesMap: Record<(typeof templateOption)[number]["value"], string> = {
   assets: "assets/stable2409/assets.json",
   contracts: "contracts/stable2409/contracts.json",
 };
+
+function getSessionKey(
+  runtimeGenesis: ChainSpecFileType["genesis"]["runtimeGenesis"],
+  collatorAddresses: string,
+): string {
+  const aura = runtimeGenesis.patch.session.keys.find((e) => {
+    console.log({ e });
+
+    return typeof e[0] === "string" && e[0] === collatorAddresses;
+  });
+  console.log({ aura });
+
+  return typeof aura?.[2] !== "string" ? aura?.[2]?.aura ?? "" : "";
+}
 
 const DeployStep3 = forwardRef<
   HTMLDivElement,
@@ -78,17 +91,20 @@ const DeployStep3 = forwardRef<
       formData.setValue("protocolId", chainSpec.protocolId ?? "m2perfuse");
       formData.setValue("id", chainSpec.id ?? "new_testnet");
       formData.setValue("ss58Format", chainSpec.properties?.ss58Format ?? 42);
+      formData.setValue("sudoKey", runtimeGenesis.patch.sudo.key ?? "");
 
       const collatorAddresses = runtimeGenesis?.patch?.balances.balances;
 
       updateAccount(0, {
         address: collatorAddresses?.[0]?.[0].toString() ?? "",
+        sessionKey: getSessionKey(runtimeGenesis, collatorAddresses?.[0]?.[0].toString() ?? ""),
         balance: parseInt(collatorAddresses?.[0]?.[1].toString() ?? "0").toString(),
       });
 
       updateAccount(1, {
         address: collatorAddresses?.[1]?.[0].toString() ?? "",
         balance: parseInt(collatorAddresses?.[1]?.[1].toString() ?? "0").toString(),
+        sessionKey: getSessionKey(runtimeGenesis, collatorAddresses?.[1]?.[0].toString() ?? ""),
       });
 
       console.log(chainSpec);
@@ -177,10 +193,12 @@ const DeployStep3 = forwardRef<
     appendAccount({
       address: "",
       balance: "",
+      sessionKey: "",
     });
     appendAccount({
       address: "",
       balance: "",
+      sessionKey: "",
     });
   }, []);
 
@@ -394,15 +412,26 @@ const DeployStep3 = forwardRef<
                 </Heading>
                 <Input placeholder="Id" {...formData.register("id")} isRequired />
               </FormField>
+              <FormField
+                className="col-span-6"
+                helper={{
+                  status: "error",
+                  text: formData.formState.errors.sudoKey?.message?.toString(),
+                }}
+              >
+                <Heading as="h5" className="">
+                  Sudo Key
+                </Heading>
+                <Input placeholder="Id" {...formData.register("sudoKey")} isRequired />
+              </FormField>
               <Heading as="h5" className="col-span-12">
                 Accounts
               </Heading>
               {accountFields.map((e, idx) => {
                 return (
-                  <>
+                  <div key={idx + e.address} className="col-span-12 grid grid-cols-12 gap-3">
                     <FormField
-                      className="col-span-7"
-                      key={e.id + "address"}
+                      className="col-span-6 lg:col-span-4"
                       helper={{
                         status: "error",
                         text:
@@ -415,8 +444,19 @@ const DeployStep3 = forwardRef<
                       <Input placeholder="Address" {...formData.register(`accounts.${idx}.address`)} isRequired />
                     </FormField>
                     <FormField
-                      className="col-span-5"
-                      key={e.id + "balance"}
+                      className="col-span-6 lg:col-span-4"
+                      helper={{
+                        status: "error",
+                        text:
+                          formData.formState.errors.accounts?.message?.toString() ||
+                          formData.formState.errors.accounts?.[idx]?.sessionKey?.message?.toString(),
+                      }}
+                    >
+                      <Label>Session Key {idx + 1}</Label>
+                      <Input placeholder="Address" {...formData.register(`accounts.${idx}.sessionKey`)} isRequired />
+                    </FormField>
+                    <FormField
+                      className="col-span-6 lg:col-span-4"
                       helper={{
                         status: "error",
                         text: formData.formState.errors.accounts?.[idx]?.balance?.message?.toString(),
@@ -439,7 +479,7 @@ const DeployStep3 = forwardRef<
                         <SvgTrash fontSize={30} />
                       </IconButton>
                     </FormField> */}
-                  </>
+                  </div>
                 );
               })}
               <div className="col-span-12 flex justify-end">
@@ -452,6 +492,7 @@ const DeployStep3 = forwardRef<
                     appendAccount({
                       address: "",
                       balance: "",
+                      sessionKey: "",
                     });
                   }}
                 >

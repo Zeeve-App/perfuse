@@ -128,6 +128,7 @@ export const deployNetworkValidationSchema = yup
     networkEnvironment: yup.object({
       value: yup.string<networkEnvType>().required("Select a network environment."),
     }),
+    sudoKey: yup.string().required(),
     relayChain: yup.object({
       value: yup.string().required("Select a relay chain."),
     }),
@@ -157,13 +158,13 @@ export const deployNetworkValidationSchema = yup
         yup.object({
           address: yup.string().required(),
           balance: yup.string().required(),
+          sessionKey: yup.string().required(),
         }),
       )
-      .test(
-        "unique-addresses",
-        "All addresses must be unique",
-        (value) => Array.isArray(value) && uniqueAddresses(value),
-      )
+      .test({
+        message: "All addresses must be unique",
+        test: (value) => Array.isArray(value) && uniqueAddresses(value),
+      })
       .required(),
     chainSpecFile: yup
       .object({
