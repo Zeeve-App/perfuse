@@ -35,6 +35,7 @@ export const envAndRelayChainOption = [
     environment: {
       label: "Testnet",
       value: "testnet",
+      isDisabled: false,
     },
     relayChainOption: [
       {

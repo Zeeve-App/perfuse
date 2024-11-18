@@ -39,7 +39,7 @@ const DeployStep1 = forwardRef<
               {...formData.register("networkEnvironment.value")}
               isChecked={isChecked}
               hideRadioCircle
-              isDisabled={e.environment.isDisabled}
+              isDisabled={e.environment?.isDisabled}
             >
               {e.environment.label}
             </RadioCard>
