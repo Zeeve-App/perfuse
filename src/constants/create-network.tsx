@@ -52,16 +52,16 @@ export const envAndRelayChainOption = [
     environment: {
       label: "Mainnet",
       value: "mainnet",
-      isDisabled: true,
+      isDisabled: false,
     },
     relayChainOption: [
       {
-        isDisabled: true,
+        isDisabled: false,
         label: "Kusama",
         value: "kusama",
       },
       {
-        isDisabled: true,
+        isDisabled: false,
         label: "Polkadot",
         value: "polkadot",
       },
