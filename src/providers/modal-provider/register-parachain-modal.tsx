@@ -171,7 +171,7 @@ const RegisterParachainInfoModal = () => {
               <FileCard name={"wasm"} checksum={checksum?.wasm} />
               <FileCard name={"genesis"} checksum={checksum?.genesis} />
             </div>
-            <div className="grid grid-cols-12 gap-3 py-4 lg:gap-y-6">
+            {/* <div className="grid grid-cols-12 gap-3 py-4 lg:gap-y-6">
               <KeyValuePairInput
                 label={"Secret phrase"}
                 value={toShortString("swing load season two jealous fix car prosper grow tattoo banner beef", 5, 5)}
@@ -191,7 +191,7 @@ const RegisterParachainInfoModal = () => {
                 shouldAllowCopy
                 copyText="5CLoLmrkX2AWarCLycCxe5RPy7tiMrHedZjipZTiyH87eZgY"
               />
-            </div>
+            </div> */}
             {/* <div className="p-2">
               <Heading as="h6" className="text-brand-dark">
                 1. To Reserve ParaId
