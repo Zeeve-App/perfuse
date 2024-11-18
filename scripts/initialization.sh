@@ -27,6 +27,7 @@ else
   exit 1
 fi
 
+#install dependencies and tools
 install_tools() {
     if ! command -v jq &> /dev/null; then
         echo "jq is not installed. Installing..."
