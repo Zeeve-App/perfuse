@@ -151,7 +151,7 @@ const createEnvFile = (data: CreatePerfuseApiPayload, apiKey?: string) => {
   }
   const envFile =
     `POLKA_VERSION=${"stable2407"}\n` +
-    `NETWORK_TYPE=${data.network.network_env.toUpperCase() ?? ""}\n` +
+    `NETWORK_TYPE=${data.network.network_relay_chain_type.toUpperCase() ?? ""}\n` +
     `COL_NAME_1=${collatorNodes[0]?.node_name ?? ""}\n` +
     `COL_NAME_2=${collatorNodes[1]?.node_name ?? ""}\n` +
     `RPC_NAME=${rpcNode?.node_name ?? ""}\n` +

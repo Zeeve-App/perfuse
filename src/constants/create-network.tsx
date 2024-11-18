@@ -77,7 +77,7 @@ export const templateOption = [
   //   icon: <SvgSubstrate />,
   // },
   {
-    label: "Standard",
+    label: "Substrate",
     value: "standard",
     isDisabled: false,
     icon: <SvgSubstrate />,
