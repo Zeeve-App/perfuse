@@ -194,7 +194,7 @@ const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
           {/* Notifications */}
           <NotificationsWebSocketContextProvider url={_notificationsWSURL}>
             {/* Notifications bell */}
-            <NotificationBell handleOpen={handleNotificationDrawerOpen} />
+            {/* <NotificationBell handleOpen={handleNotificationDrawerOpen} /> */}
             {/* Notifications drawer */}
             <NotificationDrawer isOpen={isNotificationDrawerOpen} handleClose={handleNotificationDrawerClose} />
           </NotificationsWebSocketContextProvider>
