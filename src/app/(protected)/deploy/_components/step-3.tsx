@@ -92,6 +92,7 @@ const DeployStep3 = forwardRef<
       formData.setValue("id", chainSpec.id ?? "new_testnet");
       formData.setValue("ss58Format", chainSpec.properties?.ss58Format ?? 42);
       formData.setValue("sudoKey", runtimeGenesis.patch.sudo.key ?? "");
+      formData.setValue("id", formState.chainName + "_" + formState.relayChain.value.toLowerCase());
 
       const collatorAddresses = runtimeGenesis?.patch?.balances.balances;
 

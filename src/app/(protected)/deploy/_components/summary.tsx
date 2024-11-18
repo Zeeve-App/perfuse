@@ -40,6 +40,8 @@ export default function DeploySummary({
     if (chainSpec.protocolId) chainSpec.protocolId = data.protocolId;
     if (chainSpec.id) chainSpec.id = data.id;
     if (chainSpec.properties.ss58Format) chainSpec.properties.ss58Format = data.ss58Format;
+    chainSpec.name = data.chainName;
+    chainSpec.relay_chain = data.relayChain.value.toLowerCase();
     const runtimeGenesis = chainSpec.genesis.runtimeGenesis;
 
     runtimeGenesis.patch.balances.balances =
@@ -85,8 +87,20 @@ export default function DeploySummary({
           node_https_enabled: data.rpcNode.http ?? false,
           node_wss_enabled: data.rpcNode.ws ?? false,
         },
-        { node_name: "collator_1", node_rpc_cors: "*", node_type: "collator", node_address: "", node_balance: 0 },
-        { node_name: "collator_2", node_rpc_cors: "*", node_type: "collator", node_address: "", node_balance: 0 },
+        {
+          node_name: "collator_1",
+          node_rpc_cors: "*",
+          node_type: "collator",
+          node_address: data.accounts?.[0]?.sessionKey,
+          node_balance: parseInt(data.accounts?.[0]?.balance),
+        },
+        {
+          node_name: "collator_2",
+          node_rpc_cors: "*",
+          node_type: "collator",
+          node_address: data.accounts?.[1]?.sessionKey,
+          node_balance: parseInt(data.accounts?.[1]?.balance),
+        },
       ],
     };
 

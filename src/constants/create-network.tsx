@@ -67,7 +67,7 @@ export const envAndRelayChainOption = [
       },
     ],
   },
-];
+] as const;
 
 export const templateOption = [
   // {

@@ -8,6 +8,14 @@ import { DropdownMenu, DropdownMenuButton, DropdownMenuList } from "../DropdownM
 import { useSelectedAccount } from "./use-wallet";
 import { toShortString } from "@/utils/helpers";
 import { useToggle } from "@/hooks";
+import { useNetworkStore } from "@/store/network";
+import { envAndRelayChainOption, networkEnvType, relayChainOption } from "@/constants/create-network";
+
+const relayChainRpc: Record<(typeof envAndRelayChainOption)[number]["relayChainOption"][number]["value"], string> = {
+  paseo: "wss://paseo.rpc.amforc.com:443", // Placeholder RPC endpoint for the 'paseo' chain
+  kusama: "wss://kusama-rpc.polkadot.io", // RPC endpoint for Kusama mainnet
+  polkadot: "wss://rpc.polkadot.io", // RPC endpoint for Polkadot mainnet
+};
 
 const BalanceChecker = () => {
   const [accounts, setAccounts] = useState<(InjectedAccountWithMeta & { balance: string })[]>([]);
@@ -22,7 +30,11 @@ const BalanceChecker = () => {
     handleClose: handleAddressDropdownClose,
   } = useToggle();
 
+  const network = useNetworkStore((e) => e.networkInfo);
+
   useEffect(() => {
+    console.log(network);
+
     const initialize = async () => {
       // Enable Polkadot extension
       const extensions = await web3Enable("YourApp");
@@ -35,7 +47,16 @@ const BalanceChecker = () => {
       const allAccounts = await web3Accounts();
 
       // Connect to Polkadot
-      const provider = new WsProvider("wss://rpc.polkadot.io"); // Change to your network if needed
+      let provider = new WsProvider("wss://rpc.polkadot.io");
+      if (network.data?.relayChainType)
+        provider = new WsProvider(
+          Object.keys(relayChainRpc).includes(network.data.relayChainType ?? "")
+            ? relayChainRpc[network.data.relayChainType as keyof typeof relayChainRpc]
+            : "wss://rpc.polkadot.io",
+        ); // Change to your network if needed
+
+      console.log("endpoint", provider.endpoint);
+
       const api = await ApiPromise.create({ provider });
 
       // Set the currency symbol from the chain registry
@@ -58,7 +79,7 @@ const BalanceChecker = () => {
     };
 
     initialize();
-  }, []);
+  }, [network]);
 
   return (
     <>
