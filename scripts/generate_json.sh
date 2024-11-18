@@ -35,12 +35,6 @@ mkdir -p /home/perfuse/{relaychain,parachain}
 
 # Functions
 
-build_relaychain_spec() {
-    echo "Building relay chain spec..."
-    wget -O "$RELAYCHAIN_DIR/paseo_relay_chain_spec_raw.json" https://github.com/paseo-network/paseo-chain-specs/raw/refs/heads/main/paseo.raw.json &> /dev/null
-    echo "Relay chain spec created."
-}
-
 build_raw_chainspec() {
     echo "Building raw chain spec..."
     sudo cp "$CHAINSPEC_FILE" "$PARACHAIN_DIR/plain-parachain-chainspec.json"
@@ -76,10 +70,8 @@ generate_genesis_state_wasm() {
     echo "Genesis state and WASM files created."
 }
 
-# Step 1: Build Relay Chain Spec
-build_relaychain_spec
 
-# Step 2: Modify or Build Chain Spec
+# Step 1: Modify or Build Chain Spec
 if [ -f "$CHAINSPEC_FILE" ]; then  # Check if chainspec file exists
     build_raw_chainspec
 else
@@ -87,5 +79,5 @@ else
     exit 1
 fi
 
-# Step 3: Create Genesis and WASM
+# Step 2: Create Genesis and WASM
 generate_genesis_state_wasm
