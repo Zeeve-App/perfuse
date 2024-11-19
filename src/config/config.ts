@@ -16,7 +16,7 @@ dotenv.config();
 const rawConfig = {
   server: {
     dbLocation: process.env.SQLITE_DB_LOCATION || "./perfuse.sqlite",
-    binaryFilePathForCopy: process.env.BINARY_FILE_PATH_FOR_COPY || "./perfuse/bin.bin",
+    binaryFilePathForCopy: process.env.BINARY_FILE_PATH_FOR_COPY || "./perfuse/polkadot-parachain",
     chainSpecFilePathForCopy: process.env.CHAIN_SPEC_FILE_PATH_FOR_COPY || "./perfuse/chainspec.json",
     envFilePathForCopy: process.env.ENV_FILE_PATH_FOR_COPY || "./perfuse/.env",
     jwtSecret: process.env.JWT_SECRET,
@@ -34,9 +34,9 @@ const rawConfig = {
 const envSchema = yup.object({
   server: yup.object({
     dbLocation: yup.string().required("db file location is required"),
-    binaryFilePathForCopy: yup.string().required("binary path location is required"),
-    chainSpecFilePathForCopy: yup.string().required("chain spec path location is required"),
-    envFilePathForCopy: yup.string().required(),
+    binaryFilePathForCopy: yup.string(),
+    chainSpecFilePathForCopy: yup.string(),
+    envFilePathForCopy: yup.string(),
     jwtSecret: yup.string().required(),
     jwtExpiresIn: yup.number().required(),
     defaultEmail: yup.string().required(),
@@ -45,7 +45,7 @@ const envSchema = yup.object({
   client: yup.object({
     host: yup.string().required(),
     basePath: yup.string(),
-    explorer: yup.string().required(),
+    explorer: yup.string(),
   }),
 });
 
