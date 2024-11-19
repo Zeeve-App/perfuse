@@ -76,10 +76,6 @@ get_bootnode_id() {
     echo "$bootnode_id"
 }
 
-if [ $TEMPLATE = "custom" ] ; then
-sudo chmod +x $SCRIPT_DIR/../perfuse/bin.bin
-sudo mv $SCRIPT_DIR/../perfuse/bin.bin /usr/local/bin/polkadot-parachain
-fi
 
 # Function to create a service
 create_service() {
