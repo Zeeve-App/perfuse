@@ -34,9 +34,9 @@ const rawConfig = {
 const envSchema = yup.object({
   server: yup.object({
     dbLocation: yup.string().required("db file location is required"),
-    binaryFilePathForCopy: yup.string(),
-    chainSpecFilePathForCopy: yup.string(),
-    envFilePathForCopy: yup.string(),
+    binaryFilePathForCopy: yup.string().required(),
+    chainSpecFilePathForCopy: yup.string().required(),
+    envFilePathForCopy: yup.string().required(),
     jwtSecret: yup.string().required(),
     jwtExpiresIn: yup.number().required(),
     defaultEmail: yup.string().required(),
@@ -45,7 +45,7 @@ const envSchema = yup.object({
   client: yup.object({
     host: yup.string().required(),
     basePath: yup.string(),
-    explorer: yup.string(),
+    explorer: yup.string().required(),
   }),
 });
 
