@@ -13,8 +13,6 @@
 
 import React from "react";
 import { ChainSpecFileType } from "@/types/chain-spec";
-import { Heading } from "@/lib/components/Heading";
-import KeyValuePairInput from "@/lib/components/utils/key-value-pair-input";
 import { Card } from "@/lib/components/Card";
 import { Typography } from "@/lib/components/Typography";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";

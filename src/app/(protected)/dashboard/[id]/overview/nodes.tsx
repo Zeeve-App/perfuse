@@ -13,14 +13,12 @@
 import React from "react";
 import Link from "next/link";
 import NetworkStatus from "../_components/network-status";
-import { Button, IconButton } from "@/lib/components/Button";
+import { Button } from "@/lib/components/Button";
 import { Heading } from "@/lib/components/Heading";
-import { ColumnDef, ReactTable, createColumnHelper } from "@/lib/components/ReactTable";
+import { ColumnDef, createColumnHelper } from "@/lib/components/ReactTable";
 import { NodeDbRow } from "@/db-queries";
-import SvgPlusSquare from "@/lib/icons/essential/outline/PlusSquare";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
 import { Typography } from "@/lib/components/Typography";
-import { Badge } from "@/lib/components/Badge/Badge";
 import { formatEndpoint, toShortString, withBasePath } from "@/utils/helpers";
 
 const columnHelper = createColumnHelper<NodeDbRow>();
@@ -37,11 +35,11 @@ const nodeTableColumns: ColumnDef<NodeDbRow, any>[] = [
   }),
   columnHelper.accessor("node_id", {
     header: "Status",
-    cell: (_info) => <NetworkStatus className="text-xs" />,
+    cell: () => <NetworkStatus className="text-xs" />,
   }),
 ];
 
-const Nodes = ({ isLoading, nodes }: { isLoading: boolean; nodes: NodeDbRow[] }) => {
+const Nodes = ({ nodes }: { isLoading: boolean; nodes: NodeDbRow[] }) => {
   const rowPerPage = 3;
   console.log(nodes);
 

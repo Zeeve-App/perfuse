@@ -10,9 +10,8 @@
  */
 
 "use client";
-import React, { Fragment, useEffect, useMemo, useRef } from "react";
-import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import React, { Fragment, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import {
   Sidebar,
   SidebarItemGroup,
@@ -24,14 +23,11 @@ import {
   SidebarProps,
 } from "../sidebar/sub-components";
 import { ITEMS } from "../../../constants/sidebar";
-import { ZeeveHeaderDropdownMenu } from "../zeeve-header/Header";
-import { DropdownMenu } from "../DropdownMenu";
 import { ProfileDropDownMenu } from "../Header/profile-menu";
 import { IconButton } from "../Button";
 import ZeeveSidebarItemProps from "./type";
 import { tx } from "@/utils/shared";
-import { isActive, withBasePath } from "@/utils/helpers";
-import { useToggle } from "@/hooks";
+import { isActive } from "@/utils/helpers";
 import SvgXMarkSquare from "@/lib/icons/essential/outline/XMarkSquare";
 import SvgMoon from "@/lib/icons/essential/outline/moon";
 import useDarkMode from "@/hooks/use-dark-mode";

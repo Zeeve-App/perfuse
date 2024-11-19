@@ -2,8 +2,6 @@ import React from "react";
 import NetworkStatus from "./network-status";
 import { NodeTableRowActions } from "./node-table";
 import { NodeDbRow } from "@/db-queries";
-import { CopyButton } from "@/lib/components/Button";
-import { Tooltip } from "@/lib/components/Tooltip";
 import { formatDate, toShortString } from "@/utils/helpers";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
 

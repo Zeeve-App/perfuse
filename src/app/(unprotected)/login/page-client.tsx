@@ -15,7 +15,7 @@ import * as yup from "yup";
 import React from "react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
-import axios, { Axios } from "axios";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { FormField } from "@/lib/components/Form/FormField";
 import { Checkbox, Input, Label } from "@/lib/components/Form";

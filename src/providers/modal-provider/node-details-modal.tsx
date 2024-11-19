@@ -10,29 +10,23 @@
  */
 
 "use client";
-import React, { useState } from "react";
+import React from "react";
 
 import { useParams } from "next/navigation";
 import { useModalStore } from "@/store/modal";
 import { formatDate, formatEndpoint, toCapitalize, toShortString } from "@/utils/helpers";
-import { CREDENTIALS_TYPE } from "@/types/node";
 import { CopyButton } from "@/lib/components/Button";
 import { Heading } from "@/lib/components/Heading";
 import { Modal, ModalOverlay, ModalContent, ModalBody, ModalTitle } from "@/lib/components/Modal";
 import { Tooltip } from "@/lib/components/Tooltip";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
-import SvgEyeSlash from "@/lib/icons/security/outline/EyeSlash";
-import SvgEye from "@/lib/icons/security/outline/Eye";
-import FlagState from "@/lib/components/utils/flag-state";
 import useApi from "@/api-client";
-import { useNetworkStore } from "@/store/network";
 import NetworkStatus from "@/app/(protected)/dashboard/[id]/_components/network-status";
 
 const NodeDetailsModal = () => {
   const params = useParams();
   const networkId = params.id as string;
   const { isOpen, onClose, type, data: modalData } = useModalStore();
-  const [rpcUsernameVisible, setRpcUsernameVisible] = useState(false);
   const isModalOpen = isOpen && type === "nodeDetails";
 
   const apis = useApi();
@@ -41,8 +35,6 @@ const NodeDetailsModal = () => {
 
   const { data: blockRpcResponse, isLoading: blockRpcLoading } = apis.blockNumber();
   const blockHeight = parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16);
-
-  const network = useNetworkStore((e) => e.networkInfo);
 
   return (
     <Modal isOpen={isModalOpen} handleClose={onClose}>

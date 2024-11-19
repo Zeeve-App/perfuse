@@ -10,7 +10,6 @@
  */
 
 import React, { forwardRef } from "react";
-import { Heading } from "../Heading";
 import { Typography } from "../Typography";
 import { tx } from "@/utils/shared";
 

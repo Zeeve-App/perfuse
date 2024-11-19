@@ -1,7 +1,6 @@
 import { Fragment, useMemo } from "react";
 import axios from "axios";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import router from "next/router";
 import { useRouter } from "next/navigation";
 import { Avatar } from "../Avatar";
 import { IconButton } from "../Button";
@@ -19,10 +18,6 @@ import { withBasePath } from "@/utils/helpers";
 import SvgProfile from "@/lib/icons/user/outline/Profile";
 import { useToggle } from "@/hooks";
 import SvgArrowLeftFromBucket from "@/lib/icons/arrows/outline/ArrowLeftFromBucket";
-import SvgPhoneVolume from "@/lib/icons/phone/outline/PhoneVolume";
-import SvgBook2 from "@/lib/icons/school/outline/Book2";
-import SvgSetting1 from "@/lib/icons/setting/outline/Setting1";
-import SvgUser from "@/lib/icons/setting/outline/User";
 
 export const getProfileDropdownData = (router: AppRouterInstance) => [
   {
@@ -113,12 +108,6 @@ const ProfileDropDownMenu = ({
     handleToggle: handleProfileDropdownToggle,
     handleClose: handleProfileDropdownClose,
   } = useToggle();
-  // user initials
-  const initials = useMemo(() => {
-    if (user?.firstName || user?.lastName) {
-      return `${user?.firstName?.charAt(0).toUpperCase() ?? ""}${user?.lastName?.charAt(0).toUpperCase() ?? ""}`;
-    }
-  }, [user?.firstName, user?.lastName]);
 
   // user name
   const name = useMemo(() => {

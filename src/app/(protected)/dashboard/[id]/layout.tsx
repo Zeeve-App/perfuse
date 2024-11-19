@@ -13,7 +13,7 @@ import { headers } from "next/headers";
 import Actions from "./_components/actions";
 import TabContainer from "./_components/tabs-container";
 import { Navigation } from "@/lib/components/navigation";
-import { getNetworkData, getNodeData, getNodes, getTask } from "@/db-queries";
+import { getNetworkData, getNodes, getTask } from "@/db-queries";
 import { config } from "@/config/config";
 import { Badge } from "@/lib/components/Badge/Badge";
 

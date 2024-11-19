@@ -14,8 +14,6 @@
 import React, { useEffect, useState } from "react";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import { formateNumber } from "@/utils/helpers";
-import { TOKEN_COLOR_CLASS } from "@/constants/token";
-// import useParachainsService from "@/services/parachains/use-parachains-service";
 import { Heading } from "@/lib/components/Heading";
 import { Tooltip } from "@/lib/components/Tooltip";
 import CardKeyValuePair from "@/lib/components/utils/card-key-value-pair";

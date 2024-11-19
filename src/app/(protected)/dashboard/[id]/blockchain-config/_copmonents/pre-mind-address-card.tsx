@@ -11,7 +11,6 @@
 
 "use client";
 import React from "react";
-import { CopyButton } from "@/lib/components/Button";
 import { formateNumber, toShortString } from "@/utils/helpers";
 import { tx } from "@/utils/shared";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";

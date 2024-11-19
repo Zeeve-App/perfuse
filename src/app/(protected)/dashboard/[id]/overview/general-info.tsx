@@ -14,11 +14,8 @@
 import React from "react";
 import Image from "next/image";
 import NetworkStatus from "../_components/network-status";
-import { formatDate, formatIntoAge, toShortString, withBasePath } from "@/utils/helpers";
+import { formatDate, toShortString, withBasePath } from "@/utils/helpers";
 import { Heading } from "@/lib/components/Heading";
-import { useNetworkStore } from "@/store/network";
-import { tx } from "@/utils/shared";
-import { Label } from "@/lib/components/Form";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
 
 const GeneralInfo = ({

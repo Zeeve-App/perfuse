@@ -13,7 +13,6 @@
 
 import React from "react";
 import Image from "next/image";
-import { Heading } from "@/lib/components/Heading";
 import useApi from "@/api-client";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
 import { withBasePath } from "@/utils/helpers";

@@ -26,7 +26,7 @@ import useApi from "@/api-client";
 const Actions = ({
   network,
   task,
-  explorerUrl: { paraExplorerUrl, relayExplorerUrl },
+  explorerUrl: { paraExplorerUrl },
 }: {
   network?: NetworkDbRow;
   task?: TaskDbRow;

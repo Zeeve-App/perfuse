@@ -13,14 +13,9 @@
 
 import React from "react";
 import Image from "next/image";
-import { formateNumber, toShortString, withBasePath } from "@/utils/helpers";
+import { withBasePath } from "@/utils/helpers";
 import { ChainSpecFileType } from "@/types/chain-spec";
-import { TOKEN_COLOR_CLASS } from "@/constants/token";
-import { Heading } from "@/lib/components/Heading";
-import { CopyButton } from "@/lib/components/Button";
-import { Tooltip } from "@/lib/components/Tooltip";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
-import { tx } from "@/utils/shared";
 import { Card } from "@/lib/components/Card";
 import { Typography } from "@/lib/components/Typography";
 interface ParachainConfigProps {

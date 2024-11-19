@@ -35,7 +35,7 @@ const Breadcrumb = forwardRef<HTMLDivElement, BreadcrumbProps>((props, ref) => {
       setSeparator: _setSeparator,
       activeLinkClassName,
     }),
-    [activeLink, separator, activeLinkClassName],
+    [_activeLink, _separator, activeLinkClassName],
   );
 
   return (

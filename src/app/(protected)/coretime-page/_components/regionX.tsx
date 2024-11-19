@@ -10,12 +10,11 @@
  */
 
 "use client";
-import React, { ComponentPropsWithoutRef, useEffect, useState } from "react";
+import React, { ComponentPropsWithoutRef } from "react";
 
 import Image from "next/image";
 import { capitalizeFirstLetter, withBasePath } from "@/utils/helpers";
 import { Card } from "@/lib/components/Card";
-import { Heading } from "@/lib/components/Heading";
 import { Button } from "@/lib/components/Button";
 import { useToggle } from "@/hooks";
 import { Typography } from "@/lib/components/Typography";
@@ -31,13 +30,6 @@ interface RegionXCardProps extends ComponentPropsWithoutRef<"div"> {
 const RegionXCard = (props: RegionXCardProps) => {
   const { protocolName, description } = props;
   const { isOpen, handleToggle } = useToggle();
-  const [hostname, setHostname] = useState("");
-
-  useEffect(() => {
-    if (typeof window !== undefined) {
-      setHostname(`${window.location.protocol}//${window.location.hostname}`);
-    }
-  }, []);
 
   return (
     <Card variant={"grid"} className="col-span-12 items-center justify-between rounded-lg bg-theme-foreground">

@@ -131,7 +131,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
       icon,
       iconPlacement: iconRight ? ("right" as const) : ("left" as const),
     };
-  }, [isLoading, iconLeft, iconRight]);
+  }, [iconLeft, iconRight, isLoading, colorScheme]);
 
   return (
     <button

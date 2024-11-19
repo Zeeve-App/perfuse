@@ -106,7 +106,7 @@ const nodeTableColumns: ColumnDef<NodeDbRow, any>[] = [
   }),
   columnHelper.accessor("node_id", {
     header: "Status",
-    cell: (_info) => <NetworkStatus />,
+    cell: () => <NetworkStatus />,
   }),
   columnHelper.accessor("created_at", {
     header: "Created On",
@@ -119,10 +119,10 @@ const nodeTableColumns: ColumnDef<NodeDbRow, any>[] = [
 ];
 
 const NodeTable = ({ heading, nodes }: { nodeType: NODE_TYPE; heading: string; nodes: NodeDbRow[] }) => {
-  const [{ pageIndex, pageSize }, setPagination] = React.useState({
-    pageIndex: 1,
-    pageSize: nodes.length,
-  });
+  // const [{ pageIndex, pageSize }, setPagination] = React.useState({
+  //   pageIndex: 1,
+  //   pageSize: nodes.length,
+  // });
 
   return (
     <div className="flex flex-col gap-4 overflow-hidden rounded-lg bg-theme-foreground p-6 shadow-lg">

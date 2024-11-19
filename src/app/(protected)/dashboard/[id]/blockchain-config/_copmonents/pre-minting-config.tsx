@@ -13,7 +13,6 @@
 import React, { useEffect, useState } from "react";
 import PreMiningCard from "./pre-mind-address-card";
 import { ChainSpecFileType } from "@/types/chain-spec";
-import { Heading } from "@/lib/components/Heading";
 import { Skeleton } from "@/lib/components/Skeleton";
 import { Typography } from "@/lib/components/Typography";
 import { Card } from "@/lib/components/Card";

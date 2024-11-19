@@ -1,6 +1,5 @@
-import { forwardRef, RefObject, useEffect, useRef, useState } from "react";
+import { forwardRef, RefObject, useEffect, useState } from "react";
 import { Controller, useFieldArray, UseFormReturn } from "react-hook-form";
-import { errors } from "jose";
 import axios from "axios";
 import { DeployStepTypes } from "../page-client";
 import { Card } from "@/lib/components/Card";
@@ -80,7 +79,7 @@ const DeployStep3 = forwardRef<
           fillValuesWithChainSpecData(e);
         });
     }
-  }, [formData, formState.template?.value]);
+  }, [formData, formState.template?.value, removeAccount]);
 
   const fillValuesWithChainSpecData = (chainSpec: ChainSpecFileType) => {
     try {
@@ -202,10 +201,6 @@ const DeployStep3 = forwardRef<
       sessionKey: "",
     });
   }, []);
-
-  useEffect(() => {
-    console.log(formData.formState.errors);
-  }, [formState]);
 
   return (
     <div tabIndex={2} ref={ref} className={tx(className, "bg-theme-foreground rounded-lg")}>

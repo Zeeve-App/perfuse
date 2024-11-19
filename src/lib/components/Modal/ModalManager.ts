@@ -51,7 +51,7 @@ const useModalManager = (ref: RefObject<HTMLElement>, isModalMounted: boolean, i
       modalManager.remove(node);
       setIndex(0);
     };
-  }, [isModalMounted]);
+  }, [isModalMounted, isOpen, ref]);
 
   return index;
 };

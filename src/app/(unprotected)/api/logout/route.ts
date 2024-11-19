@@ -9,11 +9,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { NextRequest } from "next/server";
 import { serialize } from "cookie";
 import { sendDataResponse, sendErrorResponse } from "../../../(protected)/api/_helpers/response";
 
-export async function POST(req: NextRequest) {
+export async function POST() {
   try {
     const tokenCookie = serialize("accessToken", "", {
       httpOnly: true,

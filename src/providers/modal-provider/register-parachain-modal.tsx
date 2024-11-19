@@ -10,16 +10,13 @@
  */
 
 "use client";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 import { useParams } from "next/navigation";
-import Link from "next/link";
 import { useModalStore } from "@/store/modal";
 import { downloadFile, toShortString, withBasePath } from "@/utils/helpers";
 // import useParachainsService from "@/services/parachains/use-parachains-service";
 import { IconButton, CopyButton, Button } from "@/lib/components/Button";
-import { Heading } from "@/lib/components/Heading";
 import {
   Modal,
   ModalOverlay,
@@ -33,7 +30,6 @@ import { Tooltip } from "@/lib/components/Tooltip";
 import SvgDownload from "@/lib/icons/product/outline/Download";
 import SvgCodeDocument3 from "@/lib/icons/programming/outline/CodeDocument3";
 import useApi from "@/api-client";
-import KeyValuePairInput from "@/lib/components/utils/key-value-pair-input";
 import HyperLink from "@/lib/components/utils/hyper-link";
 import { Typography } from "@/lib/components/Typography";
 
@@ -106,8 +102,6 @@ const RegisterParachainInfoModal = () => {
   const { isOpen, onClose, type } = useModalStore();
 
   const [checksum, setChecksum] = useState<{ wasm: string; genesis: string }>();
-
-  const [showSeed, setShowSeed] = useState<boolean>(false);
 
   const isModalOpen = isOpen && type === "registerParachain";
 

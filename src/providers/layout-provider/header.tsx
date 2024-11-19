@@ -11,17 +11,8 @@
 
 /* eslint-disable prettier/prettier */
 "use client";
-import React, { useMemo } from "react";
-// import { IconSetting1 } from "@zeeve-platform/icons/setting/outline";
-// import { IconUser } from "@zeeve-platform/icons/user/outline";
-// import { ZeeveHeader, ZeeveHeaderDropdownMenu } from "@zeeve-platform/ui-common-components";
-// import IconArrow2Down from "@/lib/icons/arrows/Icon-arrow-2-down";
-import axios from "axios";
-import { useRouter } from "next/navigation";
+import React from "react";
 import { ZeeveHeader } from "@/lib/components/zeeve-header";
-// import { IconArrowLeftFromBucket } from "@zeeve-platform/icons/arrow/outline";
-// import { IconPhoneVolume } from "@zeeve-platform/icons/phone/outline";
-// import { IconBook2 } from "@zeeve-platform/icons/school/outline";
 
 
 interface HeaderProps {
@@ -30,10 +21,6 @@ interface HeaderProps {
 
 const Header = (props: HeaderProps) => {
   const { handleMobileSidebarOpen } = props;
-
-  const router = useRouter();
-
- 
 
   return (
     <ZeeveHeader

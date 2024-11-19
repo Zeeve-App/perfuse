@@ -9,35 +9,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React, { Fragment, useMemo } from "react";
-// import { IconBars, IconPlusSquare } from "@zeeve-platform/icons/essential/outline";
-// import {
-//     Avatar,
-//     Button,
-//     DropdownMenu,
-//     DropdownMenuButton,
-//     DropdownMenuDivider,
-//     DropdownMenuGroup,
-//     DropdownMenuGroupTitle,
-//     DropdownMenuItem,
-//     DropdownMenuList,
-//     Header,
-//     HeaderDivider,
-//     HeaderLogo,
-//     HeaderLogoContainer,
-//     HeaderMenuButton,
-//     HeaderNavContainer,
-//     HeaderNavGroup,
-//     HeaderProps,
-//     IconButton,
-//     tx,
-//     useToggle,
-// } from "../";
-// import Logo from "../../assets/brand/zeeve-logo-on-light-bg.svg";
-
-// import AvatarPlaceholderImage from "../../assets/brand/avatar-placeholder.svg";
+import React, { Fragment } from "react";
 import { usePathname } from "next/navigation";
-import { NotificationBell, NotificationsWebSocketContextProvider, NotificationDrawer } from "../NotificationDrawer";
+import { NotificationsWebSocketContextProvider, NotificationDrawer } from "../NotificationDrawer";
 // import { ActionMeta, ReactSelect } from "..";
 import { Button, IconButton } from "../Button";
 import {
@@ -48,7 +22,6 @@ import {
   HeaderLogo,
   HeaderNavContainer,
   HeaderNavGroup,
-  HeaderDivider,
 } from "../Header";
 import {
   DropdownMenu,
@@ -59,8 +32,7 @@ import {
   DropdownMenuItem,
   DropdownMenuDivider,
 } from "../DropdownMenu";
-import { ActionMeta, ReactSelect } from "../ReactSelect";
-import { Avatar } from "../Avatar";
+import { ActionMeta } from "../ReactSelect";
 import { SidebarItems } from "../sidebar/sub-components";
 import { ZeeveSidebarItem } from "../sidebar/sidebar";
 import { ProfileDropDownMenu } from "../Header/profile-menu";
@@ -70,9 +42,7 @@ import { tx } from "@/utils/shared";
 import { withBasePath } from "@/utils/helpers";
 import SvgBars from "@/lib/icons/essential/outline/Bars";
 import SvgPlusSquare from "@/lib/icons/essential/outline/PlusSquare";
-import SvgBubbles from "@/lib/icons/essential/outline/Bubbles";
 import { ITEMS } from "@/constants/sidebar";
-import SvgProfile from "@/lib/icons/user/outline/Profile";
 import useDarkMode from "@/hooks/use-dark-mode";
 import SvgMoon from "@/lib/icons/essential/outline/moon";
 
@@ -131,7 +101,7 @@ const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
 
   const {
     isOpen: isNotificationDrawerOpen,
-    handleOpen: handleNotificationDrawerOpen,
+    // handleOpen: handleNotificationDrawerOpen,
     handleClose: handleNotificationDrawerClose,
   } = useToggle();
   const pathname = usePathname();

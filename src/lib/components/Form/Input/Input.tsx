@@ -13,7 +13,7 @@ import { VariantProps, cva } from "class-variance-authority";
 import React, { forwardRef, useState } from "react";
 // import { IconInfoCircle } from "@zeeve-platform/icons/essential/outline";
 import { Label } from "../Label";
-import { Button, IconButton } from "../../Button";
+import { IconButton } from "../../Button";
 import { Tooltip } from "../../Tooltip";
 import { RemoveProperties } from "../../core";
 import { useID } from "@/hooks";

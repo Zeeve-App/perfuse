@@ -11,9 +11,9 @@
 
 import { NextRequest } from "next/server";
 import axios from "axios";
-import { getNodeData, updateNodeData } from "@/db-queries";
+import { getNodeData } from "@/db-queries";
 import { sendDataResponse, sendErrorResponse } from "@/app/(protected)/api/_helpers/response";
-import { addressToHexPublicKey, derivePublicSessionKey } from "@/utils/wallet";
+import { addressToHexPublicKey } from "@/utils/wallet";
 
 export async function POST(req: NextRequest, { params }: { params: { id: string; nodeId: string } }) {
   try {

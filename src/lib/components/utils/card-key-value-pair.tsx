@@ -12,7 +12,6 @@
 "use client";
 
 import React from "react";
-import { Card } from "@/lib/components/Card";
 import { Heading } from "@/lib/components/Heading";
 import { Skeleton } from "@/lib/components/Skeleton";
 import { tx } from "@/utils/shared";

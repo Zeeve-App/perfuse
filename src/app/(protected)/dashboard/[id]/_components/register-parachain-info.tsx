@@ -15,11 +15,9 @@ import { useParams } from "next/navigation";
 import { useModalStore } from "@/store/modal";
 import { Button } from "@/lib/components/Button";
 import { Card } from "@/lib/components/Card";
-import { StatusIcon } from "@/lib/components/StatusIcon";
 import { Tooltip } from "@/lib/components/Tooltip";
 import { tx } from "@/utils/shared";
 import { useNetworkStore } from "@/store/network";
-import { Heading } from "@/lib/components/Heading";
 import { Typography } from "@/lib/components/Typography";
 interface InfoProps {
   className?: string;

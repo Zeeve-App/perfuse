@@ -10,7 +10,7 @@
  */
 
 import { headers } from "next/headers";
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { serialize } from "cookie";
 import { parse } from "cookie";
 import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
@@ -18,7 +18,7 @@ import { sendErrorResponse } from "./app/(protected)/api/_helpers/response";
 import { verify } from "./utils/jwt";
 
 // This function can be marked `async` if using `await` inside
-export async function middleware(request: NextRequest) {
+export async function middleware() {
   const header = headers();
   const data = await authFromHeader(header);
   const tokenCookie = serialize("accessToken", "", {

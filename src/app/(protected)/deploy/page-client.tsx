@@ -12,7 +12,6 @@ import { Heading } from "@/lib/components/Heading";
 import { tx } from "@/utils/shared";
 import { deployNetworkValidationSchema, DeployNetworkValidationSchemaType } from "@/schemas/validation-schema";
 import { Badge } from "@/lib/components/Badge/Badge";
-import SvgCheckCircle from "@/lib/icons/essential/outline/CheckCircle";
 import SvgExclamationTriangle from "@/lib/icons/essential/outline/ExclamationTriangle";
 
 const componentNameForDeploy = ["step1", "step2", "step3", "summary"] as const;

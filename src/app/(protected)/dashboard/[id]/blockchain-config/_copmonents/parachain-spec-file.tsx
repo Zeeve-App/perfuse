@@ -16,7 +16,6 @@ import { downloadFile } from "@/utils/helpers";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import SvgDownload from "@/lib/icons/product/outline/Download";
 import { IconButton } from "@/lib/components/Button";
-import { Heading } from "@/lib/components/Heading";
 import { Spinner } from "@/lib/components/Spinner";
 import { Tooltip } from "@/lib/components/Tooltip";
 import { tx } from "@/utils/shared";

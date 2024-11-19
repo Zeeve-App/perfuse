@@ -53,7 +53,7 @@ const Portal: React.FC<PortalProps> = (props) => {
         host.removeChild(portalElement);
       }
     };
-  }, [element]);
+  }, [element, isNested, parentPortal]);
 
   return portal.current ? (
     createPortal(<PortalContext.Provider value={portal.current}>{children}</PortalContext.Provider>, portal.current)

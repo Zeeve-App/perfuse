@@ -16,7 +16,6 @@ import { useRouter } from "next/navigation";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { hexToU8a, isHex } from "@polkadot/util";
 import { isAddress, mnemonicValidate } from "@polkadot/util-crypto";
 import { useModalStore } from "@/store/modal";
 import { ParachainsServiceError } from "@/api-client/types";

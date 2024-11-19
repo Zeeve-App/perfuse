@@ -11,7 +11,6 @@
 
 import Image from "next/image";
 import { Card } from "@/lib/components/Card";
-import { Heading } from "@/lib/components/Heading";
 import { Typography } from "@/lib/components/Typography";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
 import { ChainSpecFileType } from "@/types/chain-spec";

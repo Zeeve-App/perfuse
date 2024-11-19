@@ -9,7 +9,7 @@ import { useSelectedAccount } from "./use-wallet";
 import { toShortString } from "@/utils/helpers";
 import { useToggle } from "@/hooks";
 import { useNetworkStore } from "@/store/network";
-import { envAndRelayChainOption, networkEnvType, relayChainOption } from "@/constants/create-network";
+import { envAndRelayChainOption } from "@/constants/create-network";
 
 const relayChainRpc: Record<(typeof envAndRelayChainOption)[number]["relayChainOption"][number]["value"], string> = {
   paseo: "wss://paseo.rpc.amforc.com:443", // Placeholder RPC endpoint for the 'paseo' chain
