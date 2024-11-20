@@ -16,10 +16,16 @@ import HyperLink from "@/lib/components/utils/hyper-link";
 const PerfuseDocument = () => {
   return (
     <Card className="gap-2 shadow-brand-shadow lg:gap-4">
-      <Heading as="h4">Perfuse Document</Heading>
-      <p>Perfuse is complete solution to deploy parachain and manage parachain in polkadot networks.</p>
-      <Heading as="h5">Deploying Network</Heading>
-      <p>
+      <Heading as="h4" className="col-span-12">
+        Perfuse Document
+      </Heading>
+      <p className="col-span-12">
+        Perfuse is complete solution to deploy parachain and manage parachain in polkadot networks.
+      </p>
+      <Heading as="h5" className="col-span-12">
+        Deploying Network
+      </Heading>
+      <p className="col-span-12">
         User can setup the perfuse locally by following the{" "}
         <HyperLink target={"_blank"} href={"https://github.com/Zeeve-App/perfuse/blob/main/README.md"}>
           Setup guide.{" "}
@@ -33,15 +39,19 @@ const PerfuseDocument = () => {
           read me.
         </HyperLink>
       </p>
-      <Heading as="h5">Registering the Network</Heading>
-      <p>
+      <Heading as="h5" className="col-span-12">
+        Registering the Network
+      </Heading>
+      <p className="col-span-12">
         Once the network is deployed, you will see a alert box asking you to register the parachain, You can go to the
         Coretime and register the parachain from the. for more details step please read in{" "}
         <HyperLink href={"#"}>register page</HyperLink> in github docs. After registration you can see the parachain
         block height increasing in the blockchain config tab of the dashboard
       </p>
-      <Heading as="h5">Managing The Network</Heading>
-      <p>
+      <Heading as="h5" className="col-span-12">
+        Managing The Network
+      </Heading>
+      <p className="col-span-12">
         There are four tabs in the dashboard once the network is deployed.
         <li>Overview: overview of the network </li>
         <li>Blockchain Config: config related to the deployed blockchain network </li>

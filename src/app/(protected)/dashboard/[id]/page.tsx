@@ -12,12 +12,14 @@
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
+/** dashboard page metadata */
 export const metadata: Metadata = {
   title: "Perfuse | Parachain Details",
   description: "Overview of parachain node",
 };
 
-const CreatePage = async ({
+/** dashboard page component */
+const DashboardPage = async ({
   params,
 }: {
   params: { id: string };
@@ -31,5 +33,5 @@ const CreatePage = async ({
   return redirect(`/dashboard/${params.id}/overview`);
 };
 
-export default CreatePage;
+export default DashboardPage;
 export const dynamic = "force-dynamic";

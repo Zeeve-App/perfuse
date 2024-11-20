@@ -13,8 +13,10 @@ import axios, { AxiosResponse } from "axios";
 import { sendErrorResponse } from "../_helpers/response";
 import { BlockHeightResponsePayload } from "@/api-client/block-number";
 
+/** getting the block height of the parachain from rpc call */
 export async function GET() {
   try {
+    /** rpc call on the deployed network */
     const res: AxiosResponse<BlockHeightResponsePayload> = await axios.post("http://localhost:9010", {
       jsonrpc: "2.0",
       method: "chain_getBlock",

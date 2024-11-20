@@ -17,11 +17,13 @@ import { Navigation } from "@/lib/components/navigation";
 import { getNetworks } from "@/db-queries";
 import { withBasePath } from "@/utils/helpers";
 
+/** my parachain page metadata */
 export const metadata: Metadata = {
   title: "Perfuse | My Parachains",
   description: "Parachain nodes of perfuse",
 };
 
+/** my parachain page component */
 export default async function Home() {
   const networks = await getNetworks();
   return (

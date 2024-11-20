@@ -13,13 +13,17 @@ import path from "path";
 import { readFile } from "fs/promises";
 import { NextRequest } from "next/server";
 
+/** sending output file to user dynamically */
 export async function GET(req: NextRequest, { params }: { params: { file: string } }) {
   const imagePath = params.file;
 
+  /** location of the files for serving dynamically to client */
   const filePath = path.resolve(".", `./public/output/${imagePath}`);
+  /** creating a buffer */
   const imageBuffer = await readFile(filePath);
   return new Response(imageBuffer, {
     headers: {
+      /** content type, what was in the request accept header */
       "Content-Type": req.headers.get("accept")?.toString() ?? "",
     },
   });

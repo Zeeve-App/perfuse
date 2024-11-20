@@ -11,17 +11,19 @@
 
 import React from "react";
 import { Metadata } from "next";
-import Overview from "./overview";
+import Overview from "./_components";
 import { getNetworkData, getNodes, getTask } from "@/db-queries";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import { config } from "@/config/config";
 
+/** overview page metadata */
 export const metadata: Metadata = {
   title: "Perfuse | Parachain Details",
   description: "Overview of parachain node",
 };
 
-const CreatePage = async ({
+/** overview main page component */
+const OverviewPage = async ({
   params,
 }: {
   params: { id: string };
@@ -49,4 +51,4 @@ const CreatePage = async ({
   );
 };
 
-export default CreatePage;
+export default OverviewPage;

@@ -11,12 +11,13 @@
 
 "use client";
 import React, { useEffect, useState } from "react";
-import PreMiningCard from "./pre-mind-address-card";
+import PreMiningCard from "./pre-mined-address-card";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import { Skeleton } from "@/lib/components/Skeleton";
 import { Typography } from "@/lib/components/Typography";
 import { Card } from "@/lib/components/Card";
 
+/** props */
 interface PreMiningConfigProps {
   data?: ChainSpecFileType;
   isLoading: boolean;
@@ -24,6 +25,7 @@ interface PreMiningConfigProps {
 
 type PreMintedAddress = { accountAddress: string; accountBalance: number };
 
+/** pre mined address component */
 const PreMiningConfig = ({ data, isLoading }: PreMiningConfigProps) => {
   const [preMintedData, setPremintedData] = useState<PreMintedAddress[]>([]);
 

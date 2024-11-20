@@ -22,10 +22,12 @@ import { Heading } from "@/lib/components/Heading";
 import { Tooltip } from "@/lib/components/Tooltip";
 import SvgBubbles from "@/lib/icons/essential/outline/Bubbles";
 
+/** Network list card props */
 interface NetworkCardProps {
   data: Network;
 }
 
+/** Network list card components */
 const NetworkCard = ({ data: { networkId, networkName, networkEnvironment, networkCreatedAt } }: NetworkCardProps) => {
   const [isNavigating, setIsNavigating] = useState(false);
   return (

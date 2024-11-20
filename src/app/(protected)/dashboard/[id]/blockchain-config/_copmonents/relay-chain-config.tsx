@@ -17,12 +17,14 @@ import { Card } from "@/lib/components/Card";
 import { Typography } from "@/lib/components/Typography";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
 
+/** relay chain info props */
 interface RelayChainConfigProps {
   data?: ChainSpecFileType;
   isLoading: boolean;
   relayChain: { type: string | undefined; version: string | undefined };
 }
 
+/** relay chain info component */
 const RelayChainConfig = ({ isLoading, relayChain }: RelayChainConfigProps) => {
   return (
     <Card className="col-span-12 overflow-y-auto rounded-lg shadow-brand-shadow">

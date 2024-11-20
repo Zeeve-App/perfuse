@@ -14,6 +14,7 @@ import { NetworkDbRow } from "@/db-queries";
 import { Card } from "@/lib/components/Card";
 import { Heading } from "@/lib/components/Heading";
 
+/** coreTime page client component */
 const CoreTimePageClient = ({ network }: { network?: NetworkDbRow }) => {
   return (
     <Card variant={"grid"} className="">

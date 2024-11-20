@@ -15,6 +15,7 @@ import { sendDataResponse, sendErrorResponse } from "../../../(protected)/api/_h
 import { sign } from "@/utils/jwt";
 import { config } from "@/config/config";
 
+/** login api */
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.json();
@@ -27,6 +28,7 @@ export async function POST(req: NextRequest) {
 
     const token = await sign({ email: formData.email }, formData.remember);
 
+    /** token cookie */
     const tokenCookie = serialize("accessToken", token, {
       httpOnly: true,
       secure: false,

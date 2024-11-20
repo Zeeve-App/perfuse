@@ -28,6 +28,7 @@ import SvgInfoCircle from "@/lib/icons/essential/outline/InfoCircle";
 import { Typography } from "@/lib/components/Typography";
 import SvgPlusSquare from "@/lib/icons/essential/outline/PlusSquare";
 
+/** node table action column component */
 export const NodeTableRowActions = ({ node }: { node: NodeDbRow }) => {
   const { openModal } = useModalStore();
   const params = useParams();
@@ -85,6 +86,7 @@ export const NodeTableRowActions = ({ node }: { node: NodeDbRow }) => {
 
 const columnHelper = createColumnHelper<NodeDbRow>();
 
+/** node table columns definition */
 const nodeTableColumns: ColumnDef<NodeDbRow, any>[] = [
   columnHelper.accessor("node_id", {
     header: "ID",
@@ -118,7 +120,9 @@ const nodeTableColumns: ColumnDef<NodeDbRow, any>[] = [
   }),
 ];
 
+/** node table component */
 const NodeTable = ({ heading, nodes }: { nodeType: NODE_TYPE; heading: string; nodes: NodeDbRow[] }) => {
+  // TODO: uncomment when there is more than 4 collator node, for pagination
   // const [{ pageIndex, pageSize }, setPagination] = React.useState({
   //   pageIndex: 1,
   //   pageSize: nodes.length,
@@ -146,6 +150,7 @@ const NodeTable = ({ heading, nodes }: { nodeType: NODE_TYPE; heading: string; n
               td: "px-4 py-3 align-middle border-brand-outline",
             },
           }}
+          // TODO: uncomment for pagination
           // pagination={{
           //   pageCount: nodes.length,
           //   pageIndex: pageIndex,

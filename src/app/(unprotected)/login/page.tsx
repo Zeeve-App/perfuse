@@ -13,12 +13,14 @@ import React from "react";
 import { Metadata } from "next";
 import Login from "./page-client";
 
+/** login page metadata */
 export const metadata: Metadata = {
-  title: "Perfuse | Create Parachain",
+  title: "Perfuse | Login",
   description: "Create parachain with peruse",
 };
 
-const CreatePage = async () => {
+/** login page */
+const LoginPage = async () => {
   return (
     <>
       <Login />
@@ -26,5 +28,5 @@ const CreatePage = async () => {
   );
 };
 
-export default CreatePage;
+export default LoginPage;
 export const dynamic = "force-dynamic";

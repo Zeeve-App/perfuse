@@ -11,15 +11,17 @@
 
 import React from "react";
 import { Metadata } from "next";
-import RpcNodes from "./my-nodes";
+import RpcNodes from "./_components/my-nodes";
 import { getNodes } from "@/db-queries";
 
+/** rpc node metadata */
 export const metadata: Metadata = {
   title: "Perfuse | Parachain Details",
   description: "nodes of parachain node",
 };
 
-const CreatePage = async ({
+/** rpc node main page component */
+const RpcNodesPage = async ({
   params,
 }: {
   params: { id: string };
@@ -35,4 +37,4 @@ const CreatePage = async ({
   );
 };
 
-export default CreatePage;
+export default RpcNodesPage;

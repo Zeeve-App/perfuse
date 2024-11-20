@@ -25,6 +25,7 @@ import { Typography } from "@/lib/components/Typography/Typography";
 import { Badge } from "@/lib/components/Badge/Badge";
 import { withBasePath } from "@/utils/helpers";
 
+/** deploy summary component */
 export default function DeploySummary({
   className,
   formData,
@@ -118,7 +119,6 @@ export default function DeploySummary({
 
     if (response.status === HTTP_STATUS.OK && response.data.success) {
       router.push("/dashboard/" + response.data?.data?.network_id);
-      // goToNextStep();
     }
   };
   return (

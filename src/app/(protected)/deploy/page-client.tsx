@@ -25,8 +25,11 @@ import { deployNetworkValidationSchema, DeployNetworkValidationSchemaType } from
 import { Badge } from "@/lib/components/Badge/Badge";
 import SvgExclamationTriangle from "@/lib/icons/essential/outline/ExclamationTriangle";
 
+/** component name for deploy page  to focus */
 const componentNameForDeploy = ["step1", "step2", "step3", "summary"] as const;
+/** deploy steps types */
 export type DeployStepTypes = (typeof componentNameForDeploy)[number];
+/** Deploy page component */
 export default function DeployPage({ deployed }: { deployed: boolean }) {
   const formData = useForm<DeployNetworkValidationSchemaType>({
     resolver: yupResolver(deployNetworkValidationSchema),
@@ -46,11 +49,13 @@ export default function DeployPage({ deployed }: { deployed: boolean }) {
     },
   });
 
+  /** refs for steps */
   const step1Ref = useRef<HTMLDivElement>(null);
   const step2Ref = useRef<HTMLDivElement>(null);
   const step3Ref = useRef<HTMLDivElement>(null);
   const summaryRef = useRef<HTMLDivElement>(null);
 
+  /** focusing on steps of deploy page */
   const focusOnComponent = (component: DeployStepTypes) => {
     console.log({ component, step1Ref });
     switch (component) {
@@ -78,6 +83,7 @@ export default function DeployPage({ deployed }: { deployed: boolean }) {
   useEffect(() => {
     step1Ref.current?.focus();
   }, []);
+
   return (
     <>
       <Card variant={"grid"} className="gap-0">

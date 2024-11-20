@@ -11,15 +11,17 @@
 
 import React from "react";
 import { Metadata } from "next";
-import BlockchainConfig from "./_copmonents/blockchain-config";
+import BlockchainConfig from "./_copmonents";
 import { getNetworkData } from "@/db-queries";
 
+/** blockchain config page metadata */
 export const metadata: Metadata = {
   title: "Perfuse | Parachain Details",
   description: "blockchain config of parachain network",
 };
 
-const CreatePage = async ({
+/** block chain config page main component */
+const BlockchainConfigPage = async ({
   params,
 }: {
   params: { id: string };
@@ -37,5 +39,5 @@ const CreatePage = async ({
   );
 };
 
-export default CreatePage;
+export default BlockchainConfigPage;
 export const dynamic = "force-dynamic";

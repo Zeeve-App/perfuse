@@ -11,6 +11,7 @@
 
 import HTTP_STATUS from "@/constants/http";
 
+/** sending a success response back to client */
 export const sendDataResponse = (
   data: Record<string, object | string | number>,
   status?: HTTP_STATUS,
@@ -28,6 +29,7 @@ export const sendDataResponse = (
   );
 };
 
+/** sending a error response back to user */
 export const sendErrorResponse = (
   data: Record<string, object | string | number>,
   status?: HTTP_STATUS,

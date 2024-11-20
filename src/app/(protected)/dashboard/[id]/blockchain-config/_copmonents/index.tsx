@@ -23,6 +23,7 @@ import { ChainSpecFileType } from "@/types/chain-spec";
 import useApi from "@/api-client";
 import { Card } from "@/lib/components/Card";
 
+/** blockchain config main component */
 const BlockchainConfig = ({
   chainSpecJSON,
   relayChain,
@@ -32,6 +33,7 @@ const BlockchainConfig = ({
 }) => {
   const isLoading = false;
 
+  /** api hook */
   const apis = useApi();
   const { data: blockRpcResponse, isLoading: blockRpcLoading } = apis.blockNumber();
   const blockHeight = parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16);

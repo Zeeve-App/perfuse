@@ -18,11 +18,14 @@ import { ChainSpecFileType } from "@/types/chain-spec";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
 import { Card } from "@/lib/components/Card";
 import { Typography } from "@/lib/components/Typography";
+
+/** parachain config props */
 interface ParachainConfigProps {
   data?: ChainSpecFileType;
   isLoading: boolean;
 }
 
+/** parachain config component for blockchain config page */
 const ParachainConfig = ({ data, isLoading }: ParachainConfigProps) => {
   return (
     <Card

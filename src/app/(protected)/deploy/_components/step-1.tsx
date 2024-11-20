@@ -18,7 +18,7 @@ import { Radio } from "@/lib/components/Form";
 import { DeployNetworkValidationSchemaType } from "@/schemas/validation-schema";
 import { envAndRelayChainOption } from "@/constants/create-network";
 
-// Using forwardRef to pass the ref correctly
+/** deploy page step 1 */
 const DeployStep1 = forwardRef<
   HTMLDivElement,
   {
@@ -37,9 +37,11 @@ const DeployStep1 = forwardRef<
 
   return (
     <Card tabIndex={0} ref={ref} className={className}>
+      {/* env and relay chain options */}
       <Heading as="h5" className="col-span-12">
         Select your Network Environment
       </Heading>
+      {/* env option */}
       {envAndRelayChainOption.map((e) => {
         const isChecked = formData.watch("networkEnvironment.value") === e.environment.value;
         return (
@@ -54,6 +56,7 @@ const DeployStep1 = forwardRef<
               {e.environment.label}
             </RadioCard>
             <Card variant={"grid"}>
+              {/* relay chain option */}
               {e.relayChainOption.map((relayChain) => (
                 <Radio
                   key={relayChain.value}

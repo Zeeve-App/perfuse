@@ -12,8 +12,10 @@
 import { serialize } from "cookie";
 import { sendDataResponse, sendErrorResponse } from "../../../(protected)/api/_helpers/response";
 
+/** logout api */
 export async function POST() {
   try {
+    /** removing token */
     const tokenCookie = serialize("accessToken", "", {
       httpOnly: true,
       secure: false,

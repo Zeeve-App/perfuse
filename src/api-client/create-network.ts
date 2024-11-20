@@ -20,8 +20,10 @@ type ApiResponse = {
   data: { network_id: string };
 };
 
+/** endpoint for create network api */
 const apiEndpoint = withBasePath("/api/create");
 
+/** hook for calling create network api */
 const useCreateNetworkApi = async (formData: ApiRequest, config?: AxiosRequestConfig<ApiRequest>) => {
   const request = backendAxiosInstance.post<ApiResponse, AxiosResponse<ApiResponse>, ApiRequest>;
 

@@ -17,6 +17,7 @@ import useFileApi from "./file";
 import useNodeApi from "./node";
 import useUploadApi from "./upload";
 
+/** grouping all the api hooks in one hook */
 const useApi = () => ({
   uploadApi: useUploadApi,
   createNetwork: useCreateNetworkApi,

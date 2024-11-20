@@ -43,11 +43,13 @@ interface Digest {
   logs: string[];
 }
 
+/** api endpoint to get block height */
 const apiEndpoint = withBasePath("/api/block-height");
 
-/** hook to use network list api */
+/** hook to get the block number */
 const useBlockNumberApi = () => {
   const fetcher = useFetcher();
+  /** network info from store */
   const netInfo = useNetworkStore((e) => e.networkInfo);
 
   const request = useSWR<BlockHeightResponsePayload, Record<string, string>>(

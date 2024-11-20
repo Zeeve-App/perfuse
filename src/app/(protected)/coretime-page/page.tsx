@@ -19,7 +19,9 @@ export const metadata: Metadata = {
   description: "CoreTime of perfuse",
 };
 
+/** CoreTime page server component */
 const CoreTimePage = async () => {
+  /** get network details from the db */
   const networks = await getNetworks();
 
   return <CoreTimePageClient network={networks[0]} />;

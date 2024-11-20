@@ -8,14 +8,22 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import DeployPage from "./page-client";
+import { Metadata } from "next";
+import Deploy from "./page-client";
 import { getNetworks } from "@/db-queries";
 
-export default async function Home() {
+/** dashboard page metadata */
+export const metadata: Metadata = {
+  title: "Perfuse | Deploy",
+  description: "Deploy a parachain",
+};
+
+/** deploy page main component */
+export default async function DeployPage() {
   const networks = await getNetworks();
   return (
     <>
-      <DeployPage deployed={Boolean(networks.length)} />
+      <Deploy deployed={Boolean(networks.length)} />
     </>
   );
 }

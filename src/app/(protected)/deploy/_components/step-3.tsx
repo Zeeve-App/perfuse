@@ -28,7 +28,9 @@ import useApi from "@/api-client";
 import { FileUpload } from "@/lib/components/Form/FileUpload";
 import { Spinner } from "@/lib/components/Spinner";
 import SvgArrowUpFromBucket from "@/lib/icons/arrows/outline/ArrowUpFromBucket";
+import { getSessionKey } from "@/utils/helpers";
 
+/** template and there location in the repo */
 const templatesMap: Record<(typeof templateOption)[number]["value"], string> = {
   // substrate: "standard/stable2409/standard.json",
   evm_frontier: "evm_frontier/stable2407/evm_frontier.json",
@@ -38,20 +40,7 @@ const templatesMap: Record<(typeof templateOption)[number]["value"], string> = {
   contracts: "contracts/stable2409/contracts.json",
 };
 
-function getSessionKey(
-  runtimeGenesis: ChainSpecFileType["genesis"]["runtimeGenesis"],
-  collatorAddresses: string,
-): string {
-  const aura = runtimeGenesis.patch.session.keys.find((e) => {
-    console.log({ e });
-
-    return typeof e[0] === "string" && e[0] === collatorAddresses;
-  });
-  console.log({ aura });
-
-  return typeof aura?.[2] !== "string" ? aura?.[2]?.aura ?? "" : "";
-}
-
+/** step 3 component for deploy page */
 const DeployStep3 = forwardRef<
   HTMLDivElement,
   {
@@ -472,6 +461,7 @@ const DeployStep3 = forwardRef<
 
                       <Input placeholder="Balance" {...formData.register(`accounts.${idx}.balance`)} isRequired />
                     </FormField>
+                    {/* TODO: uncomment for deleting address */}
                     {/* <FormField className="col-span-1">
                       <Label>&nbsp;</Label>
                       <IconButton

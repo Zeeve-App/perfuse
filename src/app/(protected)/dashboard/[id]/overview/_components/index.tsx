@@ -11,12 +11,28 @@
 
 "use client";
 import React from "react";
-import RegisterParachainInfo from "../_components/register-parachain-info";
+import RegisterParachainInfo from "../../_components/register-parachain-info";
 import GeneralInfo from "./general-info";
 import Nodes from "./nodes";
 import BlockchainConfig from "./blockchain-config";
 import { NodeDbRow } from "@/db-queries";
 import useApi from "@/api-client";
+
+/** overview component props */
+interface OverviewProps {
+  isLoading: boolean;
+  createdAt: string;
+  provisionedAt?: string;
+  env: string;
+  name: string;
+  id: string;
+  paraId: string;
+  relayCainType: string;
+  nodes: NodeDbRow[];
+  ownedBy: string;
+}
+
+/** overview Component main component */
 const Overview = ({
   createdAt,
   env,
@@ -28,18 +44,7 @@ const Overview = ({
   relayCainType,
   provisionedAt,
   ownedBy,
-}: {
-  isLoading: boolean;
-  createdAt: string;
-  provisionedAt?: string;
-  env: string;
-  name: string;
-  id: string;
-  paraId: string;
-  relayCainType: string;
-  nodes: NodeDbRow[];
-  ownedBy: string;
-}) => {
+}: OverviewProps) => {
   const apis = useApi();
   const { data: blockRpcResponse } = apis.blockNumber();
   return (
@@ -56,7 +61,6 @@ const Overview = ({
       />
       <BlockchainConfig isLoading={isLoading} paraId={paraId} relayChainType={relayCainType} />
       <Nodes isLoading={isLoading} nodes={nodes} />
-      {/* <Alerts agentId={data?.data.generalInfo.agentId}  /> */}
     </div>
   );
 };

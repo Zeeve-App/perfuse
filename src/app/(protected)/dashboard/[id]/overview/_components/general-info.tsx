@@ -13,11 +13,12 @@
 
 import React from "react";
 import Image from "next/image";
-import NetworkStatus from "../_components/network-status";
+import NetworkStatus from "../../_components/network-status";
 import { formatDate, toShortString, withBasePath } from "@/utils/helpers";
 import { Heading } from "@/lib/components/Heading";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
 
+/** general info config component for overview page */
 const GeneralInfo = ({
   isLoading,
   name,

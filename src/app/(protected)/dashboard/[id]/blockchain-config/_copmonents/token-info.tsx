@@ -16,11 +16,13 @@ import KeyValuePair from "@/lib/components/utils/key-value-pair";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import { formateNumber, withBasePath } from "@/utils/helpers";
 
+/** token info component props */
 interface ParachainConfigProps {
   data?: ChainSpecFileType;
   isLoading: boolean;
 }
 
+/** token info component  */
 const TokenInfo = ({ data, isLoading }: ParachainConfigProps) => {
   return (
     <Card

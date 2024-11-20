@@ -13,6 +13,7 @@ import SyntaxHighlighter from "react-syntax-highlighter";
 import * as theme from "react-syntax-highlighter/dist/esm/styles/prism";
 import { ChainSpecFileType } from "@/types/chain-spec";
 
+/** chain spec file component for showing json with syntax highlighter */
 export default function ParachainChainSpecPrev({ data }: { data?: ChainSpecFileType }) {
   return (
     <SyntaxHighlighter

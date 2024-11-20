@@ -10,12 +10,13 @@
  */
 
 "use client";
-import RegisterParachainInfo from "../_components/register-parachain-info";
-import NodeTable from "../_components/node-table";
-import NodeListCard from "../_components/node-list-card";
+import RegisterParachainInfo from "../../_components/register-parachain-info";
+import NodeTable from "../../_components/node-table";
+import NodeListCard from "../../_components/node-list-card";
 import { NodeDbRow } from "@/db-queries";
 import useApi from "@/api-client";
 
+/** Rpc nodes info component */
 const RpcNodes = ({ nodes }: { nodes: { rpc: NodeDbRow[] } }) => {
   const apis = useApi();
   const { data: blockRpcResponse } = apis.blockNumber();

@@ -13,12 +13,13 @@ import { NextRequest } from "next/server";
 import { getNodeData } from "@/db-queries";
 import { sendDataResponse, sendErrorResponse } from "@/app/(protected)/api/_helpers/response";
 
+/** api to get node data from node id */
 export async function GET(req: NextRequest, { params }: { params: { id: string; nodeId: string } }) {
   try {
-    const networId = params.id;
+    const networkId = params.id;
     const nodeId = params.nodeId;
 
-    const node = await getNodeData({ node_id: nodeId, network_id: networId });
+    const node = await getNodeData({ node_id: nodeId, network_id: networkId });
     return sendDataResponse({
       ...node,
     });

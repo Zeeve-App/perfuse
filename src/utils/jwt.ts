@@ -14,9 +14,11 @@ import { SignJWT, jwtVerify } from "jose";
 const secret = process.env.JWT_SECRET;
 
 export type JwtPayloadType = {
+  /** email for the user */
   email: string;
 };
 
+/** sign jwt token */
 export async function sign(payload: JwtPayloadType, remember: boolean): Promise<string> {
   const iat = Math.floor(Date.now() / 1000);
   const exp = iat + 60 * 60 * parseInt(process.env.JWT_EXPIRES ?? "2") * (remember ? 12 : 1); // one hour
@@ -29,6 +31,7 @@ export async function sign(payload: JwtPayloadType, remember: boolean): Promise<
     .sign(new TextEncoder().encode(secret));
 }
 
+/** jwt verify token */
 export async function verify(token: string): Promise<JwtPayloadType> {
   const { payload } = await jwtVerify(token, new TextEncoder().encode(secret));
   // run some checks on the returned payload, perhaps you expect some specific values

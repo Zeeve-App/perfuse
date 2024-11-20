@@ -18,9 +18,9 @@ export const metadata: Metadata = {
   description: "Document for perfuse",
 };
 
-const CoreTimePage = async () => {
+const PerfuseDocPage = async () => {
   return <PerfuseDocument />;
 };
 
-export default CoreTimePage;
+export default PerfuseDocPage;
 export const dynamic = "force-dynamic";

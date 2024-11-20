@@ -26,17 +26,21 @@ import { tx } from "@/utils/shared";
 import { Typography } from "@/lib/components/Typography";
 import { useToast } from "@/lib/components/Toast";
 
+/** login page schema */
 const loginSchema = yup.object({
   email: yup.string(),
   password: yup.string(),
   remember: yup.bool(),
 });
 
+/** login schema type */
 type LoginSchemaType = yup.InferType<typeof loginSchema>;
 
+/** login component */
 const Login = () => {
   const router = useRouter();
   const toast = useToast();
+  /** form handler */
   const {
     handleSubmit,
     register,
@@ -47,6 +51,7 @@ const Login = () => {
     defaultValues: {},
   });
 
+  /** login api call on submit */
   const onSubmit = async (data: LoginSchemaType) => {
     // console.log(data);
     try {

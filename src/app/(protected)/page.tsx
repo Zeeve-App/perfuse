@@ -15,11 +15,13 @@ import { redirect } from "next/navigation";
 import ListPageClient from "./page-client";
 import { getNetworks } from "@/db-queries";
 
+/** perfuse default */
 export const metadata: Metadata = {
   title: "Perfuse | Dashboard",
   description: "Dashboard of perfuse",
 };
 
+/** perfuse page */
 const ListPage = async () => {
   const networks = await getNetworks();
 

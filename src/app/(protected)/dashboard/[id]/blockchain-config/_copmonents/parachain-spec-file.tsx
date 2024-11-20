@@ -22,11 +22,13 @@ import { tx } from "@/utils/shared";
 import { Typography } from "@/lib/components/Typography";
 import { Card } from "@/lib/components/Card";
 
+/** props */
 interface ParachainSpecFileProps {
   data?: ChainSpecFileType;
   isLoading: boolean;
 }
 
+/** chain spec file component with lazy loading */
 const ParachainSpecFile = ({ data, isLoading }: ParachainSpecFileProps) => {
   const params = useParams();
   const networkId = params.id as string;

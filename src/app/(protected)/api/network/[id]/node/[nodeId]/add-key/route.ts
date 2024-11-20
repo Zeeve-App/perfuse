@@ -15,13 +15,16 @@ import { getNodeData } from "@/db-queries";
 import { sendDataResponse, sendErrorResponse } from "@/app/(protected)/api/_helpers/response";
 import { addressToHexPublicKey } from "@/utils/wallet";
 
+/** post api for adding key to the collator */
 export async function POST(req: NextRequest, { params }: { params: { id: string; nodeId: string } }) {
   try {
     const { seed, pubKey }: { seed: string; pubKey: string } = await req.json();
     const nodeId = params.nodeId;
 
+    /** converting key to hex */
     const key = addressToHexPublicKey(pubKey);
 
+    /** making json rpc payload */
     const jsonData = {
       jsonrpc: "2.0",
       method: "author_insertKey",
@@ -34,6 +37,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string;
     const node = await getNodeData({ node_id: nodeId });
     if (!node) throw new Error("invalid node id");
 
+    /** calling rpc of the collator node based on there there name */
     const response = await axios.post(
       node.node_name.endsWith("1") ? `http://localhost:9008` : `http://localhost:9009`,
       jsonData,

@@ -23,6 +23,7 @@ import { DropdownMenu, DropdownMenuButton, DropdownMenuList, DropdownMenuItem } 
 import { useToggle } from "@/hooks";
 import useApi from "@/api-client";
 
+/** network action component e.g: delete, explorer and monitor */
 const Actions = ({
   network,
   task,
@@ -32,17 +33,21 @@ const Actions = ({
   task?: TaskDbRow;
   explorerUrl: { paraExplorerUrl: string; relayExplorerUrl: string };
 }) => {
+  /** getting params from the url */
   const params = useParams();
   const { isOpen, handleToggle, handleClose } = useToggle();
   const networkId = params.id as string;
   const { openModal } = useModalStore();
 
   const apis = useApi();
+  /** block number api */
   const { data: blockRpcResponse } = apis.blockNumber();
-  const setNetorkInStore = useNetworkStore((e) => e.setNetworkInfo);
+  /** network store */
+  const setNetworkStore = useNetworkStore((e) => e.setNetworkInfo);
 
+  /** updating network data in store */
   useEffect(() => {
-    setNetorkInStore({
+    setNetworkStore({
       data: {
         networkId,
         networkName: network?.network_name ?? "NA",
@@ -57,7 +62,7 @@ const Actions = ({
     network?.network_name,
     network?.network_relay_chain_type,
     networkId,
-    setNetorkInStore,
+    setNetworkStore,
     task?.task_status,
   ]);
 

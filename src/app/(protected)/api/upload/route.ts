@@ -13,6 +13,7 @@ import { writeFile } from "fs/promises";
 import { NextRequest } from "next/server";
 import { sendDataResponse, sendErrorResponse } from "../_helpers/response";
 
+/** api to upload file to the server */
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
@@ -22,6 +23,7 @@ export async function POST(req: NextRequest) {
     const buffer = new Uint8Array(arrayBuffer);
     await writeFile(`./public/uploads/${file.name}`, buffer);
 
+    /** returning the uploaded path to the user */
     return sendDataResponse({
       message: "File uploaded successfully",
       path: `./public/uploads/${file.name}`,

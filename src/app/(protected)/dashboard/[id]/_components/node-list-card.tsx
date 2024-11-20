@@ -15,6 +15,7 @@ import { NodeDbRow } from "@/db-queries";
 import { formatDate, toShortString } from "@/utils/helpers";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
 
+/** node list card */
 const NodeListCard = ({ node }: { node: NodeDbRow }) => {
   return (
     <div className="flex flex-col gap-3 rounded-lg border border-brand-gray bg-theme-foreground shadow-sm dark:border-brand-outline">

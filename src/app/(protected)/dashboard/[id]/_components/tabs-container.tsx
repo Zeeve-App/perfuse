@@ -17,7 +17,8 @@ import SvgBubbles from "@/lib/icons/essential/outline/Bubbles";
 import SvgChart5Square from "@/lib/icons/business/outline/Chart5Square";
 import SvgBox from "@/lib/icons/delivery/outline/Box";
 
-const GetIcons = ({ step }: { step: number }) => (
+/** badge with number */
+const NumberBatch = ({ step }: { step: number }) => (
   <span className="flex size-4 items-center justify-center rounded-full bg-theme-secondary text-xs text-white">
     {step}
   </span>
@@ -80,7 +81,7 @@ const TabContainer = ({
             &nbsp;Collator&nbsp;Nodes
           </span>
           &nbsp;
-          <GetIcons step={collatorNodesCount} />
+          <NumberBatch step={collatorNodesCount} />
         </Tab>
         <Tab className="min-w-52 lg:min-w-48">
           <span className=" text-base font-semibold">
@@ -88,7 +89,7 @@ const TabContainer = ({
             &nbsp;RPC&nbsp;Nodes
           </span>
           &nbsp;
-          <GetIcons step={rpcNodesCount} />
+          <NumberBatch step={rpcNodesCount} />
         </Tab>
       </TabList>
     </TabsContextProvider>

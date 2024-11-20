@@ -16,9 +16,8 @@ import { withBasePath } from "@/utils/helpers";
 import { Heading } from "@/lib/components/Heading";
 import { Button } from "@/lib/components/Button";
 
+/** default page client */
 const ListPageClient = () => {
-  // localStorage.setItem("from", "parachains");
-
   return (
     <div className="flex flex-col gap-y-3 lg:gap-y-6">
       <div className="flex grid-cols-12 justify-items-start  gap-4 rounded-lg border border-brand-outline p-3 bg-brand-gradient-blue-48 lg:p-6">

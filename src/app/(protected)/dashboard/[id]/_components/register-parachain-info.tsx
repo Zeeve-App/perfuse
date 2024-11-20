@@ -19,10 +19,14 @@ import { Tooltip } from "@/lib/components/Tooltip";
 import { tx } from "@/utils/shared";
 import { useNetworkStore } from "@/store/network";
 import { Typography } from "@/lib/components/Typography";
+
+/** register parachain props */
 interface InfoProps {
   className?: string;
   show: boolean;
 }
+
+/** register parachain component to open modal to download wasm & genesis*/
 const RegisterParachainInfo = ({ className, show }: InfoProps) => {
   const { openModal } = useModalStore();
   const networkInfo = useNetworkStore((e) => e.networkInfo);
@@ -35,7 +39,6 @@ const RegisterParachainInfo = ({ className, show }: InfoProps) => {
         className,
       )}
     >
-      {/* <StatusIcon status={"warning"} />  */}
       <div className="2xl:flex 2xl:grow 2xl:flex-row 2xl:items-center 2xl:justify-between">
         <div className="flex flex-col gap-2 text-brand-dark">
           <Typography variant="subtitle">Important</Typography>

@@ -20,42 +20,68 @@ import { knexHandler } from "@/db-queries/knexfile";
 import { config } from "@/config/config";
 import { jobShellExecutorBG } from "@/utils/job-shell-executor";
 
-export type CreatePerfuseApiPayload = {
+export interface CreatePerfuseApiPayload {
+  /** network details from user */
   network: {
+    /** network/chain name from the user */
     network_name: string;
+    /** network env from the user testnet/mainnet */
     network_env: string;
+    /** network template which is used to create the chainSpec and  binary */
     network_template: string;
+    /** relay chain in which the parachain is created */
     network_relay_chain_type: string;
+    /** sidecar is enabled or not */
     network_sidecar: 0 | 1;
+    /** network blockchain explorer type */
     network_blockchain_explorer_type: string;
+    /** network chain spec file raw json */
     network_chain_spec_file_json: object;
+    /** network binary file path */
     network_binary_path: string;
+    /** network user address */
     network_user_address: string;
   };
   nodes: Array<
     | {
+        /** collator node name */
         node_name: string;
+        /** node type */
         node_type: "collator";
+        /** collator address */
         node_address: string;
+        /** node rpc cors allow list "*" default */
         node_rpc_cors: string;
+        /** collator node balance */
         node_balance: number;
       }
     | {
+        /** rpc node name */
         node_name: string;
+        /** node type  */
         node_type: "rpc";
+        /** node auth method for rpc calls */
         node_auth_method: "api_key" | "basic_auth";
+        /** node username if auth method is basic auth */
         node_username: string;
+        /** node password if auth method is basic auth */
         node_password: string;
+        /** node http enabled  */
         node_https_enabled: boolean;
+        /** node websocket enabled */
         node_wss_enabled: boolean;
+        /** node endpoint for rpc calls */
         node_endpoint?: string;
       }
   >;
-};
+}
 
+/** post api for creating parachain network */
 export async function POST(req: NextRequest) {
   try {
+    /** getting json data from the api request body */
     const formData: CreatePerfuseApiPayload = await req.json();
+    /** http headers of the request */
     const headersList = headers();
     const host = headersList.get("host");
     const domain = host?.split(":")[0];
@@ -64,8 +90,10 @@ export async function POST(req: NextRequest) {
     const taskId = uuidv4();
     const apiKey = crypto.randomBytes(30).toString("hex");
 
+    /** creating knex transaction */
     await knexHandler.transaction(async (trx) => {
       try {
+        /** saving network details */
         await saveNetworkData(
           {
             ...formData.network,
@@ -81,6 +109,7 @@ export async function POST(req: NextRequest) {
           trx,
         );
 
+        /** adding task in the db */
         await addTask(
           {
             task_id: taskId,
@@ -95,7 +124,9 @@ export async function POST(req: NextRequest) {
           trx,
         );
 
+        /** adding nodes details in the db */
         await Promise.all(
+          /** iterating through the node array in api request */
           formData.nodes.map(async (e) => {
             const isRpc = e.node_type === "rpc";
 
@@ -109,37 +140,48 @@ export async function POST(req: NextRequest) {
               node_endpoint: isRpc ? e.node_endpoint ?? domain : undefined,
               created_at: new Date().toISOString(),
             };
+            /** saving node details */
             await saveNodeData(node, trx);
           }, trx),
         );
 
+        /** if user didn't used any template */
         if (formData.network.network_template === "custom")
+          /** copying file from upload directory to main location */
           await copyFile(formData.network.network_binary_path, config.server.binaryFilePathForCopy);
 
+        /** creating env file for the scripts */
         await writeFile(config.server.envFilePathForCopy, createEnvFile(formData, apiKey));
 
+        /** saving the chain spec file to main location so that scripts can consume the chain spec file*/
         await writeFile(
           config.server.chainSpecFilePathForCopy,
           JSON.stringify(formData.network.network_chain_spec_file_json),
         );
 
+        /** running the script to create the parachain network */
         jobShellExecutorBG("make all", process.cwd(), taskId);
       } catch (error) {
+        /** if there is any error while creating network it auto rollback the transaction */
         console.log(error);
         throw error;
       }
     });
 
+    /** sending response back to the client */
     return sendDataResponse({ network_id });
-  } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
     console.log(error);
 
+    /** sending the error response back to the client */
     return sendErrorResponse({
-      message: "Error while creating",
+      message: error.message ?? "Error while creating",
     });
   }
 }
 
+/** creating env file for script from the api request payload */
 const createEnvFile = (data: CreatePerfuseApiPayload, apiKey?: string) => {
   const headersList = headers();
   const host = headersList.get("host");

@@ -17,6 +17,7 @@ import { Input } from "@/lib/components/Form";
 import { DeployNetworkValidationSchemaType } from "@/schemas/validation-schema";
 import { FormField } from "@/lib/components/Form/FormField";
 
+/** deploy step 2 */
 const DeployStep2 = forwardRef<
   HTMLDivElement,
   {
@@ -29,6 +30,7 @@ const DeployStep2 = forwardRef<
 >(({ className, formData }, ref) => {
   return (
     <Card tabIndex={1} ref={ref} className={className}>
+      {/* chain name */}
       <Card variant={"grid-no-pad"} className="col-span-12 lg:col-span-6 ">
         <FormField
           className="col-span-12"
@@ -48,6 +50,7 @@ const DeployStep2 = forwardRef<
           />
         </FormField>
       </Card>
+      {/* token name */}
       <Card variant={"grid-no-pad"} className="col-span-12 lg:col-span-6 ">
         <FormField
           className="col-span-12"

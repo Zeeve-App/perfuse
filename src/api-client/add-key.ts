@@ -14,15 +14,19 @@ import { withBasePath } from "@/utils/helpers";
 import { backendAxiosInstance } from "@/utils/axios";
 
 type ApiRequest = {
+  /** seed phrase for collator node */
   seed: string;
+  /** public key for the collator */
   pubKey: string;
 };
 type ApiResponse = {
+  /** success status false if there is a error */
   success: boolean;
-  data: { network_id: string };
+  /** response data of the api */
+  data: Record<string, never>;
 };
 
-/** hook to use network list api */
+/** hook to add key in collator node */
 const useAddKey = (
   networkId: string,
   nodeId: string,
@@ -30,6 +34,7 @@ const useAddKey = (
   config?: AxiosRequestConfig<ApiRequest>,
 ) => {
   const request = backendAxiosInstance.post<ApiResponse, AxiosResponse<ApiResponse>, ApiRequest>;
+  /** Api endpoint for getting the data */
   const apiEndpoint = withBasePath(`/api/network/${networkId}/node/${nodeId}/add-key`);
 
   return request(apiEndpoint, formData, config);

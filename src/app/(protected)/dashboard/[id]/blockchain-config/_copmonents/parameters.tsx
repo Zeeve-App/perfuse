@@ -19,11 +19,14 @@ import { Tooltip } from "@/lib/components/Tooltip";
 import CardKeyValuePair from "@/lib/components/utils/card-key-value-pair";
 import { tx } from "@/utils/shared";
 
+/** props */
 interface ParametersProps {
   data?: ChainSpecFileType;
   isLoading: boolean;
   blockHeight: number;
 }
+
+/** parameters block height & token symbol component */
 const Parameters = ({ data, isLoading, blockHeight }: ParametersProps) => {
   // const networkId = params.id as string;
   const [tokenSupply, setTokenSupply] = useState<number | undefined>(undefined);

@@ -11,15 +11,17 @@
 
 import React from "react";
 import { Metadata } from "next";
-import CollatorNodes from "./collator-nodes";
+import CollatorNodes from "./_components/collator-nodes";
 import { getNodes } from "@/db-queries";
 
+/** collator nodes page metadata */
 export const metadata: Metadata = {
   title: "Perfuse | Parachain Details",
   description: "nodes of parachain node",
 };
 
-const CreatePage = async ({
+/** collator node main page Component */
+const CollatorNodePage = async ({
   params,
 }: {
   params: { id: string };
@@ -35,4 +37,4 @@ const CreatePage = async ({
   );
 };
 
-export default CreatePage;
+export default CollatorNodePage;

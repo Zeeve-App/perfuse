@@ -18,6 +18,7 @@ import KeyValuePair from "@/lib/components/utils/key-value-pair";
 import { withBasePath } from "@/utils/helpers";
 import { Typography } from "@/lib/components/Typography";
 
+/** blockchain config component for overview page */
 const BlockchainConfig = ({
   paraId,
   relayChainType,

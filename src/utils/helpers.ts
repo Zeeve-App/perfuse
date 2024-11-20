@@ -11,6 +11,7 @@
 
 import { format, parseISO, intervalToDuration } from "date-fns";
 import { CREDENTIALS_TYPE } from "@/types/node";
+import { ChainSpecFileType } from "@/types/chain-spec";
 
 /**
  * to show standard formatted time and make it common throughout the application
@@ -198,6 +199,21 @@ const calculateDaysLeft = (end: Date): number => {
   return daysLeft;
 };
 
+/** function get session keys from chain spec */
+function getSessionKey(
+  runtimeGenesis: ChainSpecFileType["genesis"]["runtimeGenesis"],
+  collatorAddresses: string,
+): string {
+  const aura = runtimeGenesis.patch.session.keys.find((e) => {
+    console.log({ e });
+
+    return typeof e[0] === "string" && e[0] === collatorAddresses;
+  });
+  console.log({ aura });
+
+  return typeof aura?.[2] !== "string" ? aura?.[2]?.aura ?? "" : "";
+}
+
 export {
   withBasePath,
   isActive,
@@ -210,4 +226,5 @@ export {
   formatDate,
   formatIntoAge,
   formatEndpoint,
+  getSessionKey,
 };

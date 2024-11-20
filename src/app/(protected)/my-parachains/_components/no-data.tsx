@@ -15,6 +15,7 @@ import Link from "next/link";
 import { Card } from "@/lib/components/Card";
 import SvgPlusSquare from "@/lib/icons/essential/outline/PlusSquare";
 
+/** no data card components */
 const NoData = () => {
   return (
     <Card className="col-span-12 min-h-[255px] items-center justify-center rounded-lg border-0">

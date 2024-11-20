@@ -15,6 +15,7 @@ import { formateNumber, toShortString } from "@/utils/helpers";
 import { tx } from "@/utils/shared";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
 
+/** props for pre-mining config */
 interface PreMiningCardProps {
   accountAddress: string;
   accountBalance: number;
@@ -22,6 +23,7 @@ interface PreMiningCardProps {
   className?: string;
 }
 
+/** pre mining address card */
 const PreMiningCard = ({ accountAddress, accountBalance, tokenSymbol, className }: PreMiningCardProps) => {
   return (
     <div className={tx("text-sm grid grid-cols-12", className)}>

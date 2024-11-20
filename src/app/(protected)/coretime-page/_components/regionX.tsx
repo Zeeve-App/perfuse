@@ -19,6 +19,7 @@ import { Button } from "@/lib/components/Button";
 import { useToggle } from "@/hooks";
 import { Typography } from "@/lib/components/Typography";
 
+/** regionX props */
 interface RegionXCardProps extends ComponentPropsWithoutRef<"div"> {
   protocolId: string;
   protocolName: string;
@@ -27,6 +28,7 @@ interface RegionXCardProps extends ComponentPropsWithoutRef<"div"> {
   regionXLink: string;
 }
 
+/** regionX card for core time page */
 const RegionXCard = (props: RegionXCardProps) => {
   const { protocolName, description } = props;
   const { isOpen, handleToggle } = useToggle();

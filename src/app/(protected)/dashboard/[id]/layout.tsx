@@ -17,7 +17,11 @@ import { getNetworkData, getNodes, getTask } from "@/db-queries";
 import { config } from "@/config/config";
 import { Badge } from "@/lib/components/Badge/Badge";
 
-const IdPageClient: React.FC<{ children: React.ReactNode; params: { id: string } }> = async ({ children, params }) => {
+/** dashboard layout component */
+const DashboardLayout: React.FC<{ children: React.ReactNode; params: { id: string } }> = async ({
+  children,
+  params,
+}) => {
   const id = params.id;
   const headersList = headers();
 
@@ -26,6 +30,8 @@ const IdPageClient: React.FC<{ children: React.ReactNode; params: { id: string }
   const network = await getNetworkData(id);
   const nodes = await getNodes(id);
   const rpcNode = nodes.filter((e) => e.node_type === "rpc")?.[0];
+
+  /** creating rpc url for explorer */
   let rpcUrl = "";
   if (rpcNode?.node_auth_method === "api_key") {
     rpcUrl = `ws://${host?.split(":")[0]}/${rpcNode.node_api_key}`;
@@ -33,6 +39,7 @@ const IdPageClient: React.FC<{ children: React.ReactNode; params: { id: string }
     rpcUrl = `ws://${rpcNode?.node_username}:${rpcNode?.node_password}@${host?.split(":")[0]}`;
   }
 
+  /** explorer urls */
   const paraExplorerUrl = `${explorer}/?rpc=${encodeURIComponent(`${rpcUrl}/para-rpc`)}#explorer`;
   const relayExplorerUrl = `${explorer}/?rpc=${encodeURIComponent(`${rpcUrl}/relay-rpc`)}#explorer`;
 
@@ -63,4 +70,4 @@ const IdPageClient: React.FC<{ children: React.ReactNode; params: { id: string }
   );
 };
 
-export default IdPageClient;
+export default DashboardLayout;

@@ -12,7 +12,9 @@
 import { create } from "zustand";
 import { TaskDbRow } from "@/db-queries";
 
+/** registration info of parachain */
 type registrationInfo = { show: boolean; isLoading: boolean };
+/** network info of parachain */
 type NetworkInfo = {
   data:
     | {
@@ -25,25 +27,26 @@ type NetworkInfo = {
     | undefined;
   isLoading: boolean;
 };
-// types
+/** state of the store */
 type State = {
   networkInfo: NetworkInfo;
   registrationInfo: registrationInfo;
 };
 
+/** action of the store to change state */
 type Actions = {
   setNetworkInfo: (networkInfo: NetworkInfo) => void;
   reset: () => void;
   setRegistrationInfo: (registrationInfo: registrationInfo) => void;
 };
 
-// initial state
+/** initial state */
 const initialState: State = {
   networkInfo: { data: undefined, isLoading: false },
   registrationInfo: { show: false, isLoading: false },
 };
 
-// config store
+/** network store */
 const useNetworkStore = create<State & Actions>((set) => ({
   ...initialState,
   setNetworkInfo: (networkInfo: NetworkInfo) => {

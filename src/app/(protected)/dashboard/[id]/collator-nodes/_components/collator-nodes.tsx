@@ -10,12 +10,13 @@
  */
 
 "use client";
-import RegisterParachainInfo from "../_components/register-parachain-info";
-import NodeTable from "../_components/node-table";
-import NodeListCard from "../_components/node-list-card";
+import RegisterParachainInfo from "../../_components/register-parachain-info";
+import NodeTable from "../../_components/node-table";
+import NodeListCard from "../../_components/node-list-card";
 import { NodeDbRow } from "@/db-queries";
 import useApi from "@/api-client";
 
+/** collator nodes component */
 const CollatorNodes = ({ nodes }: { nodes: { collator: NodeDbRow[] } }) => {
   const apis = useApi();
   const { data: blockRpcResponse } = apis.blockNumber();

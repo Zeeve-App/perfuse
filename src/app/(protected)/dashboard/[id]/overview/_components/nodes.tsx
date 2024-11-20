@@ -12,35 +12,16 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import NetworkStatus from "../_components/network-status";
+import NetworkStatus from "../../_components/network-status";
 import { Button } from "@/lib/components/Button";
 import { Heading } from "@/lib/components/Heading";
-import { ColumnDef, createColumnHelper } from "@/lib/components/ReactTable";
 import { NodeDbRow } from "@/db-queries";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
 import { Typography } from "@/lib/components/Typography";
 import { formatEndpoint, toShortString, withBasePath } from "@/utils/helpers";
 
-const columnHelper = createColumnHelper<NodeDbRow>();
-// table columns
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const nodeTableColumns: ColumnDef<NodeDbRow, any>[] = [
-  columnHelper.accessor("node_name", {
-    header: "Name",
-    cell: (info) => info.getValue(), // just an example to style a column/cell
-  }),
-  columnHelper.accessor("node_type", {
-    header: "Type",
-    cell: (info) => info.getValue().toUpperCase(),
-  }),
-  columnHelper.accessor("node_id", {
-    header: "Status",
-    cell: () => <NetworkStatus className="text-xs" />,
-  }),
-];
-
+/** nodes component for overview page */
 const Nodes = ({ nodes }: { isLoading: boolean; nodes: NodeDbRow[] }) => {
-  const rowPerPage = 3;
   console.log(nodes);
 
   return (
