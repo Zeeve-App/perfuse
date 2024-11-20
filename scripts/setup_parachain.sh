@@ -30,9 +30,9 @@ fi
 
 # Configuration variables
 service_config=(
-  "${COL_NAME_1}:--alice"   # Collator node 1 with --alice
-  "${COL_NAME_2}:--bob"     # Collator node 2 with --bob
-  "${RPC_NAME}:"            # RPC node 
+  "${COL_NAME_1}:"   # Collator node 1 
+  "${COL_NAME_2}:"   # Collator node 2 
+  "${RPC_NAME}:"     # RPC node 
 )
 
 ports=(40334 40335 40336)
@@ -42,8 +42,8 @@ base_path_template="/home/perfuse/parachain/%s/data"  # Data directory template
 parachain_key_dir="${PARACHAIN_KEY_DIR:-/home/perfuse/parachain_keys}"
 parachain_dir="/home/perfuse/parachain"
 chain_spec="$parachain_dir/raw-parachain-chainspec.json"
-relay_chain_spec="/home/perfuse/zombienet/data/rococo-local.json"
 extra_params="--unsafe-rpc-external --rpc-methods unsafe"
+network="$NETWORK_TYPE"
 
 source $SCRIPT_DIR/generate_keys.sh
 setup_sidecar() {
@@ -74,10 +74,6 @@ get_bootnode_id() {
     echo "$bootnode_id"
 }
 
-if [ $TEMPLATE = "custom" ] ; then
-sudo chmod +x $SCRIPT_DIR/../perfuse/bin.bin
-sudo mv $SCRIPT_DIR/../perfuse/bin.bin /usr/local/bin/polkadot-parachain
-fi
 
 # Function to create a service
 create_service() {
@@ -107,7 +103,6 @@ create_service() {
   # Add extra parameters (e.g., prometheus-port, rpc-max-connections)
   exec_start+=" \
     --prometheus-port $prometheus_port \
-    --rpc-max-connections 50000 \
     --port $port \
     --rpc-port $rpc_port \
     $extra_params"
@@ -118,15 +113,18 @@ create_service() {
       --collator \
       --node-key-file $parachain_key_dir/collator_node_key_$count.txt \
       -- \
-      --chain $relay_chain_spec \
-      --execution wasm \
+      --chain $network \
+      --sync warp \
       --port $((port + 2022)) \
       --rpc-port $((rpc_port + 2022)) "
   else
     exec_start+=" \
+      --rpc-max-connections 50000 \
+      --state-pruning archive \
       -- \
-      --chain $relay_chain_spec \
-      --execution wasm \
+      --chain $network \
+      --sync warp \
+      --state-pruning 1000 \
       --port $((port + 2022)) \
       --rpc-port $((rpc_port + 2022)) "
   fi

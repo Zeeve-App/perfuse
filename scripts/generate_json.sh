@@ -28,58 +28,26 @@ fi
 SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
 RELAYCHAIN_DIR="${RELAYCHAIN_DIR:-/home/perfuse/relaychain}" # Customizable relaychain directory
 PARACHAIN_DIR="${PARACHAIN_DIR:-/home/perfuse/parachain}" # Customizable parachain directory
-if [ $TEMPLATE = "custom" ] ; then
 CHAINSPEC_FILE="$SCRIPT_DIR/../perfuse/chainspec.json"
-elif [ $TEMPLATE = "substrate" ] ; then
-CHAINSPEC_FILE="$SCRIPT_DIR/../public/template/substrate.json"
-else 
-CHAINSPEC_FILE="$SCRIPT_DIR/../public/template/evm_frontier.json"
-fi
-PARACHAIN_ID=2000
+
 
 mkdir -p /home/perfuse/{relaychain,parachain}
 
 # Functions
 
-build_relaychain_spec() {
-    echo "Building relay chain spec..."
-    "/usr/local/bin/polkadot" build-spec \
-        --chain rococo-local \
-        --raw \
-        --disable-default-bootnode | sudo tee "$RELAYCHAIN_DIR/rococo_relay_chain_spec_raw.json" &> /dev/null
-    echo "Relay chain spec created."
-}
-
-build_parachain_spec() {
-    echo "Building parachain spec..."
-    /usr/local/bin/polkadot-parachain build-spec \
-    --disable-default-bootnode | sudo tee ${PARACHAIN_DIR}/plain-parachain-chainspec.json &> /dev/null
-
-    echo 'Plain Parachain Specs Created................'
-    echo "Modifying chain spec..."
-    if command -v jq &> /dev/null; then
-            jq ".genesis.runtimeGenesis.parachainInfo.parachainId = $PARACHAIN_ID | .para_id = $PARACHAIN_ID" ${PARACHAIN_DIR}/plain-parachain-chainspec.json | sudo tee "$PARACHAIN_DIR/new-parachain-chainspec.json" &> /dev/null
-            /usr/local/bin/polkadot-parachain build-spec \
-                --chain $PARACHAIN_DIR/new-parachain-chainspec.json \
-                --disable-default-bootnode --raw | sudo tee "$PARACHAIN_DIR/raw-parachain-chainspec.json" &> /dev/null
-        else
-            echo "WARNING: 'jq' not found. Chainspec modification skipped. Please install 'jq' if you need to modify the chainspec."
-        fi
-    echo "Chain spec modified."
-}
-
-modify_chainspec() {
-    echo "Modifying chain spec..."
+build_raw_chainspec() {
+    echo "Building raw chain spec..."
     sudo cp "$CHAINSPEC_FILE" "$PARACHAIN_DIR/plain-parachain-chainspec.json"
+
     /usr/local/bin/polkadot-parachain build-spec \
         --chain $PARACHAIN_DIR/plain-parachain-chainspec.json \
         --disable-default-bootnode --raw | sudo tee "$PARACHAIN_DIR/raw-parachain-chainspec.json" &> /dev/null
     echo "Chain spec modified."
 }
 
-generate_genesis_wasm() {
+generate_genesis_state_wasm() {
     echo "Generating genesis state and WASM..."
-    "/usr/local/bin/polkadot-parachain" export-genesis-state --chain $PARACHAIN_DIR/raw-parachain-chainspec.json "$PARACHAIN_DIR/para-genesis-state"
+    "/usr/local/bin/polkadot-parachain" export-genesis-head --chain $PARACHAIN_DIR/raw-parachain-chainspec.json "$PARACHAIN_DIR/para-genesis-state"
     "/usr/local/bin/polkadot-parachain" export-genesis-wasm --chain $PARACHAIN_DIR/raw-parachain-chainspec.json "$PARACHAIN_DIR/para-wasm"
 
     if [ ! -f "$PARACHAIN_DIR/para-genesis-state" ]; then
@@ -94,19 +62,22 @@ generate_genesis_wasm() {
     echo "}" | sudo tee -a "$PARACHAIN_DIR/checksums.json" &> /dev/null
 
     # Create ZIP archive (optional, for easier distribution)
+    if ! command -v zip &> /dev/null; then
+        echo "zip not found, installing ..."
+        sudo apt-get update -y && sudo apt-get install -y zip
+    fi
     sudo zip -0 -q "$PARACHAIN_DIR/genesis.zip" "$PARACHAIN_DIR/para-genesis-state" "$PARACHAIN_DIR/para-wasm" "$PARACHAIN_DIR/checksums.json"
     echo "Genesis state and WASM files created."
 }
 
-# Step 1: Build Relay Chain Spec
-build_relaychain_spec
 
-# Step 2: Modify or Build Chain Spec
+# Step 1: Modify or Build Chain Spec
 if [ -f "$CHAINSPEC_FILE" ]; then  # Check if chainspec file exists
-    modify_chainspec
+    build_raw_chainspec
 else
-    build_parachain_spec
+    echo "Chainspec file for parachain not found"
+    exit 1
 fi
 
-# Step 3: Create Genesis and WASM
-generate_genesis_wasm
+# Step 2: Create Genesis and WASM
+generate_genesis_state_wasm
