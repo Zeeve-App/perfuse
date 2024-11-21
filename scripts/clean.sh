@@ -119,5 +119,8 @@ sudo rm -r /home/perfuse
 # Delete the pm2 service of RegionX
 pm2 delete all
 
+#Remove jsapps directory
+sudo rm -r /var/www/jsapps/
+
 #Remove Sidecar Container
 # sudo docker rm -f $(sudo docker ps -a -q)
