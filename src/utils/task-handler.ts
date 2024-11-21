@@ -10,6 +10,8 @@
  */
 
 import { copyFile, readFile, writeFile } from "fs/promises";
+
+/** task handle once the network is created */
 export const createTaskHandler = async () => {
   const data = await readFile("/home/perfuse/parachain/checksums.json");
   const checksum = JSON.parse(data.toString());

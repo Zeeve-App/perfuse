@@ -15,7 +15,6 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { withBasePath, toShortString, formatDate } from "@/utils/helpers";
-import { Network } from "@/types/network";
 import { CopyButton, Button } from "@/lib/components/Button";
 import { Card } from "@/lib/components/Card";
 import { Heading } from "@/lib/components/Heading";
@@ -24,7 +23,12 @@ import SvgBubbles from "@/lib/icons/essential/outline/Bubbles";
 
 /** Network list card props */
 interface NetworkCardProps {
-  data: Network;
+  data: {
+    networkId: string;
+    networkName: string;
+    networkEnvironment: string;
+    networkCreatedAt: Date;
+  };
 }
 
 /** Network list card components */

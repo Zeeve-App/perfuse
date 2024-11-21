@@ -13,25 +13,44 @@ import dotenv from "dotenv";
 import * as yup from "yup";
 dotenv.config();
 
+/** Configs for the application */
 const rawConfig = {
+  /** server side configuration */
   server: {
+    /** db path of the sqlite file */
     dbLocation: process.env.SQLITE_DB_LOCATION || "./perfuse.sqlite",
+    /** binary path of the uploaded binary */
     binaryFilePathForCopy: process.env.BINARY_FILE_PATH_FOR_COPY || "./perfuse/polkadot-parachain",
+    /** chain spec file path of the created/uploaded chain spec */
     chainSpecFilePathForCopy: process.env.CHAIN_SPEC_FILE_PATH_FOR_COPY || "./perfuse/chainspec.json",
+    /** generated env file path for the perfuse */
     envFilePathForCopy: process.env.ENV_FILE_PATH_FOR_COPY || "./perfuse/.env",
+    /** jwt secret to be used in signing and verifying the token */
     jwtSecret: process.env.JWT_SECRET,
+    /** jwt expires time in hours */
     jwtExpiresIn: process.env.JWT_EXPIRES,
+    /** default email to be used in the login */
     defaultEmail: process.env.DEFAULT_EMAIL,
+    /** default password to be used in the login */
     defaultPassword: process.env.DEFAULT_PASS,
+    /** relay chain version which will be saved in the db */
     relayChainVersion: process.env.RELAY_CHAIN_VERSION || "stable2407",
   },
+  /** clients & server side configuration */
   client: {
+    /** hostname */
     host: process.env.NEXT_PUBLIC_HOST || "localhost:3000",
+    /** base path of the server */
     basePath: process.env.NEXT_PUBLIC_BASE_PATH || "",
+    /**
+     * polkadot.js explorer url if u are using any custom explorer,
+     * it will use this and add newly created parachain rpc in it.
+     * */
     explorer: process.env.NEXT_PUBLIC_EXPLORER_POLKADOT || "https://polkadot.js.org/apps",
   },
 };
 
+/** validating the config */
 const envSchema = yup.object({
   server: yup.object({
     dbLocation: yup.string().required("db file location is required"),

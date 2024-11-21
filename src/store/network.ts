@@ -14,6 +14,7 @@ import { TaskDbRow } from "@/db-queries";
 
 /** registration info of parachain */
 type registrationInfo = { show: boolean; isLoading: boolean };
+
 /** network info of parachain */
 type NetworkInfo = {
   data:

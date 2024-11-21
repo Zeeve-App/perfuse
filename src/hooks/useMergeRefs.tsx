@@ -13,6 +13,10 @@
 
 import { useMemo } from "react";
 
+/**
+ * Merges multiple React refs (callback or object refs) into a single ref callback.
+ * Useful when multiple components or libraries need access to the same DOM element.
+ */
 const mergeRefs = (...refs: any[]) => {
   return (node: any) => {
     refs.forEach((ref) => {

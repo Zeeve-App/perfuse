@@ -12,11 +12,11 @@
 /* eslint-disable prettier/prettier */
 "use client";
 import React from "react";
-// import { Layout, LayoutRightSection, LayoutMainSection } from "@zeeve-platform/ui-common-components";
-import Header from "./header";
-import Sidebar from "./sidebar";
 import { useToggle } from "@/hooks";
 import { Layout, LayoutMainSection, LayoutRightSection } from "@/lib/components/Layout";
+import { ZeeveHeader } from "@/lib/components/zeeve-header";
+import { SideDrawer, SideDrawerContent, SideDrawerOverlay } from "@/lib/components/SideDrawer";
+import ZeeveSidebar from "@/lib/components/sidebar/sidebar";
 
 /**
  * Setup global layout for the application.
@@ -35,9 +35,31 @@ const LayoutProvider = (props: React.PropsWithChildren) => {
     <Layout>
       {
         <>
-          <Sidebar isMobileSidebarOpen={isMobileSidebarOpen} handleMobileSidebarClose={handleMobileSidebarClose} />
+          <SideDrawer isOpen={isMobileSidebarOpen} handleClose={handleMobileSidebarClose} placement="left">
+            <SideDrawerOverlay />
+            <SideDrawerContent
+              focusLockProps={{
+                disabled: true,
+              }}
+              className="w-4/5  md:w-72 xl:hidden"
+            >
+              <div className="size-full " title="mobile sidebar">
+                <ZeeveSidebar handleClose={handleMobileSidebarClose} />
+              </div>
+            </SideDrawerContent>
+          </SideDrawer>
           <LayoutRightSection>
-            <Header handleMobileSidebarOpen={handleMobileSidebarOpen} />
+            <ZeeveHeader
+              // createDropdownMenu={createDropdownMenu}
+              onMenuButtonClick={handleMobileSidebarOpen}
+              notificationsWSURL={undefined}
+              accessToken={""}
+              user={{
+                firstName: "Profile",
+                lastName: "User",
+                email: "test@gmail.com",
+              }}
+            />
             <LayoutMainSection>{children}</LayoutMainSection>
           </LayoutRightSection>
         </>

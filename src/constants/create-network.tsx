@@ -21,15 +21,6 @@ export const sideCardOptions = [
 
 export type networkEnvType = "devnet" | "mainnet" | "testnet";
 
-export const relayChainOption: Record<networkEnvType, { label: string; value: string; icon?: JSX.Element }[]> = {
-  devnet: [{ label: "Rococo-local", value: "rococo_local", icon: <SvgSubstrate /> }],
-  mainnet: [
-    { label: "Kusama", value: "kusama" },
-    { label: "Polkadot", value: "polkadot" },
-  ],
-  testnet: [{ label: "Rococo", value: "rococo" }],
-};
-
 export const envAndRelayChainOption = [
   {
     environment: {
@@ -106,33 +97,6 @@ export const templateOption = [
     ),
   },
 ] as const;
-
-export const networkEnvOption: { label: string; value: networkEnvType; isDisabled?: boolean; tooltipText?: string }[] =
-  [
-    { label: "Devnet", value: "devnet", tooltipText: "this is devnet" },
-    { label: "Testnet", value: "testnet", isDisabled: true, tooltipText: "this is devnet" },
-    { label: "Mainnet", value: "mainnet", isDisabled: true, tooltipText: "this is devnet" },
-  ];
-
-export const explorerOption: {
-  label: string;
-  value: string;
-  isDisabled: boolean;
-  tooltipText?: string;
-  icon?: JSX.Element;
-}[] = [
-  {
-    label: "Polkadot.js",
-    value: "polkadotjs",
-    isDisabled: false,
-    icon: (
-      <div className="flex size-10  items-center justify-center rounded-full border border-brand-gray/45 p-2">
-        <Image height={15} width={15} alt={"eth"} src={withBasePath("/assets/images/create/polkadot.png")}></Image>
-      </div>
-    ),
-  },
-  { label: "Subscan", value: "subscan", isDisabled: true },
-];
 
 export type AuthenticationMethods = "api_key" | "basic_auth";
 

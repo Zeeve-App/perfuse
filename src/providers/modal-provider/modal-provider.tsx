@@ -16,6 +16,7 @@ import RegisterParachainInfoModal from "./register-parachain-modal";
 import NodeDetailsModal from "./node-details-modal";
 import CollatorAddKey from "./collator-add-key";
 
+/** modal provider */
 const ModalProvider = () => {
   return (
     <>

@@ -23,6 +23,7 @@ import KeyValuePair from "@/lib/components/utils/key-value-pair";
 import useApi from "@/api-client";
 import NetworkStatus from "@/app/(protected)/dashboard/[id]/_components/network-status";
 
+/** node details modal to show collator / rpc node details */
 const NodeDetailsModal = () => {
   const params = useParams();
   const networkId = params.id as string;

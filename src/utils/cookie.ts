@@ -8,6 +8,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+/** set cookie in the browser */
 function setCookie(name: string, value: string, days = 7) {
   const date = new Date();
   date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
@@ -15,6 +17,7 @@ function setCookie(name: string, value: string, days = 7) {
   document.cookie = `${name}=${value}; ${expires}; path=/; SameSite=Lax;`;
 }
 
+/** get cookie from the client browser */
 function getCookie(name: string) {
   const nameEQ = `${name}=`;
   const cookies = document.cookie.split(";");
@@ -27,6 +30,7 @@ function getCookie(name: string) {
   return null;
 }
 
+/** delete cookie from the browser */
 function deleteCookie(name: string) {
   document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax;`;
 }

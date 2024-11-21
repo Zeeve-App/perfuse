@@ -10,8 +10,8 @@
  */
 
 import { format, parseISO, intervalToDuration } from "date-fns";
-import { CREDENTIALS_TYPE } from "@/types/node";
 import { ChainSpecFileType } from "@/types/chain-spec";
+import { NodeDbRow } from "@/db-queries";
 
 /**
  * to show standard formatted time and make it common throughout the application
@@ -95,10 +95,11 @@ const isActive = (pathname: string, paths: string[]): boolean => {
   return false;
 };
 
+/** constructing rpc endpoints */
 const formatEndpoint = (
   type: "https" | "wss",
   endpoint?: string,
-  credType?: CREDENTIALS_TYPE,
+  credType?: NodeDbRow["node_auth_method"],
   apiKey?: string,
   rpcType?: "para-rpc" | "relay-rpc" | "api",
 ) => {

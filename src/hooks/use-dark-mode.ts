@@ -11,6 +11,7 @@
 import { useEffect, useState } from "react";
 import { getCookie, setCookie } from "@/utils/cookie";
 
+/** hook to change from and into dark mode with cookies */
 export default function useDarkMode() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
 
@@ -18,16 +19,20 @@ export default function useDarkMode() {
     const storedTheme = getCookie("theme");
     const userPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
+    /** if stored theme is dark or if the stored theme is not present and user prefer dark mode */
     if (storedTheme === "dark" || (!storedTheme && userPrefersDark)) {
       document.documentElement.classList.add("dark");
+      setCookie("theme", "dark");
       setTheme("dark");
     } else {
       document.documentElement.classList.remove("dark");
+      setCookie("theme", "light");
       setTheme("light");
     }
   }, []);
 
   const toggleTheme = () => {
+    /** if theme is dark then change it to light, vice versa. */
     if (theme === "dark") {
       document.documentElement.classList.remove("dark");
       setCookie("theme", "light");

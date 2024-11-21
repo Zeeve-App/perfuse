@@ -11,6 +11,7 @@
 
 import { backendAxiosInstance } from "@/utils/axios";
 
+/** fetcher function to be used in the swr */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const useFetcher = (method?: "get" | "post", data?: any) => {
   if (method === "post") {

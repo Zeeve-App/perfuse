@@ -36,6 +36,7 @@ import { FormField } from "@/lib/components/Form/FormField";
 import { Input } from "@/lib/components/Form";
 import { Typography } from "@/lib/components/Typography";
 
+/** collator add key schema */
 const collatorAddKeySchema = yup.object({
   seed: yup
     .string()
@@ -58,8 +59,10 @@ const collatorAddKeySchema = yup.object({
     }),
 });
 
+/** collator add key type */
 export type CollatorAddKeySchemaType = yup.InferType<typeof collatorAddKeySchema>;
 
+/** collator add key modal component */
 const CollatorAddKey = () => {
   const [isLoading, setLoading] = useState(false);
   const { isOpen, onClose, type, data } = useModalStore();
@@ -76,10 +79,9 @@ const CollatorAddKey = () => {
     defaultValues: {},
   });
 
+  /** form submit handler */
   const onSubmit = async (formData: CollatorAddKeySchemaType) => {
     try {
-      console.log(data, formData);
-
       if (data.addKey) {
         setLoading(true);
         console.log(formData);
@@ -112,11 +114,11 @@ const CollatorAddKey = () => {
       <form action="" className="" onSubmit={formData.handleSubmit(onSubmit)}>
         <ModalContent className="max-h-screen w-full max-w-3xl overflow-y-auto">
           <ModalBody className="grid grid-cols-12">
-            {/* <StatusIcon status="info" /> */}
             <div className="col-span-12 flex flex-col gap-y-1">
               <ModalTitle className="text-xl">Add Key</ModalTitle>
               <ModalText>Add Key in the collator</ModalText>
               <Card variant={"grid-no-pad"} className="col-span-12 lg:col-span-12 ">
+                {/* seed phrase */}
                 <FormField
                   className="col-span-12 lg:col-span-6"
                   helper={{
@@ -133,6 +135,7 @@ const CollatorAddKey = () => {
                     isRequired
                   />
                 </FormField>
+                {/* public key */}
                 <FormField
                   className="col-span-12 lg:col-span-6"
                   helper={{

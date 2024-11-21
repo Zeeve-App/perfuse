@@ -12,6 +12,7 @@ import { decodeAddress, mnemonicToMiniSecret } from "@polkadot/util-crypto";
 import { Keyring } from "@polkadot/keyring";
 import { u8aToHex } from "@polkadot/util";
 
+/** derive public key from the seed phrase */
 function derivePublicSessionKey(seedPhrase: string) {
   // Convert the mnemonic (seed phrase) to a mini secret (raw seed)
   const seed = mnemonicToMiniSecret(seedPhrase);
@@ -28,6 +29,7 @@ function derivePublicSessionKey(seedPhrase: string) {
   return publicKeyHex;
 }
 
+/** polkadot address to hex address */
 function addressToHexPublicKey(address: string) {
   try {
     // Decode the address to get the public key in a Uint8Array

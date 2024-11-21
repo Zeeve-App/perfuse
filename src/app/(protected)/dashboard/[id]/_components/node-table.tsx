@@ -14,7 +14,6 @@
 import React from "react";
 import { useParams } from "next/navigation";
 import NetworkStatus from "./network-status";
-import { NODE_TYPE } from "@/types/node";
 import { formatDate, toShortString } from "@/utils/helpers";
 import { useModalStore } from "@/store/modal";
 import SvgTrashSquare from "@/lib/icons/essential/outline/TrashSquare";
@@ -121,7 +120,7 @@ const nodeTableColumns: ColumnDef<NodeDbRow, any>[] = [
 ];
 
 /** node table component */
-const NodeTable = ({ heading, nodes }: { nodeType: NODE_TYPE; heading: string; nodes: NodeDbRow[] }) => {
+const NodeTable = ({ heading, nodes }: { nodeType: NodeDbRow["node_type"]; heading: string; nodes: NodeDbRow[] }) => {
   // TODO: uncomment when there is more than 4 collator node, for pagination
   // const [{ pageIndex, pageSize }, setPagination] = React.useState({
   //   pageIndex: 1,

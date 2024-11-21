@@ -11,19 +11,20 @@
 
 import { RefObject, useEffect } from "react";
 
+/** handle click on outside of the target element */
 const useOnClickOutside = <T extends HTMLElement = HTMLElement>(
   ref: RefObject<T>,
   handler: (event: MouseEvent) => void,
 ): void => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleOnClickOutside = (event: any) => {
-    if (!ref.current || ref.current.contains(event.target)) {
-      return;
-    }
-    handler(event);
-  };
-
+  /** use effect to handle click event */
   useEffect(() => {
+    const handleOnClickOutside = (event: MouseEvent) => {
+      if (!ref.current || ref.current.contains(event.target as Node)) {
+        return;
+      }
+      handler(event);
+    };
+
     document.addEventListener("click", handleOnClickOutside, true);
     return () => document.removeEventListener("click", handleOnClickOutside);
   }, [handler]);

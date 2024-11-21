@@ -17,7 +17,6 @@ import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/he
 import { sendErrorResponse } from "./app/(protected)/api/_helpers/response";
 import { verify } from "./utils/jwt";
 
-// This function can be marked `async` if using `await` inside
 export async function middleware() {
   const header = headers();
   const data = await authFromHeader(header);
@@ -39,7 +38,7 @@ export async function middleware() {
   return NextResponse.next();
 }
 
-// See "Matching Paths" below to learn more
+/** use this middleware in all route except login & logout route */
 export const config = {
   matcher: [
     // Match all API routes except /api/login
@@ -47,6 +46,7 @@ export const config = {
   ],
 };
 
+/** getting auth token from cookie */
 export async function authFromHeader(header: ReadonlyHeaders) {
   try {
     const rawCookie = header.get("cookie");
@@ -61,6 +61,7 @@ export async function authFromHeader(header: ReadonlyHeaders) {
   }
 }
 
+/** getting theme from cookie */
 export function themeFromHeader(header: ReadonlyHeaders): "dark" | "light" {
   try {
     const rawCookie = header.get("cookie");
