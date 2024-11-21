@@ -15,8 +15,10 @@ import { cva, VariantProps } from "class-variance-authority";
 import { PolymorphicComponentPropsWithRef, PolymorphicRef } from "../core";
 import { tx } from "@/utils/shared";
 
+/** card variants */
 const styles = cva(
-  "", // common
+  /** common classes for all variants */
+  "",
   {
     variants: {
       variant: {
@@ -26,7 +28,7 @@ const styles = cva(
           "grid grid-cols-12 gap-3 rounded-lg border border-brand-outline bg-theme-foreground p-3 text-brand-dark lg:p-4",
       },
     },
-
+    /** default variant */
     defaultVariants: {
       variant: "default",
     },

@@ -13,8 +13,10 @@ import React, { forwardRef } from "react";
 import { Typography } from "../Typography";
 import { tx } from "@/utils/shared";
 
+/** modal title props */
 interface ModalTitleProps extends React.ComponentPropsWithRef<"h6"> {}
 
+/** modal title component */
 const ModalTitle = forwardRef<HTMLHeadingElement, ModalTitleProps>((props, ref) => {
   const { children, className, ...rest } = props;
 

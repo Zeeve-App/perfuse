@@ -12,8 +12,10 @@
 import React, { forwardRef } from "react";
 import { tx } from "@/utils/shared";
 
+/** header nav group props */
 interface HeaderNavGroupProps extends React.ComponentPropsWithRef<"div"> {}
 
+/** header nav group component */
 const HeaderNavGroup = forwardRef<HTMLDivElement, HeaderNavGroupProps>((props, ref) => {
   const { className, children, ...rest } = props;
 

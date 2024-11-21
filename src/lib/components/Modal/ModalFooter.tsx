@@ -13,7 +13,9 @@ import { cva, VariantProps } from "class-variance-authority";
 import React, { forwardRef } from "react";
 import { tx } from "@/utils/shared";
 
+/** style variants */
 const styles = cva("flex items-center gap-4 px-6 py-4", {
+  
   variants: {
     placement: {
       start: "justify-start",
@@ -21,15 +23,19 @@ const styles = cva("flex items-center gap-4 px-6 py-4", {
       end: "justify-end",
     },
   },
+  /** default variants */
   defaultVariants: {
     placement: "end",
   },
 });
 
+/** modal footer variant props */
 type ModalFooterVariantProps = VariantProps<typeof styles>;
 
+/** modal footer props */
 interface ModalFooterProps extends React.ComponentPropsWithRef<"div">, ModalFooterVariantProps {}
 
+/** modal footer component */
 const ModalFooter = forwardRef<HTMLDivElement, ModalFooterProps>((props, ref) => {
   const { placement, className, children, ...rest } = props;
 

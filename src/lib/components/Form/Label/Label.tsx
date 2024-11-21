@@ -13,11 +13,13 @@
 import React, { forwardRef } from "react";
 import { tx } from "@/utils/shared";
 
+/** label props */
 interface LabelProps extends React.ComponentPropsWithRef<"label"> {
   isRequired?: boolean;
   isDisabled?: boolean;
 }
 
+/** label components */
 const Label = forwardRef<HTMLLabelElement, LabelProps>((props, ref) => {
   const { children, className, isRequired, isDisabled, ...rest } = props;
 

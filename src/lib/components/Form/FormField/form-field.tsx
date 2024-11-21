@@ -19,6 +19,7 @@ import { FormFieldStatus } from "../FormFieldStatus";
 import { Label } from "../Label";
 import { tx } from "@/utils/shared";
 
+/** type form field props */
 interface FormFieldProps extends PropsWithChildren {
   /** css classes for container `div` */
   className?: string;
@@ -53,6 +54,7 @@ interface FormFieldProps extends PropsWithChildren {
   };
 }
 
+/** form field components */
 const FormField = (props: FormFieldProps) => {
   const { children, className, label, helper } = props;
 

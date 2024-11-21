@@ -17,6 +17,7 @@ import { usePopoverContext } from "../Popover";
 import { useMergeRefs } from "@/hooks";
 import { tx } from "@/utils/shared";
 
+/** motion variants */
 const motionVariants: Variants = {
   initial: {
     opacity: 0,
@@ -26,8 +27,10 @@ const motionVariants: Variants = {
   },
 };
 
+/** dropdown menu list props */
 interface DropdownMenuListProps extends HTMLMotionProps<"div"> {}
 
+/** dropdown menu list component */
 const DropdownMenuList = forwardRef<HTMLDivElement, DropdownMenuListProps>((props, ref) => {
   const { children, className, ...rest } = props;
 

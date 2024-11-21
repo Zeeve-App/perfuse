@@ -14,6 +14,7 @@ import { forwardRef } from "react";
 import { PolymorphicComponentPropsWithRef, PolymorphicRef } from "../core";
 import { tx } from "@/utils/shared";
 
+/** heading props */
 type HeadingProps<C extends React.ElementType> = PolymorphicComponentPropsWithRef<
   C,
   {
@@ -21,10 +22,12 @@ type HeadingProps<C extends React.ElementType> = PolymorphicComponentPropsWithRe
   }
 >;
 
+/** heading component type */
 type HeadingComponent = <C extends "h1" | "h2" | "h3" | "h4" | "h5" | "h6" = "h2">(
   props: HeadingProps<C>,
 ) => React.ReactNode;
 
+/** heading component */
 const Heading: HeadingComponent = forwardRef(
   <C extends React.ElementType>({ as, className, children, ...rest }: HeadingProps<C>, ref?: PolymorphicRef<C>) => {
     const Component = as ?? "h2";

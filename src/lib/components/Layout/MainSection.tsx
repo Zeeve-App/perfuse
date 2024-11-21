@@ -13,8 +13,10 @@
 import React from "react";
 import { tx } from "@/utils/shared";
 
+/** layout section props */
 interface LayoutMainSectionProps extends React.ComponentPropsWithRef<"main"> {}
 
+/** layout main section */
 const LayoutMainSection = (props: LayoutMainSectionProps) => {
   const { children, className, ...rest } = props;
 

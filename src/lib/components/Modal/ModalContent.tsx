@@ -31,12 +31,15 @@ const motionVariants: Variants = {
   },
 };
 
+/** modal container props */
 interface ModalContainerProps extends React.ComponentPropsWithRef<"div"> {}
 
+/** modal content props */
 interface ModalContentProps extends HTMLMotionProps<"div"> {
   modalContainerProps?: ModalContainerProps;
 }
 
+/** modal content component */
 const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>((props, ref) => {
   const { className, children, modalContainerProps, ...rest } = props;
   const { getModalProps, setIsModalMounted } = useModalContext();
@@ -69,6 +72,7 @@ const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>((props, ref) 
   );
 });
 
+/** modal container component */
 const ModalContainer = forwardRef<HTMLDivElement, ModalContainerProps>((props, ref) => {
   const { className, children, ...rest } = props;
   const { getModalContainerProps } = useModalContext();

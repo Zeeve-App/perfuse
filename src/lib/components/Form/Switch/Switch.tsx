@@ -17,8 +17,10 @@ import { RemoveProperties } from "../../core";
 import { useID } from "@/hooks";
 import { tx } from "@/utils/shared";
 
+/** switch label props */
 interface SwitchLabelProps extends LabelProps {}
 
+/** switch label component */
 const SwitchLabel = forwardRef<HTMLLabelElement, SwitchLabelProps>((props, ref) => {
   const { children, className, isDisabled, isRequired, ...rest } = props;
 
@@ -35,7 +37,9 @@ const SwitchLabel = forwardRef<HTMLLabelElement, SwitchLabelProps>((props, ref) 
   );
 });
 
+/** switch variants */
 const styles = cva(
+  /** common variants for all the variants */
   "inline-flex items-center rounded-full bg-brand-outline after:absolute after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-zinc-300 peer-focus:ring-offset-1 peer-focus-visible:outline-none peer-disabled:pointer-events-none peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
   {
     variants: {
@@ -60,6 +64,7 @@ const styles = cva(
         large: "h-8 w-14 p-2 after:size-5",
       },
     },
+    /** default variants */
     defaultVariants: {
       colorScheme: "gradient",
       size: "medium",
@@ -67,6 +72,7 @@ const styles = cva(
   },
 );
 
+/** switch props */
 interface SwitchProps
   extends RemoveProperties<React.ComponentPropsWithRef<"input">, "type" | "size" | "checked" | "disabled" | "required">,
     VariantProps<typeof styles> {
@@ -76,6 +82,7 @@ interface SwitchProps
   switchLabelProps?: React.ComponentPropsWithRef<"label">;
 }
 
+/** switch components */
 const Switch = forwardRef<HTMLInputElement, SwitchProps>((props, ref) => {
   const { children, isDisabled, isChecked, isRequired, switchLabelProps, colorScheme, size, className, id, ...rest } =
     props;

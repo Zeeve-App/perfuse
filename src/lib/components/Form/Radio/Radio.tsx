@@ -17,8 +17,10 @@ import { RemoveProperties } from "../../core";
 import { useID } from "@/hooks";
 import { tx } from "@/utils/shared";
 
+/** radio label props */
 interface RadioLabelProps extends LabelProps {}
 
+/** radio label component */
 const RadioLabel = forwardRef<HTMLLabelElement, RadioLabelProps>((props, ref) => {
   const { children, className, isDisabled, isRequired, ...rest } = props;
 
@@ -35,7 +37,9 @@ const RadioLabel = forwardRef<HTMLLabelElement, RadioLabelProps>((props, ref) =>
   );
 });
 
+/** radio variant */
 const styles = cva(
+  /** common class in all variant */
   "inline-flex size-6 items-center justify-center rounded-full border border-brand-blue bg-white after:rounded-full after:content-[''] after:peer-checked:block after:peer-checked:bg-white peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-zinc-300 peer-focus:ring-offset-1 peer-focus-visible:outline-none peer-disabled:pointer-events-none peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
   {
     variants: {
@@ -60,6 +64,7 @@ const styles = cva(
         large: "size-8 after:size-5",
       },
     },
+    /** default variants */
     defaultVariants: {
       colorScheme: "blue",
       size: "medium",
@@ -67,6 +72,7 @@ const styles = cva(
   },
 );
 
+/** radio props */
 interface RadioProps
   extends RemoveProperties<React.ComponentPropsWithRef<"input">, "type" | "size" | "checked" | "disabled" | "required">,
     VariantProps<typeof styles> {
@@ -78,6 +84,7 @@ interface RadioProps
   rightCheckedIcon?: JSX.Element;
 }
 
+/** radio component */
 const Radio = forwardRef<HTMLInputElement, RadioProps>((props, ref) => {
   const {
     children,

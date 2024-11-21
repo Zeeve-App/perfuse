@@ -29,47 +29,11 @@ import SvgProfile from "@/lib/icons/user/outline/Profile";
 import { useToggle } from "@/hooks";
 import SvgArrowLeftFromBucket from "@/lib/icons/arrows/outline/ArrowLeftFromBucket";
 
+/** profile dropdown data to show in drop down */
 export const getProfileDropdownData = (router: AppRouterInstance) => [
   {
     group: {
       items: [
-        // {
-        //   icon: <SvgUser />,
-        //   title: "Profile",
-        //   onClick: () => {
-        //     window.open(`#`, "_self");
-        //   },
-        // },
-        // {
-        //   icon: <SvgSetting1 />,
-        //   title: "Settings",
-        //   onClick: () => {
-        //     window.open(`#`, "_self");
-        //   },
-        // },
-        // {
-        //   icon: <SvgPhoneVolume />,
-        //   title: "Helpdesk",
-        //   onClick: () => {
-        //     window.open("#", "_self");
-        //   },
-        // },
-        // {
-        //   icon: <SvgBook2 />,
-        //   title: "Documentation",
-        //   onClick: () => {
-        //     window.open("#", "_self");
-        //   },
-        // },
-
-        // {
-        //   icon: <SvgArrowLeftFromBucket />,
-        //   title: "Change Password",
-        //   onClick: async () => {
-        //     // await axios.post("/api/logout");
-        //     // router.refresh();
-        //   },
-        // },
         {
           icon: <SvgArrowLeftFromBucket />,
           title: "Logout",
@@ -81,22 +45,9 @@ export const getProfileDropdownData = (router: AppRouterInstance) => [
       ],
     },
   },
-  // {
-  // group: {
-  //   items: [
-  //     {
-  //       icon: <SvgArrowLeftFromBucket />,
-  //       title: "Logout",
-  //       onClick: async () => {
-  //         await axios.post("/api/logout");
-  //         router.refresh();
-  //       },
-  //     },
-  //   ],
-  // },
-  // },
 ];
 
+/** profile dropdown menu component */
 const ProfileDropDownMenu = ({
   user,
   className,
@@ -113,6 +64,7 @@ const ProfileDropDownMenu = ({
   const profileDropdownMenu = useMemo<ZeeveHeaderDropdownMenu>(() => {
     return getProfileDropdownData(router);
   }, []);
+
   const {
     isOpen: isProfileDropdownOpen,
     handleToggle: handleProfileDropdownToggle,

@@ -19,8 +19,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { IconButton } from "../Button";
-import { Option, Select } from "../Form";
 import { TableContainer, Table, Thead, Tr, Th, Tbody, Td, Tfoot } from "../Table";
+import { ReactSelect } from "../ReactSelect";
 import { tx } from "@/utils/shared";
 
 interface ReactTablePaginationProps {
@@ -219,20 +219,15 @@ const ReactTable = <T extends object>(props: ReactTableProps<T>) => {
           {pagination?.pageSizes?.length ? (
             <div className="flex items-center gap-2">
               <p>Rows:</p>
-              <Select
+              <ReactSelect
                 size="small"
                 className="max-h-[36px] w-max cursor-pointer border bg-transparent bg-none p-0 px-1 text-sm outline-none"
                 value={table.getState().pagination.pageSize}
                 onChange={(e) => {
-                  table.setPageSize(Number(e.target.value));
+                  table.setPageSize(Number(e));
                 }}
-              >
-                {pagination?.pageSizes?.map((pageSize) => (
-                  <Option key={pageSize} value={pageSize}>
-                    {pageSize}
-                  </Option>
-                ))}
-              </Select>
+                options={pagination?.pageSizes?.map((pageSize) => ({ label: pageSize, value: pageSize }))}
+              ></ReactSelect>
             </div>
           ) : null}
           <IconButton

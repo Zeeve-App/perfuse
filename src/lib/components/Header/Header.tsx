@@ -12,8 +12,10 @@
 import React, { forwardRef } from "react";
 import { tx } from "@/utils/shared";
 
+/** header props */
 interface HeaderProps extends React.ComponentPropsWithRef<"header"> {}
 
+/** header component */
 const Header = forwardRef<HTMLElement, HeaderProps>((props, ref) => {
   const { className, children, ...rest } = props;
 

@@ -14,8 +14,10 @@ import { Button, ButtonProps } from "../Button";
 import { RemoveProperties } from "../core";
 import { tx } from "@/utils/shared";
 
+/** dropdown menu item props */
 interface DropdownMenuItemProps extends RemoveProperties<ButtonProps, "isLoading"> {}
 
+/** dropdown menu item component */
 const DropdownMenuItem = forwardRef<HTMLButtonElement, DropdownMenuItemProps>((props, ref) => {
   const { children, className, ...rest } = props;
 

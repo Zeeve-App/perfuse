@@ -14,7 +14,9 @@ import React, { forwardRef } from "react";
 import { Spinner } from "../Spinner";
 import { tx } from "@/utils/shared";
 
+/** icon button variants */
 const styles = cva(
+  /** common class for all variants */
   "inline-flex shrink-0 select-none items-center justify-center rounded-lg border border-transparent text-center align-middle font-poppins font-medium outline-none transition-all duration-300 focus:ring-2 focus:ring-zinc-300 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
@@ -92,6 +94,7 @@ const styles = cva(
         className: "size-max p-0",
       },
     ],
+    /** default variants */
     defaultVariants: {
       variant: "solid",
       colorScheme: "primary",
@@ -100,11 +103,13 @@ const styles = cva(
   },
 );
 
+/** icon button props */
 interface IconButtonProps extends Omit<React.ComponentPropsWithRef<"button">, "disabled">, VariantProps<typeof styles> {
   isDisabled?: boolean;
   isLoading?: boolean;
 }
 
+/** icon button component */
 const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>((props, ref) => {
   const {
     colorScheme,

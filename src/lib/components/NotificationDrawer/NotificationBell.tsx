@@ -16,10 +16,12 @@ import { IconButton } from "../Button";
 import { useNotificationsWebsocketContext } from "./NotificationsWebsocketContext";
 import SvgNotificationBell1 from "@/lib/icons/notification/outline/NotificationBell1";
 
+/** notification props */
 interface NotificationBellProps {
   handleOpen: () => void;
 }
 
+/** notification bell component */
 const NotificationBell = (props: NotificationBellProps) => {
   const { handleOpen } = props;
 

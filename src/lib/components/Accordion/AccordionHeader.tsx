@@ -18,12 +18,14 @@ import { useActiveAccordionContext } from "./ActiveAccordionContextProvider";
 import { tx } from "@/utils/shared";
 import SvgChevronDownSquare from "@/lib/icons/arrows/outline/ChevronDownSquare";
 
+/** accordion header props */
 interface AccordionHeaderProps extends RemoveProperties<ButtonProps, "iconLeft" | "iconRight"> {
   itemIndex?: number;
   iconCollapsed?: React.ReactElement;
   iconExpanded?: React.ReactElement;
 }
 
+/** accordion header component */
 const AccordionHeader = forwardRef<HTMLButtonElement, AccordionHeaderProps>((props, ref) => {
   const { className, itemIndex = 0, children, onClick, iconCollapsed, iconExpanded, ...rest } = props;
 

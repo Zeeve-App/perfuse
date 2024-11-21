@@ -21,7 +21,9 @@ import { tx } from "@/utils/shared";
 import SvgEye from "@/lib/icons/security/outline/Eye";
 import SvgEyeSlash from "@/lib/icons/security/outline/EyeSlash";
 
+/** variants for input */
 const styles = cva(
+  /** classes for all the variant */
   "placeholder:text-theme-accent-foreground/60 disabled:text-theme-accent-foreground/60 disabled:bg-theme-foreground/60 peer w-full appearance-none truncate rounded-lg border border-brand-outline bg-theme-foreground p-4 text-sm font-medium leading-5 text-theme-accent-content focus:border-[#E8DCFE] focus:bg-theme-accent-foreground focus:outline-none focus:ring-0 focus-visible:outline-none disabled:cursor-not-allowed disabled:font-normal disabled:opacity-50",
   {
     variants: {
@@ -37,17 +39,20 @@ const styles = cva(
         true: "pr-12",
       },
     },
+    /** default variant */
     defaultVariants: {
       size: "medium",
     },
   },
 );
 
-type FloatingLabel = {
+/** floating label props */
+interface FloatingLabel {
   labelText: string;
   floatingLabelProps?: React.ComponentPropsWithRef<"label">;
-};
+}
 
+/** Input props */
 interface InputProps
   extends RemoveProperties<React.ComponentPropsWithRef<"input">, "required" | "disabled" | "size">,
     RemoveProperties<VariantProps<typeof styles>, "iconLeft" | "iconRight"> {
@@ -62,6 +67,7 @@ interface InputProps
   tooltip?: string | React.ReactElement;
 }
 
+/** Input components */
 const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const {
     className,

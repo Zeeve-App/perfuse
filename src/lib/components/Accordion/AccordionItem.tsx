@@ -16,17 +16,20 @@ import { RemoveProperties } from "../core";
 import { ActiveAccordionContext, ActiveAccordionContextProps } from "./ActiveAccordionContextProvider";
 import { useAccordionContext } from "./AccordionContextProvider";
 
+/** accordion item props */
 interface AccordionItemProps extends RemoveProperties<HTMLMotionProps<"div">, "children"> {
   isExpanded?: boolean;
   itemIndex?: number;
   children: React.ReactElement | React.ReactElement[];
 }
 
+/** accordion item component */
 const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>((props, ref) => {
   const { isExpanded, itemIndex = 0, className, children, ...rest } = props;
 
   const { activeIndex } = useAccordionContext();
 
+  /** its expanded or not */
   const _isExpanded = useCallback(() => {
     if (isExpanded !== undefined) return isExpanded;
 

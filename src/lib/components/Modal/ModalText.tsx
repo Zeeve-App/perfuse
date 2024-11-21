@@ -12,8 +12,10 @@
 import React, { forwardRef } from "react";
 import { tx } from "@/utils/shared";
 
+/** modal text props */
 interface ModalTextProps extends React.ComponentPropsWithRef<"p"> {}
 
+/** modal text component */
 const ModalText = forwardRef<HTMLParagraphElement, ModalTextProps>((props, ref) => {
   const { children, className, ...rest } = props;
 

@@ -13,6 +13,7 @@ import { ReactElement, createContext } from "react";
 
 type Separator = string | ReactElement;
 
+/** breadcrumb context props */
 interface BreadcrumbContextProps {
   activeLink: string;
   setActiveLink: (arg0: string) => void;

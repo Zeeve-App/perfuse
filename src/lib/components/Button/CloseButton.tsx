@@ -15,8 +15,10 @@ import { IconButton, IconButtonProps } from "./IconButton";
 import { tx } from "@/utils/shared";
 import SvgXMark from "@/lib/icons/essential/outline/XMark";
 
+/** close button props */
 type CloseButtonProps = RemoveProperties<IconButtonProps, "children" | "size" | "isLoading">;
 
+/** close button component */
 const CloseButton = forwardRef<HTMLButtonElement, CloseButtonProps>((props, ref) => {
   const { className, ...rest } = props;
 

@@ -13,8 +13,10 @@ import React, { forwardRef } from "react";
 import { HTMLMotionProps, motion } from "framer-motion";
 import { tx } from "@/utils/shared";
 
+/** modal overlay props */
 type ModalOverlayProps = HTMLMotionProps<"div">;
 
+/** modal overlay component */
 const ModalOverlay = forwardRef<HTMLDivElement, ModalOverlayProps>((props, ref) => {
   const { className, ...rest } = props;
 

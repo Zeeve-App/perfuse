@@ -15,6 +15,7 @@ import { modalManager, useModalManager } from "./ModalManager";
 import { mergeRefs, useID } from "@/hooks";
 import { callMultipleHandlers } from "@/utils/shared";
 
+/** modal hook props */
 interface UseModalProps {
   isOpen: boolean;
   handleClose: () => void;
@@ -22,6 +23,7 @@ interface UseModalProps {
   shouldBackdropDismiss?: boolean;
 }
 
+/** modal hooks */
 const useModal = (props: UseModalProps) => {
   const { isOpen, handleClose, id, shouldBackdropDismiss = true } = props;
 

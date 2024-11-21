@@ -19,10 +19,12 @@ import { tx } from "@/utils/shared";
 import SvgCopy from "@/lib/icons/design-tool/outline/Copy";
 import SvgCopyCheck from "@/lib/icons/design-tool/outline/CopyCheck";
 
+/** copy button props */
 interface CopyButtonProps extends RemoveProperties<IconButtonProps, "children" | "size"> {
   text: string;
 }
 
+/** copy button component */
 const CopyButton = forwardRef<HTMLButtonElement, CopyButtonProps>((props, ref) => {
   const { text, className, ...rest } = props;
 

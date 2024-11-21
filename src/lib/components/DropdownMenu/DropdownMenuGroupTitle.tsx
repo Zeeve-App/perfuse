@@ -14,8 +14,10 @@ import { HTMLMotionProps, motion } from "framer-motion";
 import { RemoveProperties } from "../core";
 import { tx } from "@/utils/shared";
 
+/** drop menu group title props */
 interface DropdownMenuGroupTitleProps extends RemoveProperties<HTMLMotionProps<"p">, "title"> {}
 
+/** dropdown menu group title component */
 const DropdownMenuGroupTitle = forwardRef<HTMLParagraphElement, DropdownMenuGroupTitleProps>((props, ref) => {
   const { children, className, ...rest } = props;
 

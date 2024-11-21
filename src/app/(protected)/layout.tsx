@@ -39,11 +39,11 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en">
+    <html lang="en" className={`${theme === "dark" ? "dark" : ""}`}>
       <head>
         <link rel="icon" href="/logo.png" />
       </head>
-      <body className={`${dmSans.variable} ${poppins.variable} ${theme === "dark" ? "dark" : ""} font-poppins`}>
+      <body className={`${dmSans.variable} ${poppins.variable}  font-poppins`}>
         <ToastProvider>
           <ModalProvider />
           <LayoutProvider>{children}</LayoutProvider>

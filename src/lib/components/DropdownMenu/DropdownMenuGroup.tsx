@@ -13,8 +13,10 @@ import React, { forwardRef } from "react";
 import { HTMLMotionProps, motion } from "framer-motion";
 import { tx } from "@/utils/shared";
 
+/** dropdown menu group props */
 interface DropdownMenuGroupProps extends HTMLMotionProps<"div"> {}
 
+/** dropdown menu group component */
 const DropdownMenuGroup = forwardRef<HTMLDivElement, DropdownMenuGroupProps>((props, ref) => {
   const { className, children, ...rest } = props;
 

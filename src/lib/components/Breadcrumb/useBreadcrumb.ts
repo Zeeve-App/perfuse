@@ -14,6 +14,7 @@ import { BreadcrumbContext } from "./BreadcrumbContextProvider";
 
 const DEFAULT_SEPARATOR = ">";
 
+/** breadcrumb hook */
 const useBreadcrumb = () => {
   const context = useContext(BreadcrumbContext);
 

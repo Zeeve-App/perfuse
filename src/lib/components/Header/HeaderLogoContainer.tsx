@@ -12,8 +12,10 @@
 import React, { forwardRef } from "react";
 import { tx } from "@/utils/shared";
 
+/** header logo container props */
 interface HeaderLogoContainerProps extends React.ComponentPropsWithRef<"div"> {}
 
+/** header logo container component */
 const HeaderLogoContainer = forwardRef<HTMLDivElement, HeaderLogoContainerProps>((props, ref) => {
   const { children, className, ...rest } = props;
   return (

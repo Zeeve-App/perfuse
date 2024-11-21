@@ -13,11 +13,13 @@ import React, { createContext, useCallback, useEffect, useMemo, useRef, useState
 import { useToast } from "../Toast";
 import { Count, Data, Notification } from "./types";
 
+/** notification websocket context props */
 interface NotificationsWebSocketContextProps {
   children: React.ReactNode;
   url: string | undefined;
 }
 
+/** notification websocket context */
 const NotificationsWebSocketContext = createContext<{
   webSocket: React.MutableRefObject<WebSocket | null>;
   notificationsCount: number;

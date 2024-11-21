@@ -12,8 +12,10 @@
 import React from "react";
 import { tx } from "@/utils/shared";
 
+/** layout props */
 interface LayoutProps extends React.ComponentPropsWithRef<"div"> {}
 
+/** layout component */
 const Layout = (props: LayoutProps) => {
   const { className, children, ...rest } = props;
 
