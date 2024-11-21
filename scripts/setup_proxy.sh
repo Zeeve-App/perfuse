@@ -120,7 +120,6 @@ frontend rpc_frontend
 #    bind *:443 ssl crt /etc/haproxy/ssl/${DOMAIN}.pem alpn h2,http/1.1
 #    http-request redirect scheme https unless { ssl_fc }
     acl letsencrypt-acl path_beg /.well-known/acme-challenge/
-    acl is_relay_rpc path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}relay-rpc
     acl is_para_rpc path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}para-rpc
     acl sidecar_api path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}api
     use_backend letsencrypt-backend if letsencrypt-acl
