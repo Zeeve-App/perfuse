@@ -84,7 +84,7 @@ module.exports = plugin(
         "text-fill-color": "transparent",
       },
       ".text-theme-gradient": {
-        "background": "linear-gradient(42.61deg, #5C18F9 1.04%, #ED32BE 86.06%)",
+        background: "linear-gradient(42.61deg, #5C18F9 1.04%, #ED32BE 86.06%)",
         "-webkit-background-clip": "text",
         "background-clip": "text",
         "-webkit-text-fill-color": "transparent",

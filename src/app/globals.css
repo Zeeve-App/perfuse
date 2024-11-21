@@ -48,25 +48,25 @@
 /* colors for dark & light mode  */
 @layer base {
   :root {
-    --background: #F7F0F7;
+    --background: #f7f0f7;
     --foreground: white;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
     --primary: #696969;
-    --primary-content: #09122D;
+    --primary-content: #09122d;
     --primary-foreground: #696969;
-    --secondary: #A619F7;
+    --secondary: #a619f7;
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: #4318FF;
-    --accent-foreground: #F3ECFF;
-    --accent-content: #09122D;
+    --accent: #4318ff;
+    --accent-foreground: #f3ecff;
+    --accent-content: #09122d;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: #E3E3E3;
+    --border: #e3e3e3;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
     --chart-1: 12 76% 61%;
@@ -78,25 +78,25 @@
   }
 
   .dark {
-    --background: #1A1B21;
+    --background: #1a1b21;
     --foreground: #242631;
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
     --primary: #696969;
-    --primary-content: #FFFFFF;
-    --primary-foreground: #121D38;
-    --secondary: #A619F7;
+    --primary-content: #ffffff;
+    --primary-foreground: #121d38;
+    --secondary: #a619f7;
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-    --accent: #FFFFFF;
-    --accent-foreground: #393D4D;
-    --accent-content: #FFFFFF;
+    --accent: #ffffff;
+    --accent-foreground: #393d4d;
+    --accent-content: #ffffff;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: #FFFFFF42;
+    --border: #ffffff42;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
     --chart-1: 220 70% 50%;
@@ -105,6 +105,4 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
-
-
 }

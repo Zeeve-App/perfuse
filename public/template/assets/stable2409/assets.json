@@ -19,15 +19,9 @@
       "patch": {
         "balances": {
           "balances": [
-            [
-              "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY",
-              1152921504606846976
-            ],
-            [
-              "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty",
-              1152921504606846976
-            ]
-           ]
+            ["5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY", 1152921504606846976],
+            ["5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty", 1152921504606846976]
+          ]
         },
         "collatorSelection": {
           "candidacyBond": 16000000000,

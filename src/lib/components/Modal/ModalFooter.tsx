@@ -15,7 +15,6 @@ import { tx } from "@/utils/shared";
 
 /** style variants */
 const styles = cva("flex items-center gap-4 px-6 py-4", {
-  
   variants: {
     placement: {
       start: "justify-start",
