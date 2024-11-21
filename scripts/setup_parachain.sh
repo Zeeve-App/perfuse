@@ -41,7 +41,7 @@ prometheus_ports=(8004 8005 8006)
 base_path_template="/home/perfuse/parachain/%s/data"  # Data directory template
 parachain_key_dir="${PARACHAIN_KEY_DIR:-/home/perfuse/parachain_keys}"
 parachain_dir="/home/perfuse/parachain"
-relay_chain_spec="$RELAYCHAIN_DIR/paseo_relay_chain_spec_raw.json"
+chain_spec="$parachain_dir/raw-parachain-chainspec.json"
 extra_params="--unsafe-rpc-external --rpc-methods unsafe"
 network="$NETWORK_TYPE"
 
