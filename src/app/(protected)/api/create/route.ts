@@ -42,38 +42,38 @@ export interface CreatePerfuseApiPayload {
     /** network user address */
     network_user_address: string;
   };
-  nodes: Array<
-    | {
-        /** collator node name */
-        node_name: string;
-        /** node type */
-        node_type: "collator";
-        /** collator address */
-        node_address: string;
-        /** node rpc cors allow list "*" default */
-        node_rpc_cors: string;
-        /** collator node balance */
-        node_balance: number;
-      }
-    | {
-        /** rpc node name */
-        node_name: string;
-        /** node type  */
-        node_type: "rpc";
-        /** node auth method for rpc calls */
-        node_auth_method: "api_key" | "basic_auth";
-        /** node username if auth method is basic auth */
-        node_username: string;
-        /** node password if auth method is basic auth */
-        node_password: string;
-        /** node http enabled  */
-        node_https_enabled: boolean;
-        /** node websocket enabled */
-        node_wss_enabled: boolean;
-        /** node endpoint for rpc calls */
-        node_endpoint?: string;
-      }
-  >;
+  nodes: Array<CollatorNodePayload | RPCNodePayload>;
+}
+
+interface CollatorNodePayload {
+  /** collator node name */
+  node_name: string;
+  /** node type */
+  node_type: "collator";
+  /** collator address */
+  node_address: string;
+  /** node rpc cors allow list "*" default */
+  node_rpc_cors: string;
+  /** collator node balance */
+  node_balance: number;
+}
+interface RPCNodePayload {
+  /** rpc node name */
+  node_name: string;
+  /** node type  */
+  node_type: "rpc";
+  /** node auth method for rpc calls */
+  node_auth_method: "api_key" | "basic_auth";
+  /** node username if auth method is basic auth */
+  node_username: string;
+  /** node password if auth method is basic auth */
+  node_password: string;
+  /** node http enabled  */
+  node_https_enabled: boolean;
+  /** node websocket enabled */
+  node_wss_enabled: boolean;
+  /** node endpoint for rpc calls */
+  node_endpoint?: string;
 }
 
 /** post api for creating parachain network */
@@ -100,7 +100,7 @@ export async function POST(req: NextRequest) {
             network_id,
             network_sidecar: formData.network.network_sidecar ? 1 : 0,
             network_chain_spec_file_json: JSON.stringify(formData.network.network_chain_spec_file_json),
-            network_relay_chain_version: "stable2407",
+            network_relay_chain_version: config.server.relayChainVersion,
 
             created_at: new Date().toISOString(),
             network_coretime_type: "regionx",
@@ -192,7 +192,7 @@ const createEnvFile = (data: CreatePerfuseApiPayload, apiKey?: string) => {
     throw new Error("rpc node not exist");
   }
   const envFile =
-    `POLKA_VERSION=${"stable2407"}\n` +
+    `POLKA_VERSION=${config.server.relayChainVersion}\n` +
     `NETWORK_TYPE=${data.network.network_relay_chain_type.toLowerCase() ?? ""}\n` +
     `COL_NAME_1=${collatorNodes[0]?.node_name ?? ""}\n` +
     `COL_NAME_2=${collatorNodes[1]?.node_name ?? ""}\n` +

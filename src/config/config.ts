@@ -23,6 +23,7 @@ const rawConfig = {
     jwtExpiresIn: process.env.JWT_EXPIRES,
     defaultEmail: process.env.DEFAULT_EMAIL,
     defaultPassword: process.env.DEFAULT_PASS,
+    relayChainVersion: process.env.RELAY_CHAIN_VERSION || "stable2407",
   },
   client: {
     host: process.env.NEXT_PUBLIC_HOST || "localhost:3000",
@@ -41,6 +42,7 @@ const envSchema = yup.object({
     jwtExpiresIn: yup.number().required(),
     defaultEmail: yup.string().required(),
     defaultPassword: yup.string().required(),
+    relayChainVersion: yup.string().required(),
   }),
   client: yup.object({
     host: yup.string().required(),
