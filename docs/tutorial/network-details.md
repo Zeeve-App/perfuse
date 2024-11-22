@@ -1,89 +1,97 @@
-## Register and view Parachain
+# Register and View Parachain
 
-Once the deployment process is started, you can see the details of the deploying network.
+After initiating the deployment process, you can monitor and manage your parachain through the UI.
 
-Go to http://localhost:3000, and it will open the network details page. You can see the network details there and the status of the network.
+## **Access Network Details**
 
-### Register the network
+Once the deployment begins, navigate to [http://localhost:3000](http://localhost:3000). This will open the **Network Details** page, where you can view information about the deploying network and its current status.
 
-After the network deployment, you will receive an alert indicating the need to register the parachain. You can follow the instructions on the **Coretime** page in the sidebar to register your parachain.
+---
 
-### Overview
+## **Register the Network**
 
-**Parachain Details**: In this section, you can see general information related to the network.
+After deployment completes, an alert will notify you to register the parachain. To do this:
 
-- network name: network name from chain specification
-- ID: network uuid in DB
-- Description: network description
-- Environment: The environment network is deployed in
-- Owned by: the owner of the network
-- status: status of the network
-  - in progress: while the network is deploying
-  - failed: if there is some error while deploying the network.
-  - authentication pending: when the network is deployed but the user needs to register parachain.
-- Blockchain Provision Time: time it took to deploy the network
-- Duration: Duration of the created network
-- Created on: timestamp of the network creation
+1. Go to the **Coretime** page in the navigation menu.
+2. Follow the instructions to complete the parachain registration.
 
-**Blockchain Config**: An Overview of the Blockchain Config You can see more detailed information in the blockchain config tab.
+---
 
-**Nodes**: Overview of the recently deployed node. You can see more detailed information in the RPC nodes/collator node tab.
+## **Overview**
 
-### Blockchain config
+### **Parachain Details**
 
-In this tab, you can see the details of the blockchain.
+This section provides general information about the parachain:
 
-**Parachain Block Height**: Height of the parachain after the parachain is registered.
+- **Network Name**: Extracted from the chain specification.
+- **ID**: Unique identifier of the network in the database.
+- **Environment**: The environment where the parachain is deployed (e.g., testnet or mainnet).
+- **Owned By**: The owner of the network.
+- **Status**: Current status of the network:
+  - **In Progress**: Deployment is ongoing.
+  - **Failed**: An error occurred during deployment.
+  - **Authentication Pending**: Deployment is complete, but parachain registration is required.
+- **Created On**: Timestamp of when the network was created.
 
-**Total token supply**: Total token supply (calculated from the chain spec file)
+---
 
-**Parachain Config**: Details about Parachain from the Chain Spec File.
+### **Blockchain Config**
 
-- Parachain name: name of the parachain
-- Parachain ID: ID of the deployed parachain
-- Network ID: network ID defined in the chain specification
-- Chain type: Chain type of the deployed parachain
-- protocol ID: protocol ID defined in chain specification
-- Telemetry endpoint: defined in the chain spec
+This tab provides an in-depth look at the parachain’s blockchain configuration:
 
-**Token Info**: Information about the token
+#### **Key Details**
+- **Parachain Block Height**: Current block height after registration.
+- **Total Token Supply**: Calculated from the chain specification file.
+- **Parachain Config**: Detailed information from the chain spec:
+  - **Parachain Name**: Name of the parachain.
+  - **Parachain ID**: ID assigned to the parachain.
+  - **Network ID**: Network ID from the chain specification.
+  - **Chain Type**: Type of chain (e.g., local, testnet, mainnet & live).
+  - **Protocol ID**: Protocol ID defined in the chain spec.
+  - **Telemetry Endpoint**: URL for telemetry monitoring.
 
-- Token name: Token symbol of the native tokens of the created parachain
-- Decimal: Decimal for the token
-- Encoding: Encoding value in chain specification
-- Candidacy Bond: Candidacy bond value from chain specification
+#### **Token Information**
+- **Token Name**: Symbol of the parachain’s native token.
+- **Decimal**: Decimal places for the token.
+- **Encoding**: Encoding value from the chain specification.
+- **Candidacy Bond**: Bond value for candidacy, extracted from the chain spec.
 
-**Parachain Spec File**: chain spec file for the network. You can download it by clicking on the download button.
+#### **Additional Details**
+- **Parachain Spec File**: The chain specification file used for deployment. You can download it by clicking the **Download** button.
+- **Pre-mined Addresses**: List of pre-mined accounts and their respective balances.
+- **Relay Chain Config**: Information about the relay chain where the parachain is deployed.
 
-**Pre-mined Address**: In this section, you can see the account address and their balance, which are pre-mined.
+---
 
-**Relay Chain Config**: Details about the relay chain in which the parachain is deployed.
+### **Collator Nodes**
 
-### Collator nodes
+View and manage collator nodes deployed for your parachain. Each collator node entry includes:
 
-Here you can see the list of the collator node, and by clicking on the "i" icon, you can see the details of the specific node.
+- **Node ID**: Unique identifier of the node in the database.
+- **Node Name**: Saved node name in the database.
+- **Status**: Current status of the node.
+- **Created On**: Timestamp of when the node was created.
+- **Parachain Block Height**: Current block height of the parachain.
+- **Collator Address**: Wallet address of the collator.
 
-- node id: saved uuid in DB for this node
-- node name: saved node name in db
-- status: status of the node
-- created on: timestamp of creation
-- parachain block height: height of the parachain
-- collator address: address of the collator node
+Click the **"i"** icon to view additional details for a specific node.
 
-### Rpc nodes
+---
 
-Here you can see the list of the Rpc node, and by clicking on the "i" icon, you can see the details of the specific node.
+### **RPC Nodes**
 
-- node id: saved uuid in DB for this node
-- node name: saved node name in db
-- status: status of the node
-- created on: timestamp of creation
-- parachain block height: height of the parachain
-- Parachain http url: parachain http endpoint to access blockchain
-- Parachain ws url: parachain ws endpoint to access blockchain
-- relay chain http url: relay chain http endpoint to access blockchain
-- relay chain ws url - relay chain ws endpoint to access blockchain
-- side car http url: http endpoint to access side car
-- authentication type: authentication method to access the endpoints
-- Authentication API key: API key for the endpoint
-- Allowed cors: allowed origins
+View and manage RPC nodes for the parachain. Each RPC node entry includes:
+
+- **Node ID**: Unique identifier of the node in the database.
+- **Node Name**: Saved node name in the database.
+- **Status**: Current status of the node.
+- **Created On**: Timestamp of when the node was created.
+- **Parachain Block Height**: Current block height of the parachain.
+- **Parachain HTTP URL**: HTTP endpoint for blockchain access.
+- **Parachain WS URL**: WebSocket endpoint for blockchain access.
+- **Sidecar HTTP URL**: HTTP endpoint for sidecar access.
+- **Authentication Type**: Method used to authenticate API access.
+- **Authentication API Key**: API key for the endpoint.
+- **Allowed CORS**: Allowed origins for cross-origin requests.
+
+Click the **"i"** icon to view additional details for a specific node.

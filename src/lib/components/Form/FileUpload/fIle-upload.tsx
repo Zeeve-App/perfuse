@@ -10,7 +10,7 @@
  */
 
 "use client";
-import React, { forwardRef } from "react";
+import React, { forwardRef, useState } from "react";
 import { ControllerRenderProps } from "react-hook-form";
 import { Heading } from "../../Heading";
 import { Button } from "../../Button";
@@ -48,21 +48,62 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>((props, ref) =>
   } = props;
 
   const [_id] = useID(id, "file-upload");
+  const [isDragOver, setIsDragOver] = useState(false);
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragOver(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      onChange(e); // Handle the first dropped file
+    }
+  };
+
   return (
-    <div className="relative flex h-max w-full">
+    <div
+      className="relative flex h-max w-full"
+      onDragOver={handleDragOver}
+      onDragEnter={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+    >
       <label
         htmlFor={_id}
-        className="peer w-full appearance-none truncate rounded-lg bg-[#F5F5F5] p-4 pr-12 text-sm font-medium leading-5 text-brand-dark placeholder:text-base placeholder:text-brand-dark/60 focus:border-zinc-300 focus:outline-none focus:ring-1 focus:ring-zinc-300 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#1E222D]"
+        className="peer w-full appearance-none truncate rounded-lg bg-[#F5F5F5] text-sm font-medium leading-5 text-brand-dark placeholder:text-base placeholder:text-brand-dark/60 focus:border-zinc-300 focus:outline-none focus:ring-1 focus:ring-zinc-300 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 lg:p-4 dark:bg-[#1E222D]"
       >
         <div className="flex flex-col gap-2  lg:gap-4">
           <Heading as="h6">{floatingLabelText}</Heading>
-          <div className="flex items-center justify-between gap-2 rounded-xl border-2 border-dashed bg-white p-3 text-theme-primary-content lg:gap-4 dark:bg-[#11141C]">
-            {iconRight}
-            <div>
-              <p className="font-normal text-theme-primary-content">Select a file or drag and drop here</p>
+          <div className="flex items-center justify-between gap-2 rounded-xl border-2 border-dashed bg-white text-theme-primary-content lg:gap-4 lg:p-3 dark:bg-[#11141C]">
+            <span>{iconRight}</span>
+            <div className="p-2">
+              <div className="whitespace-normal font-normal text-theme-primary-content">
+                Select a file or drag and drop here
+              </div>
               <p className="text-brand-gray">Supported format: {fileType}</p>
+              <Button
+                onClick={() => document.getElementById(_id)?.click()}
+                variant={"outline"}
+                colorScheme={"accent"}
+                className="md:hidden"
+              >
+                Select File
+              </Button>
             </div>
-            <Button variant={"outline"} colorScheme={"accent"}>
+            <Button
+              onClick={() => document.getElementById(_id)?.click()}
+              variant={"outline"}
+              colorScheme={"accent"}
+              className="hidden md:block"
+            >
               Select File
             </Button>
           </div>

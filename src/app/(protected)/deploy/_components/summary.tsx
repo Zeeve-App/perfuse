@@ -220,7 +220,7 @@ export default function DeploySummary({
             <p>Network Environment</p>
             <div className="flex justify-between text-sm">
               <span className="font-semibold">Collator nodes</span>
-              <span>4</span>
+              <span>2</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="font-semibold">Rpc nodes</span>
