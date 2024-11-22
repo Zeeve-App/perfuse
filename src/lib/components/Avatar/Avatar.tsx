@@ -14,6 +14,7 @@ import React, { forwardRef } from "react";
 import { PolymorphicComponentPropsWithRef, PolymorphicRef } from "../core";
 import { tx } from "@/utils/shared";
 
+/** Avatar component props */
 type AvatarProps<C extends React.ElementType> = PolymorphicComponentPropsWithRef<
   C,
   {
@@ -21,8 +22,10 @@ type AvatarProps<C extends React.ElementType> = PolymorphicComponentPropsWithRef
   }
 >;
 
+/** avatar component type */
 type AvatarComponent = <C extends React.ElementType = "img">(props: AvatarProps<C>) => React.ReactNode;
 
+/** avatar component */
 const Avatar: AvatarComponent = forwardRef(
   <C extends React.ElementType>({ as, className, ...rest }: AvatarProps<C>, ref?: PolymorphicRef<C>) => {
     const Component = as ?? "img";

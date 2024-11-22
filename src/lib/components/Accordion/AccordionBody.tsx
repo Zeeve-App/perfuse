@@ -15,10 +15,12 @@ import { HTMLMotionProps, motion, AnimatePresence } from "framer-motion";
 import { useActiveAccordionContext } from "./ActiveAccordionContextProvider";
 import { tx } from "@/utils/shared";
 
+/** accordion body props */
 interface AccordionBodyProps extends HTMLMotionProps<"div"> {
   itemIndex?: number;
 }
 
+/** accordion body components */
 const AccordionBody = forwardRef<HTMLDivElement, AccordionBodyProps>((props, ref) => {
   const { className, itemIndex = 0, children, ...rest } = props;
 

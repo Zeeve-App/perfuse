@@ -12,8 +12,10 @@
 import React from "react";
 import { tx } from "@/utils/shared";
 
+/** layout right section props */
 interface LayoutRightSectionProps extends React.ComponentPropsWithRef<"div"> {}
 
+/** layout right section component */
 const LayoutRightSection = (props: LayoutRightSectionProps) => {
   const { children, className, ...rest } = props;
 

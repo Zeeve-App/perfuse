@@ -70,11 +70,21 @@ module.exports = plugin(
       ".bg-brand-gradient-blue-48": {
         background: "linear-gradient(108deg, #868cff 6%, #4318ff 48%)",
       },
+      ".bg-brand-gradient-blue-20": {
+        background: "linear-gradient(108deg, #868cff 6%, #4318ff 20%)",
+      },
       ".bg-brand-gradient-blue": {
         background: "linear-gradient(107deg, #868cff 0%, #4318ff)",
       },
       ".text-brand-gradient": {
         background: "linear-gradient(130deg, #32B8B2 0%, #088DB2 100%)",
+        "-webkit-background-clip": "text",
+        "background-clip": "text",
+        "-webkit-text-fill-color": "transparent",
+        "text-fill-color": "transparent",
+      },
+      ".text-theme-gradient": {
+        background: "linear-gradient(42.61deg, #5C18F9 1.04%, #ED32BE 86.06%)",
         "-webkit-background-clip": "text",
         "background-clip": "text",
         "-webkit-text-fill-color": "transparent",
@@ -98,7 +108,7 @@ module.exports = plugin(
     });
   },
   {
-    darkMode: "class",
+    darkMode: "selector",
     /** https://tailwindcss.com/docs/theme#extending-the-default-theme */
     theme: {
       extend: {
@@ -123,21 +133,22 @@ module.exports = plugin(
           },
           brand: {
             primary: "#4054B2",
-            blue: "#4318ff",
+            blue: "#741BEF",
             "dark-blue": "#2b3674",
             "darker-blue": "#1b2559",
             red: "#C12C2C",
-            green: "#2EC589",
+            green: "#05CD99",
             yellow: "#F0AC00",
             gray: "#868686",
             dark: "#080E12",
             cyan: "#32B8B2",
             teal: "#088DB2",
             "light-teal": "#a1e3cb",
-            light: "#f4f7fe",
-            outline: "#080E121A",
+            light: "#F7F0F7",
+            outline: "var(--border)",
             purple: "#8879e5",
-            pink: "#B53563",
+            pink: "#A619F7",
+            "light-pink": "#F7F0F7",
             // shadow:"rgba(112, 144, 176, 0.12)",
             warning: "#fff5e6",
           },

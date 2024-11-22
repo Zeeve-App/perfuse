@@ -18,12 +18,14 @@ import { useActiveAccordionContext } from "./ActiveAccordionContextProvider";
 import { tx } from "@/utils/shared";
 import SvgChevronDownSquare from "@/lib/icons/arrows/outline/ChevronDownSquare";
 
+/** accordion header props */
 interface AccordionHeaderProps extends RemoveProperties<ButtonProps, "iconLeft" | "iconRight"> {
   itemIndex?: number;
   iconCollapsed?: React.ReactElement;
   iconExpanded?: React.ReactElement;
 }
 
+/** accordion header component */
 const AccordionHeader = forwardRef<HTMLButtonElement, AccordionHeaderProps>((props, ref) => {
   const { className, itemIndex = 0, children, onClick, iconCollapsed, iconExpanded, ...rest } = props;
 
@@ -38,13 +40,16 @@ const AccordionHeader = forwardRef<HTMLButtonElement, AccordionHeaderProps>((pro
     <SvgChevronDownSquare
       height={24}
       width={24}
-      className={`${isExpanded ? "-rotate-180" : ""} text-brand-dark-blue transition-all duration-200`}
+      className={`${isExpanded ? "-rotate-180" : ""} text-theme-primary-content transition-all duration-200`}
     />
   );
 
   return (
     <Button
-      className={tx("flex justify-between rounded-none border-none bg-transparent hover:bg-slate-200 ", className)}
+      className={tx(
+        "flex justify-between text-theme-primary-content rounded-none border-none bg-transparent hover:bg-theme-foreground ",
+        className,
+      )}
       iconRight={icon}
       onClick={(event) => {
         toggleAccordion(itemIndex);

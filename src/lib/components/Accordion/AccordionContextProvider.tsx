@@ -11,6 +11,7 @@
 
 import { createContext, useCallback, useContext } from "react";
 
+/** Accordion context props */
 interface AccordionContextProps {
   activeIndex: number | number[];
   setActiveIndex: (idx: number | number[] | ((prevState: number | number[]) => number | number[])) => void;
@@ -23,6 +24,7 @@ AccordionContext.displayName = "AccordionContext";
 const AccordionContextConsumer = AccordionContext.Consumer;
 const AccordionContextProvider = AccordionContext.Provider;
 
+/** accordion context hooks */
 const useAccordionContext = () => {
   const context = useContext(AccordionContext);
   if (context === null) {

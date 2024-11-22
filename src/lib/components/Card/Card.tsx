@@ -11,10 +11,31 @@
 
 /* eslint-disable react/display-name */
 import React, { forwardRef } from "react";
+import { cva, VariantProps } from "class-variance-authority";
 import { PolymorphicComponentPropsWithRef, PolymorphicRef } from "../core";
 import { tx } from "@/utils/shared";
 
-type CardProps<C extends React.ElementType> = PolymorphicComponentPropsWithRef<C>;
+/** card variants */
+const styles = cva(
+  /** common classes for all variants */
+  "",
+  {
+    variants: {
+      variant: {
+        grid: "grid grid-cols-12 gap-3 p-3 ",
+        "grid-no-pad": "grid grid-cols-12 gap-3",
+        default:
+          "grid grid-cols-12 gap-3 rounded-lg border border-brand-outline bg-theme-foreground p-3 text-brand-dark lg:p-4",
+      },
+    },
+    /** default variant */
+    defaultVariants: {
+      variant: "default",
+    },
+  },
+);
+
+type CardProps<C extends React.ElementType> = PolymorphicComponentPropsWithRef<C> & VariantProps<typeof styles>;
 
 type CardComponent = <C extends React.ElementType = "div">(props: CardProps<C>) => React.ReactNode;
 
@@ -22,15 +43,10 @@ const Card: CardComponent = forwardRef(
   <C extends React.ElementType>({ as, className, children, ...rest }: CardProps<C>, ref?: PolymorphicRef<C>) => {
     const Component = as ?? "div";
 
+    const { variant } = rest;
+
     return (
-      <Component
-        className={tx(
-          "flex flex-col gap-3 rounded-lg border border-brand-outline bg-white p-3 text-brand-dark lg:gap-6 lg:p-6",
-          className,
-        )}
-        {...rest}
-        ref={ref}
-      >
+      <Component className={tx(styles({ variant }), className)} {...rest} ref={ref}>
         {children}
       </Component>
     );

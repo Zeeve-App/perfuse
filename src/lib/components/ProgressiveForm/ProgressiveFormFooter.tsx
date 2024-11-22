@@ -15,10 +15,12 @@ import { RemoveProperties } from "../core";
 import { useProgressiveFormContext } from "./ProgressiveFormContext";
 import { tx } from "@/utils/shared";
 
+/** progress form footer props */
 interface ProgressiveFormFooterProps extends RemoveProperties<HTMLMotionProps<"div">, "children"> {
   children?: (({ isFirst, isLast }: { isFirst: boolean; isLast: boolean }) => ReactNode) | ReactNode;
 }
 
+/** progressive form footer component */
 const ProgressiveFormFooter = forwardRef<HTMLDivElement, ProgressiveFormFooterProps>((props, ref) => {
   const { className, children, ...rest } = props;
 

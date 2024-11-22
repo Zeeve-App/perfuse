@@ -13,8 +13,10 @@ import React, { forwardRef } from "react";
 import { IconButton, IconButtonProps } from "../Button";
 import { tx } from "@/utils/shared";
 
+/** header menu button props */
 interface HeaderMenuButtonProps extends IconButtonProps {}
 
+/** header menu button component */
 const HeaderMenuButton = forwardRef<HTMLButtonElement, HeaderMenuButtonProps>((props, ref) => {
   const { children, className, ...rest } = props;
 

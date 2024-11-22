@@ -12,6 +12,7 @@
 import { useContext } from "react";
 import { NotificationsWebSocketContext } from "./NotificationsWebSocketProvider";
 
+/** notification context hook for websocket */
 const useNotificationsWebsocketContext = () => {
   const context = useContext(NotificationsWebSocketContext);
   if (!context) {

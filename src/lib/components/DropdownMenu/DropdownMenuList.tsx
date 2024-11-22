@@ -17,6 +17,7 @@ import { usePopoverContext } from "../Popover";
 import { useMergeRefs } from "@/hooks";
 import { tx } from "@/utils/shared";
 
+/** motion variants */
 const motionVariants: Variants = {
   initial: {
     opacity: 0,
@@ -26,8 +27,10 @@ const motionVariants: Variants = {
   },
 };
 
+/** dropdown menu list props */
 interface DropdownMenuListProps extends HTMLMotionProps<"div"> {}
 
+/** dropdown menu list component */
 const DropdownMenuList = forwardRef<HTMLDivElement, DropdownMenuListProps>((props, ref) => {
   const { children, className, ...rest } = props;
 
@@ -48,7 +51,7 @@ const DropdownMenuList = forwardRef<HTMLDivElement, DropdownMenuListProps>((prop
               exit="initial"
               ref={refs}
               className={tx(
-                "mt-2 w-max min-w-[148px] rounded-lg border border-brand-outline bg-white py-2 shadow-lg",
+                "mt-2 w-max min-w-[148px] rounded-lg border border-brand-outline bg-theme-foreground py-2 shadow-lg",
                 className,
               )}
               style={styles.popper}

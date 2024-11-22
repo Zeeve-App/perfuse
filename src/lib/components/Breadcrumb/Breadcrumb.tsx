@@ -15,18 +15,21 @@ import { BreadcrumbContextProps, BreadcrumbContext, Separator } from "./Breadcru
 import { DEFAULT_SEPARATOR } from "./useBreadcrumb";
 import { tx } from "@/utils/shared";
 
+/** breadcrumb component props */
 interface BreadcrumbProps extends HTMLMotionProps<"nav"> {
   separator?: Separator;
   activeLink?: string;
   activeLinkClassName?: string;
 }
 
+/** breadcrumb components */
 const Breadcrumb = forwardRef<HTMLDivElement, BreadcrumbProps>((props, ref) => {
   const { separator = DEFAULT_SEPARATOR, activeLink = "/", className, activeLinkClassName, children, ...rest } = props;
 
   const [_activeLink, _setActiveLink] = useState<string>(activeLink);
   const [_separator, _setSeparator] = useState<Separator>(separator);
 
+  /** breadcrumb context values */
   const contextValues: BreadcrumbContextProps = useMemo(
     () => ({
       activeLink: _activeLink,
@@ -35,7 +38,7 @@ const Breadcrumb = forwardRef<HTMLDivElement, BreadcrumbProps>((props, ref) => {
       setSeparator: _setSeparator,
       activeLinkClassName,
     }),
-    [activeLink, separator, activeLinkClassName],
+    [_activeLink, _separator, activeLinkClassName],
   );
 
   return (

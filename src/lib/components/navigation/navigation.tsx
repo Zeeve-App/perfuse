@@ -13,15 +13,17 @@ import React, { PropsWithChildren } from "react";
 import { Heading } from "../Heading";
 import { Breadcrumb, BreadcrumbProps } from "./breadcrumb";
 
+/** navigation props */
 interface NavigationProps extends PropsWithChildren {
   heading: string | React.ReactElement;
   logo?: React.ReactElement;
   breadcrumb?: BreadcrumbProps;
 }
 
+/** navigation component */
 const Navigation = ({ heading, logo, breadcrumb, children }: NavigationProps) => {
   return (
-    <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
+    <div className=" flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
       <div className="flex flex-row items-center gap-3">
         {/* It can be icon or image */}
         {logo ? (

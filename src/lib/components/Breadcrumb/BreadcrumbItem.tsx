@@ -15,6 +15,7 @@ import { PolymorphicComponentPropsWithRef, PolymorphicRef } from "../core";
 import { useBreadcrumb } from "./useBreadcrumb";
 import { tx } from "@/utils/shared";
 
+/** breadcrumb item props */
 type BreadcrumbItemProps<C extends React.ElementType> = PolymorphicComponentPropsWithRef<
   C,
   {
@@ -24,8 +25,10 @@ type BreadcrumbItemProps<C extends React.ElementType> = PolymorphicComponentProp
   }
 >;
 
+/** breadcrumb item component type */
 type BreadcrumbItemComponent = <C extends React.ElementType = "a">(props: BreadcrumbItemProps<C>) => React.ReactNode;
 
+/** breadcrumb item component */
 const BreadcrumbItem: BreadcrumbItemComponent = forwardRef(
   <C extends React.ElementType>(
     { as, href, isActive, separator, className, children, breadcrumbSeparatorProps, ...rest }: BreadcrumbItemProps<C>,

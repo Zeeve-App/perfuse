@@ -18,6 +18,7 @@ import SvgExclamationTriangle from "@/lib/icons/essential/outline/ExclamationTri
 import SvgXMarkCircle from "@/lib/icons/essential/outline/XMarkCircle";
 import SvgCheckCircle from "@/lib/icons/essential/outline/CheckCircle";
 
+/** notification card component */
 const NotificationCard = ({ item }: { item: Notification }) => {
   let status: React.ReactElement;
 

@@ -14,10 +14,12 @@ import { HTMLMotionProps, motion } from "framer-motion";
 import { useProgressiveFormContext } from "./ProgressiveFormContext";
 import { tx } from "@/utils/shared";
 
+/** progressive form header props */
 interface ProgressiveFormHeaderProps extends HTMLMotionProps<"div"> {
   children: React.ReactElement[] | React.ReactElement;
 }
 
+/** progressive form header component */
 const ProgressiveFormHeader = forwardRef<HTMLDivElement, ProgressiveFormHeaderProps>((props, ref) => {
   const { className, children, ...rest } = props;
 

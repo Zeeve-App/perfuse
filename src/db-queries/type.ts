@@ -10,87 +10,87 @@
  */
 
 interface NetworkDbRow {
-  // network id
+  /** Network ID */
   network_id: string;
-  // network name
+  /** Network name */
   network_name: string;
-  // network env
+  /** Network environment */
   network_env: string;
-  // network template to create parachain
+  /** Network template to create parachain */
   network_template: string;
-  // network relay chain type in which parachain will be deployed
+  /** Network relay chain type in which parachain will be deployed */
   network_relay_chain_type: string;
-  // relay chain version
+  /** Relay chain version */
   network_relay_chain_version: string;
-  // if sidecar enabled or not, 0 disabled
+  /** If sidecar is enabled or not, 0 is disabled */
   network_sidecar: 0 | 1;
-  // explorer which is used for this network
+  /** Explorer type used for this network */
   network_blockchain_explorer_type: string;
-  // network chain spec json data as stirng
+  /** Network chain spec JSON data as a string */
   network_chain_spec_file_json: string;
-  // netowrk binary path in local storage
+  /** Network binary path in local storage */
   network_binary_path: string;
-  // coretime type for the network
+  /** Coretime type for the network */
   network_coretime_type: "regionx";
-  // network user wallet address
+  /** Network user wallet address */
   network_user_address: string;
-  // created at time stamp in iso format
+  /** Created at timestamp in ISO format */
   created_at: string;
 }
 
 interface NodeDbRow {
-  // node id
+  /** Node ID */
   node_id: string;
-  // associated network id
+  /** Associated network ID */
   network_id: string;
-  // node type
+  /** Node type */
   node_type: "collator" | "rpc";
-  // node name
+  /** Node name */
   node_name: string;
-  // collator node address
+  /** Collator node address */
   node_address?: string;
-  // collator node balance;
+  /** Collator node balance */
   node_balance?: number;
-  // collator node cors
+  /** Collator node CORS */
   node_rpc_cors?: string;
-  // rpcnode endpoint
+  /** RPC node endpoint */
   node_endpoint?: string;
-  // wss enabled, 0 disabled
+  /** WSS enabled, 0 is disabled */
   node_wss_enabled?: 0 | 1;
-  // http enabled, 0 disabled
+  /** HTTP enabled, 0 is disabled */
   node_https_enabled?: 0 | 1;
-  // authentication method for rpc
+  /** Authentication method for RPC */
   node_auth_method?: "api_key" | "basic_auth";
-  // rpc node user name in case of basic auth
+  /** RPC node username in case of basic auth */
   node_username?: string;
-  // rpc node password in case of basic auth
+  /** RPC node password in case of basic auth */
   node_password?: string;
-  // rpc node user name in case of api key
+  /** RPC node API key */
   node_api_key?: string;
-  // created at timestamp in ISO format
+  /** Created at timestamp in ISO format */
   created_at: string;
 }
 
 interface TaskDbRow {
-  // task id
+  /** Task ID */
   task_id: string;
-  // task type
+  /** Task type */
   task_type: "network_provision" | "add_node" | "node_provision" | "delete_node" | "delete_infra";
-  // task execution state
+  /** Task execution state */
   task_status: "pending" | "inprogress" | "completed" | "failed";
-  // task associated network id
+  /** Task associated network ID */
   task_associated_network_id: string;
-  // task associated node id
+  /** Task associated node ID */
   task_associated_node_id?: string;
-  // task parent task, task id
+  /** Parent task ID */
   task_parent_id?: string;
-  // task description
+  /** Task description */
   task_description: string;
-  // task retry count
+  /** Task retry count */
   task_retry_count: number;
-  // task created at timestamp in ISO
+  /** Task created at timestamp in ISO format */
   task_created_at: string;
-  // task updated at timestamp in ISO
+  /** Task updated at timestamp in ISO format */
   task_updated_at: string;
 }
 

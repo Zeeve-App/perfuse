@@ -13,8 +13,10 @@ import React, { forwardRef } from "react";
 import { HTMLMotionProps, motion } from "framer-motion";
 import { tx } from "@/utils/shared";
 
+/** dropdown menu divider props */
 interface DropdownMenuDividerProps extends HTMLMotionProps<"hr"> {}
 
+/** dropdown menu divider component */
 const DropdownMenuDivider = forwardRef<HTMLHRElement, DropdownMenuDividerProps>((props, ref) => {
   const { className, ...rest } = props;
   return <motion.hr className={tx("my-2 border-brand-outline", className)} ref={ref} role="separator" {...rest} />;

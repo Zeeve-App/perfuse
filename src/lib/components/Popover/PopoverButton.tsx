@@ -16,12 +16,15 @@ import { PolymorphicComponentPropsWithRef, PolymorphicRef } from "../core";
 import { usePopoverContext } from "./PopoverContext";
 import { useMergeRefs } from "@/hooks";
 
+/** popover button prop */
 type PopoverButtonProps<C extends React.ElementType> = PolymorphicComponentPropsWithRef<C>;
 
+/** popover button component type */
 type PopoverButtonComponent = <C extends React.ElementType = typeof Button>(
   props: PopoverButtonProps<C>,
 ) => React.ReactNode;
 
+/** popover button component */
 const PopoverButton: PopoverButtonComponent = React.forwardRef(
   <C extends React.ElementType>({ as, children, ...rest }: PopoverButtonProps<C>, ref?: PolymorphicRef<C>) => {
     const { setReferenceElement } = usePopoverContext();

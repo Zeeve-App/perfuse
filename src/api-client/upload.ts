@@ -19,8 +19,10 @@ type ApiResponse = {
   data: { path: string };
 };
 
+/** endpoint to upload a file in the server */
 const apiEndpoint = withBasePath("/api/upload");
 
+/** hook to upload a file in the server */
 const useUploadApi = async (formData: ApiRequest, config: AxiosRequestConfig<FormData>) => {
   const request = backendAxiosInstance.post<ApiResponse, AxiosResponse<ApiResponse>, ApiRequest>;
 

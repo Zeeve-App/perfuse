@@ -14,10 +14,13 @@ import { CloseButton, CloseButtonProps } from "../Button";
 import { useModalContext } from "./ModalContextProvider";
 import { callMultipleHandlers } from "@/utils/shared";
 
+/** modal close button props */
 interface ModalCloseButtonProps extends CloseButtonProps {}
 
+/** modal close button component */
 const ModalCloseButton = forwardRef<HTMLButtonElement, ModalCloseButtonProps>((props, ref) => {
   const { onClick, ...rest } = props;
+  /** modal context */
   const { handleClose } = useModalContext();
 
   return (

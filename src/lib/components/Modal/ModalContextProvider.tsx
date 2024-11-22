@@ -12,14 +12,18 @@
 import { createContext, useContext } from "react";
 import { UseModalReturnType } from "./useModal";
 
+/** modal context props */
 interface ModalContextProps extends UseModalReturnType {}
 
+/** modal context */
 const ModalContext = createContext<ModalContextProps | null>(null);
 ModalContext.displayName = "ModalContext";
 
+/** modal consumer and provider */
 const ModalContextConsumer = ModalContext.Consumer;
 const ModalContextProvider = ModalContext.Provider;
 
+/** modal context hook */
 const useModalContext = () => {
   const context = useContext(ModalContext);
   if (!context) {

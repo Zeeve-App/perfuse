@@ -28,6 +28,7 @@ const styles = cva("inline size-6 animate-spin text-gray-200", {
       light: "fill-brand-light",
       purple: "fill-brand-purple",
       pink: "fill-brand-pink",
+      accent: "fill-theme-accent",
     },
   },
   defaultVariants: {

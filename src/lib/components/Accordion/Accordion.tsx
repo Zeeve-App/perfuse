@@ -16,12 +16,14 @@ import { RemoveProperties } from "../core";
 import AccordionContextProvider, { AccordionContextProps } from "./AccordionContextProvider";
 import { tx } from "@/utils/shared";
 
+/** accordion components props */
 interface AccordionProps
   extends RemoveProperties<HTMLMotionProps<"div">, "children">,
     RemoveProperties<AccordionContextProps, "activeIndex" | "setActiveIndex"> {
   children: React.ReactElement | React.ReactElement[];
 }
 
+/** accordion components */
 const Accordion = forwardRef<HTMLDivElement, AccordionProps>((props, ref) => {
   const { className, children, shouldAllowMultiple, ...rest } = props;
 

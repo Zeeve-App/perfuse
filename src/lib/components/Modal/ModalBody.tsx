@@ -12,8 +12,10 @@
 import React, { forwardRef } from "react";
 import { tx } from "@/utils/shared";
 
+/** modal body props */
 interface ModalBodyProps extends React.ComponentPropsWithRef<"div"> {}
 
+/** modal body component */
 const ModalBody = forwardRef<HTMLDivElement, ModalBodyProps>((props, ref) => {
   const { children, className, ...rest } = props;
 

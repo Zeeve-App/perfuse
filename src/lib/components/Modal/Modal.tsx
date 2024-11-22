@@ -15,11 +15,13 @@ import { Portal, PortalProps } from "../Portal";
 import { useModal, UseModalProps } from "./useModal";
 import ModalContextProvider from "./ModalContextProvider";
 
+/** modal props */
 interface ModalProps extends UseModalProps {
   children: React.ReactNode;
   portalProps?: Pick<PortalProps, "isNested">;
 }
 
+/** modal component */
 const Modal: React.FC<ModalProps> = (props) => {
   const { children, portalProps, ...modalProps } = props;
   const modal = useModal(modalProps);

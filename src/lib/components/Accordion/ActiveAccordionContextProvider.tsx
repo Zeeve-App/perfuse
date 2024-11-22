@@ -11,6 +11,7 @@
 
 import { createContext, useContext } from "react";
 
+/** active accordion context props */
 interface ActiveAccordionContextProps {
   isExpanded: boolean;
 }
@@ -21,6 +22,7 @@ ActiveAccordionContext.displayName = "ActiveAccordionContext";
 const ActiveAccordionContextConsumer = ActiveAccordionContext.Consumer;
 const ActiveAccordionContextProvider = ActiveAccordionContext.Provider;
 
+/** active accordion context hooks */
 const useActiveAccordionContext = () => {
   const context = useContext(ActiveAccordionContext);
   if (context === null) {

@@ -16,6 +16,7 @@ import knex from "knex";
 import { Database, RunResult } from "sqlite3";
 import { config } from "@/config/config";
 
+/** knex handler to create a sqlite connection */
 export const knexHandler = knex({
   client: "sqlite3",
   connection: {
