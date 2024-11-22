@@ -19,6 +19,7 @@ import { tx } from "@/utils/shared";
 import SvgInfoCircle from "@/lib/icons/essential/outline/InfoCircle";
 import SvgCheckCircle from "@/lib/icons/essential/outline/CheckCircle";
 
+/** radio card props */
 interface RadioCardProps
   extends RemoveProperties<
     React.ComponentPropsWithRef<"input">,
@@ -46,6 +47,7 @@ interface RadioCardProps
   tooltipText?: string;
 }
 
+/** radio card component */
 const RadioCard = forwardRef<HTMLInputElement, RadioCardProps>((props, ref) => {
   const {
     children,

@@ -14,6 +14,7 @@ import { Modifier, usePopper } from "react-popper";
 import { Placement, PositioningStrategy } from "@popperjs/core";
 import { PopoverContextProps, PopoverContextProvider } from "./PopoverContext";
 
+/** popover props */
 interface PopoverProps {
   children: React.ReactNode;
   isOpen: boolean;
@@ -25,11 +26,13 @@ interface PopoverProps {
   modifiers?: Array<Partial<Modifier<string, object>>>;
 }
 
+/** popover component */
 const Popover = (props: PopoverProps) => {
   const { isOpen, placement = "auto", strategy = "fixed", modifiers, children } = props;
 
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
+  /** calling popover hook */
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement,
     strategy,

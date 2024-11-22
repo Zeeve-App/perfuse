@@ -29,10 +29,12 @@ const motionVariants: Variants = {
   },
 };
 
+/** popover content props */
 interface PopoverContentProps extends HTMLMotionProps<"div"> {
   focusLockProps?: ReactFocusLockProps;
 }
 
+/** popover content component */
 const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>((props, ref) => {
   const { children, className, focusLockProps, ...rest } = props;
 

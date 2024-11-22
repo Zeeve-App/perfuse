@@ -12,14 +12,17 @@
 import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
+/** portal props */
 interface PortalProps {
   isNested?: boolean;
   children: React.ReactNode;
 }
 
+/** portal context */
 const PortalContext = React.createContext<HTMLElement | null>(null);
 PortalContext.displayName = "PortalContext";
 
+/** portal component */
 const Portal: React.FC<PortalProps> = (props) => {
   const { isNested = false, children } = props;
 

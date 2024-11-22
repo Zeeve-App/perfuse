@@ -13,8 +13,10 @@
 import React, { forwardRef } from "react";
 import { tx } from "@/utils/shared";
 
+/** progressive form step footer props */
 interface ProgressiveFormStepFooterProps extends React.ComponentPropsWithRef<"div"> {}
 
+/** progressive form step footer component */
 const ProgressiveFormStepFooter = forwardRef<HTMLDivElement, ProgressiveFormStepFooterProps>((props, ref) => {
   const { children, className, ...rest } = props;
 
