@@ -1,43 +1,54 @@
-## Deploy parachains from the UI.
+# Deploying Parachains via the UI
 
-Once the next.js application is running, you can go to http://localhost:3000 to deploy a new perfuse network.
+To deploy a new Perfuse network, ensure your Next.js application is running, then navigate to [http://localhost:3000](http://localhost:3000).
 
-**Step 1:** Once you go to the URL, you will land on the Deploy New Parachain screen. You can click on Begin Now to go to the Create page.
+## Step-by-Step Guide
 
-**Step 2:** Once on the create page, you can select the network environment.
+### **Step 1: Access the Setup Page**
+Visit the URL, and you’ll land on the **Set Up Your Parachain** page.
 
-- devnet
-- testnet
-- mainnet
+### **Step 2: Select the Network Environment**
+Choose the environment where your parachain will operate:
 
-**Step 3:** Once the environment is selected, you will see the template option. You can select one to continue.
+- **Testnet**
+  - Paseo
+- **Mainnet**
+  - Kusama
+  - Polkadot
 
-- Substrate
-- Evm frontier
-- contract
-- assets
-- custom
+### **Step 3: Enter Chain Details**
+Provide the following details for your parachain:
+- **Chain Name**: The name of your parachain.
+- **Token Symbol**: The symbol representing your chain’s token.
 
-**Step 4:** Select the relay chain, which depends on your network environment.
+### **Step 4: Choose a Template**
+Select a template for your parachain. Options include:
+- **Substrate**
+- **EVM Frontier**
+- **Contract**
+- **Assets**
+- **Custom**
 
-- rococo-local
-- rococo
-- kusama
-- polkadot
+> **Note:** If you select the **Custom** template, you must upload a valid chain specification file and binary to proceed.
 
-**Step 5:** Select whether to include a sidecar or not.
+### **Step 5: Configure Advanced Options**
+Once you select a template, advanced options will auto-fill. You can modify these values as needed or leave them as is. Key parameters include:
 
-**Step 6:** Select the explorer to use on the network.
+- **ParaID**: ID of the new parachain.
+- **Token Decimal**: Decimal places for the network’s token.
+- **RPC API**: Enable or disable HTTPS/WSS support.
+- **Sidecar**: Enable or disable sidecar support.
+- **SS58 Format**: Specify the SS58 format for your parachain network.
+- **Protocol ID**: Derived from the chain specification.
+- **ID**: Unique identifier for the parachain.
+- **Sudo Key**: Wallet address with administrative privileges.
+- **Collator Accounts / Premined Accounts**:
+  - **Address**: Wallet address of the collator or account.
+  - **Session Key**: Session key for the account.
+  - **Balance**: Initial balance for the account.
 
-- polkadot.js
-- subscan
+### **Step 6: Review Your Selection**
+Review all the filled details in the **Your Selection** section. Ensure everything is accurate.
 
-**Step 7:** Click on the next button to see the chain spec file details and enter the RPC node details.
-
-**Step 8:** In the parachain configuration section, all the details are fetched from the chain specification file (either from the template chain specification or the user-uploaded chain specification). You can edit the token name to your liking. It will change the chain file token name.
-
-**Step 9:** In the collator nodes section, you can see the two collator node details, which will be created by default.
-
-**Step 10:** In the RPC nodes section, you can enter the RPC name and choose if you want to enable the HTTP endpoint or not.
-
-**Step 11:** Now you can deploy the network by clicking on the deploy button.
+### **Step 7: Deploy the Parachain**
+After confirming the information, click **Deploy** to launch your parachain network.

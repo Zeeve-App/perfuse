@@ -60,18 +60,6 @@ const TokenInfo = ({ data, isLoading }: ParachainConfigProps) => {
         }
         isLoading={isLoading}
       />
-      <KeyValuePair
-        className="col-span-6"
-        label={"Protocol ID"}
-        value={data?.protocolId ?? "NA"}
-        isLoading={isLoading}
-      />
-      <KeyValuePair
-        className="col-span-6 text-right"
-        label={"Telemetry Endpoint"}
-        value={data?.telemetryEndpoints ?? "NA"}
-        isLoading={isLoading}
-      />
       <Image
         className="absolute bottom-0 right-0 col-span-12 w-48 md:col-span-6"
         src={withBasePath("/assets/images/dashboard/vertical-card.png")}
