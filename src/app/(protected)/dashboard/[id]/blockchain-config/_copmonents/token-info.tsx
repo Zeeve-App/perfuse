@@ -60,6 +60,9 @@ const TokenInfo = ({ data, isLoading }: ParachainConfigProps) => {
         }
         isLoading={isLoading}
       />
+      <KeyValuePair className="col-span-6" label={<>&nbsp;</>} value={<>&nbsp;</>} isLoading={isLoading} />
+      <KeyValuePair className="col-span-6" label={<>&nbsp;</>} value={<>&nbsp;</>} isLoading={isLoading} />
+
       <Image
         className="absolute bottom-0 right-0 col-span-12 w-48 md:col-span-6"
         src={withBasePath("/assets/images/dashboard/vertical-card.png")}
