@@ -25,7 +25,7 @@ import { ColumnDef, ReactTable, createColumnHelper } from "@/lib/components/Reac
 import { NodeDbRow } from "@/db-queries";
 import SvgInfoCircle from "@/lib/icons/essential/outline/InfoCircle";
 import { Typography } from "@/lib/components/Typography";
-import SvgPlusSquare from "@/lib/icons/essential/outline/PlusSquare";
+import SvgKey from "@/lib/icons/security/outline/Key";
 
 /** node table action column component */
 export const NodeTableRowActions = ({ node }: { node: NodeDbRow }) => {
@@ -48,7 +48,8 @@ export const NodeTableRowActions = ({ node }: { node: NodeDbRow }) => {
               });
             }}
           >
-            <SvgPlusSquare width={24} height={24} color="#CE2CCA" />
+            {/* change */}
+            <SvgKey width={24} height={24} color="#CE2CCA" />
           </IconButton>
         </Tooltip>
       )}
