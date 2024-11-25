@@ -1,19 +1,27 @@
 # Register and View Parachain
 
-After initiating the deployment process, you can monitor and manage your parachain through the UI.
-
-## **Access Network Details**
-
-Once the deployment begins, navigate to [http://localhost:3000](http://localhost:3000). This will open the **Network Details** page, where you can view information about the deploying network and its current status.
+After initiating the deployment process, you can monitor and manage your parachain through the Perfuse UI.
 
 ---
 
-## **Register the Network**
+## **Accessing Network Details**
 
-After deployment completes, an alert will notify you to register the parachain. To do this:
+Once deployment begins, navigate to [http://localhost:3000](http://localhost:3000) to access the **Network Details** page. Here, you can view the status and information about your deploying network.
 
-1. Go to the **Coretime** page in the navigation menu.
-2. Follow the instructions to complete the parachain registration.
+---
+
+## **Registering the Parachain**
+
+Upon successful deployment, you will be prompted to register the parachain. Follow these steps to complete registration:
+
+1. Navigate to the **Coretime** page via the navigation menu.
+2. Follow the on-screen instructions to register your parachain.
+
+---
+
+## **Checking Wallet Balances**
+
+After setting up the network, you can check wallet balances by allowing the Perfuse app to access your Polkadot.js wallet. The app will display balances in the relay chain where the parachain is deployed.
 
 ---
 
@@ -21,77 +29,89 @@ After deployment completes, an alert will notify you to register the parachain. 
 
 ### **Parachain Details**
 
-This section provides general information about the parachain:
+This section provides a summary of the parachain, including:
 
-- **Network Name**: Extracted from the chain specification.
-- **ID**: Unique identifier of the network in the database.
-- **Environment**: The environment where the parachain is deployed (e.g., testnet or mainnet).
-- **Owned By**: The owner of the network.
-- **Status**: Current status of the network:
-  - **In Progress**: Deployment is ongoing.
-  - **Failed**: An error occurred during deployment.
-  - **Authentication Pending**: Deployment is complete, but parachain registration is required.
-- **Created On**: Timestamp of when the network was created.
+- **Network Name**: Derived from the chain specification file.
+- **ID**: Unique identifier assigned to the network in the database.
+- **Environment**: Deployment environment (e.g., testnet or mainnet).
+- **Owned By**: Network owner information.
+- **Status**: Current network status:
+  - **In Progress**: Deployment ongoing.
+  - **Failed**: Deployment encountered an error.
+  - **Authentication Pending**: Deployment completed but awaiting parachain registration.
+- **Created On**: Timestamp of network creation.
 
 ---
 
 ### **Blockchain Config**
 
-This tab provides an in-depth look at the parachain’s blockchain configuration:
+The **Blockchain Config** tab displays comprehensive details about the parachain’s configuration:
 
-#### **Key Details**
+#### **Key Metrics**
 - **Parachain Block Height**: Current block height after registration.
 - **Total Token Supply**: Calculated from the chain specification file.
-- **Parachain Config**: Detailed information from the chain spec:
-  - **Parachain Name**: Name of the parachain.
-  - **Parachain ID**: ID assigned to the parachain.
-  - **Network ID**: Network ID from the chain specification.
-  - **Chain Type**: Type of chain (e.g., local, testnet, mainnet & live).
-  - **Protocol ID**: Protocol ID defined in the chain spec.
-  - **Telemetry Endpoint**: URL for telemetry monitoring.
+- **Parachain Config**: Includes:
+  - **Parachain Name**
+  - **Parachain ID**
+  - **Network ID**
+  - **Chain Type** (local, testnet, mainnet, live)
+  - **Protocol ID**
+  - **Telemetry Endpoint**: Monitoring URL.
 
 #### **Token Information**
-- **Token Name**: Symbol of the parachain’s native token.
-- **Decimal**: Decimal places for the token.
-- **Encoding**: Encoding value from the chain specification.
+- **Token Name**: Native token symbol.
+- **Decimal Places**: Precision of the token.
+- **Encoding**: Encoding format as per chain spec.
 - **Candidacy Bond**: Bond value for candidacy, extracted from the chain spec.
 
-#### **Additional Details**
-- **Parachain Spec File**: The chain specification file used for deployment. You can download it by clicking the **Download** button.
-- **Pre-mined Addresses**: List of pre-mined accounts and their respective balances.
-- **Relay Chain Config**: Information about the relay chain where the parachain is deployed.
+#### **Additional Information**
+- **Parachain Spec File**: Chain specification file used for deployment, downloadable via the **Download** button.
+- **Pre-mined Accounts**: List of accounts with pre-allocated balances.
+- **Relay Chain Config**: Details of the relay chain hosting the parachain.
 
 ---
 
 ### **Collator Nodes**
 
-View and manage collator nodes deployed for your parachain. Each collator node entry includes:
+Manage collator nodes for the parachain under the **Collator Nodes** section. Each collator entry includes:
 
-- **Node ID**: Unique identifier of the node in the database.
-- **Node Name**: Saved node name in the database.
+- **Node ID**: Database identifier.
+- **Node Name**: Saved node name.
 - **Status**: Current status of the node.
-- **Created On**: Timestamp of when the node was created.
-- **Parachain Block Height**: Current block height of the parachain.
-- **Collator Address**: Wallet address of the collator.
+- **Created On**: Creation timestamp.
+- **Parachain Block Height**: Current parachain block height.
+- **Collator Address**: Collator wallet address.
 
-Click the **"i"** icon to view additional details for a specific node.
+#### **Adding a Session Key**
+To add a session key for a collator node:
+
+1. Click the **key icon** next to the collator node.
+2. Enter the seed phrase and wallet address in the modal.
+3. Submit the form to create an RPC call and save the keys.
 
 ---
 
 ### **RPC Nodes**
 
-View and manage RPC nodes for the parachain. Each RPC node entry includes:
+View and manage RPC nodes for the parachain under the **RPC Nodes** section. Each RPC node entry includes:
 
-- **Node ID**: Unique identifier of the node in the database.
-- **Node Name**: Saved node name in the database.
-- **Status**: Current status of the node.
-- **Created On**: Timestamp of when the node was created.
-- **Parachain Block Height**: Current block height of the parachain.
-- **Parachain HTTP URL**: HTTP endpoint for blockchain access.
-- **Parachain WS URL**: WebSocket endpoint for blockchain access.
-- **Sidecar HTTP URL**: HTTP endpoint for sidecar access.
-- **Authentication Type**: Method used to authenticate API access.
-- **Authentication API Key**: API key for the endpoint.
-- **Allowed CORS**: Allowed origins for cross-origin requests.
+- **Node ID**: Database identifier.
+- **Node Name**: Saved node name.
+- **Status**: Current node status.
+- **Created On**: Node creation timestamp.
+- **Parachain Block Height**: Current parachain block height.
+- **Endpoints**:
+  - **HTTP URL**: HTTP endpoint for blockchain access.
+  - **WS URL**: WebSocket endpoint for blockchain access.
+  - **Sidecar URL**: HTTP endpoint for Sidecar access.
+- **Authentication**:
+  - **Type**: Method for API authentication.
+  - **API Key**: Key for accessing the RPC API.
+- **CORS Settings**: Allowed origins for cross-origin requests.
 
-Click the **"i"** icon to view additional details for a specific node.
+#### **Additional Details**
+Click the **info icon** to view detailed information about a specific node.
+
+---
+
+This streamlined guide ensures you can effectively monitor and manage your parachain from deployment to operation.
