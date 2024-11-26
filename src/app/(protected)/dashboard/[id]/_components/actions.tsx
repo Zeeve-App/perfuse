@@ -13,6 +13,7 @@
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useEffect } from "react";
+import { parseJSON } from "date-fns";
 import { useModalStore } from "@/store/modal";
 import { Button, IconButton } from "@/lib/components/Button";
 import { Tooltip } from "@/lib/components/Tooltip";
@@ -54,6 +55,7 @@ const Actions = ({
         relayChainType: network?.network_relay_chain_type ?? "NA",
         networkStatus: task?.task_status,
         blockHeight: parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16),
+        parachainId: JSON.parse(network?.network_chain_spec_file_json ?? "{}").para_id,
       },
       isLoading: false,
     });

@@ -79,6 +79,33 @@ const withBasePath = (url: string): string => {
   return url;
 };
 
+function blobToHex(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    // Convert the Blob to an ArrayBuffer
+    reader.onload = () => {
+      if (reader.result instanceof ArrayBuffer) {
+        const buffer = new Uint8Array(reader.result);
+
+        // Convert each byte to a 2-character hexadecimal representation
+        const hexString = Array.from(buffer)
+          .map((byte) => byte.toString(16).padStart(2, "0")) // Pad single hex digits with '0'
+          .join("");
+
+        resolve(`0x${hexString}`); // Prefix with '0x' for a valid hex representation
+      } else {
+        reject(new Error("Failed to read blob as ArrayBuffer."));
+      }
+    };
+
+    reader.onerror = () => reject(reader.error);
+
+    // Read the Blob as an ArrayBuffer
+    reader.readAsArrayBuffer(blob);
+  });
+}
+
 /**
  * Checks if current item is active or not.
  * @param pathname current URL's pathname
@@ -228,4 +255,5 @@ export {
   formatIntoAge,
   formatEndpoint,
   getSessionKey,
+  blobToHex,
 };
