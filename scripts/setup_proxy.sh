@@ -31,6 +31,7 @@ RELAY_RPC_PORT=9900
 PARA_RPC_PORT=9010
 PERFUSE_PORT=3000
 SIDECAR_PORT=9099
+GRAFANA_PORT=9111
 
 # Function to install HAProxy (optional)
 install_haproxy() {
@@ -121,10 +122,12 @@ frontend rpc_frontend
 #    http-request redirect scheme https unless { ssl_fc }
     acl letsencrypt-acl path_beg /.well-known/acme-challenge/
     acl is_para_rpc path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}para-rpc
+    acl is_grafana path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}grafana
     acl sidecar_api path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}api
     use_backend letsencrypt-backend if letsencrypt-acl
     use_backend relay_rpc_backend if is_relay_rpc
     use_backend para_rpc_backend if is_para_rpc
+    use_backend grafana_backend if is_grafana
     use_backend sidecar if sidecar_api
     default_backend perfuse_ui"
 
@@ -144,6 +147,12 @@ backend perfuse_ui
     mode http
     option forwardfor
     server perfuse_ui 127.0.0.1:${PERFUSE_PORT}"
+
+  local grafana_backend_config="
+backend grafana_backend
+    mode http
+    $basic_auth_line
+    server grafana 127.0.0.1:${GRAFANA_PORT}"
 
   local sidecar_config="
 backend sidecar
@@ -165,6 +174,7 @@ backend letsencrypt-backend
   echo "$frontend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$perfuse_ui_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$sidecar_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
+  echo "$grafana_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$relay_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null 
   echo "$parachain_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$certbot_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
