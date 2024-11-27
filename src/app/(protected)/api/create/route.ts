@@ -19,7 +19,6 @@ import { NodeDbRow, addTask, saveNetworkData, saveNodeData } from "@/db-queries"
 import { knexHandler } from "@/db-queries/knexfile";
 import { config } from "@/config/config";
 import { jobShellExecutorBG } from "@/utils/job-shell-executor";
-import { createWallet } from "@/utils/wallet";
 
 export interface CreatePerfuseApiPayload {
   /** network details from user */
@@ -57,6 +56,10 @@ interface CollatorNodePayload {
   node_rpc_cors: string;
   /** collator node balance */
   node_balance: number;
+  /** collator session address */
+  node_collator_session_address: string;
+  /** collator session mnemonics */
+  node_collator_session_seed: string;
 }
 interface RPCNodePayload {
   /** rpc node name */
@@ -130,9 +133,6 @@ export async function POST(req: NextRequest) {
           /** iterating through the node array in api request */
           formData.nodes.map(async (e) => {
             const isRpc = e.node_type === "rpc";
-            const wallet = await createWallet();
-
-            console.log({ wallet });
 
             const node: NodeDbRow = {
               ...e,
@@ -144,8 +144,6 @@ export async function POST(req: NextRequest) {
               node_endpoint: isRpc ? e.node_endpoint ?? domain : undefined,
               created_at: new Date().toISOString(),
               /** TODO: encrypt the seed */
-              node_collator_session_address: isRpc ? undefined : wallet.address,
-              node_collator_session_seed: isRpc ? undefined : wallet.mnemonic,
             };
             /** saving node details */
             await saveNodeData(node, trx);
