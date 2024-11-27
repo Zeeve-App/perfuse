@@ -29,19 +29,24 @@ const DashboardLayout: React.FC<{ children: React.ReactNode; params: { id: strin
   const explorer = config.client.explorer || "https://polkadot.js.org/apps/";
   const network = await getNetworkData(id);
   const nodes = await getNodes(id);
+  /** rpc node details */
   const rpcNode = nodes.filter((e) => e.node_type === "rpc")?.[0];
 
   /** creating rpc url for explorer */
-  let rpcUrl = "";
+  let rpcWsUrl = "";
+  let rpcHttpUrl = "";
   if (rpcNode?.node_auth_method === "api_key") {
-    rpcUrl = `ws://${host?.split(":")[0]}/${rpcNode.node_api_key}`;
+    rpcWsUrl = `ws://${host?.split(":")[0]}/${rpcNode.node_api_key}`;
+    rpcHttpUrl = `http://${host?.split(":")[0]}/${rpcNode.node_api_key}`;
   } else {
-    rpcUrl = `ws://${rpcNode?.node_username}:${rpcNode?.node_password}@${host?.split(":")[0]}`;
+    rpcWsUrl = `ws://${rpcNode?.node_username}:${rpcNode?.node_password}@${host?.split(":")[0]}`;
+    rpcHttpUrl = `http://${rpcNode?.node_username}:${rpcNode?.node_password}@${host?.split(":")[0]}`;
   }
 
   /** explorer urls */
-  const paraExplorerUrl = `${explorer}/?rpc=${encodeURIComponent(`${rpcUrl}/para-rpc`)}#explorer`;
-  const relayExplorerUrl = `${explorer}/?rpc=${encodeURIComponent(`${rpcUrl}/relay-rpc`)}#explorer`;
+  const paraExplorerUrl = `${explorer}/?rpc=${encodeURIComponent(`${rpcWsUrl}/para-rpc`)}#explorer`;
+  const traceUrl = `${`${rpcHttpUrl}/polkadotjs`}`;
+  const analyticsUrl = `${`${rpcHttpUrl}/monitoring`}`;
 
   const task = await getTask({ task_associated_network_id: network?.network_id, task_type: "network_provision" });
 
@@ -58,7 +63,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode; params: { id: strin
         }
       >
         {/* page actions */}
-        <Actions network={network} task={task} explorerUrl={{ paraExplorerUrl, relayExplorerUrl }} />
+        <Actions network={network} task={task} explorerUrl={{ paraExplorerUrl, traceUrl, analyticsUrl }} />
       </Navigation>
       <TabContainer
         id={params.id}

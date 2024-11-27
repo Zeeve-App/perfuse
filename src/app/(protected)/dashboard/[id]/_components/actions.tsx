@@ -18,7 +18,7 @@ import { Button, IconButton } from "@/lib/components/Button";
 import { Tooltip } from "@/lib/components/Tooltip";
 import SvgTrash from "@/lib/icons/essential/outline/Trash";
 import { useNetworkStore } from "@/store/network";
-import { NetworkDbRow, TaskDbRow } from "@/db-queries";
+import { NetworkDbRow, NodeDbRow, TaskDbRow } from "@/db-queries";
 import { DropdownMenu, DropdownMenuButton, DropdownMenuList, DropdownMenuItem } from "@/lib/components/DropdownMenu";
 import { useToggle } from "@/hooks";
 import useApi from "@/api-client";
@@ -27,11 +27,13 @@ import useApi from "@/api-client";
 const Actions = ({
   network,
   task,
-  explorerUrl: { paraExplorerUrl },
+  explorerUrl: { paraExplorerUrl, traceUrl, analyticsUrl },
+  nodes,
 }: {
   network?: NetworkDbRow;
   task?: TaskDbRow;
-  explorerUrl: { paraExplorerUrl: string; relayExplorerUrl: string };
+  nodes?: NodeDbRow[];
+  explorerUrl: { paraExplorerUrl: string; traceUrl: string; analyticsUrl: string };
 }) => {
   /** getting params from the url */
   const params = useParams();
@@ -79,15 +81,27 @@ const Actions = ({
         >
           Explorer
         </DropdownMenuButton>
+
         <DropdownMenuList>
-          {/* <Link href={relayExplorerUrl} target={"_blank"}>
-            <DropdownMenuItem>Relay Chain Explorer</DropdownMenuItem>
-          </Link> */}
+          <Link href={traceUrl} target={"_blank"}>
+            <DropdownMenuItem>TraceHawk Explorer</DropdownMenuItem>
+          </Link>
           <Link href={paraExplorerUrl} target={"_blank"}>
-            <DropdownMenuItem>Parachain Explorer</DropdownMenuItem>
+            <DropdownMenuItem>Polkadot.js Explorer</DropdownMenuItem>
           </Link>
         </DropdownMenuList>
       </DropdownMenu>
+      <Button
+        onClick={handleToggle}
+        isDisabled={task?.task_status !== "completed"}
+        variant={"outline"}
+        colorScheme={"accent"}
+        isFullWidth
+      >
+        <Link href={traceUrl} target={"_blank"}>
+          Analytics
+        </Link>
+      </Button>
       <Tooltip text="Delete Network" placement={"top-start"}>
         <IconButton
           colorScheme="red"
