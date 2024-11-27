@@ -27,8 +27,7 @@ import useApi from "@/api-client";
 const Actions = ({
   network,
   task,
-  explorerUrl: { paraExplorerUrl, traceUrl, analyticsUrl },
-  nodes,
+  explorerUrl: { paraExplorerUrl, analyticsUrl },
 }: {
   network?: NetworkDbRow;
   task?: TaskDbRow;
@@ -83,9 +82,9 @@ const Actions = ({
         </DropdownMenuButton>
 
         <DropdownMenuList>
-          <Link href={traceUrl} target={"_blank"}>
+          {/* <Link href={traceUrl} target={"_blank"}>
             <DropdownMenuItem>TraceHawk Explorer</DropdownMenuItem>
-          </Link>
+          </Link> */}
           <Link href={paraExplorerUrl} target={"_blank"}>
             <DropdownMenuItem>Polkadot.js Explorer</DropdownMenuItem>
           </Link>
@@ -98,8 +97,8 @@ const Actions = ({
         colorScheme={"accent"}
         isFullWidth
       >
-        <Link href={traceUrl} target={"_blank"}>
-          Analytics
+        <Link href={analyticsUrl} target={"_blank"}>
+          Monitoring
         </Link>
       </Button>
       <Tooltip text="Delete Network" placement={"top-start"}>

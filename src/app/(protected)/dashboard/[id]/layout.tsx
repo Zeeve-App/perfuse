@@ -44,7 +44,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode; params: { id: strin
   }
 
   /** explorer urls */
-  const paraExplorerUrl = `${explorer}/?rpc=${encodeURIComponent(`${rpcWsUrl}/para-rpc`)}#explorer`;
+  const paraExplorerUrl = `${rpcHttpUrl}/polkadotjs/?rpc=${encodeURIComponent(`${rpcWsUrl}/para-rpc`)}#explorer`;
   const traceUrl = `${`${rpcHttpUrl}/polkadotjs`}`;
   const analyticsUrl = `${`${rpcHttpUrl}/monitoring`}`;
 
