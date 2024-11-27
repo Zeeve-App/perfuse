@@ -96,25 +96,28 @@ const NodeDetailsModal = () => {
                   <div className="grid grid-cols-12 gap-3 p-3 lg:gap-6">
                     <KeyValuePair
                       label={"Collator Address"}
-                      value={
-                        data?.data?.node_address ? (
-                          <Tooltip text={data.data.node_address} placement={"top-start"}>
-                            <div className="flex items-center gap-2">
-                              {toShortString(data.data.node_address)}
-                              <CopyButton text={data.data.node_address} />
-                            </div>
-                          </Tooltip>
-                        ) : (
-                          "NA"
-                        )
-                      }
+                      className="col-span-12 md:col-span-6 lg:col-span-4"
+                      tooltipText={data?.data?.node_address ?? "NA"}
+                      value={toShortString(data?.data?.node_address)}
+                      shouldAllowCopy
                       isLoading={isLoading}
                     />
-                    {/* <KeyValuePair
-                      label={"db Cache"}
-                      value={data?.data.nodeBlockchainConfig?.dbCache ?? "NA"}
+                    <KeyValuePair
+                      className="col-span-12 md:col-span-6 lg:col-span-4"
+                      label={"Session Address"}
+                      value={toShortString(data?.data?.node_collator_session_address)}
+                      tooltipText={data?.data?.node_collator_session_address ?? "NA"}
                       isLoading={isLoading}
-                    /> */}
+                      shouldAllowCopy
+                    />
+                    <KeyValuePair
+                      className="col-span-12 md:col-span-6 lg:col-span-4"
+                      label={"Session Seed"}
+                      value={toShortString(data?.data?.node_collator_session_seed)}
+                      tooltipText={data?.data?.node_collator_session_seed ?? "NA"}
+                      isLoading={isLoading}
+                      shouldAllowCopy
+                    />
                   </div>
                 </div>
               </div>
@@ -167,50 +170,7 @@ const NodeDetailsModal = () => {
                         )}
                         isLoading={isLoading}
                       />
-                      {/* <KeyValuePair
-                        className="col-span-6 lg:col-span-4"
-                        label={"Relay Chain HTTP URL"}
-                        tooltipText={formatEndpoint(
-                          "https",
-                          data.data.node_endpoint,
-                          data.data.node_auth_method,
-                          data.data.node_api_key,
-                          "relay-rpc",
-                        )}
-                        shouldAllowCopy
-                        value={toShortString(
-                          formatEndpoint(
-                            "https",
-                            data.data.node_endpoint,
-                            data.data.node_auth_method,
-                            data.data.node_api_key,
-                            "relay-rpc",
-                          ),
-                        )}
-                        isLoading={isLoading}
-                      />
-                      <KeyValuePair
-                        className="col-span-6 lg:col-span-4"
-                        label={"Relay Chain WS URL"}
-                        shouldAllowCopy
-                        tooltipText={formatEndpoint(
-                          "wss",
-                          data.data.node_endpoint,
-                          data.data.node_auth_method,
-                          data.data.node_api_key,
-                          "relay-rpc",
-                        )}
-                        value={toShortString(
-                          formatEndpoint(
-                            "wss",
-                            data.data.node_endpoint,
-                            data.data.node_auth_method,
-                            data.data.node_api_key,
-                            "relay-rpc",
-                          ),
-                        )}
-                        isLoading={isLoading}
-                      /> */}
+
                       <KeyValuePair
                         className="col-span-6 lg:col-span-4"
                         label={"Sidecar HTTP URL"}

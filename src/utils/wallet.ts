@@ -8,7 +8,13 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { decodeAddress, mnemonicToMiniSecret } from "@polkadot/util-crypto";
+import {
+  cryptoWaitReady,
+  decodeAddress,
+  mnemonicGenerate,
+  mnemonicToMiniSecret,
+  mnemonicValidate,
+} from "@polkadot/util-crypto";
 import { Keyring } from "@polkadot/keyring";
 import { u8aToHex } from "@polkadot/util";
 
@@ -42,4 +48,37 @@ function addressToHexPublicKey(address: string) {
   }
 }
 
-export { derivePublicSessionKey, addressToHexPublicKey };
+/**
+ * Generates a new wallet for a Substrate-based blockchain.
+ *
+ * @returns {Object} An object containing the wallet details: mnemonic, address, publicKey, and privateKey.
+ */
+async function createWallet() {
+  // Ensure WASM crypto is initialized
+  const isReady = await cryptoWaitReady();
+  if (!isReady) {
+    throw new Error("WASM crypto initialization failed.");
+  }
+  // Generate a mnemonic phrase
+  const mnemonic = mnemonicGenerate();
+
+  // Validate the mnemonic
+  if (!mnemonicValidate(mnemonic)) {
+    throw new Error("Generated mnemonic is invalid.");
+  }
+
+  // Initialize the Keyring
+  const keyring = new Keyring({ type: "sr25519" });
+
+  // Create a key pair from the mnemonic
+  const keyPair = keyring.addFromMnemonic(mnemonic);
+
+  // Return wallet details
+  return {
+    mnemonic, // Backup phrase
+    address: keyPair.address, // Wallet address
+    // hexKey: addressToHexPublicKey(keyPair.publicKey.toString()),
+  };
+}
+
+export { derivePublicSessionKey, addressToHexPublicKey, createWallet };
