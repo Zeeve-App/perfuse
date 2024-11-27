@@ -124,3 +124,6 @@ sudo rm -r /var/www/jsapps/
 
 #Remove Sidecar Container
 # sudo docker rm -f $(sudo docker ps -a -q)
+
+#Remove apps directory
+sudo rm -r "$SCRIPT_DIR/../apps"

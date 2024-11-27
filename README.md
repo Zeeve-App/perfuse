@@ -4,7 +4,7 @@
 
 Make sure your system is ready to harness the power of Perfuse! 🚀
 
-### ✅ Minimum Requirements for Devnet:
+### ✅ Minimum Requirements for Testnet:
 
 Your project will take flight with these basic specs:
 
@@ -15,11 +15,11 @@ Your project will take flight with these basic specs:
 - **Hardware:**
   - **🧠 Processor:** 4 Cores or more
   - **💾 Memory:** 8GB RAM or more
-  - **💽 Storage:** 100GB available disk space
+  - **💽 Storage:** 250GB available disk space or more
 
 ---
 
-### 🚀 Recommended Requirements for Devnet:
+### 🚀 Recommended Requirements for Testnet:
 
 For the smoothest, most optimal experience, we recommend:
 
@@ -30,7 +30,37 @@ For the smoothest, most optimal experience, we recommend:
 - **Hardware:**
   - **🧠 Processor:** 8 Cores or more
   - **💾 Memory:** 16GB RAM or more
-  - **💽 Storage:** 100GB available disk space
+  - **💽 Storage:** 800GB available disk space
+
+---
+
+### ✅ Minimum Requirements for Mainnet:
+
+Your project will take flight with these basic specs:
+
+- **Operating System:**
+
+  - 🐧 Linux (Ubuntu 20.04+ recommended)
+
+- **Hardware:**
+  - **🧠 Processor:** 8 Cores or more
+  - **💾 Memory:** 12GB RAM or more
+  - **💽 Storage:** 2TB available disk space or more
+
+---
+
+### 🚀 Recommended Requirements for Mainnet:
+
+For the smoothest, most optimal experience, we recommend:
+
+- **Operating System:**
+
+  - 🐧 Linux (Ubuntu 22.04 LTS)
+
+- **Hardware:**
+  - **🧠 Processor:** 8 Cores or more
+  - **💾 Memory:** 16GB RAM or more
+  - **💽 Storage:** 2.5TB available disk space
 
 ---
 
