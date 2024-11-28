@@ -127,3 +127,17 @@ sudo rm -r /var/www/jsapps/
 
 #Remove apps directory
 sudo rm -r "$SCRIPT_DIR/../apps"
+
+#Remove nginx files
+sudo systemctl stop nginx
+sudo systemctl disable nginx
+sudo apt-get remove --purge -y nginx nginx-common nginx-full
+sudo rm -rf /etc/nginx /var/lib/nginx /var/log/nginx
+sudo systemctl daemon-reload
+
+#remove haproxy
+sudo systemctl stop haproxy
+sudo systemctl disable haproxy
+sudo apt-get remove --purge -y haproxy
+sudo rm -rf /etc/haproxy /var/lib/haproxy /var/log/haproxy
+sudo systemctl daemon-reload
