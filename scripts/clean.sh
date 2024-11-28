@@ -114,19 +114,19 @@ for i in "${!binaries_name[@]}"; do
 done
 
 # clean_haproxy_config
-sudo rm -r /home/perfuse
+sudo rm -rf /home/perfuse
 
 # Delete the pm2 service of RegionX
 pm2 delete all
 
 #Remove jsapps directory
-sudo rm -r /var/www/jsapps/
+sudo rm -rf /var/www/jsapps/
 
 #Remove Sidecar Container
 # sudo docker rm -f $(sudo docker ps -a -q)
 
 #Remove apps directory
-sudo rm -r "$SCRIPT_DIR/../apps"
+sudo rm -rf "$SCRIPT_DIR/../apps"
 
 #Remove nginx files
 sudo systemctl stop nginx
