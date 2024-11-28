@@ -146,7 +146,7 @@ backend perfuse_ui
   local polkadotjs_backend_config="
 backend polkadotjs_backend
     mode http
-    http-request set-path %[path,regsub(^/${RPC_API_KEY}/}polkadotjs/,/)]
+    http-request set-path %[path,regsub(^/${RPC_API_KEY}/polkadotjs/,/)]
     server perfuse_ui 127.0.0.1:${POLKADOTJS_PORT}"
 
   local grafana_backend_config="

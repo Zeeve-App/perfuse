@@ -13,7 +13,7 @@
 SCRIPTS_DIR = scripts
 
 # Targets
-all:  initial polkadotjs_app proxy_setup binary_install generate-genesis-wasm-spec build-parachain monitoring
+all:  initial polkadotjs_app proxy_setup binary_install generate-genesis-wasm-spec build-parachain
 
 clean:
 	sudo bash $(SCRIPTS_DIR)/clean.sh
@@ -42,4 +42,4 @@ polkadotjs_app:
 monitoring:
 	sudo bash $(SCRIPTS_DIR)/setup_monitoring.sh
 
-.PHONY: all initial polkadotjs_app proxy_setup binary_install generate-genesis-wasm-spec build-parachain monitoring
+.PHONY: all initial polkadotjs_app proxy_setup binary_install generate-genesis-wasm-spec build-parachain
