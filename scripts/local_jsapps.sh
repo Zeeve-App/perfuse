@@ -41,7 +41,6 @@ install_and_build() {
     echo "destination path apps already exists"
     fi
 
-    # git clone https://github.com/polkadot-js/apps.git
     cd apps
     yarn && NODE_ENV=production yarn build:www
     echo ""
