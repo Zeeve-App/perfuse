@@ -40,6 +40,6 @@ polkadotjs_app:
 	sudo bash $(SCRIPTS_DIR)/local_jsapps.sh
 
 monitoring:
-    sudo bash $(SCRIPTS_DIR)/setup_monitoring.sh
+	sudo bash $(SCRIPTS_DIR)/setup_monitoring.sh
 
 .PHONY: all initial polkadotjs_app proxy_setup binary_install generate-genesis-wasm-spec build-parachain monitoring
