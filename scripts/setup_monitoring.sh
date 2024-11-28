@@ -23,19 +23,19 @@ error_exit() {
 install_dependencies() {
     log "Updating system and installing dependencies..."
     sudo apt-get update -y
-    sudo apt-get install -y wget tar adduser libfontconfig1 musl  error_exit "Failed to install dependencies."
+    sudo apt-get install -y wget tar adduser libfontconfig1 musl || error_exit "Failed to install dependencies."
 }
 
 # Install Node Exporter
 install_node_exporter() {
     log "Installing Node Exporter v${NODE_EXPORTER_VERSION}..."
     local url="https://github.com/prometheus/node_exporter/releases/download/v${NODE_EXPORTER_VERSION}/node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz"
-    curl -OL --retry 10 --retry-max-time 0 "$url"  error_exit "Failed to download Node Exporter."
-    tar xvf "node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz"  error_exit "Failed to extract Node Exporter."
-    mv "node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64" /opt/node_exporter  error_exit "Failed to move Node Exporter."
+    curl -OL --retry 10 --retry-max-time 0 "$url" || error_exit "Failed to download Node Exporter."
+    tar xvf "node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz" || error_exit "Failed to extract Node Exporter."
+    sudo mv "node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64" /opt/node_exporter || error_exit "Failed to move Node Exporter."
     sudo cp /opt/node_exporter/node_exporter /usr/local/bin/
-    rm -rf /opt/node_exporter "node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz"
-    sudo useradd --no-create-home --shell /bin/false node_exporter  true
+    sudo rm -rf /opt/node_exporter "node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz"
+    sudo useradd --no-create-home --shell /bin/false node_exporter || true
     sudo chown node_exporter:node_exporter /usr/local/bin/node_exporter
 
     cat <<EOF | sudo tee /etc/systemd/system/node_exporter.service
@@ -64,12 +64,12 @@ EOF
 install_prometheus() {
     log "Installing Prometheus v${PROMETHEUS_VERSION}..."
     local url="https://github.com/prometheus/prometheus/releases/download/v${PROMETHEUS_VERSION}/prometheus-${PROMETHEUS_VERSION}.linux-amd64.tar.gz"
-    curl -OL --retry 10 --retry-max-time 0 "$url"  error_exit "Failed to download Prometheus."
-    tar xvf "prometheus-${PROMETHEUS_VERSION}.linux-amd64.tar.gz"  error_exit "Failed to extract Prometheus."
-    mv "prometheus-${PROMETHEUS_VERSION}.linux-amd64" /etc/prometheus  error_exit "Failed to move Prometheus."
-    mkdir -p /var/lib/prometheus  error_exit "Failed to create Prometheus data directory."
+    curl -OL --retry 10 --retry-max-time 0 "$url" || error_exit "Failed to download Prometheus."
+    tar xvf "prometheus-${PROMETHEUS_VERSION}.linux-amd64.tar.gz" || error_exit "Failed to extract Prometheus."
+    sudo mv "prometheus-${PROMETHEUS_VERSION}.linux-amd64" /etc/prometheus || error_exit "Failed to move Prometheus."
+    sudo mkdir -p /var/lib/prometheus || error_exit "Failed to create Prometheus data directory."
 
-    sudo useradd --no-create-home --shell /bin/false prometheus  true
+    sudo useradd --no-create-home --shell /bin/false prometheus || true
     sudo chown -R prometheus:prometheus /etc/prometheus /var/lib/prometheus
 
     cat <<EOF | sudo tee /etc/systemd/system/prometheus.service
@@ -103,9 +103,9 @@ install_grafana() {
     log "Installing Grafana v${GRAFANA_VERSION}..."
     local deb_file="grafana_${GRAFANA_VERSION}_amd64.deb"
     local url="https://dl.grafana.com/oss/release/${deb_file}"
-    wget "$url"  error_exit "Failed to download Grafana."
-    sudo dpkg -i "$deb_file"  error_exit "Failed to install Grafana."
-    rm -f "$deb_file"
+    wget "$url" || error_exit "Failed to download Grafana."
+    sudo dpkg -i "$deb_file" || error_exit "Failed to install Grafana."
+    sudo rm -f "$deb_file"
 
     sudo systemctl daemon-reload
     sudo systemctl enable grafana-server
@@ -115,15 +115,14 @@ install_grafana() {
 # Verify services
 verify_services() {
     log "Verifying service statuses..."
-    sudo systemctl status node_exporter --no-pager  error_exit "Node Exporter service failed."
-    sudo systemctl status prometheus --no-pager  error_exit "Prometheus service failed."
+    sudo systemctl status node_exporter --no-pager || error_exit "Node Exporter service failed."
+    sudo systemctl status prometheus --no-pager || error_exit "Prometheus service failed."
     sudo systemctl status grafana-server --no-pager || error_exit "Grafana service failed."
     log "All services are running successfully."
 }
 
 # Main function
 main() {
-    ensure_root
     install_dependencies
     install_node_exporter
     install_prometheus

@@ -141,3 +141,23 @@ sudo systemctl disable haproxy
 sudo apt-get remove --purge -y haproxy
 sudo rm -rf /etc/haproxy /var/lib/haproxy /var/log/haproxy
 sudo systemctl daemon-reload
+
+
+#remove prometheus / grafana and node_exporter
+sudo systemctl stop grafana-server prometheus node_exporter || true
+sudo systemctl disable grafana-server prometheus node_exporter || true
+
+#remove systemd files
+sudo rm -f /etc/systemd/system/node_exporter.service
+sudo rm -f /etc/systemd/system/prometheus.service
+sudo rm -f /etc/systemd/system/grafana-server.service
+
+sudo systemctl daemon-reload
+
+sudo rm -rf /usr/local/bin/node_exporter
+sudo rm -rf /etc/prometheus /var/lib/prometheus
+sudo rm -rf /usr/sbin/grafana-server /var/lib/grafana /etc/grafana /var/log/grafana
+
+sudo userdel -r node_exporter || true
+sudo userdel -r prometheus || true
+sudo userdel -r grafana || true
