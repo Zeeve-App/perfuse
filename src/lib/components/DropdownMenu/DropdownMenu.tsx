@@ -15,6 +15,7 @@ import { Placement, PositioningStrategy } from "@popperjs/core";
 import { PopoverContextProps, PopoverContextProvider } from "../Popover";
 import { useOnClickOutside } from "@/hooks";
 
+/** dropdown menu props */
 interface DropdownMenuProps extends ComponentPropsWithRef<"div"> {
   /** is dropdown menu open? */
   isOpen: boolean;
@@ -28,6 +29,7 @@ interface DropdownMenuProps extends ComponentPropsWithRef<"div"> {
   strategy?: PositioningStrategy;
 }
 
+/** dropdown menu component */
 const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>((props, ref) => {
   const { isOpen, onClose, placement = "bottom-end", strategy, children, ...rest } = props;
 
@@ -42,6 +44,7 @@ const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>((props, ref) 
   const dropdownMenuRef = ref ?? localRef;
   useOnClickOutside(dropdownMenuRef as MutableRefObject<HTMLDivElement>, onClose);
 
+  /** popover context props values */
   const values: PopoverContextProps = useMemo(() => {
     return {
       isOpen,

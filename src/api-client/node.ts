@@ -20,7 +20,7 @@ interface ResponsePayload {
   data?: NodeDbRow;
 }
 
-/** hook to use network list api */
+/** hook to get the node info of a node */
 const useNodeApi = (networkId: string, nodeId: string) => {
   const apiEndpoint = withBasePath(`/api/network/${networkId}/node/${nodeId}`);
   const fetcher = useFetcher();

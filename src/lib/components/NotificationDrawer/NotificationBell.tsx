@@ -16,10 +16,12 @@ import { IconButton } from "../Button";
 import { useNotificationsWebsocketContext } from "./NotificationsWebsocketContext";
 import SvgNotificationBell1 from "@/lib/icons/notification/outline/NotificationBell1";
 
+/** notification props */
 interface NotificationBellProps {
   handleOpen: () => void;
 }
 
+/** notification bell component */
 const NotificationBell = (props: NotificationBellProps) => {
   const { handleOpen } = props;
 
@@ -54,7 +56,7 @@ const NotificationBell = (props: NotificationBellProps) => {
           <span className="relative inline-flex size-2.5 rounded-full bg-red-500"></span>
         </span>
       )}
-      <SvgNotificationBell1 className="text-brand-dark-blue text-2xl" />
+      <SvgNotificationBell1 className="text-2xl text-brand-dark-blue" />
     </IconButton>
   );
 };

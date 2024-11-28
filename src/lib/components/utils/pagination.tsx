@@ -10,8 +10,8 @@
  */
 
 import React from "react";
+import { ReactSelect } from "../ReactSelect";
 import { IconButton } from "@/lib/components/Button";
-import { Option, Select } from "@/lib/components/Form";
 import { tx } from "@/utils/shared";
 
 type PaginationState = {
@@ -45,7 +45,7 @@ const Pagination = <T extends object>({ pagination, data, className }: Paginatio
           {pagination?.pageSizes?.length ? (
             <div className="flex items-center gap-2">
               <p>Rows:</p>
-              <Select
+              <ReactSelect
                 size="small"
                 className="max-h-[36px] w-max cursor-pointer border bg-transparent bg-none p-0 px-1 text-sm outline-none"
                 value={pagination.pageSize}
@@ -53,16 +53,11 @@ const Pagination = <T extends object>({ pagination, data, className }: Paginatio
                   pagination.setPagination({
                     pageCount: pagination.pageCount,
                     pageIndex: pagination.pageIndex,
-                    pageSize: Number(e.target.value),
+                    pageSize: Number(e),
                   });
                 }}
-              >
-                {pagination?.pageSizes?.map((pageSize) => (
-                  <Option key={pageSize} value={pageSize}>
-                    {pageSize}
-                  </Option>
-                ))}
-              </Select>
+                options={pagination?.pageSizes?.map((pageSize) => ({ label: pageSize, value: pageSize }))}
+              ></ReactSelect>
             </div>
           ) : null}
           <IconButton

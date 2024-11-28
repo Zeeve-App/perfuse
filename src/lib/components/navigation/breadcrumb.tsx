@@ -15,6 +15,7 @@ import { usePathname } from "next/navigation";
 import NextLink from "next/link";
 import { Breadcrumb as ZeeveBreadcrumb, BreadcrumbItem } from "../Breadcrumb";
 
+/** breadcrumb props */
 interface BreadcrumbProps {
   items: {
     label: string;
@@ -26,6 +27,7 @@ interface BreadcrumbProps {
   }[];
 }
 
+/** breadcrumb component */
 const Breadcrumb = (props: BreadcrumbProps) => {
   const { items } = props;
 

@@ -14,6 +14,7 @@ import { useState } from "react";
 export type CopyContent = string | null;
 export type CopyFn = (text: string) => Promise<boolean>;
 
+/** copy hook to used for copying text */
 const useCopyToClipboard = (): [CopyContent, CopyFn] => {
   const [copiedText, setCopiedText] = useState<CopyContent>(null);
 

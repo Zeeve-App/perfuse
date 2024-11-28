@@ -11,6 +11,7 @@
 
 import { useCallback, useState } from "react";
 
+/** a hook to use as toggle */
 const useToggle = (initialValue = false) => {
   const [isOpen, setIsOpen] = useState(initialValue);
 

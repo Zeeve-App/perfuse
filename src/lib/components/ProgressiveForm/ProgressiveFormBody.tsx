@@ -14,10 +14,12 @@ import { motion, HTMLMotionProps } from "framer-motion";
 import { useProgressiveFormContext } from "./ProgressiveFormContext";
 import { tx } from "@/utils/shared";
 
+/** progressive form body props */
 interface ProgressiveFormBodyProps extends HTMLMotionProps<"div"> {
   children?: React.ReactElement[] | React.ReactElement;
 }
 
+/** progressive form body component */
 const ProgressiveFormBody = forwardRef<HTMLDivElement, ProgressiveFormBodyProps>((props, ref) => {
   const { className, children, ...rest } = props;
   const { activeStep, setTotalSteps } = useProgressiveFormContext();

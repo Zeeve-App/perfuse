@@ -10,11 +10,12 @@
  */
 
 import { create } from "zustand";
-import { NODE_TYPE } from "@/types/node";
+import { NodeDbRow } from "@/db-queries";
 
-// types
-type ModalType = "purchase" | "deleteNetwork" | "registerParachain" | "nodeDetails";
+/** modal types, based on the type modal will be visible */
+type ModalType = "purchase" | "deleteNetwork" | "registerParachain" | "nodeDetails" | "addKey";
 
+/** modal data for each modal type */
 type ModalData = {
   purchase?: {
     url: string;
@@ -29,24 +30,30 @@ type ModalData = {
   nodeDetails?: {
     nodeId: string;
     networkId: string;
-    nodeType: NODE_TYPE;
+    nodeType: NodeDbRow["node_type"];
+  };
+  addKey?: {
+    nodeId: string;
+    networkId: string;
+    nodeType: NodeDbRow["node_type"];
   };
 };
 
+/** state of the modal */
 type State = {
   type: ModalType | null;
   data: ModalData;
   isOpen: boolean;
 };
 
-// actions
+/** action to update the state/modal */
 type Actions = {
   openModal: (type: ModalType, data?: ModalData) => void;
   onClose: () => void;
   setModalData: (type: ModalType, data: ModalData) => void;
 };
 
-// initial state
+/**  initial state */
 const initialState: State = {
   type: null,
   data: {},

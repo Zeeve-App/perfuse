@@ -12,6 +12,7 @@
 import React from "react";
 import { Skeleton } from "../Skeleton";
 
+/** notification loading skeleton  */
 const NotificationsLoadingSkeleton = () => {
   return (
     <Skeleton className="flex flex-row gap-4 border-b p-6">

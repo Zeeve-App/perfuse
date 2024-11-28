@@ -14,6 +14,7 @@ import { HTMLMotionProps, motion } from "framer-motion";
 import { ProgressiveFormContextProvider, ProgressiveFormContextProps } from "./ProgressiveFormContext";
 import { tx } from "@/utils/shared";
 
+/** progress form props */
 interface ProgressiveFormProps
   extends HTMLMotionProps<"div">,
     Pick<ProgressiveFormContextProps, "activeStep" | "setActiveStep"> {
@@ -21,6 +22,7 @@ interface ProgressiveFormProps
   shouldHideHeaderIconsOnCompact?: boolean;
 }
 
+/** progress form component */
 const ProgressiveForm = forwardRef<HTMLDivElement, ProgressiveFormProps>((props, ref) => {
   const {
     activeStep = 0,

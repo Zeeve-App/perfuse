@@ -10,6 +10,8 @@
  */
 
 import { format, parseISO, intervalToDuration } from "date-fns";
+import { ChainSpecFileType } from "@/types/chain-spec";
+import { NodeDbRow } from "@/db-queries";
 
 /**
  * to show standard formatted time and make it common throughout the application
@@ -93,12 +95,27 @@ const isActive = (pathname: string, paths: string[]): boolean => {
   return false;
 };
 
+/** constructing rpc endpoints */
+const formatEndpoint = (
+  type: "https" | "wss",
+  endpoint?: string,
+  credType?: NodeDbRow["node_auth_method"],
+  apiKey?: string,
+  rpcType?: "para-rpc" | "relay-rpc" | "api",
+) => {
+  if (endpoint && credType) {
+    return `${type.slice(0, -1)}://${endpoint}${credType === "api_key" ? `/${apiKey}` : ""}/${rpcType ?? "para-rpc"}`;
+  }
+  return "NA";
+};
+
 /**
  * to short the string
  * @param string string to format
  * @returns `string`
  */
-const toShortString = (string: string, startCharCount = 5, endCharCount = 5) => {
+const toShortString = (string: string | undefined, startCharCount = 5, endCharCount = 5) => {
+  if (!string) return "";
   if (string.length < startCharCount + 3) return string;
   const finalEndCharCount =
     string.length - startCharCount > endCharCount
@@ -183,6 +200,21 @@ const calculateDaysLeft = (end: Date): number => {
   return daysLeft;
 };
 
+/** function get session keys from chain spec */
+function getSessionKey(
+  runtimeGenesis: ChainSpecFileType["genesis"]["runtimeGenesis"],
+  collatorAddresses: string,
+): string {
+  const aura = runtimeGenesis.patch.session.keys.find((e) => {
+    console.log({ e });
+
+    return typeof e[0] === "string" && e[0] === collatorAddresses;
+  });
+  console.log({ aura });
+
+  return typeof aura?.[2] !== "string" ? aura?.[2]?.aura ?? "" : "";
+}
+
 export {
   withBasePath,
   isActive,
@@ -194,4 +226,6 @@ export {
   capitalizeFirstLetter,
   formatDate,
   formatIntoAge,
+  formatEndpoint,
+  getSessionKey,
 };

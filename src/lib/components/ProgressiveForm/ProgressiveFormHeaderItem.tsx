@@ -15,6 +15,7 @@ import { RemoveProperties } from "../core";
 import { FormStatus, useProgressiveFormContext } from "./ProgressiveFormContext";
 import { tx } from "@/utils/shared";
 
+/** progressive form header item props */
 interface ProgressiveFormHeaderItemProps extends RemoveProperties<HTMLMotionProps<"div">, "title"> {
   icons?: {
     idle?: React.ReactElement;
@@ -32,12 +33,14 @@ interface ProgressiveFormHeaderItemProps extends RemoveProperties<HTMLMotionProp
   isLast?: boolean;
 }
 
+/** default icons */
 const defaultIcons: ProgressiveFormHeaderItemProps["icons"] = {
   idle: <div data-status="idle" className="size-3 rounded-full bg-slate-300" />,
   active: <div data-status="active" className="size-3 rounded-full bg-brand-yellow" />,
   completed: <div data-status="completed" className="size-3 rounded-full bg-brand-green" />,
 };
 
+/** progressive form header item component */
 const ProgressiveFormHeaderItem = forwardRef<HTMLDivElement, ProgressiveFormHeaderItemProps>((props, ref) => {
   const {
     icons,
@@ -57,6 +60,7 @@ const ProgressiveFormHeaderItem = forwardRef<HTMLDivElement, ProgressiveFormHead
 
   const status = useMemo(() => formStatus(componentIndex), [componentIndex, activeStep]);
 
+  /** get icon from the props */
   const getIcon = (data: ProgressiveFormHeaderItemProps["icons"], status: FormStatus) => {
     if (data === undefined || data === null) return defaultIcons[status];
     else return data[status] ? data[status] : defaultIcons[status];
@@ -74,6 +78,7 @@ const ProgressiveFormHeaderItem = forwardRef<HTMLDivElement, ProgressiveFormHead
     } else return false;
   }, [shouldHideIcon, isCompact, shouldHideIconOnCompact, shouldHideHeaderIconsOnCompact]);
 
+  /** get step label */
   const getStepLabel = (stepLabel: ProgressiveFormHeaderItemProps["stepLabel"], index: number) => {
     if (typeof stepLabel === "function") return stepLabel(index + 1);
     if (typeof stepLabel === "string") return stepLabel || `Step ${index + 1}`;

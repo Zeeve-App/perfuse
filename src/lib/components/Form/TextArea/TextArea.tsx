@@ -19,7 +19,9 @@ import { RemoveProperties } from "../../core";
 import { useID } from "@/hooks";
 import { tx } from "@/utils/shared";
 
+/** textarea variants */
 const styles = cva(
+  /** common classes for all the component */
   "peer w-full appearance-none rounded-lg border border-brand-outline bg-brand-light p-4 text-sm font-medium leading-5 text-brand-dark placeholder:truncate placeholder:text-brand-dark/60 focus:border-zinc-300 focus:outline-none focus:ring-1 focus:ring-zinc-300 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
@@ -33,17 +35,20 @@ const styles = cva(
         true: "pr-12",
       },
     },
+    /** default variants */
     defaultVariants: {
       size: "medium",
     },
   },
 );
 
+/** floating label props */
 type FloatingLabel = {
   labelText: string;
   floatingLabelProps?: ComponentPropsWithRef<"label">;
 };
 
+/** text area props */
 interface TextAreaProps
   extends RemoveProperties<ComponentPropsWithRef<"textarea">, "disabled" | "required">,
     RemoveProperties<VariantProps<typeof styles>, "iconRight" | "iconLeft"> {
@@ -58,6 +63,7 @@ interface TextAreaProps
   tooltip?: string | React.ReactElement;
 }
 
+/** text area component */
 const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>((props, ref) => {
   const {
     className,

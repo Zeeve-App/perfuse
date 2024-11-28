@@ -12,14 +12,16 @@
 import React, { forwardRef } from "react";
 import { tx } from "@/utils/shared";
 
+/** header props */
 interface HeaderProps extends React.ComponentPropsWithRef<"header"> {}
 
+/** header component */
 const Header = forwardRef<HTMLElement, HeaderProps>((props, ref) => {
   const { className, children, ...rest } = props;
 
   return (
     <header
-      className={tx("flex h-20 w-full items-center justify-between bg-brand-light", className)}
+      className={tx("flex h-20 w-full items-center justify-between bg-theme-background", className)}
       ref={ref}
       {...rest}
     >

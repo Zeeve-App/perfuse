@@ -17,8 +17,10 @@ import { RemoveProperties } from "../../core";
 import { useID } from "@/hooks";
 import { tx } from "@/utils/shared";
 
+/** checkbox label props */
 interface CheckboxLabelProps extends LabelProps {}
 
+/** checkbox label component */
 const CheckboxLabel = forwardRef<HTMLLabelElement, CheckboxLabelProps>((props, ref) => {
   const { children, className, isDisabled, isRequired, ...rest } = props;
 
@@ -35,12 +37,14 @@ const CheckboxLabel = forwardRef<HTMLLabelElement, CheckboxLabelProps>((props, r
   );
 });
 
+/** check box variant */
 const styles = cva(
-  "cursor-pointer appearance-none  rounded-full border-2 border-brand-outline focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-1 focus-visible:outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+  /** checkbox classes for all variants */
+  "cursor-pointer appearance-none  rounded-md border-2 border-brand-outline focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-1 focus-visible:outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
       colorScheme: {
-        primary: "text-brand-primary",
+        primary: "text-brand-blue",
         blue: "text-brand-blue",
         dark: "text-brand-dark",
         red: "text-brand-red",
@@ -59,6 +63,7 @@ const styles = cva(
         large: "size-8",
       },
     },
+    /** default variants */
     defaultVariants: {
       colorScheme: "primary",
       size: "medium",
@@ -66,6 +71,7 @@ const styles = cva(
   },
 );
 
+/** check box props */
 interface CheckboxProps
   extends RemoveProperties<React.ComponentPropsWithRef<"input">, "type" | "size" | "checked" | "disabled" | "required">,
     VariantProps<typeof styles> {
@@ -75,6 +81,7 @@ interface CheckboxProps
   checkboxLabelProps?: React.ComponentPropsWithRef<"label">;
 }
 
+/** checkbox component */
 const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>((props, ref) => {
   const { children, isDisabled, isChecked, isRequired, checkboxLabelProps, colorScheme, size, className, id, ...rest } =
     props;

@@ -14,7 +14,7 @@ import { cva, VariantProps } from "class-variance-authority";
 import { useTabsContext } from "./TabsContext";
 import { tx } from "@/utils/shared";
 
-const styles = cva("flex flex-row items-center p-4 font-poppins text-sm font-medium", {
+const styles = cva("flex flex-row items-center p-4 font-poppins text-sm font-medium text-theme-primary-content", {
   variants: {
     orientation: {
       horizontal: "w-max border-b-2 border-transparent",
@@ -44,10 +44,11 @@ const Tab = forwardRef<HTMLButtonElement, TabProps>((props, ref) => {
       className={tx(
         styles({ orientation, className }),
         {
-          [activeTabClassName ?? "border-brand-primary text-brand-primary"]: isActive && orientation === "horizontal",
+          [activeTabClassName ?? "border-theme-secondary text-theme-secondary"]:
+            isActive && orientation === "horizontal",
         },
         {
-          [activeTabClassName ?? "text-brand-primary"]: isActive && orientation === "vertical",
+          [activeTabClassName ?? "text-theme-secondary"]: isActive && orientation === "vertical",
         },
       )}
       ref={ref}

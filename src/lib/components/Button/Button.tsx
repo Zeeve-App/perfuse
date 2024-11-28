@@ -14,8 +14,10 @@ import { cva, VariantProps } from "class-variance-authority";
 import { Spinner } from "../Spinner";
 import { tx } from "@/utils/shared";
 
+/** variant of the bottoms */
 const styles = cva(
-  "inline-flex select-none items-center justify-center gap-1 rounded-full border border-transparent text-center align-middle font-poppins font-semibold tracking-wide outline-none transition-all duration-300 focus:ring-2 focus:ring-zinc-300 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50",
+  /** common class of all variants */
+  "inline-flex select-none items-center justify-center gap-1 rounded-lg border border-transparent text-center align-middle font-poppins font-semibold tracking-wide outline-none transition-all duration-300 focus:ring-2 focus:ring-zinc-300 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
       variant: {
@@ -32,6 +34,7 @@ const styles = cva(
       },
       colorScheme: {
         primary: "bg-brand-primary text-brand-primary",
+        accent: "bg-theme-accent text-theme-accent",
         blue: "bg-brand-blue text-brand-blue",
         dark: "bg-brand-dark text-brand-dark",
         red: "bg-brand-red text-brand-red",
@@ -43,7 +46,7 @@ const styles = cva(
         light: "bg-brand-light text-brand-light",
         purple: "bg-brand-purple text-brand-purple",
         pink: "bg-brand-pink text-brand-pink",
-        gradient: "bg-brand-gradient text-brand-gradient",
+        gradient: "bg-theme-gradient text-white",
       },
       isFullWidth: {
         true: "w-full",
@@ -88,6 +91,7 @@ const styles = cva(
         className: "border-brand-teal bg-transparent",
       },
     ],
+    /** default variants */
     defaultVariants: {
       variant: "solid",
       colorScheme: "primary",
@@ -96,6 +100,7 @@ const styles = cva(
   },
 );
 
+/** button props */
 interface ButtonProps extends Omit<React.ComponentPropsWithRef<"button">, "disabled">, VariantProps<typeof styles> {
   isDisabled?: boolean;
   isLoading?: boolean;
@@ -103,6 +108,7 @@ interface ButtonProps extends Omit<React.ComponentPropsWithRef<"button">, "disab
   iconRight?: React.ReactElement;
 }
 
+/** button component */
 const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   const {
     colorScheme,
@@ -130,7 +136,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
       icon,
       iconPlacement: iconRight ? ("right" as const) : ("left" as const),
     };
-  }, [isLoading, iconLeft, iconRight]);
+  }, [iconLeft, iconRight, isLoading, colorScheme]);
 
   return (
     <button

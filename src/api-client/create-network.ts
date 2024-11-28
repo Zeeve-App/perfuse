@@ -12,7 +12,7 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { backendAxiosInstance } from "@/utils/axios";
 import { withBasePath } from "@/utils/helpers";
-import { CreatePerfuseApiPayload } from "@/app/api/create/route";
+import { CreatePerfuseApiPayload } from "@/app/(protected)/api/create/route";
 
 type ApiRequest = CreatePerfuseApiPayload;
 type ApiResponse = {
@@ -20,8 +20,10 @@ type ApiResponse = {
   data: { network_id: string };
 };
 
+/** endpoint for create network api */
 const apiEndpoint = withBasePath("/api/create");
 
+/** hook for calling create network api */
 const useCreateNetworkApi = async (formData: ApiRequest, config?: AxiosRequestConfig<ApiRequest>) => {
   const request = backendAxiosInstance.post<ApiResponse, AxiosResponse<ApiResponse>, ApiRequest>;
 

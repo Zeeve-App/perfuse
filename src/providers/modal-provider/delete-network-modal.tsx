@@ -29,6 +29,7 @@ import { StatusIcon } from "@/lib/components/StatusIcon";
 import { useToast } from "@/lib/components/Toast";
 import useApi from "@/api-client";
 
+/** delete network modal component */
 const DeleteNetworkModal = () => {
   const [isLoading, setLoading] = useState(false);
   const { isOpen, onClose, type, data } = useModalStore();
@@ -37,6 +38,7 @@ const DeleteNetworkModal = () => {
 
   const isModalOpen = isOpen && type === "deleteNetwork";
 
+  /** client apis hook */
   const apis = useApi();
 
   const deleteNetwork = async () => {

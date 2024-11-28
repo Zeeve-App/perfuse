@@ -20,6 +20,23 @@ const config: Config = {
         sans: ["var(--font-dm-sans)"], // default font
         poppins: ["var(--font-poppins)"],
       },
+      colors: {
+        theme: {
+          background: "var(--background)",
+          foreground: "var(--foreground)",
+          accent: "var(--accent)",
+          "accent-foreground": "var(--accent-foreground)",
+          "accent-content": "var(--accent-content)",
+          primary: "var(--primary)",
+          "primary-content": "var(--primary-content)",
+          secondary: "var(--secondary)",
+        },
+      },
+      backgroundImage: {
+        "theme-gradient": "linear-gradient(284.76deg, #6619F5 33.64%, #CE2CCA 125.73%)",
+        "theme-purple-gradient":
+          "linear-gradient(117.12deg, #A619F7 6.42%, #6119F7 91.26%), linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2))",
+      },
     },
   },
   plugins: [

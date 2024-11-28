@@ -16,12 +16,15 @@ import { usePopoverContext } from "../Popover";
 import { PolymorphicComponentPropsWithRef, PolymorphicRef } from "../core";
 import { useMergeRefs } from "@/hooks";
 
+/** dropdown menu button props */
 type DropdownMenuButtonProps<C extends React.ElementType> = PolymorphicComponentPropsWithRef<C>;
 
+/** dropdown menu button component type */
 type DropdownMenuButtonComponent = <C extends React.ElementType = typeof Button>(
   props: DropdownMenuButtonProps<C>,
 ) => React.ReactNode;
 
+/** dropdown menu button component */
 const DropdownMenuButton: DropdownMenuButtonComponent = React.forwardRef(
   <C extends React.ElementType>({ as, children, ...rest }: DropdownMenuButtonProps<C>, ref?: PolymorphicRef<C>) => {
     const { setReferenceElement } = usePopoverContext();

@@ -10,7 +10,7 @@
  */
 
 "use client";
-import React, { forwardRef } from "react";
+import React, { forwardRef, useState } from "react";
 import { ControllerRenderProps } from "react-hook-form";
 import { Heading } from "../../Heading";
 import { Button } from "../../Button";
@@ -20,6 +20,7 @@ import { Progress } from "@/lib/components/Progress";
 import SvgCheckCircle from "@/lib/icons/essential/outline/CheckCircle";
 import { tx } from "@/utils/shared";
 
+/** file upload component props */
 interface FileUploadProps {
   field: ControllerRenderProps;
   progressValue: number;
@@ -32,9 +33,9 @@ interface FileUploadProps {
   iconRight?: React.ReactElement;
 }
 
+/** file upload component */
 const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>((props, ref) => {
   const {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     field: { value, onChange, ...field },
     progressValue,
     fileType,
@@ -47,31 +48,74 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>((props, ref) =>
   } = props;
 
   const [_id] = useID(id, "file-upload");
+  const [isDragOver, setIsDragOver] = useState(false);
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragOver(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      onChange(e); // Handle the first dropped file
+    }
+  };
+
   return (
-    <div className="relative flex h-max w-full">
+    <div
+      className="relative flex h-max w-full"
+      onDragOver={handleDragOver}
+      onDragEnter={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+    >
       <label
         htmlFor={_id}
-        className="peer w-full appearance-none truncate rounded-lg border border-brand-blue p-4 pr-12 text-sm font-medium leading-5 text-brand-dark placeholder:text-base placeholder:text-brand-dark/60 focus:border-zinc-300 focus:outline-none focus:ring-1 focus:ring-zinc-300 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+        className="peer w-full appearance-none truncate rounded-lg bg-[#F5F5F5] text-sm font-medium leading-5 text-brand-dark placeholder:text-base placeholder:text-brand-dark/60 focus:border-zinc-300 focus:outline-none focus:ring-1 focus:ring-zinc-300 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 lg:p-4 dark:bg-[#1E222D]"
       >
-        <div className="flex flex-col gap-2 lg:gap-4">
+        <div className="flex flex-col gap-2  lg:gap-4">
           <Heading as="h6">{floatingLabelText}</Heading>
-          <div className="flex items-center justify-between gap-2 rounded-xl border-2 border-dashed p-3 lg:gap-4">
-            {iconRight}
-            <div>
-              <p className="font-normal text-brand-dark-blue">Select a file or drag and drop here</p>
+          <div className="flex items-center justify-between gap-2 rounded-xl border-2 border-dashed bg-white text-theme-primary-content lg:gap-4 lg:p-3 dark:bg-[#11141C]">
+            <span>{iconRight}</span>
+            <div className="p-2">
+              <div className="whitespace-normal font-normal text-theme-primary-content">
+                Select a file or drag and drop here
+              </div>
               <p className="text-brand-gray">Supported format: {fileType}</p>
+              <Button
+                onClick={() => document.getElementById(_id)?.click()}
+                variant={"outline"}
+                colorScheme={"accent"}
+                className="md:hidden"
+              >
+                Select File
+              </Button>
             </div>
-            <Button variant={"outline"}>Select File</Button>
+            <Button
+              onClick={() => document.getElementById(_id)?.click()}
+              variant={"outline"}
+              colorScheme={"accent"}
+              className="hidden md:block"
+            >
+              Select File
+            </Button>
           </div>
           {fileName && (
-            <p>
+            <p className="text-theme-primary-content">
               <span className="text-brand-gray ">File Name:</span> {fileName}
             </p>
           )}
           {(error || fileName) && (
             <div>
               <span
-                className={tx("bg-brand-light-teal rounded-md  px-2 py-1 text-xs text-brand-gray", {
+                className={tx("bg-brand-light-teal  rounded-md  px-2 py-1 text-xs text-brand-gray", {
                   "bg-brand-warning": error,
                 })}
               >
@@ -89,24 +133,7 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>((props, ref) =>
             </div>
           )}
         </div>
-        {/* {fileName && (
-          <Label
-            className={
-              "absolute inset-x-4 right-12 top-4 origin-[0] -translate-y-4 scale-75 cursor-text gap-1 font-sans text-sm font-medium text-brand-dark/60 transition-all duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-base peer-focus:left-4 peer-focus:top-4 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-sm"
-            }
-            isRequired
-          >
-            <span className="line-clamp-1">{floatingLabelText}</span>
-          </Label>
-        )}
-        {fileName ? (
-          <ShortString text={fileName} startCharCount={15} />
-        ) : (
-          <span className="font-sans text-base font-medium text-brand-dark/60 after:ml-1 after:text-brand-red after:content-['*']">
-            {floatingLabelText}
-          </span>
-        )} */}
-        {/* <div className={"absolute inset-y-0 right-0 flex items-center"}>{iconRight}</div> */}
+
         {progressValue !== progressTotal && progressValue !== 0 && (
           <Progress className="mt-0.5 h-1" value={progressValue} max={progressTotal} />
         )}

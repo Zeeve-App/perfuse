@@ -11,6 +11,7 @@
 
 import { createContext, useContext } from "react";
 
+/** popover context props */
 interface PopoverContextProps {
   isOpen: boolean;
   setReferenceElement: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
@@ -28,6 +29,8 @@ interface PopoverContextProps {
 }
 
 const PopoverContext = createContext<PopoverContextProps | null>(null);
+
+/** popover context */
 const usePopoverContext = () => {
   const context = useContext(PopoverContext);
   if (!context) {

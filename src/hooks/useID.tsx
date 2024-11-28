@@ -10,7 +10,10 @@
  */
 
 import { useId, useMemo } from "react";
-
+/**
+ * This hook generates unique, prefixed IDs for a component,
+ * which can be used for accessibility or associating elements like labels and inputs.
+ * */
 const useID = (id?: string, ...prefixes: string[]) => {
   const reactId = useId();
   const ID = id ? id : reactId;

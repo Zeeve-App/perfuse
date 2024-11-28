@@ -17,6 +17,7 @@ import { updateTask } from "@/db-queries";
 
 const logger = new Logger(module, "jobShellExecutor");
 
+/** execute the cmd through child process */
 const jobShellExecutor = (
   command: string,
   cwdPath: string,
@@ -63,6 +64,7 @@ const jobShellExecutor = (
   });
 };
 
+/** execute cmd in bg and update task once the cmd is executed */
 const jobShellExecutorBG = async (
   command: string,
   cwdPath: string,

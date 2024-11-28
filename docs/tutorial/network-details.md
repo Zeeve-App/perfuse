@@ -1,89 +1,117 @@
-## Register and view Parachain
+# Register and View Parachain
 
-Once the deployment process is started, you can see the details of the deploying network.
+After initiating the deployment process, you can monitor and manage your parachain through the Perfuse UI.
 
-Go to http://localhost:3000, and it will open the network details page. You can see the network details there and the status of the network.
+---
 
-### Register the network
+## **Accessing Network Details**
 
-After the network deployment, you will receive an alert indicating the need to register the parachain. You can follow the instructions on the **Coretime** page in the sidebar to register your parachain.
+Once deployment begins, navigate to [http://localhost:3000](http://localhost:3000) to access the **Network Details** page. Here, you can view the status and information about your deploying network.
 
-### Overview
+---
 
-**Parachain Details**: In this section, you can see general information related to the network.
+## **Registering the Parachain**
 
-- network name: network name from chain specification
-- ID: network uuid in DB
-- Description: network description
-- Environment: The environment network is deployed in
-- Owned by: the owner of the network
-- status: status of the network
-  - in progress: while the network is deploying
-  - failed: if there is some error while deploying the network.
-  - authentication pending: when the network is deployed but the user needs to register parachain.
-- Blockchain Provision Time: time it took to deploy the network
-- Duration: Duration of the created network
-- Created on: timestamp of the network creation
+Upon successful deployment, you will be prompted to register the parachain. Follow these steps to complete registration:
 
-**Blockchain Config**: An Overview of the Blockchain Config You can see more detailed information in the blockchain config tab.
+1. Navigate to the **Coretime** page via the navigation menu.
+2. Follow the on-screen instructions to register your parachain.
 
-**Nodes**: Overview of the recently deployed node. You can see more detailed information in the RPC nodes/collator node tab.
+---
 
-### Blockchain config
+## **Checking Wallet Balances**
 
-In this tab, you can see the details of the blockchain.
+After setting up the network, you can check wallet balances by allowing the Perfuse app to access your Polkadot.js wallet. The app will display balances in the relay chain where the parachain is deployed.
 
-**Parachain Block Height**: Height of the parachain after the parachain is registered.
+---
 
-**Total token supply**: Total token supply (calculated from the chain spec file)
+## **Overview**
 
-**Parachain Config**: Details about Parachain from the Chain Spec File.
+### **Parachain Details**
 
-- Parachain name: name of the parachain
-- Parachain ID: ID of the deployed parachain
-- Network ID: network ID defined in the chain specification
-- Chain type: Chain type of the deployed parachain
-- protocol ID: protocol ID defined in chain specification
-- Telemetry endpoint: defined in the chain spec
+This section provides a summary of the parachain, including:
 
-**Token Info**: Information about the token
+- **Network Name**: Derived from the chain specification file.
+- **ID**: Unique identifier assigned to the network in the database.
+- **Environment**: Deployment environment (e.g., testnet or mainnet).
+- **Owned By**: Network owner information.
+- **Status**: Current network status:
+  - **In Progress**: Deployment ongoing.
+  - **Failed**: Deployment encountered an error.
+  - **Authentication Pending**: Deployment completed but awaiting parachain registration.
+- **Created On**: Timestamp of network creation.
 
-- Token name: Token symbol of the native tokens of the created parachain
-- Decimal: Decimal for the token
-- Encoding: Encoding value in chain specification
-- Candidacy Bond: Candidacy bond value from chain specification
+---
 
-**Parachain Spec File**: chain spec file for the network. You can download it by clicking on the download button.
+### **Blockchain Config**
 
-**Pre-mined Address**: In this section, you can see the account address and their balance, which are pre-mined.
+The **Blockchain Config** tab displays comprehensive details about the parachain’s configuration:
 
-**Relay Chain Config**: Details about the relay chain in which the parachain is deployed.
+#### **Key Metrics**
+- **Parachain Block Height**: Current block height after registration.
+- **Total Token Supply**: Calculated from the chain specification file.
+- **Parachain Config**: Includes:
+  - **Parachain Name**
+  - **Parachain ID**
+  - **Network ID**
+  - **Chain Type** (local, testnet, mainnet, live)
+  - **Protocol ID**
+  - **Telemetry Endpoint**: Monitoring URL.
 
-### Collator nodes
+#### **Token Information**
+- **Token Name**: Native token symbol.
+- **Decimal Places**: Precision of the token.
+- **Encoding**: Encoding format as per chain spec.
+- **Candidacy Bond**: Bond value for candidacy, extracted from the chain spec.
 
-Here you can see the list of the collator node, and by clicking on the "i" icon, you can see the details of the specific node.
+#### **Additional Information**
+- **Parachain Spec File**: Chain specification file used for deployment, downloadable via the **Download** button.
+- **Pre-mined Accounts**: List of accounts with pre-allocated balances.
+- **Relay Chain Config**: Details of the relay chain hosting the parachain.
 
-- node id: saved uuid in DB for this node
-- node name: saved node name in db
-- status: status of the node
-- created on: timestamp of creation
-- parachain block height: height of the parachain
-- collator address: address of the collator node
+---
 
-### Rpc nodes
+### **Collator Nodes**
 
-Here you can see the list of the Rpc node, and by clicking on the "i" icon, you can see the details of the specific node.
+Manage collator nodes for the parachain under the **Collator Nodes** section. Each collator entry includes:
 
-- node id: saved uuid in DB for this node
-- node name: saved node name in db
-- status: status of the node
-- created on: timestamp of creation
-- parachain block height: height of the parachain
-- Parachain http url: parachain http endpoint to access blockchain
-- Parachain ws url: parachain ws endpoint to access blockchain
-- relay chain http url: relay chain http endpoint to access blockchain
-- relay chain ws url - relay chain ws endpoint to access blockchain
-- side car http url: http endpoint to access side car
-- authentication type: authentication method to access the endpoints
-- Authentication API key: API key for the endpoint
-- Allowed cors: allowed origins
+- **Node ID**: Database identifier.
+- **Node Name**: Saved node name.
+- **Status**: Current status of the node.
+- **Created On**: Creation timestamp.
+- **Parachain Block Height**: Current parachain block height.
+- **Collator Address**: Collator wallet address.
+
+#### **Adding a Session Key**
+To add a session key for a collator node:
+
+1. Click the **key icon** next to the collator node.
+2. Enter the seed phrase and wallet address in the modal.
+3. Submit the form to create an RPC call and save the keys.
+
+---
+
+### **RPC Nodes**
+
+View and manage RPC nodes for the parachain under the **RPC Nodes** section. Each RPC node entry includes:
+
+- **Node ID**: Database identifier.
+- **Node Name**: Saved node name.
+- **Status**: Current node status.
+- **Created On**: Node creation timestamp.
+- **Parachain Block Height**: Current parachain block height.
+- **Endpoints**:
+  - **HTTP URL**: HTTP endpoint for blockchain access.
+  - **WS URL**: WebSocket endpoint for blockchain access.
+  - **Sidecar URL**: HTTP endpoint for Sidecar access.
+- **Authentication**:
+  - **Type**: Method for API authentication.
+  - **API Key**: Key for accessing the RPC API.
+- **CORS Settings**: Allowed origins for cross-origin requests.
+
+#### **Additional Details**
+Click the **info icon** to view detailed information about a specific node.
+
+---
+
+This streamlined guide ensures you can effectively monitor and manage your parachain from deployment to operation.

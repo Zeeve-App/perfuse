@@ -31,12 +31,15 @@ const motionVariants: Variants = {
   },
 };
 
+/** modal container props */
 interface ModalContainerProps extends React.ComponentPropsWithRef<"div"> {}
 
+/** modal content props */
 interface ModalContentProps extends HTMLMotionProps<"div"> {
   modalContainerProps?: ModalContainerProps;
 }
 
+/** modal content component */
 const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>((props, ref) => {
   const { className, children, modalContainerProps, ...rest } = props;
   const { getModalProps, setIsModalMounted } = useModalContext();
@@ -56,7 +59,10 @@ const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>((props, ref) 
           initial="initial"
           animate="animate"
           exit="exit"
-          className={tx("flex w-max max-w-xl flex-col rounded-lg bg-white shadow-lg outline-none", className)}
+          className={tx(
+            "flex w-max max-w-xl flex-col rounded-lg bg-theme-foreground shadow-lg outline-none",
+            className,
+          )}
           {...modalProps}
         >
           {children}
@@ -66,6 +72,7 @@ const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>((props, ref) 
   );
 });
 
+/** modal container component */
 const ModalContainer = forwardRef<HTMLDivElement, ModalContainerProps>((props, ref) => {
   const { className, children, ...rest } = props;
   const { getModalContainerProps } = useModalContext();

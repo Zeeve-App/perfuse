@@ -10,15 +10,6 @@
  */
 
 import React, { useEffect, useState } from "react";
-// import {
-//     SideDrawer,
-//     SideDrawerOverlay,
-//     SideDrawerContent,
-//     SideDrawerHeader,
-//     SideDrawerTitle,
-//     SideDrawerCloseButton,
-//     SideDrawerBody,
-// } from "@zeeve-platform/ui";
 import {
   SideDrawer,
   SideDrawerBody,
@@ -33,11 +24,13 @@ import { NotificationsLoadingSkeleton } from "./NotificationsLoadingSkeleton";
 import { useNotificationsWebsocketContext } from "./NotificationsWebsocketContext";
 import { Notification } from "./types";
 
+/** notification drawer props */
 interface NotificationDrawerProps {
   isOpen: boolean;
   handleClose: () => void;
 }
 
+/** notification drawer component */
 const NotificationDrawer = (props: NotificationDrawerProps) => {
   const { isOpen, handleClose } = props;
   const { notifications } = useNotificationsWebsocketContext();

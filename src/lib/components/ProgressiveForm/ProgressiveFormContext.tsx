@@ -11,8 +11,10 @@
 
 import { createContext, useCallback, useContext } from "react";
 
+/** form step status */
 type FormStatus = "active" | "completed" | "idle";
 
+/** progressive form context props */
 interface ProgressiveFormContextProps {
   /**
    * Current active form step.
@@ -36,6 +38,7 @@ interface ProgressiveFormContextProps {
 }
 
 const ProgressiveFormContext = createContext<ProgressiveFormContextProps | null>(null);
+/** progressive form context hook */
 const useProgressiveFormContext = () => {
   const context = useContext(ProgressiveFormContext);
   if (!context) {

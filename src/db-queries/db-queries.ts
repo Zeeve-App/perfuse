@@ -15,70 +15,79 @@ import knex from "knex";
 import { NetworkDbRow, NodeDbRow, TaskDbRow } from "./type";
 import { knexHandler } from "./knexfile";
 
-// to save network details in db
+/**  to save network details in db */
 export const saveNetworkData = async (data: NetworkDbRow, trx?: knex.Knex.Transaction) => {
   const db = trx ?? knexHandler;
 
   return db<NetworkDbRow>("networks").insert(data);
 };
 
-// to save node details in db
+/** to save node details in db */
 export const saveNodeData = async (data: NodeDbRow, trx?: knex.Knex.Transaction) => {
   const db = trx ?? knexHandler;
 
   return db<NodeDbRow>("nodes").insert(data);
 };
 
-// to get node data from db
+/** to get node data from db */
 export const getNodeData = async (data: Partial<NodeDbRow>, trx?: knex.Knex.Transaction) => {
   const db = trx ?? knexHandler;
 
   return db<NodeDbRow>("nodes").select("*").where(data).first();
 };
 
-// to get nodes[] by network ID
+/** to update node data from db */
+export const updateNodeData = async (data: Partial<NodeDbRow>, trx?: knex.Knex.Transaction) => {
+  const db = trx ?? knexHandler;
+  if (!data.node_id) throw new Error("Node id is required");
+
+  return db<NodeDbRow>("nodes").update(data).where(data).returning("*");
+};
+
+/** to get nodes[] by network ID */
 export const getNodes = async (networkId?: string, trx?: knex.Knex.Transaction) => {
   const db = trx ?? knexHandler;
 
   return db<NodeDbRow>("nodes").select("*").where({ network_id: networkId });
 };
 
-// to get all network in the db
+/** to get all network in the db */
 export const getNetworks = async (trx?: knex.Knex.Transaction) => {
   const db = trx ?? knexHandler;
 
   return db<NetworkDbRow>("networks").select("*").where({});
 };
 
-// to get the network data by network id
+/** to get the network data by network id */
 export const getNetworkData = async (networkId?: string, trx?: knex.Knex.Transaction) => {
   const db = trx ?? knexHandler;
 
   return db<NetworkDbRow>("networks").select("*").where({ network_id: networkId }).first();
 };
 
-// to delete the network from db
+/** to delete the network from db */
 export const deleteNetwork = (networkId: string, trx?: knex.Knex.Transaction) => {
   const db = trx ?? knexHandler;
 
   return db<NetworkDbRow>("networks").where({ network_id: networkId }).del();
 };
 
-// to add the task in db
+/** to add the task in db */
 export const addTask = (data: TaskDbRow, trx?: knex.Knex.Transaction) => {
   const db = trx ?? knexHandler;
 
   return db<TaskDbRow>("tasks").insert(data);
 };
 
-// to get the task from db
+/** to get the task from db */
 export const getTask = (data: Partial<TaskDbRow>, trx?: knex.Knex.Transaction) => {
+  if (!data.task_associated_network_id) return undefined;
   const db = trx ?? knexHandler;
 
   return db<TaskDbRow>("tasks").select("*").where(data).first();
 };
 
-// update the task
+/** update the task */
 export const updateTask = (data: Partial<TaskDbRow>, taskId: string, trx?: knex.Knex.Transaction) => {
   const db = trx ?? knexHandler;
 

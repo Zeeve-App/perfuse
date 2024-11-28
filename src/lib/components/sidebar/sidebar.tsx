@@ -11,7 +11,6 @@
 
 "use client";
 import React, { Fragment, useEffect, useRef } from "react";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   Sidebar,
@@ -23,10 +22,15 @@ import {
   SidebarItemDropdown,
   SidebarProps,
 } from "../sidebar/sub-components";
-import { ITEMS } from "./constants/sidebar";
+import { ITEMS } from "../../../constants/sidebar";
+import { ProfileDropDownMenu } from "../Header/profile-menu";
+import { IconButton } from "../Button";
 import ZeeveSidebarItemProps from "./type";
 import { tx } from "@/utils/shared";
-import { isActive, withBasePath } from "@/utils/helpers";
+import { isActive } from "@/utils/helpers";
+import SvgXMarkSquare from "@/lib/icons/essential/outline/XMarkSquare";
+import SvgMoon from "@/lib/icons/essential/outline/moon";
+import useDarkMode from "@/hooks/use-dark-mode";
 
 const ZeeveSidebarItemDropdown = ({
   item,
@@ -78,7 +82,7 @@ const ZeeveSidebarItemDropdown = ({
   );
 };
 
-const ZeeveSidebarItem = ({
+export const ZeeveSidebarItem = ({
   item,
   pathname,
   activePaths,
@@ -114,10 +118,11 @@ const ZeeveSidebarItem = ({
   );
 };
 
-const ZeeveSidebar = (props: SidebarProps) => {
+const ZeeveSidebar = (props: SidebarProps & { handleClose: () => void }) => {
   const { className, ...rest } = props;
 
   const pathname = usePathname();
+  const { theme, toggleTheme } = useDarkMode();
 
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -128,11 +133,13 @@ const ZeeveSidebar = (props: SidebarProps) => {
   }, []);
 
   return (
-    <Sidebar className={tx("w-full lg:w-full", className)} {...rest}>
-      <SidebarHeader className="justify-center">
-        <a href={`/`}>
-          <Image src={withBasePath("/assets/images/perfuse-no-bg.png")} alt="Zeeve Logo" width={200} height={200} />
-        </a>
+    <Sidebar className={tx("w-full lg:w-full bg-theme-background", className)} {...rest}>
+      <SidebarHeader className="justify-between px-6">
+        <ProfileDropDownMenu />
+
+        <div onClick={() => props.handleClose()}>
+          <SvgXMarkSquare className="size-6 text-theme-primary" />
+        </div>
       </SidebarHeader>
       <SidebarItems ref={ref}>
         {ITEMS.length
@@ -159,6 +166,16 @@ const ZeeveSidebar = (props: SidebarProps) => {
             ))
           : null}
       </SidebarItems>
+      <div className="grow"></div>
+      <div className="p-6">
+        <IconButton
+          variant={"text"}
+          className="size-10 rounded-full  bg-theme-foreground"
+          onClick={() => toggleTheme()}
+        >
+          {theme === "dark" ? <SvgMoon fontSize={20} /> : <SvgMoon fontSize={24} />}
+        </IconButton>
+      </div>
     </Sidebar>
   );
 };

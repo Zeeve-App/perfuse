@@ -99,6 +99,7 @@ npm install
 npm run build
 npm run start
 ```
+
 It will start the server in port 3000. You can go to the http://localhost:3000/ and create the parachain from UI.
 
 ## Alternatively start the server on 0.0.0.0 using pm2

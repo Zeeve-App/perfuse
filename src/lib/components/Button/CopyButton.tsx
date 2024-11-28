@@ -19,10 +19,12 @@ import { tx } from "@/utils/shared";
 import SvgCopy from "@/lib/icons/design-tool/outline/Copy";
 import SvgCopyCheck from "@/lib/icons/design-tool/outline/CopyCheck";
 
+/** copy button props */
 interface CopyButtonProps extends RemoveProperties<IconButtonProps, "children" | "size"> {
   text: string;
 }
 
+/** copy button component */
 const CopyButton = forwardRef<HTMLButtonElement, CopyButtonProps>((props, ref) => {
   const { text, className, ...rest } = props;
 
@@ -65,14 +67,14 @@ const CopyButton = forwardRef<HTMLButtonElement, CopyButtonProps>((props, ref) =
     <Tooltip text={!isCopied ? "Copy" : "Copied"} placement="bottom-start">
       <IconButton
         variant="text"
-        className={tx("rounded-md text-xl text-brand-primary focus:ring-offset-0", className, {
+        className={tx("rounded-md text-base text-brand-primary focus:ring-offset-0 m-auto ", className, {
           "text-green-500": isCopied,
         })}
         onClick={handleCopyButtonClick}
         ref={ref}
         {...rest}
       >
-        {!isCopied ? <SvgCopy className="size-6" /> : <SvgCopyCheck className="size-5" />}
+        {!isCopied ? <SvgCopy /> : <SvgCopyCheck />}
       </IconButton>
     </Tooltip>
   );

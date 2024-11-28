@@ -19,6 +19,7 @@ import { FormFieldStatus } from "../FormFieldStatus";
 import { Label } from "../Label";
 import { tx } from "@/utils/shared";
 
+/** type form field props */
 interface FormFieldProps extends PropsWithChildren {
   /** css classes for container `div` */
   className?: string;
@@ -53,6 +54,7 @@ interface FormFieldProps extends PropsWithChildren {
   };
 }
 
+/** form field components */
 const FormField = (props: FormFieldProps) => {
   const { children, className, label, helper } = props;
 
@@ -78,7 +80,7 @@ const FormField = (props: FormFieldProps) => {
         </Label>
       ) : null}
       {/* input and helper text */}
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-3">
         {children}
         {helper?.text ? (
           <FormFieldStatus className={tx("text-xs lg:text-sm", helper.className)} status={helper.status}>

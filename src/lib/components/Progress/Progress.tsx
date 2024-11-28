@@ -15,6 +15,7 @@ import { cva, VariantProps } from "class-variance-authority";
 import { HTMLMotionProps, motion, MotionProps } from "framer-motion";
 import { tx } from "@/utils/shared";
 
+/** progress variant */
 const progressStyles = cva("w-full overflow-hidden rounded-full bg-neutral-200", {
   variants: {
     size: {
@@ -26,12 +27,15 @@ const progressStyles = cva("w-full overflow-hidden rounded-full bg-neutral-200",
     },
   },
   compoundVariants: [],
+  /** progress default variant */
   defaultVariants: {
     size: "small",
   },
 });
 
+/** progress bar variant */
 const progressBarStyles = cva(
+  /** class for all the variants */
   "flex h-full items-center justify-center rounded-full font-semibold text-white bg-brand-gradient",
   {
     variants: {},
@@ -40,6 +44,7 @@ const progressBarStyles = cva(
   },
 );
 
+/** progress props */
 interface ProgressProps extends HTMLMotionProps<"div">, VariantProps<typeof progressStyles> {
   value: number;
   max: number;
@@ -47,6 +52,7 @@ interface ProgressProps extends HTMLMotionProps<"div">, VariantProps<typeof prog
   progressBarProps?: ProgressBarProps;
 }
 
+/** progress component */
 const Progress = forwardRef<HTMLDivElement, ProgressProps>((props, ref) => {
   const { className, size, value, max, shouldShowProgress, progressBarProps, ...rest } = props;
   const progress = Math.round((value / max) * 100);
@@ -58,11 +64,13 @@ const Progress = forwardRef<HTMLDivElement, ProgressProps>((props, ref) => {
   );
 });
 
+/** progress bar props */
 interface ProgressBarProps extends HTMLMotionProps<"div">, VariantProps<typeof progressBarStyles> {
   progress?: number;
   shouldShowProgress?: boolean;
 }
 
+/** progress bar component */
 const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>((props, ref) => {
   const { progress, shouldShowProgress, className, ...rest } = props;
 

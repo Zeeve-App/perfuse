@@ -16,20 +16,30 @@ type WindowDimensions = {
   height: number | undefined;
 };
 
+/**
+ * Custom React hook to get the current window dimensions.
+ * Tracks the `width` and `height` of the browser window and updates on resize.
+ * Useful for building responsive components.
+ */
 const useWindowDimensions = (): WindowDimensions => {
   const [windowDimensions, setWindowDimensions] = useState<WindowDimensions>({
     width: undefined,
     height: undefined,
   });
   useEffect(() => {
+    // Updates the dimensions state with the current window size
     function handleResize(): void {
       setWindowDimensions({
         width: window.innerWidth,
         height: window.innerHeight,
       });
     }
+
+    // Initialize dimensions and set up event listener for window resize
     handleResize();
     window.addEventListener("resize", handleResize);
+
+    // Cleanup: remove the event listener on component unmount
     return (): void => window.removeEventListener("resize", handleResize);
   }, []);
 

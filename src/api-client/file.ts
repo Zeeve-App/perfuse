@@ -14,14 +14,11 @@ import { backendAxiosInstance } from "@/utils/axios";
 import { withBasePath } from "@/utils/helpers";
 
 type ApiResponse =
-  | {
-      success: boolean;
-      data: { wasm: string; genesis: string };
-    }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  | any;
+  any;
 
 const useFileApi = async (file: string, config?: AxiosRequestConfig<FormData>) => {
+  /** endpoint to get static files from server from public/output folder */
   const apiEndpoint = withBasePath(`/api/file/${file}`);
   const request = backendAxiosInstance.get<ApiResponse, AxiosResponse<ApiResponse>>;
 

@@ -12,6 +12,7 @@
 import React from "react";
 import { tx } from "@/utils/shared";
 
+/** header logo props */
 interface HeaderLogoProps {
   logoImgSrc: string;
   logoImgAlt: string;
@@ -20,6 +21,7 @@ interface HeaderLogoProps {
   logoImgClassName?: string;
 }
 
+/** header logo component */
 const HeaderLogo: React.FC<HeaderLogoProps> = (props) => {
   const { logoImgSrc, logoImgAlt, logoHref, className, logoImgClassName } = props;
 
