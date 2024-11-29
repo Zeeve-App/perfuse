@@ -149,6 +149,8 @@ install_grafana() {
     sudo dpkg -i "$deb_file" || error_exit "Failed to install Grafana."
     sudo rm -f "$deb_file"
     sudo sed -i 's/^;http_port = 3000/http_port = 9111/' /etc/grafana/grafana.ini
+    sudo sed -i "s|^\(;*\)\s*root_url\s*=.*|root_url = http://%(domain)s/${RPC_API_KEY}/grafana/|" /etc/grafana/grafana.ini
+    sudo sed -i "s|^\(;*\)\s*serve_from_sub_path\s*=.*|serve_from_sub_path = true|" /etc/grafana/grafana.ini
 
     sudo systemctl daemon-reload
     sudo systemctl enable grafana-server
