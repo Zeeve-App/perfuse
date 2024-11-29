@@ -3,6 +3,17 @@
 set -e
 set -u
 
+
+SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
+# Load environment variables from .env file
+if [ -f "$SCRIPT_DIR/../perfuse/.env" ]; then
+  source "$SCRIPT_DIR/../perfuse/.env"
+  echo "Env Variables Loaded"
+else
+  echo "ERROR: .env file not found."
+  exit 1
+fi
+
 # Constants
 NODE_EXPORTER_VERSION="1.8.2"
 PROMETHEUS_VERSION="3.0.0"
@@ -201,7 +212,7 @@ install_dashboards() {
       echo "    options:"
       echo "      path: /etc/grafana/dashboards"
       echo "      foldersFromFilesStructure: true"
-    } >>perfuse.yaml
+    } >perfuse.yaml
     sudo cp perfuse.yaml /etc/grafana/provisioning/dashboards/
     
     echo "Provisioning datasource..."
@@ -217,7 +228,7 @@ install_dashboards() {
       echo "    isDefault: true"
       echo "    version: 1"
       echo "    editable: false"
-    } >>prom.yaml
+    } >prom.yaml
     sudo cp prom.yaml /etc/grafana/provisioning/datasources/
     sudo systemctl restart grafana-server
   fi
