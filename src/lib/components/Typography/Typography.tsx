@@ -24,7 +24,7 @@ type TypographyProps<C extends React.ElementType> = PolymorphicComponentPropsWit
 > &
   VariantProps<typeof styles>;
 
-type TypographyComponent = <C extends "h1" | "h2" | "h3" | "h4" | "h5" | "h6" = "h2">(
+type TypographyComponent = <C extends "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "span" = "h2">(
   props: TypographyProps<C>,
 ) => React.ReactNode;
 

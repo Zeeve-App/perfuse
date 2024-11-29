@@ -105,7 +105,7 @@ It will start the server in port 3000. You can go to the http://localhost:3000/ 
 ## Alternatively start the server on 0.0.0.0 using pm2
 
 ```bash
-cp .env.exampe .env
+cp .env.example .env
 npm i
 npm run build
 npm i -g pm2
