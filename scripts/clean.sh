@@ -119,6 +119,9 @@ else
 echo "Directory not found"
 fi
 
+# Delete the pm2 service
+pm2 delete all
+
 #Remove nginx files
 sudo systemctl stop nginx
 sudo systemctl disable nginx

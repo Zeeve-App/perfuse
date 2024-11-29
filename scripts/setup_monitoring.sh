@@ -58,6 +58,37 @@ EOF
     sudo systemctl enable node_exporter
     sudo systemctl start node_exporter
     log "Node Exporter installed and running."
+
+echo "# my global config
+global:
+  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+ 
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
+ 
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  - job_name: 'node_exporter'
+    static_configs:
+      - targets: ['localhost:9100']
+  - job_name: 'collator_1'
+    static_configs:
+      - targets: ['localhost:8004']
+  - job_name: 'collator_2'
+    static_configs:
+      - targets: ['localhost:8005']
+  - job_name: 'rpc_node'
+    static_configs:
+      - targets: ['localhost:8006']" | sudo tee /etc/prometheus/prometheus.yml >/dev/null
+    sudo systemctl restart prometheus
 }
 
 # Install Prometheus
@@ -106,6 +137,7 @@ install_grafana() {
     wget "$url" || error_exit "Failed to download Grafana."
     sudo dpkg -i "$deb_file" || error_exit "Failed to install Grafana."
     sudo rm -f "$deb_file"
+    sudo sed -i 's/^;http_port = 3000/http_port = 9111/' /etc/grafana/grafana.ini
 
     sudo systemctl daemon-reload
     sudo systemctl enable grafana-server
@@ -121,12 +153,91 @@ verify_services() {
     log "All services are running successfully."
 }
 
+
+install_dashboards() {
+  #check for installation
+  if test -f "/etc/grafana/grafana.ini"; then
+    echo "Perfuse monitoring installer"
+    echo "--------------------------------"
+  else
+    echo "Node monitoring installation not found!"
+    exit 0
+  fi
+
+  if test -f "/etc/grafana/provisioning/dashboards/perfuse.yaml"; then
+    echo "STEP 4: Installing Grafana dashboards"
+    provisioningDone=true
+    echo
+    echo "Dashboards already provisioned, switching to upgrade mode."
+  else
+    provisioningDone=false
+  fi
+
+  echo
+  echo "Downloading..."
+  mkdir -p /tmp/perfuse-monitoring-installer/dashboards-install
+  cd /tmp/perfuse-monitoring-installer/dashboards-install
+  wget -nd -m -nv https://github.com/user-attachments/files/17955001/perfuse.json
+  wget -nd -m -nv https://github.com/user-attachments/files/17954993/node_exporter.json
+
+  sudo mkdir -p /etc/grafana/dashboards
+  sudo cp *.json /etc/grafana/dashboards
+
+  if [ "$provisioningDone" = "false" ]; then
+    echo
+    echo "Provisioning dashboards..."
+    {
+      echo "apiVersion: 1"
+      echo ""
+      echo "providers:"
+      echo "  - name: 'Perfuse official'"
+      echo "    orgId: 1"
+      echo "    folder: ''"
+      echo "    folderUid: ''"
+      echo "    type: file"
+      echo "    disableDeletion: false"
+      echo "    updateIntervalSeconds: 30"
+      echo "    allowUiUpdates: true"
+      echo "    options:"
+      echo "      path: /etc/grafana/dashboards"
+      echo "      foldersFromFilesStructure: true"
+    } >>perfuse.yaml
+    sudo cp perfuse.yaml /etc/grafana/provisioning/dashboards/
+    
+    echo "Provisioning datasource..."
+    {
+      echo "apiVersion: 1"
+      echo ""
+      echo "datasources:"
+      echo "  - name: Prometheus"
+      echo "    type: prometheus"
+      echo "    access: proxy"
+      echo "    orgId: 1"
+      echo "    url: http://localhost:9090"
+      echo "    isDefault: true"
+      echo "    version: 1"
+      echo "    editable: false"
+    } >>prom.yaml
+    sudo cp prom.yaml /etc/grafana/provisioning/datasources/
+    sudo systemctl restart grafana-server
+  fi
+  echo
+  echo "Done!"
+  echo
+  echo "Perfuse Grafana dashboards have been installed and updated."
+  echo "It might take up to 30s for new versions to show up in Grafana."
+  echo
+}
+
+
+
 # Main function
 main() {
     install_dependencies
-    install_node_exporter
     install_prometheus
     install_grafana
+    install_node_exporter
+    install_dashboards
     verify_services
     log "Monitoring stack setup completed successfully."
 }
