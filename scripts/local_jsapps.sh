@@ -41,7 +41,6 @@ install_and_build() {
     echo "destination path apps already exists"
     fi
 
-    # git clone https://github.com/polkadot-js/apps.git
     cd apps
     yarn && NODE_ENV=production yarn build:www
     echo ""
@@ -52,7 +51,7 @@ install_and_build() {
 setup_nginx() {
     echo "Installing and configuring Nginx..."
     sudo apt install -y nginx
-    sudo rm /etc/nginx/sites-enabled/default
+    sudo rm -f /etc/nginx/sites-enabled/default
     sudo cp $SCRIPT_DIR/nginx/jsapps.conf /etc/nginx/sites-enabled/jsapps.conf
     sudo systemctl restart nginx
 }

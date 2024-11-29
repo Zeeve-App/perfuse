@@ -32,8 +32,8 @@ else
 fi
 
 # Configuration variables (adapt these to your setup)
-service_names=("relaychain-1" "relaychain-2" "relaychain-3" "$COL_NAME_1" "$COL_NAME_2" "$RPC_NAME")
-binaries_name=("polkadot" "polkadot-parachain" "polkadot-execute-worker" "polkadot-prepare-worker")
+service_names=("$COL_NAME_1" "$COL_NAME_2" "$RPC_NAME")
+binaries_name=("polkadot" "polkadot-parachain")
 base_path_template="/home/perfuse/parachain/%s/data"
 HAPROXY_CONFIG_FILE="/etc/haproxy/haproxy.cfg"
 
@@ -97,33 +97,67 @@ remove_binary() {
     fi
 }
 
-# Function to clean the HAProxy configuration
-clean_haproxy_config() {
-    echo "Cleaning HAProxy configuration..."
-
-    # Remove frontend and backends
-    sudo sed -i '/^backend relay_rpc_backend/,$d' "$HAPROXY_CONFIG_FILE"
-    sudo sed -i '/^userlist authorized_users/,+1d' "$HAPROXY_CONFIG_FILE"
-    sudo systemctl restart haproxy
-    
-    echo "HAProxy configuration cleaned."
-}
 
 for i in "${!binaries_name[@]}"; do
   remove_binary "${binaries_name[i]}" "$POLKA_VERSION"
 done
 
-# clean_haproxy_config
-sudo rm -r /home/perfuse
-
-# Delete the pm2 service of RegionX
-pm2 delete all
-
 #Remove jsapps directory
-sudo rm -r /var/www/jsapps/
+if [ -d "/var/www/jsapps" ]; then
+sudo rm -rf /var/www/jsapps/
+else
+echo "Directory not found"
+fi
 
 #Remove Sidecar Container
 # sudo docker rm -f $(sudo docker ps -a -q)
 
 #Remove apps directory
-sudo rm -r "$SCRIPT_DIR/../apps"
+if [ -d "$SCRIPT_DIR/../apps" ]; then
+sudo rm -rf "$SCRIPT_DIR/../apps"
+else
+echo "Directory not found"
+fi
+
+# Delete the pm2 service
+pm2 delete all
+
+#Remove nginx files
+sudo systemctl stop nginx
+sudo systemctl disable nginx
+sudo apt-get remove --purge -y nginx nginx-common nginx-full
+sudo rm -rf /etc/nginx /var/lib/nginx /var/log/nginx
+sudo systemctl daemon-reload
+
+#remove haproxy
+sudo systemctl stop haproxy
+sudo systemctl disable haproxy
+sudo apt-get remove --purge -y haproxy
+sudo rm -rf /etc/haproxy /var/lib/haproxy /var/log/haproxy
+sudo systemctl daemon-reload
+
+
+#remove prometheus / grafana and node_exporter
+sudo systemctl stop grafana-server prometheus node_exporter || true
+sudo systemctl disable grafana-server prometheus node_exporter || true
+
+#remove systemd files
+sudo rm -f /etc/systemd/system/node_exporter.service
+sudo rm -f /etc/systemd/system/prometheus.service
+sudo rm -f /etc/systemd/system/grafana-server.service
+
+sudo systemctl daemon-reload
+
+sudo rm -rf /usr/local/bin/node_exporter
+sudo rm -rf /etc/prometheus /var/lib/prometheus
+sudo rm -rf /usr/sbin/grafana-server /var/lib/grafana /etc/grafana /var/log/grafana
+
+if [ -d "/home/perfuse" ]; then
+    sudo rm -rf /home/perfuse
+else
+    echo "Directory /home/perfuse not found"
+fi
+
+sudo userdel -r node_exporter || true
+sudo userdel -r prometheus || true
+sudo userdel -r grafana || true
