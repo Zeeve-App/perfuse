@@ -46,7 +46,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode; params: { id: strin
   /** explorer urls */
   const paraExplorerUrl = `${rpcHttpUrl}/polkadotjs/?rpc=${encodeURIComponent(`${rpcWsUrl}/para-rpc`)}#explorer`;
   const traceUrl = `${`${rpcHttpUrl}/polkadotjs`}`;
-  const analyticsUrl = `${`${rpcHttpUrl}/monitoring`}`;
+  const analyticsUrl = `${`${rpcHttpUrl}/grafana`}`;
 
   const task = await getTask({ task_associated_network_id: network?.network_id, task_type: "network_provision" });
 
