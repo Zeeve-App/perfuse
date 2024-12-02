@@ -15,6 +15,7 @@ import DeleteNetworkModal from "./delete-network-modal";
 import RegisterParachainInfoModal from "./register-parachain-modal";
 import NodeDetailsModal from "./node-details-modal";
 import CollatorAddKey from "./collator-add-key";
+import ExplorersModal from "./explorers";
 
 /** modal provider */
 const ModalProvider = () => {
@@ -25,6 +26,7 @@ const ModalProvider = () => {
       <RegisterParachainInfoModal />
       <NodeDetailsModal />
       <CollatorAddKey />
+      <ExplorersModal />
     </>
   );
 };

@@ -49,7 +49,7 @@ const collatorAddKeySchema = yup.object({
     }),
   pubKey: yup
     .string()
-    .required()
+    .required("Public key is required")
     .test({
       test: (publicKey: string) => {
         // Ensure it's a hex string, has 64 characters (32 bytes) and that the length is correct when converted to U8 array

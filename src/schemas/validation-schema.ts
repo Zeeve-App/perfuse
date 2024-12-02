@@ -40,12 +40,12 @@ export const deployNetworkValidationSchema = yup
     }),
     tokenName: yup
       .string()
-      .required("Token name is required")
-      .matches(/^[A-Za-z]+$/, "Token name can only contains alphabets, no other character"),
+      .required("Token symbol is required")
+      .matches(/^[A-Za-z]+$/, "Token symbol can only contains alphabets, no other character"),
     chainName: yup
       .string()
-      .required("Token name is required")
-      .matches(/^[A-Za-z]+$/, "Token name can only contains alphabets, no other character"),
+      .required("Chain name is required")
+      .matches(/^[A-Za-z]+$/, "Chain name can only contains alphabets, no other character"),
     template: yup.object({
       value: yup.string<(typeof templateOption)[number]["value"]>().required("Select a template."),
     }),

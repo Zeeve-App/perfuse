@@ -120,6 +120,6 @@ const IndexingServiceCard = (props: IndexingServiceCardProps) => {
   );
 };
 
-IndexingServiceCard.displayName = "RegionX Card";
+IndexingServiceCard.displayName = "Indexing Card";
 export type { IndexingServiceCardProps };
 export { IndexingServiceCard };
