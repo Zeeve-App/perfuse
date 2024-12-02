@@ -41,7 +41,7 @@ else
 fi
 
 # Configuration variables (adapt these to your setup)
-service_names=("$COL_NAME_1" "$COL_NAME_2" "$RPC_NAME")
+service_names=("$COL_NAME_1" "$COL_NAME_2" "$RPC_NAME" "node_exporter" "prometheus" "grafana-server")
 binaries_name=("polkadot" "polkadot-parachain")
 base_path_template="/home/perfuse/parachain/%s/data"
 HAPROXY_CONFIG_FILE="/etc/haproxy/haproxy.cfg"
@@ -72,6 +72,7 @@ cleanup_service() {
     echo "Stopping and disabling service '$service_name'..."
     sudo systemctl stop "$service_name"
     sudo systemctl disable "$service_name"
+    sudo systemctl daemon-reload
 
     # Remove the service file
     echo "Removing service file for '$service_name'..."
@@ -120,7 +121,7 @@ remove_service() {
     log "Checking for $service_name service..."
     if systemctl list-unit-files --type=service | grep -q "$service_name"; then
         log "Stopping and disabling $service_name..."
-        sudo systemctl stop "$service_name"  log "$service_name is not running."
+        sudo systemctl stop "$service_name" || log "$service_name is not running."
         sudo systemctl disable "$service_name"
         sudo rm -f "/etc/systemd/system/$service_name.service"
         sudo systemctl daemon-reload
@@ -154,9 +155,9 @@ remove_file() {
 
 remove_user() {
     local user_name=$1
-    if id "$user_name" &>/dev/null; then
+    if getent passwd "$user_name" &>/dev/null; then
         log "Removing user: $user_name..."
-        sudo userdel -r "$user_name"  log "Failed to remove home directory for $user_name. It might not exist."
+        sudo userdel -r "$user_name" || log "Failed to remove home directory for $user_name. It might not exist."
         log "User $user_name removed successfully."
     else
         log "User $user_name not found."
@@ -165,7 +166,7 @@ remove_user() {
 
 cleanup_node_exporter() {
     log "Cleaning up Node Exporter..."
-    remove_service "node_exporter"
+    cleanup_service "node_exporter"
     remove_directory "/opt/node_exporter"
     remove_file "/usr/local/bin/node_exporter"
     remove_user "node_exporter"
@@ -174,7 +175,7 @@ cleanup_node_exporter() {
 
 cleanup_prometheus() {
     log "Cleaning up Prometheus..."
-    remove_service "prometheus"
+    cleanup_service "prometheus"
     remove_directory "/etc/prometheus"
     remove_directory "/var/lib/prometheus"
     remove_user "prometheus"
@@ -183,30 +184,30 @@ cleanup_prometheus() {
 
 cleanup_grafana() {
     log "Cleaning up Grafana..."
-    remove_service "grafana-server"
+    cleanup_service "grafana-server"
     remove_file "/etc/grafana/grafana.ini"
     remove_directory "/etc/grafana"
     log "Grafana cleanup completed."
 }
 
-cleanup_nginx() {
-    log "Cleaning up Nginx..."
-    remove_service "nginx"
-    remove_directory "/etc/nginx"
-    remove_directory "/var/log/nginx"
-    remove_directory "/usr/share/nginx"
-    remove_file "/usr/sbin/nginx"
-    log "Nginx cleanup completed."
-}
+# cleanup_nginx() {
+#     log "Cleaning up Nginx..."
+#     remove_service "nginx"
+#     remove_directory "/etc/nginx"
+#     remove_directory "/var/log/nginx"
+#     remove_directory "/usr/share/nginx"
+#     remove_file "/usr/sbin/nginx"
+#     log "Nginx cleanup completed."
+# }
 
-cleanup_haproxy() {
-    log "Cleaning up HAProxy..."
-    remove_service "haproxy"
-    remove_directory "/etc/haproxy"
-    remove_directory "/var/log/haproxy"
-    remove_file "/usr/sbin/haproxy"
-    log "HAProxy cleanup completed."
-}
+# cleanup_haproxy() {
+#     log "Cleaning up HAProxy..."
+#     remove_service "haproxy"
+#     remove_directory "/etc/haproxy"
+#     remove_directory "/var/log/haproxy"
+#     remove_file "/usr/sbin/haproxy"
+#     log "HAProxy cleanup completed."
+# }
 
 monitoring_cleanup() {
     log "Starting monitoring cleanup process..."
