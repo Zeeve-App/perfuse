@@ -69,29 +69,25 @@ const Actions = ({
 
   return (
     <div className="flex flex-row gap-x-4">
-      <DropdownMenu onClose={handleClose} isOpen={isOpen} placement="bottom-start">
-        <DropdownMenuButton
-          as={Button}
-          onClick={handleToggle}
-          isDisabled={task?.task_status !== "completed"}
-          variant={"outline"}
-          colorScheme={"accent"}
-          isFullWidth
-        >
-          Explorer
-        </DropdownMenuButton>
-
-        <DropdownMenuList>
-          {/* <Link href={traceUrl} target={"_blank"}>
-            <DropdownMenuItem>TraceHawk Explorer</DropdownMenuItem>
-          </Link> */}
-          <Link href={paraExplorerUrl} target={"_blank"}>
-            <DropdownMenuItem>Polkadot.js Explorer</DropdownMenuItem>
-          </Link>
-        </DropdownMenuList>
-      </DropdownMenu>
       <Button
-        onClick={handleToggle}
+        onClick={() => {
+          openModal("explorers", {
+            explorers: {
+              polkadotLink: paraExplorerUrl,
+              subScanLink: "",
+              traceHawkLink: "",
+            },
+          });
+        }}
+        // isDisabled={task?.task_status !== "completed"}
+        variant={"outline"}
+        colorScheme={"accent"}
+      >
+        Explorer
+      </Button>
+
+      <Button
+        // onClick={handleToggle}
         isDisabled={task?.task_status !== "completed"}
         variant={"outline"}
         colorScheme={"accent"}

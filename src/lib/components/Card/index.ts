@@ -10,3 +10,4 @@
  */
 
 export { type CardProps, Card } from "./Card";
+export { type IconCardProps, IconCard } from "./Icon-Card";
