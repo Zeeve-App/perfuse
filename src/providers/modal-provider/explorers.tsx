@@ -43,7 +43,7 @@ const ExplorersModal = () => {
               //   docLink={`https://docs.zeeve.io/traceye/shared-indexing/hosted-subquery`}
               imageSrc={"/assets/images/modals/explorers/polkadot-explorer.svg"}
             />
-            <IconCard
+            {/* <IconCard
               protocolId={"123"}
               protocolName={<>Polkadot&nbsp;Explorer</>}
               className="col-span-12 bg-theme-background md:col-span-4"
@@ -64,7 +64,7 @@ const ExplorersModal = () => {
               serviceLink={data.explorers?.polkadotLink ?? ""}
               //   docLink={`https://docs.zeeve.io/traceye/shared-indexing/hosted-subquery`}
               imageSrc={"/assets/images/modals/explorers/polkadot-explorer.svg"}
-            />
+            /> */}
           </Card>
         </ModalBody>
       </ModalContent>
