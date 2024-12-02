@@ -76,8 +76,11 @@ cleanup_service() {
 
     # Remove the service file
     echo "Removing service file for '$service_name'..."
-    sudo rm "/etc/systemd/system/${service_name}.service"
-
+    if [ -f "/etc/systemd/system/${service_name}.service" ]; then
+        sudo rm "/etc/systemd/system/${service_name}.service"
+    else
+        echo "Service File not found."
+    fi
     # Check if data directory exists
     if [ -d "$base_path" ]; then
         echo "Removing data directory '$base_path'..."
