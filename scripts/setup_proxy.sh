@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Copyright (C) 2024 [Perfuse]
+#
+# This program is free software: you can redistribute it and/or modify 
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 set -e
 set -u
 
@@ -15,11 +27,12 @@ fi
 
 # Configuration variables
 HAPROXY_CONFIG_FILE="/etc/haproxy/haproxy.cfg"  # Adjust if your HAProxy config is in a different location
-# basic_auth_add="    http-request auth unless { http_auth(authorized_users) }"
-RELAY_RPC_PORT=9345  # Frontend port for HAProxy
+RELAY_RPC_PORT=9900
 PARA_RPC_PORT=9010
 PERFUSE_PORT=3000
 SIDECAR_PORT=9099
+GRAFANA_PORT=9111
+POLKADOTJS_PORT=8080
 
 # Function to install HAProxy (optional)
 install_haproxy() {
@@ -76,14 +89,12 @@ update_rpc_path() {
   if [ -f "$HAPROXY_CONFIG_FILE" ]; then
     echo "Checking RPC path in HAProxy configuration..."
 
-    current_relay_path=$(sudo sed -n '/acl is_relay_rpc path_beg -i/p' $HAPROXY_CONFIG_FILE | awk '{print $5}' | cut -d '/' -f 2 )
-    current_para_path=$(sudo sed -n '/acl is_para_rpc path_beg -i/p' $HAPROXY_CONFIG_FILE | awk '{print $5}' | cut -d '/' -f 2 )
+    current_para_path=$(sudo grep 'acl is_para_rpc path_beg -i' "$HAPROXY_CONFIG_FILE" | awk '{print $5}' | cut -d '/' -f 2 || echo "" )
 
     # Check if the current path matches the expected path
-    if [[ "$current_relay_path" != "$RPC_API_KEY" ]]; then
-      echo "Updating RPC path from '$current_relay_path' to '$RPC_API_KEY'..."
+    if [[ "$current_para_path" != "$RPC_API_KEY" ]]; then
+      echo "Updating RPC path from '$current_para_path' to '$RPC_API_KEY'..."
       # Replace the old path with the new path
-      sudo sed -i "s|$current_relay_path|$RPC_API_KEY|" "$HAPROXY_CONFIG_FILE"
       sudo sed -i "s|$current_para_path|$RPC_API_KEY|" "$HAPROXY_CONFIG_FILE"
       echo "RPC path updated successfully."
     else
@@ -109,41 +120,44 @@ frontend rpc_frontend
 #    bind *:443 ssl crt /etc/haproxy/ssl/${DOMAIN}.pem alpn h2,http/1.1
 #    http-request redirect scheme https unless { ssl_fc }
     acl letsencrypt-acl path_beg /.well-known/acme-challenge/
-    acl is_relay_rpc path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}relay-rpc
     acl is_para_rpc path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}para-rpc
+    acl is_grafana path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}grafana
     acl sidecar_api path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}api
+    acl is_polkadotjs path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}polkadotjs
     use_backend letsencrypt-backend if letsencrypt-acl
-    use_backend relay_rpc_backend if is_relay_rpc
     use_backend para_rpc_backend if is_para_rpc
+    use_backend grafana_backend if is_grafana
     use_backend sidecar if sidecar_api
+    use_backend polkadotjs_backend if is_polkadotjs
     default_backend perfuse_ui"
 
-  local relay_backend_config="
-backend relay_rpc_backend
-    mode http
-    balance roundrobin
-    $basic_auth_line
-    option forwardfor
-    server relaychain_rpc_1 127.0.0.1:${RELAY_RPC_PORT}"
   local parachain_backend_config="
 backend para_rpc_backend
     mode http
-    balance roundrobin
     $basic_auth_line
-    option forwardfor
     server substrate_rpc_1 127.0.0.1:${PARA_RPC_PORT}"
 
   local perfuse_ui_config="
 backend perfuse_ui
     mode http
-    balance roundrobin
     option forwardfor
     server perfuse_ui 127.0.0.1:${PERFUSE_PORT}"
+
+  local polkadotjs_backend_config="
+backend polkadotjs_backend
+    mode http
+    http-request set-path %[path,regsub(^/${RPC_API_KEY}/polkadotjs/,/)]
+    server perfuse_ui 127.0.0.1:${POLKADOTJS_PORT}"
+
+  local grafana_backend_config="
+backend grafana_backend
+    mode http
+    $basic_auth_line
+    server grafana 127.0.0.1:${GRAFANA_PORT}"
 
   local sidecar_config="
 backend sidecar
     mode http
-    balance roundrobin
     option forwardfor
     server sidecar 127.0.0.1:${SIDECAR_PORT}"    
 
@@ -152,7 +166,7 @@ backend letsencrypt-backend
     server certbot 127.0.0.1:8888"
 
   # Check if frontend and backend already exist
-  if grep -q "^frontend rpc_frontend" "$HAPROXY_CONFIG_FILE" || grep -q "^backend relay_rpc_backend" "$HAPROXY_CONFIG_FILE"; then
+  if grep -q "^frontend rpc_frontend" "$HAPROXY_CONFIG_FILE" || grep -q "^backend para_rpc_backend" "$HAPROXY_CONFIG_FILE"; then
     echo "Frontend or backend configuration already exists in $HAPROXY_CONFIG_FILE"
     return
   fi
@@ -160,8 +174,9 @@ backend letsencrypt-backend
   # Append the configuration blocks
   echo "$frontend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$perfuse_ui_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
-  echo "$polkadotjs_app_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
-  echo "$relay_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
+  echo "$sidecar_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
+  echo "$grafana_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
+  echo "$polkadotjs_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$parachain_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$certbot_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
 

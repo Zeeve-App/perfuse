@@ -1,5 +1,16 @@
+/**
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024 [Perfuse]
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import { VariantProps, cva } from "class-variance-authority";
-import React, { forwardRef } from "react";
+import React, { forwardRef, useState } from "react";
 // import { IconInfoCircle } from "@zeeve-platform/icons/essential/outline";
 import { Label } from "../Label";
 import { IconButton } from "../../Button";
@@ -7,9 +18,13 @@ import { Tooltip } from "../../Tooltip";
 import { RemoveProperties } from "../../core";
 import { useID } from "@/hooks";
 import { tx } from "@/utils/shared";
+import SvgEye from "@/lib/icons/security/outline/Eye";
+import SvgEyeSlash from "@/lib/icons/security/outline/EyeSlash";
 
+/** variants for input */
 const styles = cva(
-  "peer w-full appearance-none truncate rounded-lg border border-brand-outline p-4 text-sm font-medium leading-5 text-brand-dark placeholder:text-brand-dark/60 focus:border-zinc-300 focus:outline-none focus:ring-1 focus:ring-zinc-300 focus-visible:outline-none disabled:cursor-not-allowed disabled:bg-[#f3f6fd] disabled:font-normal disabled:text-brand-dark/60",
+  /** classes for all the variant */
+  "placeholder:text-theme-accent-foreground/60 disabled:text-theme-accent-foreground/60 disabled:bg-theme-foreground/60 peer w-full appearance-none truncate rounded-lg border border-brand-outline bg-theme-foreground p-4 text-sm font-medium leading-5 text-theme-accent-content focus:border-[#E8DCFE] focus:bg-theme-accent-foreground focus:outline-none focus:ring-0 focus-visible:outline-none disabled:cursor-not-allowed disabled:font-normal disabled:opacity-50",
   {
     variants: {
       size: {
@@ -24,17 +39,20 @@ const styles = cva(
         true: "pr-12",
       },
     },
+    /** default variant */
     defaultVariants: {
       size: "medium",
     },
   },
 );
 
-type FloatingLabel = {
+/** floating label props */
+interface FloatingLabel {
   labelText: string;
   floatingLabelProps?: React.ComponentPropsWithRef<"label">;
-};
+}
 
+/** Input props */
 interface InputProps
   extends RemoveProperties<React.ComponentPropsWithRef<"input">, "required" | "disabled" | "size">,
     RemoveProperties<VariantProps<typeof styles>, "iconLeft" | "iconRight"> {
@@ -49,6 +67,7 @@ interface InputProps
   tooltip?: string | React.ReactElement;
 }
 
+/** Input components */
 const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const {
     className,
@@ -64,8 +83,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     isRequired,
     id,
     tooltip,
+    type,
     ...rest
   } = props;
+
+  const [showPassword, toggleShowPassword] = useState(false);
 
   const [_id] = useID(id, "input");
 
@@ -103,9 +125,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
             iconRight: iconRight ? true : false,
             className,
           }),
+          "pr-10",
         )}
         required={isRequired}
         disabled={isDisabled}
+        type={type === "password" ? (showPassword ? "text" : "password") : type}
         placeholder={floatingLabel === undefined ? placeholder : " "}
         ref={ref}
         {...rest}
@@ -119,7 +143,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
           isRequired={isRequired}
           isDisabled={isDisabled}
           className={tx(
-            "absolute left-4 right-4 top-4 origin-[0] -translate-y-4 scale-75 transform cursor-text gap-1 font-sans text-sm font-medium text-brand-dark/60 transition-all duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-base peer-focus:left-4 peer-focus:top-4 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-sm",
+            "absolute left-4 right-4 top-4 origin-[0] -translate-y-4 scale-75 transform cursor-text gap-1 font-sans text-sm font-medium text-theme-accent-foreground/60 transition-all duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-base peer-focus:left-4 peer-focus:top-4 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-sm",
             { "peer-placeholder-shown:left-12": iconLeft },
             { "right-12": iconRight },
             floatingLabel.floatingLabelProps?.className,
@@ -139,6 +163,18 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
         </Label>
       )}
 
+      {type === "password" &&
+        (showPassword ? (
+          <SvgEyeSlash
+            onClick={() => toggleShowPassword((e) => !e)}
+            className="absolute  right-4 top-5 size-6 text-theme-primary-content"
+          />
+        ) : (
+          <SvgEye
+            onClick={() => toggleShowPassword((e) => !e)}
+            className="absolute  right-4 top-5 size-6 text-theme-primary-content"
+          />
+        ))}
       {/* right icon */}
       {iconRight && (
         <div

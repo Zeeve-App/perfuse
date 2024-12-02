@@ -1,3 +1,14 @@
+/**
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024 [Perfuse]
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import React from "react";
 // import { IconNotificationBell2 } from "@zeeve-platform/icons/notification/outline";
 // import { IconButton } from "@zeeve-platform/ui";
@@ -5,10 +16,12 @@ import { IconButton } from "../Button";
 import { useNotificationsWebsocketContext } from "./NotificationsWebsocketContext";
 import SvgNotificationBell1 from "@/lib/icons/notification/outline/NotificationBell1";
 
+/** notification props */
 interface NotificationBellProps {
   handleOpen: () => void;
 }
 
+/** notification bell component */
 const NotificationBell = (props: NotificationBellProps) => {
   const { handleOpen } = props;
 
@@ -43,7 +56,7 @@ const NotificationBell = (props: NotificationBellProps) => {
           <span className="relative inline-flex size-2.5 rounded-full bg-red-500"></span>
         </span>
       )}
-      <SvgNotificationBell1 className="text-brand-dark-blue text-2xl" />
+      <SvgNotificationBell1 className="text-2xl text-brand-dark-blue" />
     </IconButton>
   );
 };

@@ -1,3 +1,14 @@
+/**
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024 [Perfuse]
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 /* eslint-disable react/display-name */
 import { VariantProps, cva } from "class-variance-authority";
 import React, { forwardRef } from "react";
@@ -6,8 +17,10 @@ import { RemoveProperties } from "../../core";
 import { useID } from "@/hooks";
 import { tx } from "@/utils/shared";
 
+/** checkbox label props */
 interface CheckboxLabelProps extends LabelProps {}
 
+/** checkbox label component */
 const CheckboxLabel = forwardRef<HTMLLabelElement, CheckboxLabelProps>((props, ref) => {
   const { children, className, isDisabled, isRequired, ...rest } = props;
 
@@ -24,12 +37,14 @@ const CheckboxLabel = forwardRef<HTMLLabelElement, CheckboxLabelProps>((props, r
   );
 });
 
+/** check box variant */
 const styles = cva(
-  "cursor-pointer appearance-none  rounded-full border-2 border-brand-outline focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-1 focus-visible:outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+  /** checkbox classes for all variants */
+  "cursor-pointer appearance-none  rounded-md border-2 border-brand-outline focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:ring-offset-1 focus-visible:outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
       colorScheme: {
-        primary: "text-brand-primary",
+        primary: "text-brand-blue",
         blue: "text-brand-blue",
         dark: "text-brand-dark",
         red: "text-brand-red",
@@ -48,6 +63,7 @@ const styles = cva(
         large: "size-8",
       },
     },
+    /** default variants */
     defaultVariants: {
       colorScheme: "primary",
       size: "medium",
@@ -55,6 +71,7 @@ const styles = cva(
   },
 );
 
+/** check box props */
 interface CheckboxProps
   extends RemoveProperties<React.ComponentPropsWithRef<"input">, "type" | "size" | "checked" | "disabled" | "required">,
     VariantProps<typeof styles> {
@@ -64,6 +81,7 @@ interface CheckboxProps
   checkboxLabelProps?: React.ComponentPropsWithRef<"label">;
 }
 
+/** checkbox component */
 const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>((props, ref) => {
   const { children, isDisabled, isChecked, isRequired, checkboxLabelProps, colorScheme, size, className, id, ...rest } =
     props;

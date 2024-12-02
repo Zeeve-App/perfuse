@@ -1,9 +1,22 @@
+/**
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024 [Perfuse]
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import { cva, VariantProps } from "class-variance-authority";
 import React, { forwardRef } from "react";
 import { Spinner } from "../Spinner";
 import { tx } from "@/utils/shared";
 
+/** icon button variants */
 const styles = cva(
+  /** common class for all variants */
   "inline-flex shrink-0 select-none items-center justify-center rounded-lg border border-transparent text-center align-middle font-poppins font-medium outline-none transition-all duration-300 focus:ring-2 focus:ring-zinc-300 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
@@ -20,7 +33,7 @@ const styles = cva(
         large: "size-12 text-lg",
       },
       colorScheme: {
-        primary: "bg-brand-primary text-brand-primary",
+        primary: "bg-theme-primary-content text-theme-primary-content",
         blue: "bg-brand-blue text-brand-blue",
         dark: "bg-brand-dark text-brand-dark",
         red: "bg-brand-red text-brand-red",
@@ -81,6 +94,7 @@ const styles = cva(
         className: "size-max p-0",
       },
     ],
+    /** default variants */
     defaultVariants: {
       variant: "solid",
       colorScheme: "primary",
@@ -89,11 +103,13 @@ const styles = cva(
   },
 );
 
+/** icon button props */
 interface IconButtonProps extends Omit<React.ComponentPropsWithRef<"button">, "disabled">, VariantProps<typeof styles> {
   isDisabled?: boolean;
   isLoading?: boolean;
 }
 
+/** icon button component */
 const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>((props, ref) => {
   const {
     colorScheme,

@@ -1,6 +1,17 @@
+/**
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024 [Perfuse]
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import React from "react";
+import { ReactSelect } from "../ReactSelect";
 import { IconButton } from "@/lib/components/Button";
-import { Option, Select } from "@/lib/components/Form";
 import { tx } from "@/utils/shared";
 
 type PaginationState = {
@@ -34,7 +45,7 @@ const Pagination = <T extends object>({ pagination, data, className }: Paginatio
           {pagination?.pageSizes?.length ? (
             <div className="flex items-center gap-2">
               <p>Rows:</p>
-              <Select
+              <ReactSelect
                 size="small"
                 className="max-h-[36px] w-max cursor-pointer border bg-transparent bg-none p-0 px-1 text-sm outline-none"
                 value={pagination.pageSize}
@@ -42,16 +53,11 @@ const Pagination = <T extends object>({ pagination, data, className }: Paginatio
                   pagination.setPagination({
                     pageCount: pagination.pageCount,
                     pageIndex: pagination.pageIndex,
-                    pageSize: Number(e.target.value),
+                    pageSize: Number(e),
                   });
                 }}
-              >
-                {pagination?.pageSizes?.map((pageSize) => (
-                  <Option key={pageSize} value={pageSize}>
-                    {pageSize}
-                  </Option>
-                ))}
-              </Select>
+                options={pagination?.pageSizes?.map((pageSize) => ({ label: pageSize, value: pageSize }))}
+              ></ReactSelect>
             </div>
           ) : null}
           <IconButton

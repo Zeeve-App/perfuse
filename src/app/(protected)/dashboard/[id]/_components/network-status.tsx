@@ -1,0 +1,56 @@
+/**
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024 [Perfuse]
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+import { TaskDbRow } from "@/db-queries";
+import { Badge } from "@/lib/components/Badge/Badge";
+import { useNetworkStore } from "@/store/network";
+import { tx } from "@/utils/shared";
+
+/** network status component */
+const NetworkStatus = ({ className }: { className?: string }) => {
+  const networkInfo = useNetworkStore((e) => e.networkInfo);
+  const status = networkInfo.data?.networkStatus ?? "pending";
+  const authorizationStatus = networkInfo.data?.blockHeight == 0;
+
+  const statusLabelMap: Record<TaskDbRow["task_status"], string> = {
+    pending: "Pending",
+    inprogress: "In Progress",
+    completed: "Ready",
+    failed: "Failed",
+  };
+
+  /** get variant from the status of the network */
+  const getVariant = (status: TaskDbRow["task_status"]) => {
+    if (status == "completed" && authorizationStatus) {
+      return "red";
+    }
+    if (status == "completed") {
+      return "green";
+    }
+    return "purple";
+  };
+
+  return (
+    <>
+      <Badge variant={getVariant(status)} className={tx(className)}>
+        {status !== "completed" ? (
+          statusLabelMap[status]
+        ) : authorizationStatus ? (
+          <>Auth.&nbsp;Pending</>
+        ) : (
+          statusLabelMap[status]
+        )}
+      </Badge>
+    </>
+  );
+};
+
+export default NetworkStatus;

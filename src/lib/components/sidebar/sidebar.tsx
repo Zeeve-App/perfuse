@@ -1,9 +1,18 @@
+/**
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024 [Perfuse]
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 "use client";
 import React, { Fragment, useEffect, useRef } from "react";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
-  SidebarDivider,
   Sidebar,
   SidebarItemGroup,
   SidebarItemGroupTitle,
@@ -13,10 +22,15 @@ import {
   SidebarItemDropdown,
   SidebarProps,
 } from "../sidebar/sub-components";
-import { ITEMS } from "./constants/sidebar";
+import { ITEMS } from "../../../constants/sidebar";
+import { ProfileDropDownMenu } from "../Header/profile-menu";
+import { IconButton } from "../Button";
 import ZeeveSidebarItemProps from "./type";
 import { tx } from "@/utils/shared";
-import { isActive, withBasePath } from "@/utils/helpers";
+import { isActive } from "@/utils/helpers";
+import SvgXMarkSquare from "@/lib/icons/essential/outline/XMarkSquare";
+import SvgMoon from "@/lib/icons/essential/outline/moon";
+import useDarkMode from "@/hooks/use-dark-mode";
 
 const ZeeveSidebarItemDropdown = ({
   item,
@@ -68,7 +82,7 @@ const ZeeveSidebarItemDropdown = ({
   );
 };
 
-const ZeeveSidebarItem = ({
+export const ZeeveSidebarItem = ({
   item,
   pathname,
   activePaths,
@@ -104,10 +118,11 @@ const ZeeveSidebarItem = ({
   );
 };
 
-const ZeeveSidebar = (props: SidebarProps) => {
+const ZeeveSidebar = (props: SidebarProps & { handleClose: () => void }) => {
   const { className, ...rest } = props;
 
   const pathname = usePathname();
+  const { theme, toggleTheme } = useDarkMode();
 
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -118,18 +133,13 @@ const ZeeveSidebar = (props: SidebarProps) => {
   }, []);
 
   return (
-    <Sidebar className={tx("w-full lg:w-full", className)} {...rest}>
-      <SidebarHeader className="justify-center">
-        <a href={`/`}>
-          <Image
-            src={withBasePath("/assets/images/parachains-logo.svg")}
-            alt="Zeeve Logo"
-            width={64}
-            height={64}
-            className="size-16"
-            priority
-          />
-        </a>
+    <Sidebar className={tx("w-full lg:w-full bg-theme-background", className)} {...rest}>
+      <SidebarHeader className="justify-between px-6">
+        <ProfileDropDownMenu />
+
+        <div onClick={() => props.handleClose()}>
+          <SvgXMarkSquare className="size-6 text-theme-primary" />
+        </div>
       </SidebarHeader>
       <SidebarItems ref={ref}>
         {ITEMS.length
@@ -156,6 +166,16 @@ const ZeeveSidebar = (props: SidebarProps) => {
             ))
           : null}
       </SidebarItems>
+      <div className="grow"></div>
+      <div className="p-6">
+        <IconButton
+          variant={"text"}
+          className="size-10 rounded-full  bg-theme-foreground"
+          onClick={() => toggleTheme()}
+        >
+          {theme === "dark" ? <SvgMoon fontSize={20} /> : <SvgMoon fontSize={24} />}
+        </IconButton>
+      </div>
     </Sidebar>
   );
 };

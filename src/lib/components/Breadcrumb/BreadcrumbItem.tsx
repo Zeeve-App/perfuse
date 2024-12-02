@@ -1,9 +1,21 @@
+/**
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024 [Perfuse]
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 /* eslint-disable react/display-name */
 import React, { forwardRef, useMemo } from "react";
 import { PolymorphicComponentPropsWithRef, PolymorphicRef } from "../core";
 import { useBreadcrumb } from "./useBreadcrumb";
 import { tx } from "@/utils/shared";
 
+/** breadcrumb item props */
 type BreadcrumbItemProps<C extends React.ElementType> = PolymorphicComponentPropsWithRef<
   C,
   {
@@ -13,8 +25,10 @@ type BreadcrumbItemProps<C extends React.ElementType> = PolymorphicComponentProp
   }
 >;
 
+/** breadcrumb item component type */
 type BreadcrumbItemComponent = <C extends React.ElementType = "a">(props: BreadcrumbItemProps<C>) => React.ReactNode;
 
+/** breadcrumb item component */
 const BreadcrumbItem: BreadcrumbItemComponent = forwardRef(
   <C extends React.ElementType>(
     { as, href, isActive, separator, className, children, breadcrumbSeparatorProps, ...rest }: BreadcrumbItemProps<C>,

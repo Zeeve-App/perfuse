@@ -1,3 +1,14 @@
+/**
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024 [Perfuse]
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import React, { forwardRef } from "react";
 
 import { Button, ButtonProps } from "../Button";
@@ -7,12 +18,14 @@ import { useActiveAccordionContext } from "./ActiveAccordionContextProvider";
 import { tx } from "@/utils/shared";
 import SvgChevronDownSquare from "@/lib/icons/arrows/outline/ChevronDownSquare";
 
+/** accordion header props */
 interface AccordionHeaderProps extends RemoveProperties<ButtonProps, "iconLeft" | "iconRight"> {
   itemIndex?: number;
   iconCollapsed?: React.ReactElement;
   iconExpanded?: React.ReactElement;
 }
 
+/** accordion header component */
 const AccordionHeader = forwardRef<HTMLButtonElement, AccordionHeaderProps>((props, ref) => {
   const { className, itemIndex = 0, children, onClick, iconCollapsed, iconExpanded, ...rest } = props;
 
@@ -27,13 +40,16 @@ const AccordionHeader = forwardRef<HTMLButtonElement, AccordionHeaderProps>((pro
     <SvgChevronDownSquare
       height={24}
       width={24}
-      className={`${isExpanded ? "-rotate-180" : ""} text-brand-dark-blue transition-all duration-200`}
+      className={`${isExpanded ? "-rotate-180" : ""} text-theme-primary-content transition-all duration-200`}
     />
   );
 
   return (
     <Button
-      className={tx("flex justify-between rounded-none border-none bg-transparent hover:bg-slate-200 ", className)}
+      className={tx(
+        "flex justify-between text-theme-primary-content rounded-none border-none bg-transparent hover:bg-theme-foreground ",
+        className,
+      )}
       iconRight={icon}
       onClick={(event) => {
         toggleAccordion(itemIndex);

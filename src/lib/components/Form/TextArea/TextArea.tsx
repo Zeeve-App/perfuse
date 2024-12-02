@@ -1,3 +1,14 @@
+/**
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024 [Perfuse]
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import React, { ComponentPropsWithRef, forwardRef } from "react";
 import { VariantProps, cva } from "class-variance-authority";
 // import { IconInfoCircle } from "@zeeve-platform/icons/essential/outline";
@@ -8,7 +19,9 @@ import { RemoveProperties } from "../../core";
 import { useID } from "@/hooks";
 import { tx } from "@/utils/shared";
 
+/** textarea variants */
 const styles = cva(
+  /** common classes for all the component */
   "peer w-full appearance-none rounded-lg border border-brand-outline bg-brand-light p-4 text-sm font-medium leading-5 text-brand-dark placeholder:truncate placeholder:text-brand-dark/60 focus:border-zinc-300 focus:outline-none focus:ring-1 focus:ring-zinc-300 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
@@ -22,17 +35,20 @@ const styles = cva(
         true: "pr-12",
       },
     },
+    /** default variants */
     defaultVariants: {
       size: "medium",
     },
   },
 );
 
+/** floating label props */
 type FloatingLabel = {
   labelText: string;
   floatingLabelProps?: ComponentPropsWithRef<"label">;
 };
 
+/** text area props */
 interface TextAreaProps
   extends RemoveProperties<ComponentPropsWithRef<"textarea">, "disabled" | "required">,
     RemoveProperties<VariantProps<typeof styles>, "iconRight" | "iconLeft"> {
@@ -47,6 +63,7 @@ interface TextAreaProps
   tooltip?: string | React.ReactElement;
 }
 
+/** text area component */
 const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>((props, ref) => {
   const {
     className,

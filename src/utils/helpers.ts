@@ -1,4 +1,17 @@
+/**
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024 [Perfuse]
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import { format, parseISO, intervalToDuration } from "date-fns";
+import { ChainSpecFileType } from "@/types/chain-spec";
+import { NodeDbRow } from "@/db-queries";
 
 /**
  * to show standard formatted time and make it common throughout the application
@@ -11,9 +24,19 @@ const formatDate = (date?: Date | string) => {
   }
 
   const isString = typeof date == "string";
-  return format(parseISO(isString ? date : date.toISOString()), "dd MMM yyyy, hh:mm:ss a");
+  return format(parseISO(isString ? new Date(date).toISOString() : date.toISOString()), "dd MMM yyyy, hh:mm:ss a");
 };
-
+/**
+ * to make the capitalize the first letter
+ * @param string string to format
+ * @returns `string`
+ */
+const capitalizeFirstLetter = (string: string) => {
+  if (string.length === 0) {
+    return string; // Return an empty string if the input is empty
+  }
+  return string[0].toUpperCase() + string.slice(1);
+};
 /**
  * to convert into formatted human readable age string
  * @param startDate starting date object or ISO string
@@ -24,6 +47,7 @@ const formatIntoAge = (startDate?: Date | string, endDate?: Date | string): stri
   if (!startDate || !endDate) {
     return "NA";
   }
+
   const { years, months, days, hours, minutes, seconds } = intervalToDuration({
     start: new Date(startDate).getTime(),
     end: new Date(endDate).getTime(),
@@ -71,12 +95,27 @@ const isActive = (pathname: string, paths: string[]): boolean => {
   return false;
 };
 
+/** constructing rpc endpoints */
+const formatEndpoint = (
+  type: "https" | "wss",
+  endpoint?: string,
+  credType?: NodeDbRow["node_auth_method"],
+  apiKey?: string,
+  rpcType?: "para-rpc" | "relay-rpc" | "api",
+) => {
+  if (endpoint && credType) {
+    return `${type.slice(0, -1)}://${endpoint}${credType === "api_key" ? `/${apiKey}` : ""}/${rpcType ?? "para-rpc"}`;
+  }
+  return "NA";
+};
+
 /**
  * to short the string
  * @param string string to format
  * @returns `string`
  */
-const toShortString = (string: string, startCharCount = 5, endCharCount = 5) => {
+const toShortString = (string: string | undefined, startCharCount = 5, endCharCount = 5) => {
+  if (!string) return "";
   if (string.length < startCharCount + 3) return string;
   const finalEndCharCount =
     string.length - startCharCount > endCharCount
@@ -161,6 +200,21 @@ const calculateDaysLeft = (end: Date): number => {
   return daysLeft;
 };
 
+/** function get session keys from chain spec */
+function getSessionKey(
+  runtimeGenesis: ChainSpecFileType["genesis"]["runtimeGenesis"],
+  collatorAddresses: string,
+): string {
+  const aura = runtimeGenesis.patch.session.keys.find((e) => {
+    console.log({ e });
+
+    return typeof e[0] === "string" && e[0] === collatorAddresses;
+  });
+  console.log({ aura });
+
+  return typeof aura?.[2] !== "string" ? aura?.[2]?.aura ?? "" : "";
+}
+
 export {
   withBasePath,
   isActive,
@@ -169,6 +223,9 @@ export {
   toCapitalize,
   formateNumber,
   calculateDaysLeft,
+  capitalizeFirstLetter,
   formatDate,
   formatIntoAge,
+  formatEndpoint,
+  getSessionKey,
 };

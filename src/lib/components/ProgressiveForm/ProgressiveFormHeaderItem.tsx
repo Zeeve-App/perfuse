@@ -1,9 +1,21 @@
+/**
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024 [Perfuse]
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import React, { forwardRef, useEffect, useMemo } from "react";
 import { HTMLMotionProps, motion } from "framer-motion";
 import { RemoveProperties } from "../core";
 import { FormStatus, useProgressiveFormContext } from "./ProgressiveFormContext";
 import { tx } from "@/utils/shared";
 
+/** progressive form header item props */
 interface ProgressiveFormHeaderItemProps extends RemoveProperties<HTMLMotionProps<"div">, "title"> {
   icons?: {
     idle?: React.ReactElement;
@@ -21,12 +33,14 @@ interface ProgressiveFormHeaderItemProps extends RemoveProperties<HTMLMotionProp
   isLast?: boolean;
 }
 
+/** default icons */
 const defaultIcons: ProgressiveFormHeaderItemProps["icons"] = {
   idle: <div data-status="idle" className="size-3 rounded-full bg-slate-300" />,
   active: <div data-status="active" className="size-3 rounded-full bg-brand-yellow" />,
   completed: <div data-status="completed" className="size-3 rounded-full bg-brand-green" />,
 };
 
+/** progressive form header item component */
 const ProgressiveFormHeaderItem = forwardRef<HTMLDivElement, ProgressiveFormHeaderItemProps>((props, ref) => {
   const {
     icons,
@@ -46,6 +60,7 @@ const ProgressiveFormHeaderItem = forwardRef<HTMLDivElement, ProgressiveFormHead
 
   const status = useMemo(() => formStatus(componentIndex), [componentIndex, activeStep]);
 
+  /** get icon from the props */
   const getIcon = (data: ProgressiveFormHeaderItemProps["icons"], status: FormStatus) => {
     if (data === undefined || data === null) return defaultIcons[status];
     else return data[status] ? data[status] : defaultIcons[status];
@@ -63,6 +78,7 @@ const ProgressiveFormHeaderItem = forwardRef<HTMLDivElement, ProgressiveFormHead
     } else return false;
   }, [shouldHideIcon, isCompact, shouldHideIconOnCompact, shouldHideHeaderIconsOnCompact]);
 
+  /** get step label */
   const getStepLabel = (stepLabel: ProgressiveFormHeaderItemProps["stepLabel"], index: number) => {
     if (typeof stepLabel === "function") return stepLabel(index + 1);
     if (typeof stepLabel === "string") return stepLabel || `Step ${index + 1}`;
@@ -73,7 +89,7 @@ const ProgressiveFormHeaderItem = forwardRef<HTMLDivElement, ProgressiveFormHead
 
   return (
     <motion.div className={tx("grid grid-cols-12", isLast ? "flex-grow-0" : "flex-grow")}>
-      <motion.div className={tx(isLast ? "col-span-12" : "col-span-4")}>
+      <motion.div className={tx(isLast ? "col-span-12" : "col-span-5")}>
         <motion.div
           ref={ref}
           {...rest}
@@ -109,6 +125,7 @@ const ProgressiveFormHeaderItem = forwardRef<HTMLDivElement, ProgressiveFormHead
                 {...titleProps}
                 className={tx(
                   "font-poppins text-sm text-brand-gray font-semibold tracking-[0.1px]",
+                  { "text-brand-darker-blue": status === "active" },
                   titleProps?.className,
                 )}
               >
@@ -121,7 +138,7 @@ const ProgressiveFormHeaderItem = forwardRef<HTMLDivElement, ProgressiveFormHead
         </motion.div>
       </motion.div>
       {!isLast && (
-        <motion.div className="col-span-8 flex items-center justify-center">
+        <motion.div className="col-span-7 flex items-center justify-center">
           <div className={tx("w-full border", status === "idle" ? "" : "border-brand-blue")}></div>
         </motion.div>
       )}

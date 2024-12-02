@@ -1,9 +1,21 @@
+/**
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024 [Perfuse]
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import useSWR from "swr";
 import useFetcher from "@/hooks/use-fetcher";
 import { withBasePath } from "@/utils/helpers";
+import { useNetworkStore } from "@/store/network";
 
 /** interface declaration of network list API response payload */
-interface ResponsePayload {
+interface BlockHeightResponsePayload {
   jsonrpc: string;
   result: Result;
   id: number;
@@ -31,18 +43,25 @@ interface Digest {
   logs: string[];
 }
 
+/** api endpoint to get block height */
 const apiEndpoint = withBasePath("/api/block-height");
 
-/** hook to use network list api */
+/** hook to get the block number */
 const useBlockNumberApi = () => {
   const fetcher = useFetcher();
+  /** network info from store */
+  const netInfo = useNetworkStore((e) => e.networkInfo);
 
-  const request = useSWR<ResponsePayload, Record<string, string>>(apiEndpoint, fetcher, {
-    shouldRetryOnError: false,
-  });
+  const request = useSWR<BlockHeightResponsePayload, Record<string, string>>(
+    netInfo.data?.networkId ? apiEndpoint : undefined,
+    fetcher,
+    {
+      shouldRetryOnError: false,
+    },
+  );
 
   return request;
 };
 
-export type { ResponsePayload };
+export type { BlockHeightResponsePayload };
 export default useBlockNumberApi;

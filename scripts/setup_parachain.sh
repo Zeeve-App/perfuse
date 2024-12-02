@@ -1,8 +1,23 @@
 #!/bin/bash
 
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Copyright (C) 2024 [Perfuse]
+#
+# This program is free software: you can redistribute it and/or modify 
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 set -e
 set -u
 
+PATH="$HOME/.nvm/versions/node/v20.15.1/bin:$PATH"
+export NVM_DIR=$HOME/.nvm;
+source $NVM_DIR/nvm.sh;
 SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
 # Load environment variables from .env file
 if [ -f "$SCRIPT_DIR/../perfuse/.env" ]; then
@@ -15,21 +30,20 @@ fi
 
 # Configuration variables
 service_config=(
-  "${COL_NAME_1}:--alice"   # Collator node 1 with --alice
-  "${COL_NAME_2}:--bob"     # Collator node 2 with --bob
-  "${RPC_NAME}:"            # RPC node 
+  "${COL_NAME_1}:"   # Collator node 1 
+  "${COL_NAME_2}:"   # Collator node 2 
+  "${RPC_NAME}:"     # RPC node 
 )
 
 ports=(40334 40335 40336)
 rpc_ports=(9008 9009 9010)
 prometheus_ports=(8004 8005 8006)
 base_path_template="/home/perfuse/parachain/%s/data"  # Data directory template
-relaychain_key_dir="${RELAYCHAIN_KEY_DIR:-/home/perfuse/relaychain_keys}"
 parachain_key_dir="${PARACHAIN_KEY_DIR:-/home/perfuse/parachain_keys}"
 parachain_dir="/home/perfuse/parachain"
 chain_spec="$parachain_dir/raw-parachain-chainspec.json"
-relay_chain_spec="$parachain_dir/rococo_relay_chain_spec_raw.json"
 extra_params="--unsafe-rpc-external --rpc-methods unsafe"
+network="$NETWORK_TYPE"
 
 source $SCRIPT_DIR/generate_keys.sh
 setup_sidecar() {
@@ -60,10 +74,6 @@ get_bootnode_id() {
     echo "$bootnode_id"
 }
 
-if [ $TEMPLATE = "custom" ] ; then
-sudo chmod +x $SCRIPT_DIR/../perfuse/bin.bin
-sudo mv $SCRIPT_DIR/../perfuse/bin.bin /usr/local/bin/polkadot-parachain
-fi
 
 # Function to create a service
 create_service() {
@@ -75,8 +85,6 @@ create_service() {
   local rpc_port="$3"
   local prometheus_port="$4"
   local base_path=$(printf "$base_path_template" "$service_name")
-  local relay_bootnode_id1=$(get_bootnode_id "${relaychain_key_dir}/relaychain_node_key_1.txt" )
-  local relay_bootnode_id2=$(get_bootnode_id "${relaychain_key_dir}/relaychain_node_key_2.txt" )
 
   sudo mkdir -p $base_path
   sudo chown -R $SCRIPT_USER:$SCRIPT_USER $base_path
@@ -95,7 +103,6 @@ create_service() {
   # Add extra parameters (e.g., prometheus-port, rpc-max-connections)
   exec_start+=" \
     --prometheus-port $prometheus_port \
-    --rpc-max-connections 50000 \
     --port $port \
     --rpc-port $rpc_port \
     $extra_params"
@@ -106,19 +113,20 @@ create_service() {
       --collator \
       --node-key-file $parachain_key_dir/collator_node_key_$count.txt \
       -- \
-      --chain $relay_chain_spec \
-      --execution wasm \
+      --chain $network \
+      --sync warp \
       --port $((port + 2022)) \
-      --rpc-port $((rpc_port + 2022)) \
-      --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/$relay_bootnode_id1 /ip4/127.0.0.1/tcp/30334/p2p/$relay_bootnode_id2"
+      --rpc-port $((rpc_port + 2022)) "
   else
     exec_start+=" \
+      --rpc-max-connections 50000 \
+      --state-pruning archive \
       -- \
-      --chain $relay_chain_spec \
-      --execution wasm \
+      --chain $network \
+      --sync warp \
+      --state-pruning 1000 \
       --port $((port + 2022)) \
-      --rpc-port $((rpc_port + 2022)) \
-      --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/$relay_bootnode_id1 /ip4/127.0.0.1/tcp/30334/p2p/$relay_bootnode_id2"
+      --rpc-port $((rpc_port + 2022)) "
   fi
 
   cat <<EOF >/etc/systemd/system/${service_name}.service
@@ -145,6 +153,29 @@ EOF
   sudo systemctl start ${service_name}.service
 }
 
+sidecar_setup() {
+  # Check if api-sidecar is already installed
+  if ! command -v substrate-api-sidecar &> /dev/null; then 
+    echo "Installing @substrate/api-sidecar..."
+    npm i -g @substrate/api-sidecar
+  else
+    echo "@substrate/api-sidecar is already installed."
+  fi
+
+  # ENV VAR for Sidecar
+  export SAS_EXPRESS_BIND_HOST=0.0.0.0
+  export SAS_EXPRESS_PORT=9099
+  export SAS_SUBSTRATE_URL=ws://127.0.0.1:9010
+
+  if pm2 list | grep -q "substrate-api-sidecar"; then
+    echo "Restarting existing sidecar process..."
+    pm2 restart substrate-api-sidecar
+  else
+    echo "Starting sidecar..."
+    pm2 start "substrate-api-sidecar"
+  fi
+}
+
 # Main loop
 count=1
 for i in "${!service_config[@]}"; do
@@ -152,4 +183,10 @@ for i in "${!service_config[@]}"; do
   count=$((count + 1))
 done
 
-setup_sidecar
+if [[ $SIDECAR == 1 ]]; then
+  echo "Configuring the Sidecar......."
+  sidecar_setup
+  echo "Sidecar is running now."
+else
+  echo "Skipping the Sidecar Setup"
+fi

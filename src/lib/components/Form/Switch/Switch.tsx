@@ -1,13 +1,26 @@
+/**
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024 [Perfuse]
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 /* eslint-disable react/display-name */
-import React, { forwardRef } from "react";
+import React, { forwardRef, useEffect } from "react";
 import { cva, VariantProps } from "class-variance-authority";
 import { Label, LabelProps } from "../Label";
 import { RemoveProperties } from "../../core";
 import { useID } from "@/hooks";
 import { tx } from "@/utils/shared";
 
+/** switch label props */
 interface SwitchLabelProps extends LabelProps {}
 
+/** switch label component */
 const SwitchLabel = forwardRef<HTMLLabelElement, SwitchLabelProps>((props, ref) => {
   const { children, className, isDisabled, isRequired, ...rest } = props;
 
@@ -24,7 +37,9 @@ const SwitchLabel = forwardRef<HTMLLabelElement, SwitchLabelProps>((props, ref) 
   );
 });
 
+/** switch variants */
 const styles = cva(
+  /** common variants for all the variants */
   "inline-flex items-center rounded-full bg-brand-outline after:absolute after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-zinc-300 peer-focus:ring-offset-1 peer-focus-visible:outline-none peer-disabled:pointer-events-none peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
   {
     variants: {
@@ -45,10 +60,11 @@ const styles = cva(
       },
       size: {
         small: "h-4 w-7 p-1.5 after:size-2",
-        medium: "h-6 w-10 p-2 after:size-3",
-        large: "h-8 w-12 p-2 after:size-4",
+        medium: "h-6 w-12 p-2 after:size-4",
+        large: "h-8 w-14 p-2 after:size-5",
       },
     },
+    /** default variants */
     defaultVariants: {
       colorScheme: "gradient",
       size: "medium",
@@ -56,6 +72,7 @@ const styles = cva(
   },
 );
 
+/** switch props */
 interface SwitchProps
   extends RemoveProperties<React.ComponentPropsWithRef<"input">, "type" | "size" | "checked" | "disabled" | "required">,
     VariantProps<typeof styles> {
@@ -65,12 +82,16 @@ interface SwitchProps
   switchLabelProps?: React.ComponentPropsWithRef<"label">;
 }
 
+/** switch components */
 const Switch = forwardRef<HTMLInputElement, SwitchProps>((props, ref) => {
   const { children, isDisabled, isChecked, isRequired, switchLabelProps, colorScheme, size, className, id, ...rest } =
     props;
 
   const [_id] = useID(id, "switch");
 
+  useEffect(() => {
+    console.log({ isChecked });
+  }, [isChecked]);
   return (
     <SwitchLabel htmlFor={_id} isDisabled={isDisabled} {...switchLabelProps}>
       <input

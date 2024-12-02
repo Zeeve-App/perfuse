@@ -4,7 +4,6 @@ const nextConfig = {
     serverComponentsExternalPackages: ["knex"],
   },
   basePath: process.env.NEXT_PUBLIC_BASE_PATH ?? "",
-  output: "standalone",
 };
 
 export default nextConfig;

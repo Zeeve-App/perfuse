@@ -1,3 +1,14 @@
+/**
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2024 [Perfuse]
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import React, { useCallback, useMemo } from "react";
 import {
   ColumnDef,
@@ -8,8 +19,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { IconButton } from "../Button";
-import { Option, Select } from "../Form";
 import { TableContainer, Table, Thead, Tr, Th, Tbody, Td, Tfoot } from "../Table";
+import { ReactSelect } from "../ReactSelect";
 import { tx } from "@/utils/shared";
 
 interface ReactTablePaginationProps {
@@ -116,7 +127,7 @@ const ReactTable = <T extends object>(props: ReactTableProps<T>) => {
       <div className="relative">
         {/* table */}
         <TableContainer className={tx("border rounded-md ", classNames?.tableContainer)}>
-          <Table className={tx("border-collapse overflow-hidden ", classNames?.table)}>
+          <Table className={tx("border-collapse overflow-hidden  ", classNames?.table)}>
             <Thead className={tx("h-auto rounded-none px-4 py-3", classNames?.thead?.thead)}>
               {table.getHeaderGroups().map((headerGroup) => (
                 <Tr key={headerGroup.id} className={tx(classNames?.thead?.tr)}>
@@ -125,7 +136,7 @@ const ReactTable = <T extends object>(props: ReactTableProps<T>) => {
                       key={header.id}
                       colSpan={header.colSpan}
                       className={tx(
-                        "group relative p-3 font-semibold uppercase first-of-type:rounded-none last-of-type:rounded-none",
+                        "group relative p-3 font-semibold first-of-type:rounded-none last-of-type:rounded-none",
                         classNames?.thead?.th,
                       )}
                       style={{
@@ -208,20 +219,15 @@ const ReactTable = <T extends object>(props: ReactTableProps<T>) => {
           {pagination?.pageSizes?.length ? (
             <div className="flex items-center gap-2">
               <p>Rows:</p>
-              <Select
+              <ReactSelect
                 size="small"
                 className="max-h-[36px] w-max cursor-pointer border bg-transparent bg-none p-0 px-1 text-sm outline-none"
                 value={table.getState().pagination.pageSize}
                 onChange={(e) => {
-                  table.setPageSize(Number(e.target.value));
+                  table.setPageSize(Number(e));
                 }}
-              >
-                {pagination?.pageSizes?.map((pageSize) => (
-                  <Option key={pageSize} value={pageSize}>
-                    {pageSize}
-                  </Option>
-                ))}
-              </Select>
+                options={pagination?.pageSizes?.map((pageSize) => ({ label: pageSize, value: pageSize }))}
+              ></ReactSelect>
             </div>
           ) : null}
           <IconButton
