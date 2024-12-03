@@ -19,14 +19,14 @@ exports.up = async function (knex) {
   try {
     await knex.raw(`
         ALTER TABLE nodes 
-        ADD COLUMN node_collator_session_address TEXT;
+        ADD COLUMN node_collator_seed_added INTEGER CHECK (node_https_enabled IN (0, 1));
        `);
 
     await knex.raw(`
         ALTER TABLE nodes 
-        ADD COLUMN node_collator_session_seed TEXT;
+        ADD COLUMN node_collator_session_address TEXT;
+       `);
 
-    `);
   } catch (error) {
     console.log(error);
   }
@@ -45,7 +45,6 @@ exports.down = async function (knex) {
 
   await knex.raw(`
         ALTER TABLE nodes 
-        DROP COLUMN node_collator_session_seed;
-
-    `);
+        DROP COLUMN node_collator_seed_added;
+  `);
 };

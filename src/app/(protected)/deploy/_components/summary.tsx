@@ -24,7 +24,6 @@ import useApi from "@/api-client";
 import { Typography } from "@/lib/components/Typography/Typography";
 import { Badge } from "@/lib/components/Badge/Badge";
 import { withBasePath } from "@/utils/helpers";
-import { createWallet } from "@/utils/wallet";
 import { useToast } from "@/lib/components/Toast";
 
 /** deploy summary component */
@@ -49,11 +48,6 @@ export default function DeploySummary({
   const toast = useToast();
 
   const onSubmit = async (data: DeployNetworkValidationSchemaType) => {
-    const wallet1 = await createWallet();
-    const wallet2 = await createWallet();
-    data.accounts[0].sessionKey = wallet1.address;
-    data.accounts[1].sessionKey = wallet2.address;
-
     const chainSpec = data.chainSpecFile.contents;
     if (chainSpec.para_id) chainSpec.para_id = data.paraId;
     if (chainSpec.properties?.tokenDecimals) chainSpec.properties.tokenDecimals = data.decimalValue;
@@ -112,19 +106,17 @@ export default function DeploySummary({
           node_name: "collator_1",
           node_rpc_cors: "*",
           node_type: "collator",
-          node_address: data.accounts?.[0]?.sessionKey,
+          node_address: data.accounts?.[0]?.address,
           node_balance: parseInt(data.accounts?.[0]?.balance),
-          node_collator_session_address: wallet1.address,
-          node_collator_session_seed: wallet1.mnemonic,
+          node_collator_session_address: data.accounts?.[0]?.sessionKey,
         },
         {
           node_name: "collator_2",
           node_rpc_cors: "*",
           node_type: "collator",
-          node_address: data.accounts?.[1]?.sessionKey,
+          node_address: data.accounts?.[1]?.address,
           node_balance: parseInt(data.accounts?.[1]?.balance),
-          node_collator_session_address: wallet2.address,
-          node_collator_session_seed: wallet2.mnemonic,
+          node_collator_session_address: data.accounts?.[1]?.sessionKey,
         },
       ],
     };

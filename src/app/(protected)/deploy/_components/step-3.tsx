@@ -446,7 +446,7 @@ const DeployStep3 = forwardRef<
                         <Label>Address {idx + 1}</Label>
                         <Input placeholder="Address" {...formData.register(`accounts.${idx}.address`)} isRequired />
                       </FormField>
-                      {/* <FormField
+                      <FormField
                         className="col-span-6 lg:col-span-4"
                         helper={{
                           status: "error",
@@ -457,7 +457,7 @@ const DeployStep3 = forwardRef<
                       >
                         <Label>Session Key {idx + 1}</Label>
                         <Input placeholder="Address" {...formData.register(`accounts.${idx}.sessionKey`)} isRequired />
-                      </FormField> */}
+                      </FormField>
                       <FormField
                         className="col-span-6 lg:col-span-4"
                         helper={{

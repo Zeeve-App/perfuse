@@ -58,8 +58,6 @@ interface CollatorNodePayload {
   node_balance: number;
   /** collator session address */
   node_collator_session_address: string;
-  /** collator session mnemonics */
-  node_collator_session_seed: string;
 }
 interface RPCNodePayload {
   /** rpc node name */
@@ -143,7 +141,6 @@ export async function POST(req: NextRequest) {
               node_api_key: isRpc && e.node_auth_method === "api_key" ? apiKey : undefined,
               node_endpoint: isRpc ? e.node_endpoint ?? domain : undefined,
               created_at: new Date().toISOString(),
-              /** TODO: encrypt the seed */
             };
             /** saving node details */
             await saveNodeData(node, trx);

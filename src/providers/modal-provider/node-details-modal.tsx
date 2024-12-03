@@ -110,14 +110,6 @@ const NodeDetailsModal = () => {
                       isLoading={isLoading}
                       shouldAllowCopy
                     />
-                    <KeyValuePair
-                      className="col-span-12 md:col-span-6 lg:col-span-4"
-                      label={"Session Seed"}
-                      value={toShortString(data?.data?.node_collator_session_seed)}
-                      tooltipText={data?.data?.node_collator_session_seed ?? "NA"}
-                      isLoading={isLoading}
-                      shouldAllowCopy
-                    />
                   </div>
                 </div>
               </div>
