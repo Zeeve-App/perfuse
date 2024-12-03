@@ -25,6 +25,7 @@ import { Typography } from "@/lib/components/Typography/Typography";
 import { Badge } from "@/lib/components/Badge/Badge";
 import { withBasePath } from "@/utils/helpers";
 import { createWallet } from "@/utils/wallet";
+import { useToast } from "@/lib/components/Toast";
 
 /** deploy summary component */
 export default function DeploySummary({
@@ -43,6 +44,9 @@ export default function DeploySummary({
   const formWatchState = formData.watch();
   const router = useRouter();
   const apis = useApi();
+
+  /** toast hook */
+  const toast = useToast();
 
   const onSubmit = async (data: DeployNetworkValidationSchemaType) => {
     const wallet1 = await createWallet();
@@ -128,6 +132,10 @@ export default function DeploySummary({
     const response = await apis.createNetwork(payload);
 
     if (response.status === HTTP_STATUS.OK && response.data.success) {
+      toast("Network created", {
+        message: "Network creation successfully",
+        status: "success",
+      });
       router.push("/dashboard/" + response.data?.data?.network_id);
     }
   };

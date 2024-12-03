@@ -43,6 +43,7 @@ const TabContainer = ({
     "blockchain-config": 1,
     "collator-nodes": 2,
     "rpc-nodes": 3,
+    "indexing-services": 4,
   };
 
   return (
@@ -83,13 +84,19 @@ const TabContainer = ({
           &nbsp;
           <NumberBatch step={collatorNodesCount} />
         </Tab>
-        <Tab className="min-w-52 lg:min-w-48">
+        <Tab className="min-w-48 lg:min-w-48">
           <span className=" text-base font-semibold">
             <SvgBubbles width={20} height={20} className="inline" />
             &nbsp;RPC&nbsp;Nodes
           </span>
           &nbsp;
           <NumberBatch step={rpcNodesCount} />
+        </Tab>
+        <Tab className="min-w-48 lg:min-w-48">
+          <span className=" text-base font-semibold">
+            <SvgBubbles width={20} height={20} className="inline" />
+            &nbsp;Indexing&nbsp;Service
+          </span>
         </Tab>
       </TabList>
     </TabsContextProvider>

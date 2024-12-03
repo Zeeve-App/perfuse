@@ -19,7 +19,7 @@ import { Button, IconButton } from "@/lib/components/Button";
 import { Tooltip } from "@/lib/components/Tooltip";
 import SvgTrash from "@/lib/icons/essential/outline/Trash";
 import { useNetworkStore } from "@/store/network";
-import { NetworkDbRow, TaskDbRow } from "@/db-queries";
+import { NetworkDbRow, NodeDbRow, TaskDbRow } from "@/db-queries";
 import { DropdownMenu, DropdownMenuButton, DropdownMenuList, DropdownMenuItem } from "@/lib/components/DropdownMenu";
 import { useToggle } from "@/hooks";
 import useApi from "@/api-client";
@@ -28,11 +28,12 @@ import useApi from "@/api-client";
 const Actions = ({
   network,
   task,
-  explorerUrl: { paraExplorerUrl },
+  explorerUrl: { paraExplorerUrl, analyticsUrl },
 }: {
   network?: NetworkDbRow;
   task?: TaskDbRow;
-  explorerUrl: { paraExplorerUrl: string; relayExplorerUrl: string };
+  nodes?: NodeDbRow[];
+  explorerUrl: { paraExplorerUrl: string; traceUrl: string; analyticsUrl: string };
 }) => {
   /** getting params from the url */
   const params = useParams();
@@ -70,26 +71,34 @@ const Actions = ({
 
   return (
     <div className="flex flex-row gap-x-4">
-      <DropdownMenu onClose={handleClose} isOpen={isOpen} placement="bottom-start">
-        <DropdownMenuButton
-          as={Button}
-          onClick={handleToggle}
-          isDisabled={task?.task_status !== "completed"}
-          variant={"outline"}
-          colorScheme={"accent"}
-          isFullWidth
-        >
-          Explorer
-        </DropdownMenuButton>
-        <DropdownMenuList>
-          {/* <Link href={relayExplorerUrl} target={"_blank"}>
-            <DropdownMenuItem>Relay Chain Explorer</DropdownMenuItem>
-          </Link> */}
-          <Link href={paraExplorerUrl} target={"_blank"}>
-            <DropdownMenuItem>Parachain Explorer</DropdownMenuItem>
-          </Link>
-        </DropdownMenuList>
-      </DropdownMenu>
+      <Button
+        onClick={() => {
+          openModal("explorers", {
+            explorers: {
+              polkadotLink: paraExplorerUrl,
+              subScanLink: "",
+              traceHawkLink: "",
+            },
+          });
+        }}
+        // isDisabled={task?.task_status !== "completed"}
+        variant={"outline"}
+        colorScheme={"accent"}
+      >
+        Explorer
+      </Button>
+
+      <Button
+        // onClick={handleToggle}
+        isDisabled={task?.task_status !== "completed"}
+        variant={"outline"}
+        colorScheme={"accent"}
+        isFullWidth
+      >
+        <Link href={analyticsUrl} target={"_blank"}>
+          Monitoring
+        </Link>
+      </Button>
       <Tooltip text="Delete Network" placement={"top-start"}>
         <IconButton
           colorScheme="red"

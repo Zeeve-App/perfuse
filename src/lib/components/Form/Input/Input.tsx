@@ -125,6 +125,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
             iconRight: iconRight ? true : false,
             className,
           }),
+          "pr-10",
         )}
         required={isRequired}
         disabled={isDisabled}

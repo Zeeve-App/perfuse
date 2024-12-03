@@ -205,7 +205,7 @@ const RegisterParachainInfoModal = () => {
                 coretime.
               </HyperLink>
             </ModalText>
-            <ModalText>
+            {/*  <ModalText>
               You can follow this github{" "}
               <HyperLink
                 href={withBasePath("/coretime-page")}
@@ -216,7 +216,7 @@ const RegisterParachainInfoModal = () => {
                 document
               </HyperLink>{" "}
               for the details steps to register the parachain.
-            </ModalText>
+            </ModalText> */}
             <div className="grid grid-cols-12 gap-3 py-4 lg:gap-y-6">
               <FileCard name={"wasm"} checksum={checksum?.wasm} getFileContent={getFileContent} />
               <FileCard name={"genesis"} checksum={checksum?.genesis} getFileContent={getFileContent} />

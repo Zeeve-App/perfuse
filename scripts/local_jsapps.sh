@@ -34,8 +34,13 @@ install_and_build() {
     npm install --global yarn
     echo "Installing dependencies and building app..."
 
-    # /home/zeever/.volta/bin/volta install yarn
+    if [ ! -f "$SCRIPT_DIR/../apps" ]; then
+    echo "destination path apps doesn't exist, cloning ..."
     git clone https://github.com/polkadot-js/apps.git
+    else
+    echo "destination path apps already exists"
+    fi
+
     cd apps
     yarn && NODE_ENV=production yarn build:www
     echo ""
@@ -46,10 +51,10 @@ install_and_build() {
 setup_nginx() {
     echo "Installing and configuring Nginx..."
     sudo apt install -y nginx
-#    sudo rm /etc/nginx/sites-enabled/default
+    sudo rm -f /etc/nginx/sites-enabled/default
     sudo cp $SCRIPT_DIR/nginx/jsapps.conf /etc/nginx/sites-enabled/jsapps.conf
     sudo systemctl restart nginx
 }
 
-# install_and_build
-# setup_nginx
+install_and_build
+setup_nginx

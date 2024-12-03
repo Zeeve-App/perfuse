@@ -45,6 +45,10 @@ const DeleteNetworkModal = () => {
     try {
       setLoading(true);
       await apis.delete(data.deleteNetwork?.networkId as string);
+      toast("Network deleted", {
+        status: "success",
+        message: "Network deleted successfully",
+      });
       router.push("/");
     } catch (error) {
       if (axios.isAxiosError(error)) {
