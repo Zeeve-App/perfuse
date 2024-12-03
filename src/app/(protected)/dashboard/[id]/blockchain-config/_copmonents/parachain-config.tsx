@@ -35,14 +35,27 @@ const ParachainConfig = ({ data, isLoading }: ParachainConfigProps) => {
       <Typography variant="subtitle" className="col-span-12">
         Parachain Config
       </Typography>
-      <KeyValuePair className="col-span-6" label={"Parachain Name"} value={data?.name ?? "NA"} isLoading={isLoading} />
+      <KeyValuePair
+        className="col-span-6"
+        shouldAllowCopy
+        label={"Parachain Name"}
+        value={data?.name ?? "NA"}
+        isLoading={isLoading}
+      />
       <KeyValuePair
         className="col-span-6 text-right"
         label={"Parachain ID"}
+        shouldAllowCopy
         value={data?.para_id ?? "NA"}
         isLoading={isLoading}
       />
-      <KeyValuePair className="col-span-6" label={"Network ID"} value={data?.id ?? "NA"} isLoading={isLoading} />
+      <KeyValuePair
+        shouldAllowCopy
+        className="col-span-6"
+        label={"Network ID"}
+        value={data?.id ?? "NA"}
+        isLoading={isLoading}
+      />
       <KeyValuePair
         className="col-span-6 text-right"
         label={"Chain Type"}
@@ -52,6 +65,7 @@ const ParachainConfig = ({ data, isLoading }: ParachainConfigProps) => {
       <KeyValuePair
         className="col-span-6"
         label={"Protocol ID"}
+        shouldAllowCopy
         value={data?.protocolId ?? "NA"}
         isLoading={isLoading}
       />

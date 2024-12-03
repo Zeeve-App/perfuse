@@ -15,12 +15,13 @@ import { useParams } from "next/navigation";
 import { downloadFile } from "@/utils/helpers";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import SvgDownload from "@/lib/icons/product/outline/Download";
-import { IconButton } from "@/lib/components/Button";
+import { CopyButton, IconButton } from "@/lib/components/Button";
 import { Spinner } from "@/lib/components/Spinner";
 import { Tooltip } from "@/lib/components/Tooltip";
 import { tx } from "@/utils/shared";
 import { Typography } from "@/lib/components/Typography";
 import { Card } from "@/lib/components/Card";
+import SvgCopy from "@/lib/icons/design-tool/outline/Copy";
 
 /** props */
 interface ParachainSpecFileProps {
@@ -36,13 +37,23 @@ const ParachainSpecFile = ({ data, isLoading }: ParachainSpecFileProps) => {
 
   return (
     <Card className="col-span-12 flex h-96 flex-col overflow-hidden rounded-lg shadow-brand-shadow lg:col-span-6">
-      <div className="mb-1 flex items-center justify-between">
-        <Typography variant="subtitle">Parachain Spec File</Typography>
+      <div className="mb-1 flex items-center justify-between gap-2">
+        <Typography variant="subtitle" className="grow">
+          Parachain Spec File
+        </Typography>
+        <Tooltip text={"Download Parachain Spec File"} placement="top-start">
+          <CopyButton
+            className="text-2xl text-theme-secondary"
+            colorScheme="primary"
+            variant={"text"}
+            text={JSON.stringify(data) ?? ""}
+          ></CopyButton>
+        </Tooltip>
         <Tooltip text={"Download Parachain Spec File"} placement="top-start">
           <IconButton
             colorScheme="primary"
-            variant={"ghost"}
-            size={"small"}
+            variant={"text"}
+            size={"large"}
             isDisabled={!data}
             onClick={() => {
               if (data) {
@@ -50,7 +61,7 @@ const ParachainSpecFile = ({ data, isLoading }: ParachainSpecFileProps) => {
               }
             }}
           >
-            <SvgDownload className="text-lg" />
+            <SvgDownload className="text-2xl text-theme-secondary" />
           </IconButton>
         </Tooltip>
       </div>

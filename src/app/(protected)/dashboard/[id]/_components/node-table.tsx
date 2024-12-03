@@ -33,7 +33,7 @@ export const NodeTableRowActions = ({ node }: { node: NodeDbRow }) => {
   const params = useParams();
   return (
     <div className="flex gap-1 lg:flex-row">
-      {node.node_type === "collator" && (
+      {node.node_type === "collator" && node.node_collator_seed_added !== 1 && (
         <Tooltip text="Add Key" placement="top-start">
           <IconButton
             colorScheme="primary"
@@ -44,6 +44,7 @@ export const NodeTableRowActions = ({ node }: { node: NodeDbRow }) => {
                   networkId: params.id as string,
                   nodeId: node.node_id,
                   nodeType: node.node_type,
+                  sessionAddress: node.node_collator_session_address ?? "",
                 },
               });
             }}

@@ -178,7 +178,7 @@ install_dashboards() {
   fi
 
   if test -f "/etc/grafana/provisioning/dashboards/perfuse.yaml"; then
-    echo "STEP 4: Installing Grafana dashboards"
+    echo "Installing Grafana dashboards"
     provisioningDone=true
     echo
     echo "Dashboards already provisioned, switching to upgrade mode."

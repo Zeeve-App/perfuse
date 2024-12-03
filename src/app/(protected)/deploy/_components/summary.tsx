@@ -8,6 +8,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import { error } from "console";
 import { UseFormReturn } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -25,6 +26,9 @@ import { Typography } from "@/lib/components/Typography/Typography";
 import { Badge } from "@/lib/components/Badge/Badge";
 import { withBasePath } from "@/utils/helpers";
 import { useToast } from "@/lib/components/Toast";
+import SvgCheckCircle from "@/lib/icons/essential/outline/CheckCircle";
+import { tx } from "@/utils/shared";
+import SvgCheck from "@/lib/icons/essential/outline/Check";
 
 /** deploy summary component */
 export default function DeploySummary({
@@ -106,15 +110,17 @@ export default function DeploySummary({
           node_name: "collator_1",
           node_rpc_cors: "*",
           node_type: "collator",
-          node_address: data.accounts?.[0]?.sessionKey,
+          node_address: data.accounts?.[0]?.address,
           node_balance: parseInt(data.accounts?.[0]?.balance),
+          node_collator_session_address: data.accounts?.[0]?.sessionKey,
         },
         {
           node_name: "collator_2",
           node_rpc_cors: "*",
           node_type: "collator",
-          node_address: data.accounts?.[1]?.sessionKey,
+          node_address: data.accounts?.[1]?.address,
           node_balance: parseInt(data.accounts?.[1]?.balance),
+          node_collator_session_address: data.accounts?.[1]?.sessionKey,
         },
       ],
     };
@@ -189,6 +195,38 @@ export default function DeploySummary({
               <div className="flex justify-between text-sm">
                 <span className="font-bold">Chain Template</span>
                 <span>{templateOption.filter((e) => e.value === formWatchState.template.value)?.[0]?.label}</span>
+              </div>
+            )}
+            {formWatchState.chainSpecFile?.name && (
+              <div className="flex justify-between text-sm">
+                <span className="font-bold">Chain-specification</span>
+                <span
+                  className={tx("bg-brand-light-teal  rounded-md  px-2 py-1 text-xs text-brand-gray", {
+                    // "bg-brand-warning": error,
+                  })}
+                >
+                  {
+                    <>
+                      <SvgCheck className="inline-block" /> Successfully Uploaded
+                    </>
+                  }
+                </span>
+              </div>
+            )}
+            {formWatchState.binaryFile?.name && (
+              <div className="flex justify-between text-sm">
+                <span className="font-bold">Chain-specification</span>
+                <span
+                  className={tx("bg-brand-light-teal  rounded-md  px-2 py-1 text-xs text-brand-gray", {
+                    // "bg-brand-warning": error,
+                  })}
+                >
+                  {
+                    <>
+                      <SvgCheck className="inline-block" /> Successfully Uploaded
+                    </>
+                  }
+                </span>
               </div>
             )}
             <hr />

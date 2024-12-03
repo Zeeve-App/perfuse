@@ -41,7 +41,7 @@ export const updateNodeData = async (data: Partial<NodeDbRow>, trx?: knex.Knex.T
   const db = trx ?? knexHandler;
   if (!data.node_id) throw new Error("Node id is required");
 
-  return db<NodeDbRow>("nodes").update(data).where(data).returning("*");
+  return db<NodeDbRow>("nodes").update(data).where({ node_id: data.node_id }).returning("*");
 };
 
 /** to get nodes[] by network ID */

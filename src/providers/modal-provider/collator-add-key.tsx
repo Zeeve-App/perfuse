@@ -10,7 +10,7 @@
  */
 
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import * as yup from "yup";
@@ -76,8 +76,14 @@ const CollatorAddKey = () => {
   const formData = useForm<CollatorAddKeySchemaType>({
     resolver: yupResolver(collatorAddKeySchema),
     mode: "all",
-    defaultValues: {},
+    defaultValues: {
+      pubKey: data.addKey?.sessionAddress ?? "",
+    },
   });
+
+  useEffect(() => {
+    formData.setValue("pubKey", data.addKey?.sessionAddress ?? "");
+  }, [data.addKey?.sessionAddress, formData]);
 
   /** form submit handler */
   const onSubmit = async (formData: CollatorAddKeySchemaType) => {
@@ -146,6 +152,7 @@ const CollatorAddKey = () => {
                   <Typography variant="subtitle">Public Key</Typography>
                   <Input
                     placeholder="Enter Your Public Key"
+                    isDisabled
                     {...formData.register("pubKey")}
                     inputContainerProps={{ className: "col-span-12" }}
                     type="text"

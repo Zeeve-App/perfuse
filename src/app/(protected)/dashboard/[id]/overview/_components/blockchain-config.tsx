@@ -13,6 +13,7 @@
 
 import React from "react";
 import Image from "next/image";
+import NetworkStatus from "../../_components/network-status";
 import useApi from "@/api-client";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
 import { withBasePath } from "@/utils/helpers";
@@ -63,13 +64,22 @@ const BlockchainConfig = ({
           isLoading={isLoading}
         />
         <KeyValuePair
-          labelClass="text-white"
           label={"Parachain Block Height"}
+          labelClass="text-white"
+          valueClass="font-semibold text-white"
+          className="col-span-12"
           value={parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16)}
           isLoading={blockRpcLoading}
-          className="col-span-12"
-          valueClass="font-semibold text-white"
         />
+        {/* <KeyValuePair
+          labelClass="text-white"
+          valueClass="font-semibold text-white"
+          className="col-span-12"
+          label="health Status"
+          value={<NetworkStatus />}
+          isLoading={isLoading}
+        /> */}
+
         <Image
           className="absolute bottom-0 right-0 "
           src={withBasePath("/assets/images/dashboard/horizontal-card.png")}

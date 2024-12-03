@@ -24,6 +24,7 @@ type NetworkInfo = {
         networkName: string;
         networkStatus?: TaskDbRow["task_status"];
         blockHeight: number;
+        parachainId: number;
       }
     | undefined;
   isLoading: boolean;

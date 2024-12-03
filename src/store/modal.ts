@@ -36,6 +36,7 @@ type ModalData = {
     nodeId: string;
     networkId: string;
     nodeType: NodeDbRow["node_type"];
+    sessionAddress: string;
   };
   explorers?: {
     polkadotLink: string;

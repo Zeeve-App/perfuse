@@ -13,8 +13,9 @@
 import React, { useEffect, useState } from "react";
 
 import { useParams } from "next/navigation";
+import { web3FromAddress } from "@polkadot/extension-dapp";
 import { useModalStore } from "@/store/modal";
-import { downloadFile, toShortString, withBasePath } from "@/utils/helpers";
+import { blobToHex, downloadFile, toShortString, withBasePath } from "@/utils/helpers";
 import { IconButton, CopyButton, Button } from "@/lib/components/Button";
 import {
   Modal,
@@ -31,31 +32,22 @@ import SvgCodeDocument3 from "@/lib/icons/programming/outline/CodeDocument3";
 import useApi from "@/api-client";
 import HyperLink from "@/lib/components/utils/hyper-link";
 import { Typography } from "@/lib/components/Typography";
+import { useSelectedAccount } from "@/lib/components/wallet/use-wallet";
+import { useNetworkStore } from "@/store/network";
 
 /** file card to show the wasm/genesis file with checksum */
-const FileCard = ({ name, checksum }: { name: "wasm" | "genesis"; checksum?: string }) => {
-  const params = useParams();
-  const networkId = params.id as string;
+const FileCard = ({
+  name,
+  checksum,
+  getFileContent,
+}: {
+  name: "wasm" | "genesis";
+  checksum?: string;
+  getFileContent: (x: "wasm" | "genesis") => Promise<void>;
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const api = useApi();
-  const getFileContent = async () => {
-    try {
-      setIsLoading(true);
-      const mimeType = "application/octet-stream";
-      const response = await api.file(name, {
-        headers: {
-          Accept: mimeType,
-          "Content-Type": "application/json",
-        },
-        responseType: "blob",
-      });
-      downloadFile(response.data, `${name.toLowerCase()}-${networkId}`, mimeType);
-    } catch (error) {
-      console.error(`getFileContent-${name}: `, error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+
   return (
     <div className="col-span-12 flex flex-row items-center gap-2 md:col-span-6 2xl:col-span-6">
       <SvgCodeDocument3 className="text-5xl text-brand-primary" />
@@ -70,7 +62,7 @@ const FileCard = ({ name, checksum }: { name: "wasm" | "genesis"; checksum?: str
               size={"small"}
               isLoading={isLoading}
               isDisabled={isLoading}
-              onClick={getFileContent}
+              onClick={() => getFileContent(name)}
             >
               <SvgDownload className="text-xl" />
             </IconButton>
@@ -102,11 +94,74 @@ const RegisterParachainInfoModal = () => {
   // const networkId = params.id as string;
   const { isOpen, onClose, type } = useModalStore();
 
+  const params = useParams();
+  const networkId = params.id as string;
+
+  const network = useNetworkStore();
+
   const [checksum, setChecksum] = useState<{ wasm: string; genesis: string }>();
 
   const isModalOpen = isOpen && type === "registerParachain";
 
-  // const networkInfo = useNetworkStore((state) => state.networkInfo);
+  const { selectedAccount, relayChainApi } = useSelectedAccount();
+
+  const getFileContent = async (name: "wasm" | "genesis") => {
+    try {
+      const { response, mimeType } = await getFileBlob(name);
+      downloadFile(response.data, `${name.toLowerCase()}-${networkId}`, mimeType);
+    } catch (error) {
+      console.error(`getFileContent-${name}: `, error);
+    } finally {
+    }
+  };
+  async function getFileBlob(
+    name: "wasm" | "genesis",
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ): Promise<{ response: any; mimeType?: "application/json" | "application/octet-stream" }> {
+    const mimeType = "application/octet-stream";
+    const response = await api.file(name, {
+      headers: {
+        Accept: mimeType,
+        "Content-Type": "application/json",
+      },
+      responseType: "blob",
+    });
+    return { response, mimeType };
+  }
+
+  // Function to register a parachain
+  async function registerParachain() {
+    try {
+      if (!selectedAccount?.address) throw new Error("No account selected");
+      if (!relayChainApi) throw new Error("No relay chain api found");
+      const injector = await web3FromAddress(selectedAccount?.address);
+
+      console.log(`Using account: ${selectedAccount?.address}`);
+
+      // Step 5: Define parachain registration parameters
+      const paraId = network.networkInfo.data?.parachainId; // Replace with your parachain ID
+      const genesisHead = await blobToHex((await getFileBlob("genesis")).response.data); // Replace with your parachain's genesis head
+      const validationCode = await blobToHex((await getFileBlob("wasm")).response.data); // Replace with your parachain's validation code
+
+      console.log({ genesisHead, validationCode, paraId });
+
+      console.log(Object.keys(relayChainApi.tx.registrar));
+
+      // Step 6: Submit the transaction to register the parachain
+      const unsub = await relayChainApi.tx.registrar
+        .register(paraId, validationCode, genesisHead)
+        .signAndSend(selectedAccount?.address, { signer: injector.signer }, ({ status, events }) => {
+          if (status.isInBlock) {
+            console.log(`Transaction included in block: ${status.asInBlock}`);
+          } else if (status.isFinalized) {
+            console.log(`Transaction finalized in block: ${status.asFinalized}`);
+            unsub(); // Unsubscribe from updates
+          }
+        });
+    } catch (error) {
+      console.error("Error during parachain registration:", error);
+    }
+  }
 
   const api = useApi();
   const getChecksum = async () => {
@@ -163,8 +218,8 @@ const RegisterParachainInfoModal = () => {
               for the details steps to register the parachain.
             </ModalText> */}
             <div className="grid grid-cols-12 gap-3 py-4 lg:gap-y-6">
-              <FileCard name={"wasm"} checksum={checksum?.wasm} />
-              <FileCard name={"genesis"} checksum={checksum?.genesis} />
+              <FileCard name={"wasm"} checksum={checksum?.wasm} getFileContent={getFileContent} />
+              <FileCard name={"genesis"} checksum={checksum?.genesis} getFileContent={getFileContent} />
             </div>
           </div>
         </ModalBody>
@@ -172,6 +227,9 @@ const RegisterParachainInfoModal = () => {
           <Button variant="ghost" colorScheme={"accent"} onClick={onClose}>
             Close
           </Button>
+          {/* <Button variant="ghost" colorScheme={"accent"} onClick={registerParachain}>
+            Register ParaId
+          </Button> */}
         </ModalFooter>
       </ModalContent>
     </Modal>

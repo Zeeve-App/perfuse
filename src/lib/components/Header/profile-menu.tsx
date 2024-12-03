@@ -28,6 +28,9 @@ import { withBasePath } from "@/utils/helpers";
 import SvgProfile from "@/lib/icons/user/outline/Profile";
 import { useToggle } from "@/hooks";
 import SvgArrowLeftFromBucket from "@/lib/icons/arrows/outline/ArrowLeftFromBucket";
+import SvgArrow2Down from "@/lib/icons/arrows/outline/Arrow2Down";
+import SvgChevronDownSquare from "@/lib/icons/arrows/outline/ChevronDownSquare";
+import SvgArrowDown from "@/lib/icons/arrows/outline/ArrowDown";
 
 /** profile dropdown data to show in drop down */
 export const getProfileDropdownData = (router: AppRouterInstance) => [
@@ -88,12 +91,14 @@ const ProfileDropDownMenu = ({
             <div className="flex size-7  cursor-pointer items-center justify-center overflow-hidden rounded-full bg-[#6119F7] text-white">
               <SvgProfile className="size-3 " />
             </div>
-            <span className="text-theme-primary-content">&nbsp; Demo</span>
+            <span className="text-theme-primary-content">&nbsp; Demo &nbsp;</span>
+            <SvgArrowDown className="size-3" />
           </>
         ) : (
           <>
             <Avatar src={withBasePath("/assets/images/avatar-placeholder.png")} />
             <span>Demo</span>
+            <SvgArrow2Down />
           </>
         )}
       </DropdownMenuButton>
