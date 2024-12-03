@@ -19,6 +19,7 @@ import SvgArrowUpFromBucket from "@/lib/icons/arrows/outline/ArrowUpFromBucket";
 import { Progress } from "@/lib/components/Progress";
 import SvgCheckCircle from "@/lib/icons/essential/outline/CheckCircle";
 import { tx } from "@/utils/shared";
+import SvgCheck from "@/lib/icons/essential/outline/Check";
 
 /** file upload component props */
 interface FileUploadProps {
@@ -121,12 +122,12 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>((props, ref) =>
               >
                 {error && (
                   <>
-                    <SvgCheckCircle className="inline-block" /> {error}
+                    <SvgCheck className="inline-block" /> {error}
                   </>
                 )}
                 {fileName && (
                   <>
-                    <SvgCheckCircle className="inline-block" /> Successfully Uploaded
+                    <SvgCheck className="inline-block" /> Successfully Uploaded
                   </>
                 )}
               </span>

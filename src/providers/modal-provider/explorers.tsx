@@ -16,7 +16,7 @@ import { Modal, ModalOverlay, ModalContent, ModalBody, ModalTitle, ModalText } f
 import { Card } from "@/lib/components/Card";
 import { IconCard } from "@/lib/components/Card/Icon-Card";
 
-/** collator add key modal component */
+/** explorer modal to list all the explorer */
 const ExplorersModal = () => {
   const { isOpen, onClose, type, data } = useModalStore();
 

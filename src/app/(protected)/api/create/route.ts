@@ -56,6 +56,8 @@ interface CollatorNodePayload {
   node_rpc_cors: string;
   /** collator node balance */
   node_balance: number;
+  /** collator session address */
+  node_collator_session_address: string;
 }
 interface RPCNodePayload {
   /** rpc node name */

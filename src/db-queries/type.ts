@@ -67,6 +67,10 @@ interface NodeDbRow {
   node_password?: string;
   /** RPC node API key */
   node_api_key?: string;
+  /** collator session address */
+  node_collator_session_address?: string;
+  /** collator session seed added */
+  node_collator_seed_added?: 0 | 1;
   /** Created at timestamp in ISO format */
   created_at: string;
 }

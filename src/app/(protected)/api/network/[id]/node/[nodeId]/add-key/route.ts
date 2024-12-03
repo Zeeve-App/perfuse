@@ -11,7 +11,7 @@
 
 import { NextRequest } from "next/server";
 import axios from "axios";
-import { getNodeData } from "@/db-queries";
+import { getNodeData, updateNodeData } from "@/db-queries";
 import { sendDataResponse, sendErrorResponse } from "@/app/(protected)/api/_helpers/response";
 import { addressToHexPublicKey } from "@/utils/wallet";
 
@@ -48,9 +48,8 @@ export async function POST(req: NextRequest, { params }: { params: { id: string;
       },
     );
 
+    await updateNodeData({ node_id: nodeId, node_collator_seed_added: 1 });
     console.log(response.data); // Handle the response data
-
-    // const node = await updateNodeData({ node_id: nodeId });
 
     return sendDataResponse({
       node: node,
