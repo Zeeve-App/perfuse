@@ -13,6 +13,9 @@ import ZeeveSidebarItemProps from "../lib/components/sidebar/type";
 import SvgElement3 from "@/lib/icons/grid/outline/Element3";
 import SvgBook2 from "@/lib/icons/school/outline/Book2";
 import SvgBubbles from "@/lib/icons/essential/outline/Bubbles";
+import Svg4Square from "@/lib/icons/grid/outline/4Square";
+import Svg3dBlock from "@/lib/icons/grid/outline/3dBlock";
+import SvgCpu from "@/lib/icons/programming/outline/Cpu";
 
 const ITEMS: {
   title?: string;
@@ -22,19 +25,19 @@ const ITEMS: {
     items: [
       {
         title: "Dashboard",
-        icon: <SvgElement3 />,
+        icon: <Svg4Square className="size-5" />,
         path: `/`,
         activePaths: ["/overview", "/blockchain-config", "/collator-nodes", "/rpc-nodes"],
       },
       {
         title: "Deploy Parachain",
-        icon: <SvgElement3 />,
+        icon: <Svg3dBlock className="size-5" />,
         path: `/deploy`,
         activePaths: ["/deploy"],
       },
       {
         title: "Coretime",
-        icon: <SvgBubbles />,
+        icon: <SvgCpu className="size-5" />,
         path: `/coretime-page`,
       },
       // {
@@ -45,7 +48,7 @@ const ITEMS: {
 
       {
         title: "Support",
-        icon: <SvgBook2 />,
+        icon: <SvgBook2 className="size-5" />,
         path: `/document`,
       },
     ],

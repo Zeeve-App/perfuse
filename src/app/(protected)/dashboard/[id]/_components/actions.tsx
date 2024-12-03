@@ -81,7 +81,7 @@ const Actions = ({
             },
           });
         }}
-        // isDisabled={task?.task_status !== "completed"}
+        isDisabled={task?.task_status !== "completed"}
         variant={"outline"}
         colorScheme={"accent"}
       >
