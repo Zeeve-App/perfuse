@@ -12,7 +12,7 @@
 import React from "react";
 import { Metadata } from "next";
 import CollatorNodes from "./_components/collator-nodes";
-import { getNodes } from "@/db-queries";
+import { getNodes, getNodesWithStatus } from "@/db-queries";
 
 /** collator nodes page metadata */
 export const metadata: Metadata = {
@@ -27,7 +27,7 @@ const CollatorNodePage = async ({
   params: { id: string };
   searchParams: { [key: string]: string | string[] | undefined };
 }) => {
-  const nodes = await getNodes(params.id);
+  const nodes = await getNodesWithStatus(params.id);
   return (
     <CollatorNodes
       nodes={{

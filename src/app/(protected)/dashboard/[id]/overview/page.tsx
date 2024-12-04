@@ -12,9 +12,10 @@
 import React from "react";
 import { Metadata } from "next";
 import Overview from "./_components";
-import { getNetworkData, getNodes, getTask } from "@/db-queries";
+import { getNetworkData, getNodes, getNodesWithStatus, getTask } from "@/db-queries";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import { config } from "@/config/config";
+import { isRpcNodeWorking } from "@/utils/wallet";
 
 /** overview page metadata */
 export const metadata: Metadata = {
@@ -30,7 +31,8 @@ const OverviewPage = async ({
   searchParams: { [key: string]: string | string[] | undefined };
 }) => {
   const network = await getNetworkData(params.id);
-  const nodes = await getNodes(params.id);
+  const nodes = await getNodesWithStatus(params.id);
+
   const task = await getTask({ task_associated_network_id: network?.network_id, task_type: "network_provision" });
   const chainSpec: ChainSpecFileType = JSON.parse(network?.network_chain_spec_file_json ?? "{}");
   // console.log(task);

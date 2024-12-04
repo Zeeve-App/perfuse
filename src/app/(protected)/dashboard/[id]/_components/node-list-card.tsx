@@ -11,12 +11,12 @@
 import React from "react";
 import NetworkStatus from "./network-status";
 import { NodeTableRowActions } from "./node-table";
-import { NodeDbRow } from "@/db-queries";
+import { NodeDbRowWithStatus } from "@/db-queries";
 import { formatDate, toShortString } from "@/utils/helpers";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
 
 /** node list card */
-const NodeListCard = ({ node }: { node: NodeDbRow }) => {
+const NodeListCard = ({ node }: { node: NodeDbRowWithStatus }) => {
   return (
     <div className="flex flex-col gap-3 rounded-lg border border-brand-gray bg-theme-foreground shadow-sm dark:border-brand-outline">
       <div className="flex justify-between p-4">
