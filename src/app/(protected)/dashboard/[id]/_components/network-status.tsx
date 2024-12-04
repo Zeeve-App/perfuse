@@ -46,13 +46,13 @@ const NetworkStatus = ({ className, health }: { className?: string; health?: boo
       return statusLabelMap[status];
     }
 
-    if (authorizationStatus) {
-      return <>Auth.&nbsp;Pending</>;
-    }
-
     if (health !== undefined) {
       if (health) return "Healthy";
       else return "Unhealthy";
+    }
+
+    if (authorizationStatus) {
+      return <>Auth.&nbsp;Pending</>;
     }
 
     return statusLabelMap[status];
