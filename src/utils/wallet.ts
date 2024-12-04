@@ -93,8 +93,7 @@ async function isRpcNodeWorking(rpcUrl: string) {
 
     // Check if the response contains valid data
     if (response.status === 200 && response.data.result) {
-      const { peerCount } = response.data.result;
-      return typeof peerCount === "number"; // Node is working if peerCount is a number
+      return true;
     }
 
     return false; // Invalid response
