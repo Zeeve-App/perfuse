@@ -33,7 +33,13 @@ export const saveNodeData = async (data: NodeDbRow, trx?: knex.Knex.Transaction)
 export const getNodeData = async (data: Partial<NodeDbRow>, trx?: knex.Knex.Transaction) => {
   const db = trx ?? knexHandler;
 
-  return db<NodeDbRow>("nodes").select("*").where(data).first();
+  const node = await db<NodeDbRow>("nodes").select("*").where(data).first();
+  let rpcUrl = "http://localhost:9010";
+  if (node?.node_type === "collator") {
+    rpcUrl = node.node_name.endsWith("1") ? `http://localhost:9008` : `http://localhost:9009`;
+  }
+
+  return { ...node, rpcUrl };
 };
 
 /** to update node data from db */

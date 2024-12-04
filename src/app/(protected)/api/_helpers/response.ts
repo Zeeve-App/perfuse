@@ -13,7 +13,7 @@ import HTTP_STATUS from "@/constants/http";
 
 /** sending a success response back to client */
 export const sendDataResponse = (
-  data: Record<string, object | string | number>,
+  data: Record<string, object | string | number | boolean>,
   status?: HTTP_STATUS,
   config?: ResponseInit,
 ) => {

@@ -15,7 +15,7 @@ import { useNetworkStore } from "@/store/network";
 import { tx } from "@/utils/shared";
 
 /** network status component */
-const NetworkStatus = ({ className }: { className?: string }) => {
+const NetworkStatus = ({ className, health }: { className?: string; health?: boolean }) => {
   const networkInfo = useNetworkStore((e) => e.networkInfo);
   const status = networkInfo.data?.networkStatus ?? "pending";
   const authorizationStatus = networkInfo.data?.blockHeight == 0;
@@ -29,6 +29,9 @@ const NetworkStatus = ({ className }: { className?: string }) => {
 
   /** get variant from the status of the network */
   const getVariant = (status: TaskDbRow["task_status"]) => {
+    if (status == "completed" && health !== undefined) {
+      return "green";
+    }
     if (status == "completed" && authorizationStatus) {
       return "red";
     }
@@ -38,16 +41,27 @@ const NetworkStatus = ({ className }: { className?: string }) => {
     return "purple";
   };
 
+  function getStatusLabel() {
+    if (status !== "completed") {
+      return statusLabelMap[status];
+    }
+
+    if (authorizationStatus) {
+      return <>Auth.&nbsp;Pending</>;
+    }
+
+    if (health !== undefined) {
+      if (health) return "Healthy";
+      else return "Unhealthy";
+    }
+
+    return statusLabelMap[status];
+  }
+
   return (
     <>
       <Badge variant={getVariant(status)} className={tx(className)}>
-        {status !== "completed" ? (
-          statusLabelMap[status]
-        ) : authorizationStatus ? (
-          <>Auth.&nbsp;Pending</>
-        ) : (
-          statusLabelMap[status]
-        )}
+        {getStatusLabel()}
       </Badge>
     </>
   );

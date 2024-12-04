@@ -17,7 +17,9 @@ import { NodeDbRow } from "@/db-queries";
 /** interface declaration of network list API response payload */
 interface ResponsePayload {
   success: boolean;
-  data?: NodeDbRow;
+  data?: NodeDbRow & {
+    health: boolean;
+  };
 }
 
 /** hook to get the node info of a node */

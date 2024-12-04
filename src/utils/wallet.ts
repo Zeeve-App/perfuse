@@ -17,6 +17,7 @@ import {
 } from "@polkadot/util-crypto";
 import { Keyring } from "@polkadot/keyring";
 import { u8aToHex } from "@polkadot/util";
+import axios from "axios";
 
 /** derive public key from the seed phrase */
 function derivePublicSessionKey(seedPhrase: string) {
@@ -81,4 +82,27 @@ async function createWallet() {
   };
 }
 
-export { derivePublicSessionKey, addressToHexPublicKey, createWallet };
+async function isRpcNodeWorking(rpcUrl: string) {
+  try {
+    const response = await axios.post(rpcUrl, {
+      jsonrpc: "2.0",
+      method: "system_health",
+      params: [],
+      id: 1,
+    });
+
+    // Check if the response contains valid data
+    if (response.status === 200 && response.data.result) {
+      const { peerCount } = response.data.result;
+      return typeof peerCount === "number"; // Node is working if peerCount is a number
+    }
+
+    return false; // Invalid response
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    console.error("Error checking RPC node:", error.message);
+    return false; // Node not reachable or responding
+  }
+}
+
+export { derivePublicSessionKey, addressToHexPublicKey, createWallet, isRpcNodeWorking };

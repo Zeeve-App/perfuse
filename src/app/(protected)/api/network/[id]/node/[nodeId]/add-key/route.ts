@@ -39,7 +39,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string;
 
     /** calling rpc of the collator node based on there there name */
     const response = await axios.post(
-      node.node_name.endsWith("1") ? `http://localhost:9008` : `http://localhost:9009`,
+      node?.node_name?.endsWith("1") ? `http://localhost:9008` : `http://localhost:9009`,
       jsonData,
       {
         headers: {
