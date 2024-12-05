@@ -13,11 +13,11 @@
 import RegisterParachainInfo from "../../_components/register-parachain-info";
 import NodeTable from "../../_components/node-table";
 import NodeListCard from "../../_components/node-list-card";
-import { NodeDbRow } from "@/db-queries";
+import { NodeDbRowWithStatus } from "@/db-queries";
 import useApi from "@/api-client";
 
 /** collator nodes component */
-const CollatorNodes = ({ nodes }: { nodes: { collator: NodeDbRow[] } }) => {
+const CollatorNodes = ({ nodes }: { nodes: { collator: NodeDbRowWithStatus[] } }) => {
   const apis = useApi();
   const { data: blockRpcResponse } = apis.blockNumber();
   const blockHeight = parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16);

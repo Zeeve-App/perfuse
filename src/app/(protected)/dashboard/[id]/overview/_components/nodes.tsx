@@ -21,7 +21,7 @@ import { Typography } from "@/lib/components/Typography";
 import { formatEndpoint, toShortString, withBasePath } from "@/utils/helpers";
 
 /** nodes component for overview page */
-const Nodes = ({ nodes }: { isLoading: boolean; nodes: NodeDbRow[] }) => {
+const Nodes = ({ nodes }: { isLoading: boolean; nodes: (NodeDbRow & { health: boolean })[] }) => {
   console.log(nodes);
 
   return (
@@ -58,7 +58,7 @@ const Nodes = ({ nodes }: { isLoading: boolean; nodes: NodeDbRow[] }) => {
                       {e.node_type.toUpperCase()}
                     </Typography>
                     <div className="col-span-3">
-                      <NetworkStatus className="text-sm" />
+                      <NetworkStatus className="text-sm" health={e.health} />
                     </div>
                   </>
                 </div>

@@ -22,13 +22,13 @@ import { IconButton, CopyButton } from "@/lib/components/Button";
 import { Heading } from "@/lib/components/Heading";
 import { Tooltip } from "@/lib/components/Tooltip";
 import { ColumnDef, ReactTable, createColumnHelper } from "@/lib/components/ReactTable";
-import { NodeDbRow } from "@/db-queries";
+import { NodeDbRowWithStatus } from "@/db-queries";
 import SvgInfoCircle from "@/lib/icons/essential/outline/InfoCircle";
 import { Typography } from "@/lib/components/Typography";
 import SvgKey from "@/lib/icons/security/outline/Key";
 
 /** node table action column component */
-export const NodeTableRowActions = ({ node }: { node: NodeDbRow }) => {
+export const NodeTableRowActions = ({ node }: { node: NodeDbRowWithStatus }) => {
   const { openModal } = useModalStore();
   const params = useParams();
   return (
@@ -85,10 +85,10 @@ export const NodeTableRowActions = ({ node }: { node: NodeDbRow }) => {
   );
 };
 
-const columnHelper = createColumnHelper<NodeDbRow>();
+const columnHelper = createColumnHelper<NodeDbRowWithStatus>();
 
 /** node table columns definition */
-const nodeTableColumns: ColumnDef<NodeDbRow, any>[] = [
+const nodeTableColumns: ColumnDef<NodeDbRowWithStatus, any>[] = [
   columnHelper.accessor("node_id", {
     header: "ID",
     cell: (info) => (
@@ -109,7 +109,7 @@ const nodeTableColumns: ColumnDef<NodeDbRow, any>[] = [
   }),
   columnHelper.accessor("node_id", {
     header: "Status",
-    cell: () => <NetworkStatus />,
+    cell: (info) => <NetworkStatus health={info.row.original.health} />,
   }),
   columnHelper.accessor("created_at", {
     header: "Created On",
@@ -122,7 +122,14 @@ const nodeTableColumns: ColumnDef<NodeDbRow, any>[] = [
 ];
 
 /** node table component */
-const NodeTable = ({ heading, nodes }: { nodeType: NodeDbRow["node_type"]; heading: string; nodes: NodeDbRow[] }) => {
+const NodeTable = ({
+  heading,
+  nodes,
+}: {
+  nodeType: NodeDbRowWithStatus["node_type"];
+  heading: string;
+  nodes: NodeDbRowWithStatus[];
+}) => {
   // TODO: uncomment when there is more than 4 collator node, for pagination
   // const [{ pageIndex, pageSize }, setPagination] = React.useState({
   //   pageIndex: 1,

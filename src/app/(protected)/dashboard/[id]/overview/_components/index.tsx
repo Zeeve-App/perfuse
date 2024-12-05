@@ -28,7 +28,7 @@ interface OverviewProps {
   id: string;
   paraId: string;
   relayCainType: string;
-  nodes: NodeDbRow[];
+  nodes: (NodeDbRow & { health: boolean })[];
   ownedBy: string;
 }
 

@@ -15,10 +15,8 @@ import React from "react";
 import { useParams } from "next/navigation";
 import { useModalStore } from "@/store/modal";
 import { formatDate, formatEndpoint, toCapitalize, toShortString } from "@/utils/helpers";
-import { CopyButton } from "@/lib/components/Button";
 import { Heading } from "@/lib/components/Heading";
 import { Modal, ModalOverlay, ModalContent, ModalBody, ModalTitle } from "@/lib/components/Modal";
-import { Tooltip } from "@/lib/components/Tooltip";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
 import useApi from "@/api-client";
 import NetworkStatus from "@/app/(protected)/dashboard/[id]/_components/network-status";
@@ -69,7 +67,7 @@ const NodeDetailsModal = () => {
               />
               <KeyValuePair
                 label={"Status"}
-                value={<NetworkStatus />}
+                value={<NetworkStatus health={data?.data?.health} />}
                 className="col-span-12 md:col-span-6 lg:col-span-4"
                 isLoading={isLoading}
               />
