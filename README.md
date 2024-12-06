@@ -109,7 +109,7 @@ cp .env.example .env
 npm i
 npm run build
 npm i -g pm2
-pm2 start npm --name "perfuse" -- start -- -H 0.0.0.0
+sudo pm2 start npm --name "perfuse" -- start -- -H 0.0.0.0
 ```
 
 ## License
