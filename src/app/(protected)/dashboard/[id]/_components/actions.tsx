@@ -13,14 +13,12 @@
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useEffect } from "react";
-import { parseJSON } from "date-fns";
 import { useModalStore } from "@/store/modal";
 import { Button, IconButton } from "@/lib/components/Button";
 import { Tooltip } from "@/lib/components/Tooltip";
 import SvgTrash from "@/lib/icons/essential/outline/Trash";
 import { useNetworkStore } from "@/store/network";
 import { NetworkDbRow, NodeDbRow, TaskDbRow } from "@/db-queries";
-import { DropdownMenu, DropdownMenuButton, DropdownMenuList, DropdownMenuItem } from "@/lib/components/DropdownMenu";
 import { useToggle } from "@/hooks";
 import useApi from "@/api-client";
 
@@ -28,16 +26,15 @@ import useApi from "@/api-client";
 const Actions = ({
   network,
   task,
-  explorerUrl: { paraExplorerUrl, analyticsUrl },
+  explorerUrl: { paraExplorerUrl, analyticsUrl, stateScanUrl },
 }: {
   network?: NetworkDbRow;
   task?: TaskDbRow;
   nodes?: NodeDbRow[];
-  explorerUrl: { paraExplorerUrl: string; traceUrl: string; analyticsUrl: string };
+  explorerUrl: { paraExplorerUrl: string; traceUrl: string; analyticsUrl: string; stateScanUrl: string };
 }) => {
   /** getting params from the url */
   const params = useParams();
-  const { isOpen, handleToggle, handleClose } = useToggle();
   const networkId = params.id as string;
   const { openModal } = useModalStore();
 
@@ -62,6 +59,7 @@ const Actions = ({
     });
   }, [
     blockRpcResponse,
+    network?.network_chain_spec_file_json,
     network?.network_name,
     network?.network_relay_chain_type,
     networkId,
@@ -76,7 +74,7 @@ const Actions = ({
           openModal("explorers", {
             explorers: {
               polkadotLink: paraExplorerUrl,
-              subScanLink: "",
+              stateScanLink: stateScanUrl,
               traceHawkLink: "",
             },
           });

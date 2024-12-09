@@ -45,6 +45,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode; params: { id: strin
 
   /** explorer urls */
   const paraExplorerUrl = `${rpcHttpUrl}/polkadotjs/?rpc=${encodeURIComponent(`${rpcWsUrl}/para-rpc`)}#explorer`;
+  const stateScanUrl = `${rpcHttpUrl}/statescan/?rpc=${encodeURIComponent(`${rpcWsUrl}/para-rpc`)}#explorer`;
   const traceUrl = `${`${rpcHttpUrl}/polkadotjs`}`;
   const analyticsUrl = `${`${rpcHttpUrl}/grafana`}`;
 
@@ -63,7 +64,11 @@ const DashboardLayout: React.FC<{ children: React.ReactNode; params: { id: strin
         }
       >
         {/* page actions */}
-        <Actions network={network} task={task} explorerUrl={{ paraExplorerUrl, traceUrl, analyticsUrl }} />
+        <Actions
+          network={network}
+          task={task}
+          explorerUrl={{ paraExplorerUrl, traceUrl, analyticsUrl, stateScanUrl }}
+        />
       </Navigation>
       <TabContainer
         id={params.id}

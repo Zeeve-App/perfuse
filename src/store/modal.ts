@@ -40,7 +40,7 @@ type ModalData = {
   };
   explorers?: {
     polkadotLink: string;
-    subScanLink: string;
+    stateScanLink: string;
     traceHawkLink: string;
   };
 };
