@@ -31,7 +31,7 @@ const ExplorersModal = () => {
             <ModalTitle className="col-span-12 text-xl">Explorers</ModalTitle>
             <ModalText className="col-span-12">Please choose a explorer</ModalText>
           </div>
-          <Card variant={"grid-no-pad"} className="col-span-12 ">
+          <Card variant={"grid-no-pad"} className="col-span-12 items-start justify-start">
             <IconCard
               protocolId={"123"}
               protocolName={<>Polkadot&nbsp;Explorer</>}
@@ -42,19 +42,19 @@ const ExplorersModal = () => {
               serviceLink={data.explorers?.polkadotLink ?? ""}
               //   docLink={`https://docs.zeeve.io/traceye/shared-indexing/hosted-subquery`}
               imageSrc={"/assets/images/modals/explorers/polkadot-explorer.svg"}
+            />
+            <IconCard
+              protocolId={"123"}
+              protocolName={<>Statescan&nbsp;Explorer</>}
+              className="col-span-12 bg-theme-background md:col-span-4"
+              description={
+                "Statescan is a modularized and business pluggable explorer for substrate based chains. It provides features for exploring blockchain data, sending transactions, managing accounts, and interacting with smart contracts."
+              }
+              serviceLink={data.explorers?.stateScanLink ?? ""}
+              //   docLink={`https://docs.zeeve.io/traceye/shared-indexing/hosted-subquery`}
+              imageSrc={"/assets/images/modals/explorers/statescan-explorer.svg"}
             />
             {/* <IconCard
-              protocolId={"123"}
-              protocolName={<>Polkadot&nbsp;Explorer</>}
-              className="col-span-12 bg-theme-background md:col-span-4"
-              description={
-                "The Polkadot.js Explorer is a tool that allows users to interact with Substrate-based blockchains such as Polkadot, Kusama, and other parachains. It provides features for exploring blockchain data, sending transactions, managing accounts, and interacting with smart contracts."
-              }
-              serviceLink={data.explorers?.polkadotLink ?? ""}
-              //   docLink={`https://docs.zeeve.io/traceye/shared-indexing/hosted-subquery`}
-              imageSrc={"/assets/images/modals/explorers/polkadot-explorer.svg"}
-            />
-            <IconCard
               protocolId={"123"}
               protocolName={<>Polkadot&nbsp;Explorer</>}
               className="col-span-12 bg-theme-background md:col-span-4"
