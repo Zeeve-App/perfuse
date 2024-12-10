@@ -38,7 +38,7 @@ WORK_DIR="/home/perfuse/statescan_setup"
 FILES_REPO_URL="https://raw.githubusercontent.com/Mrigesh901/statescan/refs/heads/main"
 
 cd $SCRIPT_DIR/../../
-# Step 1: Clone the repository
+# Clone the repository
 if [ ! -d "statescan-v2" ]; then
     echo "Cloning the statescan repository..."
     git clone "$REPO_URL"
@@ -48,7 +48,7 @@ fi
 
 cd statescan-v2
 
-# Step 2: Install Yarn (if not installed)
+# Install Yarn (if not installed)
 if ! command -v yarn &> /dev/null; then
     echo "Installing Yarn..."
     npm install -g yarn || true
@@ -56,7 +56,7 @@ else
     echo "Yarn is already installed, skipping installation."
 fi
 
-# Step 3: Install Docker Toolkit
+# Install Docker Toolkit
 
 if ! command -v docker &>/dev/null  ! command -v docker-compose &>/dev/null; then
         echo "Installing Docker and Docker Compose..."
@@ -68,7 +68,7 @@ if ! command -v docker &>/dev/null  ! command -v docker-compose &>/dev/null; the
     echo "Dependencies installed successfully."
 
 
-# Step 4: Remove "packageManager" from package.json files
+# Remove "packageManager" from package.json files
 remove_package_manager_entry() {
     local file=$1
     if grep -q '"packageManager": "yarn@' "$file"; then
@@ -85,7 +85,7 @@ cd backend
 remove_package_manager_entry "package.json"
 cd ..
 
-# Step 5: Download additional files
+# Download additional files
 sudo mkdir -p $WORK_DIR
 sudo chown -R $SCRIPT_USER:$SCRIPT_USER $WORK_DIR
 cd backend
@@ -106,13 +106,13 @@ echo "Files moved to backend directory."
 
 
 
-# Step 6: Set up WebSocket endpoint variable
+# Set up WebSocket endpoint variable
 WS_ENDPOINT="ws://$(hostname -I | awk '{print $1}')/${RPC_API_KEY}/para-rpc"
 sed -i "s|wss://abc.zeeve.net/rpc|$WS_ENDPOINT|g" scan.pm2.yaml
 
 cd ..
 
-# Step 7: Start backend services
+# Start backend services
 if [ ! -f "compose.yaml" ]; then
     echo "compose.yaml not found, downloading again..."
     #curl -o "$WORK_DIR/compose.yaml" "$FILES_REPO_URL/compose.yaml"
@@ -122,7 +122,7 @@ fi
 echo "Starting backend services with Docker Compose..."
 sudo docker compose up -d
 
-# Step 8: Configure site directory
+# Configure site directory
 cd site
 if [ ! -f .env ]; then
     echo "Copying .env.example to .env..."
@@ -142,7 +142,7 @@ remove_package_manager_entry "package.json"
 # Update "start" script in package.json
 sed -i 's|"start": "BROWSER=none react-scripts start",|"start": "PORT=4334 BROWSER=none react-scripts start",|' package.json
 
-# Step 9: Install dependencies and start the application
+# Install dependencies and start the application
 echo "Installing dependencies with Yarn..."
 yarn install
 echo "Starting the application..."
