@@ -25,11 +25,11 @@ error_exit() {
 SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
 # Load environment variables from .env file
 if [ -f "$SCRIPT_DIR/../perfuse/.env" ]; then
-  source "$SCRIPT_DIR/../perfuse/.env"
-  echo "Env Variables Loaded"
+    source "$SCRIPT_DIR/../perfuse/.env"
+    echo "Env Variables Loaded"
 else
-  echo "ERROR: .env file not found."
-  exit 1
+    echo "ERROR: .env file not found."
+    exit 1
 fi
 
 # configuration variables
@@ -59,13 +59,13 @@ fi
 # Install Docker Toolkit
 
 if ! command -v docker &>/dev/null  ! command -v docker-compose &>/dev/null; then
-        echo "Installing Docker and Docker Compose..."
-        sudo apt-get update
-        sudo apt-get install -y docker.io docker-compose
-    else
-        echo "Docker and Docker Compose are already installed."
-    fi
-    echo "Dependencies installed successfully."
+    echo "Installing Docker and Docker Compose..."
+    sudo apt-get update
+    sudo apt-get install -y docker.io docker-compose
+else
+    echo "Docker and Docker Compose are already installed."
+fi
+echo "Dependencies installed successfully."
 
 
 # Remove "packageManager" from package.json files
@@ -114,8 +114,7 @@ cd ..
 
 # Start backend services
 if [ ! -f "compose.yaml" ]; then
-    echo "compose.yaml not found, downloading again..."
-    #curl -o "$WORK_DIR/compose.yaml" "$FILES_REPO_URL/compose.yaml"
+    echo "compose.yaml not found"
     exit 1
 fi
 
