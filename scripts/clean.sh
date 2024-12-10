@@ -120,7 +120,7 @@ remove_service() {
     log "Checking for $service_name service..."
     if systemctl list-unit-files --type=service | grep -q "$service_name"; then
         log "Stopping and disabling $service_name..."
-        sudo systemctl stop "$service_name"  log "$service_name is not running."
+        sudo systemctl stop "$service_name" ||  log "$service_name is not running."
         sudo systemctl disable "$service_name"
         sudo rm -f "/etc/systemd/system/$service_name.service"
         sudo systemctl daemon-reload
@@ -156,7 +156,7 @@ remove_user() {
     local user_name=$1
     if id "$user_name" &>/dev/null; then
         log "Removing user: $user_name..."
-        sudo userdel -r "$user_name"  log "Failed to remove home directory for $user_name. It might not exist."
+        sudo userdel -r "$user_name"  || log "Failed to remove home directory for $user_name. It might not exist."
         log "User $user_name removed successfully."
     else
         log "User $user_name not found."
@@ -222,4 +222,7 @@ monitoring_cleanup() {
     log "Cleanup process completed successfully."
 }
 
+#sudo kill $(sudo lsof -t -i:4334)
 monitoring_cleanup
+cleanup_haproxy
+

@@ -33,6 +33,7 @@ PERFUSE_PORT=3000
 SIDECAR_PORT=9099
 GRAFANA_PORT=9111
 POLKADOTJS_PORT=8080
+STATESCAN_PORT=4334
 
 # Function to install HAProxy (optional)
 install_haproxy() {
@@ -124,11 +125,13 @@ frontend rpc_frontend
     acl is_grafana path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}grafana
     acl sidecar_api path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}api
     acl is_polkadotjs path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}polkadotjs
+    acl is_statescan path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}statescan
     use_backend letsencrypt-backend if letsencrypt-acl
     use_backend para_rpc_backend if is_para_rpc
     use_backend grafana_backend if is_grafana
     use_backend sidecar if sidecar_api
     use_backend polkadotjs_backend if is_polkadotjs
+    use_backend statescan_backend if is_statescan
     default_backend perfuse_ui"
 
   local parachain_backend_config="
@@ -148,6 +151,12 @@ backend polkadotjs_backend
     mode http
     http-request set-path %[path,regsub(^/${RPC_API_KEY}/polkadotjs/,/)]
     server perfuse_ui 127.0.0.1:${POLKADOTJS_PORT}"
+
+  local statescan_backend_config="
+backend statescan_backend
+    mode http
+    $basic_auth_line
+    server statescan 127.0.0.1:${STATESCAN_PORT}"
 
   local grafana_backend_config="
 backend grafana_backend
@@ -178,6 +187,7 @@ backend letsencrypt-backend
   echo "$grafana_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$polkadotjs_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$parachain_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
+  echo "$statescan_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
   echo "$certbot_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
 
   echo "Frontend and backend configurations added to $HAPROXY_CONFIG_FILE"

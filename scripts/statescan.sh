@@ -51,7 +51,10 @@ cd statescan-v2
 # Install Yarn (if not installed)
 if ! command -v yarn &> /dev/null; then
     echo "Installing Yarn..."
-    npm install -g yarn || true
+    wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+    export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    npm install --global yarn || error_exit "yarn not installed"
 else
     echo "Yarn is already installed, skipping installation."
 fi
@@ -145,10 +148,16 @@ sed -i 's|"start": "BROWSER=none react-scripts start",|"start": "PORT=4334 BROWS
 echo "Installing dependencies with Yarn..."
 yarn install
 echo "Starting the application..."
-yarn start
+yarn start &
+SERVER_PID=$!
 
 # Cleanup temporary working directory
 cd ../..
 rm -rf "$WORK_DIR"
 
 echo "Explorer setup completed successfully."
+
+trap "echo 'Stopping React server ...'; kill $SERVER_PID;
+exit 0" SIGINT SIGTERM
+wait
+
