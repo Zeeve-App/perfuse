@@ -25,8 +25,21 @@ else
   exit 1
 fi
 
-# Configuration variables
-HAPROXY_CONFIG_FILE="/etc/haproxy/haproxy.cfg"  # Adjust if your HAProxy config is in a different location
+install_nginx() {
+  if ! command -v nginx &> /dev/null; then
+    echo "Installing Nginx and Certbot..."
+    sudo apt-get update && sudo apt-get install -y nginx certbot python3-certbot-nginx
+  else
+    echo "Nginx is already installed. Skipping..."
+  fi
+}
+
+# Variables
+NGINX_CONF="/etc/nginx/sites-enabled/perfuse.conf"
+JSAPPS_PATH="/var/www/jsapps"
+STATESCAN_PATH="/var/www/statescan"
+
+# Ports
 RELAY_RPC_PORT=9900
 PARA_RPC_PORT=9010
 PERFUSE_PORT=3000
@@ -35,180 +48,63 @@ GRAFANA_PORT=9111
 POLKADOTJS_PORT=8080
 STATESCAN_PORT=4334
 
-# Function to install HAProxy (optional)
-install_haproxy() {
-  if ! command -v haproxy &> /dev/null; then
-    echo "Installing HAProxy and Certbot..."
-    sudo apt-get update && sudo apt-get install -y haproxy whois certbot  # Adjust for your package manager
-  else
-    echo "HAProxy is already installed. Skipping...."
-  fi
+# Ensure necessary directories exist
+sudo mkdir -p "$JSAPPS_PATH"
+sudo mkdir -p "$STATESCAN_PATH"
+
+# Add sample files for jsapps and statescan
+# echo "Sample JS App" | sudo tee "$JSAPPS_PATH/index.html" > /dev/null
+# echo "Sample Statescan" | sudo tee "$STATESCAN_PATH/index.html" > /dev/null
+
+# Generate Nginx Configuration
+sudo bash -c "cat > $NGINX_CONF" <<EOL
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    location / {
+        proxy_http_version 1.1;
+        proxy_connect_timeout 60s;
+        proxy_set_header Host       \$http_host;
+        proxy_set_header Upgrade    \$http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header X-Real-IP  \$remote_addr;
+        proxy_set_header X-NginX-Proxy true;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+
+        location / {
+            proxy_pass http://127.0.0.1:${PERFUSE_PORT};
+        }
+        location /${RPC_API_KEY}/api {
+            proxy_pass http://127.0.0.1:${SIDECAR_PORT};
+        }                
+        location /${RPC_API_KEY}/para-rpc {
+            proxy_pass http://127.0.0.1:${PARA_RPC_PORT};
+        }                
+        location /${RPC_API_KEY}/grafana {
+            proxy_pass http://127.0.0.1:${GRAFANA_PORT};
+        }
+        location /${RPC_API_KEY}/polkadotjs/ {
+            alias ${JSAPPS_PATH}/;
+            try_files \$uri \$uri/ =404;
+        }
+        location /${RPC_API_KEY}/statescan/ {
+            alias ${STATESCAN_PATH}/;
+            rewrite ^/imgs/(.*)\$ /${RPC_API_KEY}/statescan/imgs/\$1 last;
+            try_files \$uri \$uri/ =404;
+        }
+    }
 }
+EOL
 
-obtain_renew_ssl_certificate() {
-    echo "Checking for existing certificate for $DOMAIN..."
-    if sudo certbot certificates | grep -q "$DOMAIN"; then
-        echo "Certificate already exists. Attempting renewal..."
-        sudo certbot renew || true  # Allow renewal to fail without stopping the script
-    else
-        echo "Certificate does not exist. Obtaining new certificate..."
-        sudo sudo certbot certonly --standalone \
-            -d "$DOMAIN" \
-            --email "$EMAIL" \
-            --agree-tos \
-            --non-interactive \
-            --http-01-port=8888
-    fi
-    sudo mkdir -p /etc/haproxy/ssl
-    sudo cat /etc/letsencrypt/live/$DOMAIN/fullchain.pem /etc/letsencrypt/live/$DOMAIN/privkey.pem | sudo tee /etc/haproxy/ssl/$DOMAIN.pem
-    # Uncomment SSL configuration lines after successful certificate obtaining/renewal
-    sudo sed -i '/ssl crt/s/^#//' "$HAPROXY_CONFIG_FILE"
-    sudo sed -i '/http-request redirect scheme https/s/^#//' "$HAPROXY_CONFIG_FILE"
-}
-
-# Function to add Basic Auth configuration
-add_basic_auth() {
-
-      # Check if frontend and backend already exist
-  if grep -q "^userlist authorized_users" "$HAPROXY_CONFIG_FILE" ; then
-    echo "Basic Auth already exists in $HAPROXY_CONFIG_FILE"
-    return
-  fi
-
-    # Hash the password (using bcrypt)
-    local hashed_password=$(mkpasswd -m sha-256 "$RPC_PASS")
-
-    cat <<EOF | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
-userlist authorized_users
-    user $RPC_USER password $hashed_password
-    
-EOF
-}
-
-update_rpc_path() {
-  # Check if HAProxy configuration exists
-  if [ -f "$HAPROXY_CONFIG_FILE" ]; then
-    echo "Checking RPC path in HAProxy configuration..."
-
-    current_para_path=$(sudo grep 'acl is_para_rpc path_beg -i' "$HAPROXY_CONFIG_FILE" | awk '{print $5}' | cut -d '/' -f 2 || echo "" )
-
-    # Check if the current path matches the expected path
-    if [[ "$current_para_path" != "$RPC_API_KEY" ]]; then
-      echo "Updating RPC path from '$current_para_path' to '$RPC_API_KEY'..."
-      # Replace the old path with the new path
-      sudo sed -i "s|$current_para_path|$RPC_API_KEY|" "$HAPROXY_CONFIG_FILE"
-      echo "RPC path updated successfully."
-    else
-      echo "RPC path already set to '$RPC_API_KEY'."
-    fi
-  else
-    echo "ERROR: HAProxy configuration file not found."
+# Test and Reload Nginx
+echo "Testing Nginx configuration..."
+if sudo nginx -t; then
+    echo "Reloading Nginx..."
+    sudo systemctl daemon-reload
+    sudo systemctl reload nginx
+    echo "Nginx configuration updated successfully!"
+else
+    echo "Error in Nginx configuration. Please check logs."
     exit 1
-  fi
-}
-
-# Function to create the HAProxy configuration
-add_frontend_backend() {
-  
-  local basic_auth_line=""
-  if [[ "$AUTH_METHOD" == "basic_auth" ]]; then
-  add_basic_auth
-  local basic_auth_line="    http-request auth unless { http_auth(authorized_users) }"
-  fi
-  frontend_config="
-frontend rpc_frontend
-    bind *:80
-#    bind *:443 ssl crt /etc/haproxy/ssl/${DOMAIN}.pem alpn h2,http/1.1
-#    http-request redirect scheme https unless { ssl_fc }
-    acl letsencrypt-acl path_beg /.well-known/acme-challenge/
-    acl is_para_rpc path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}para-rpc
-    acl is_grafana path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}grafana
-    acl sidecar_api path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}api
-    acl is_polkadotjs path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}polkadotjs
-    acl is_statescan path_beg -i /${RPC_API_KEY:+${RPC_API_KEY}/}statescan
-    use_backend letsencrypt-backend if letsencrypt-acl
-    use_backend para_rpc_backend if is_para_rpc
-    use_backend grafana_backend if is_grafana
-    use_backend sidecar if sidecar_api
-    use_backend polkadotjs_backend if is_polkadotjs
-    use_backend statescan_backend if is_statescan
-    default_backend perfuse_ui"
-
-  local parachain_backend_config="
-backend para_rpc_backend
-    mode http
-    $basic_auth_line
-    server substrate_rpc_1 127.0.0.1:${PARA_RPC_PORT}"
-
-  local perfuse_ui_config="
-backend perfuse_ui
-    mode http
-    option forwardfor
-    server perfuse_ui 127.0.0.1:${PERFUSE_PORT}"
-
-  local polkadotjs_backend_config="
-backend polkadotjs_backend
-    mode http
-    http-request set-path %[path,regsub(^/${RPC_API_KEY}/polkadotjs/,/)]
-    server perfuse_ui 127.0.0.1:${POLKADOTJS_PORT}"
-
-  local statescan_backend_config="
-backend statescan_backend
-    mode http
-    $basic_auth_line
-    server statescan 127.0.0.1:${STATESCAN_PORT}"
-
-  local grafana_backend_config="
-backend grafana_backend
-    mode http
-    $basic_auth_line
-    server grafana 127.0.0.1:${GRAFANA_PORT}"
-
-  local sidecar_config="
-backend sidecar
-    mode http
-    option forwardfor
-    server sidecar 127.0.0.1:${SIDECAR_PORT}"    
-
-  local certbot_config="
-backend letsencrypt-backend
-    server certbot 127.0.0.1:8888"
-
-  # Check if frontend and backend already exist
-  if grep -q "^frontend rpc_frontend" "$HAPROXY_CONFIG_FILE" || grep -q "^backend para_rpc_backend" "$HAPROXY_CONFIG_FILE"; then
-    echo "Frontend or backend configuration already exists in $HAPROXY_CONFIG_FILE"
-    return
-  fi
-
-  # Append the configuration blocks
-  echo "$frontend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
-  echo "$perfuse_ui_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
-  echo "$sidecar_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
-  echo "$grafana_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
-  echo "$polkadotjs_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
-  echo "$parachain_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
-  echo "$statescan_backend_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
-  echo "$certbot_config" | sudo tee -a "$HAPROXY_CONFIG_FILE" >/dev/null
-
-  echo "Frontend and backend configurations added to $HAPROXY_CONFIG_FILE"
-
-}
-
-# Function to restart HAProxy
-restart_haproxy() {
-  echo "Restarting HAProxy..."
-  sudo systemctl restart haproxy  # Or use the appropriate command for your system
-}
-
-# Main execution
-install_haproxy   # Install HAProxy
-add_frontend_backend
-update_rpc_path
-restart_haproxy
-if [[ "$SSL_TLS" == "1" ]]; then
-obtain_renew_ssl_certificate
 fi
-restart_haproxy
-
-
-echo "HAProxy setup complete."

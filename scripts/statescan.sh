@@ -54,7 +54,7 @@ if ! command -v yarn &> /dev/null; then
     wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
     export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    npm install --global yarn || error_exit "yarn not installed"
+    npm install --global yarn
 else
     echo "Yarn is already installed, skipping installation."
 fi
@@ -122,13 +122,43 @@ if [ ! -f "compose.yaml" ]; then
 fi
 
 echo "Starting backend services with Docker Compose..."
-sudo docker compose up -d
+sudo docker-compose up -d
 
 # Configure site directory
 cd site
+
+# Function to update .env file
+update_env_file() {
+    local env_example=".env.example"
+    local env_file=".env"
+    
+    # Get the server IP dynamically
+    local server_ip
+    server_ip=$(hostname -I | awk '{print $1}')
+
+    # Ensure .env.example exists
+    if [[ ! -f "$env_example" ]]; then
+        echo "Error: $env_example file not found!"
+        return 1
+    fi
+
+    # Copy .env.example to .env
+    cp "$env_example" "$env_file"
+
+    # Update values in .env
+    sed -i "s|^REACT_APP_PUBLIC_IDENTITY_SERVER_HOST=.*|REACT_APP_PUBLIC_IDENTITY_SERVER_HOST=http://${server_ip}:5011|" "$env_file"
+    sed -i "s|^REACT_APP_PUBLIC_API_END_POINT=.*|REACT_APP_PUBLIC_API_END_POINT=http://${server_ip}:5010/|" "$env_file"
+    sed -i "s|^REACT_APP_PUBLIC_GRAPHQL_API_END_POINT=.*|REACT_APP_PUBLIC_GRAPHQL_API_END_POINT=http://${server_ip}:7100/|" "$env_file"
+    sed -i "s|^#REACT_APP_BROWSER_ROUTER=.*|REACT_APP_BROWSER_ROUTER=1|" "$env_file"
+
+    echo ".env file has been updated with the server IP: $server_ip"
+}
+
+
 if [ ! -f .env ]; then
     echo "Copying .env.example to .env..."
-    cp .env.example .env
+    # Call the function
+    update_env_file
 fi
 
 # Download Dockerfile for site
@@ -142,22 +172,39 @@ fi
 remove_package_manager_entry "package.json"
 
 # Update "start" script in package.json
-sed -i 's|"start": "BROWSER=none react-scripts start",|"start": "PORT=4334 BROWSER=none react-scripts start",|' package.json
+#sed -i 's|"start": "BROWSER=none react-scripts start",|"start": "PORT=4334 BROWSER=none react-scripts start",|' package.json
 
 # Install dependencies and start the application
 echo "Installing dependencies with Yarn..."
 yarn install
 echo "Starting the application..."
-yarn start &
-SERVER_PID=$!
+yarn build
+
+if [ ! -d "build" ]; then
+    echo "Building site..."
+    yarn build
+else
+    echo "site already build and ready to be served"
+
+#change the src and href paths from index.html
+    INDEX_FILE="build/index.html"
+
+# Check if file exists
+if [[ -f "$INDEX_FILE" ]]; then
+  # Remove leading slashes from href and src attributes
+  sed -i -E 's|href="/|href="|g' "$INDEX_FILE"
+  sed -i -E 's|src="/|src="|g' "$INDEX_FILE"
+  
+  echo "Updated $INDEX_FILE successfully!"
+else
+  echo "File $INDEX_FILE not found!"
+fi
+    sudo mkdir -p /var/www/statescan/
+    sudo cp -ur build/* /var/www/statescan/
+fi
 
 # Cleanup temporary working directory
 cd ../..
 rm -rf "$WORK_DIR"
 
 echo "Explorer setup completed successfully."
-
-trap "echo 'Stopping React server ...'; kill $SERVER_PID;
-exit 0" SIGINT SIGTERM
-wait
-
