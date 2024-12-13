@@ -182,7 +182,7 @@ explorer_cleanup() {
     remove_directory "/var/www/statescan"
     if [ -d "$SCRIPT_DIR/../../statescan-v2" ]; then
         cd $SCRIPT_DIR/../../statescan-v2
-        sudo docker-compose down
+        sudo docker compose down
         cd $SCRIPT_DIR/../
         remove_directory "$SCRIPT_DIR/../../statescan-v2"
     else
