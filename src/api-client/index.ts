@@ -14,6 +14,7 @@ import useBlockNumberApi from "./block-number";
 import useCreateNetworkApi from "./create-network";
 import useDeleteApi from "./delete";
 import useFileApi from "./file";
+import useNetworkApi from "./network";
 import useNodeApi from "./node";
 import useUploadApi from "./upload";
 
@@ -26,6 +27,7 @@ const useApi = () => ({
   file: useFileApi,
   node: useNodeApi,
   addKey: useAddKey,
+  network: useNetworkApi,
 });
 
 export default useApi;

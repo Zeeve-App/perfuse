@@ -13,15 +13,9 @@ import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 import { web3Accounts, web3Enable } from "@polkadot/extension-dapp";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { useNetworkStore } from "@/store/network";
-import { envAndRelayChainOption } from "@/constants/create-network";
+import { relayChainRpc } from "@/constants/constant";
 
 const SELECTED_ACCOUNT_KEY = "selectedAccount";
-
-const relayChainRpc: Record<(typeof envAndRelayChainOption)[number]["relayChainOption"][number]["value"], string> = {
-  paseo: "wss://paseo.rpc.amforc.com:443", // Placeholder RPC endpoint for the 'paseo' chain
-  kusama: "wss://kusama-rpc.polkadot.io", // RPC endpoint for Kusama mainnet
-  polkadot: "wss://rpc.polkadot.io", // RPC endpoint for Polkadot mainnet
-};
 
 export const useSelectedAccount = () => {
   const [selectedAccount, setSelectedAccount] = useState<(InjectedAccountWithMeta & { balance: string }) | null>(null);
