@@ -16,6 +16,7 @@ import RegisterParachainInfoModal from "./register-parachain-modal";
 import NodeDetailsModal from "./node-details-modal";
 import CollatorAddKey from "./collator-add-key";
 import ExplorersModal from "./explorers";
+import DeploySubgraph from "./deploy-subgraph";
 
 /** modal provider */
 const ModalProvider = () => {
@@ -27,6 +28,7 @@ const ModalProvider = () => {
       <NodeDetailsModal />
       <CollatorAddKey />
       <ExplorersModal />
+      <DeploySubgraph />
     </>
   );
 };
