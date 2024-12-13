@@ -15,6 +15,9 @@
 set -e       # Exit on error
 set -u       # Fail on unset variables
 
+
+# Helper functions
+
 log() {
     echo "[INFO] $1"
 }
@@ -24,6 +27,7 @@ error_exit() {
     exit 1
 }
 
+#variables
 PATH="$HOME/.nvm/versions/node/v20.15.1/bin:$PATH"
 export NVM_DIR=$HOME/.nvm;
 source $NVM_DIR/nvm.sh;
@@ -42,10 +46,8 @@ fi
 
 # Configuration variables (adapt these to your setup)
 service_names=("$COL_NAME_1" "$COL_NAME_2" "$RPC_NAME" "node_exporter" "prometheus" "grafana-server")
-binaries_name=("polkadot" "polkadot-parachain")
+binaries_name=("polkadot" "polkadot-parachain" "node_exporter")
 base_path_template="/home/perfuse/parachain/%s/data"
-HAPROXY_CONFIG_FILE="/etc/haproxy/haproxy.cfg"
-
 
 # Function to remove a service and its data directory
 cleanup_service() {
@@ -57,80 +59,42 @@ cleanup_service() {
     elif [[ $service_name == relaychain-* ]]; then
         local base_path="/home/perfuse/relaychain/$service_name/data"
     else # For rpc-node or other services (if needed)
-        echo "WARNING: Unknown service type for '$service_name'. Skipping data directory removal."
+        log "WARNING: Unknown service type for '$service_name'. Skipping data directory removal."
         local base_path=""  # Set an empty base path
     fi
 
 
     # Check if service exists
     if ! sudo systemctl is-enabled --quiet "$service_name"; then
-        echo "WARNING: Service '$service_name' not found or not enabled."
+        log "WARNING: Service '$service_name' not found or not enabled."
         return  # Skip if the service doesn't exist
     fi
 
     # Stop and disable the service
-    echo "Stopping and disabling service '$service_name'..."
+    log "Stopping and disabling service '$service_name'..."
     sudo systemctl stop "$service_name"
     sudo systemctl disable "$service_name"
     sudo systemctl daemon-reload
 
     # Remove the service file
-    echo "Removing service file for '$service_name'..."
-    if [ -f "/etc/systemd/system/${service_name}.service" ]; then
-        sudo rm "/etc/systemd/system/${service_name}.service"
-    else
-        echo "Service File not found."
-    fi
-    # Check if data directory exists
-    if [ -d "$base_path" ]; then
-        echo "Removing data directory '$base_path'..."
-        sudo rm -rf "$base_path"
-    else
-        echo "WARNING: Data directory '$base_path' not found."
-    fi
-
-    echo "Service '$service_name' and data cleaned up."
+    log "Removing service file for '$service_name'..."
+    remove_file "/etc/systemd/system/${service_name}.service"
+    
+    # Remove if data directory exists
+    remove_directory "$base_path"
+    log "Service '$service_name' and data cleaned up."
 }
-
-# Main loop
-for i in "${!service_names[@]}"; do
-    cleanup_service "${service_names[i]}"
-done
 
 remove_binary() {
     local binary_name="$1"
     local binary_path="/usr/local/bin/$binary_name"
 
     if [ -f "$binary_path" ]; then  # Check if the binary exists
-        echo "Removing binary: $binary_name"
+        log "Removing binary: $binary_name"
         sudo rm "$binary_path"
-        echo "$binary_name removed successfully."
+        log "$binary_name removed successfully."
     else
-        echo "WARNING: Binary '$binary_name' not found at '$binary_path'. Skipping removal."
-    fi
-}
-
-
-for i in "${!binaries_name[@]}"; do
-  remove_binary "${binaries_name[i]}" "$POLKA_VERSION"
-done
-
-
-#Remove Sidecar Container
-# sudo docker rm -f $(sudo docker ps -a -q)
-
-remove_service() {
-    local service_name=$1
-    log "Checking for $service_name service..."
-    if systemctl list-unit-files --type=service | grep -q "$service_name"; then
-        log "Stopping and disabling $service_name..."
-        sudo systemctl stop "$service_name" || log "$service_name is not running."
-        sudo systemctl disable "$service_name"
-        sudo rm -f "/etc/systemd/system/$service_name.service"
-        sudo systemctl daemon-reload
-        log "$service_name removed successfully."
-    else
-        log "$service_name service not found."
+        log "WARNING: Binary '$binary_name' not found at '$binary_path'. Skipping removal."
     fi
 }
 
@@ -169,16 +133,13 @@ remove_user() {
 
 cleanup_node_exporter() {
     log "Cleaning up Node Exporter..."
-    cleanup_service "node_exporter"
     remove_directory "/opt/node_exporter"
-    remove_file "/usr/local/bin/node_exporter"
     remove_user "node_exporter"
     log "Node Exporter cleanup completed."
 }
 
 cleanup_prometheus() {
     log "Cleaning up Prometheus..."
-    cleanup_service "prometheus"
     remove_directory "/etc/prometheus"
     remove_directory "/var/lib/prometheus"
     remove_user "prometheus"
@@ -187,43 +148,62 @@ cleanup_prometheus() {
 
 cleanup_grafana() {
     log "Cleaning up Grafana..."
-    cleanup_service "grafana-server"
     remove_file "/etc/grafana/grafana.ini"
     remove_directory "/etc/grafana"
     log "Grafana cleanup completed."
 }
 
-# cleanup_nginx() {
-#     log "Cleaning up Nginx..."
-#     remove_service "nginx"
-#     remove_directory "/etc/nginx"
-#     remove_directory "/var/log/nginx"
-#     remove_directory "/usr/share/nginx"
-#     remove_file "/usr/sbin/nginx"
-#     log "Nginx cleanup completed."
-# }
-
-# cleanup_haproxy() {
-#     log "Cleaning up HAProxy..."
-#     remove_service "haproxy"
-#     remove_directory "/etc/haproxy"
-#     remove_directory "/var/log/haproxy"
-#     remove_file "/usr/sbin/haproxy"
-#     log "HAProxy cleanup completed."
-# }
 
 monitoring_cleanup() {
     log "Starting monitoring cleanup process..."
     cleanup_node_exporter
     cleanup_prometheus
     cleanup_grafana
-    remove_directory "/var/www/jsapps"
-    remove_directory "$SCRIPT_DIR/../apps"
     remove_directory "/home/perfuse"
     sudo systemctl daemon-reload
-    # Delete the pm2 service
-    #pm2 delete all
     log "Cleanup process completed successfully."
 }
 
+#sidecar cleanup
+sidecar_cleanup() {
+    log "starting sidecar cleanup"
+    if [[ $SIDECAR == 1 ]] ; then
+        pm2 delete substrate-api-sidecar
+        log "sidecar deleted successfully"
+    else
+        log "Sidecar not enabled"
+    fi
+}
+
+explorer_cleanup() {
+    log "Starting explorer cleanup"
+    remove_directory "/var/www/jsapps"
+    remove_directory "$SCRIPT_DIR/../apps"
+    remove_directory "/var/www/statescan"
+    if [ -d "$SCRIPT_DIR/../../statescan-v2" ]; then
+        cd $SCRIPT_DIR/../../statescan-v2
+        sudo docker-compose down
+        cd $SCRIPT_DIR/../
+        remove_directory "$SCRIPT_DIR/../../statescan-v2"
+    else
+        log "Statescan-v2 not found"
+    fi
+}
+
+# Main loop
+
+for i in "${!service_names[@]}"; do
+    cleanup_service "${service_names[i]}"
+done
+
+for i in "${!binaries_name[@]}"; do
+  if [[ $binaries_name[i] == "polkadot" || $binaries_name[i] == "polkadot-parachain" ]]; then
+    remove_binary "${binaries_name[i]}" "$POLKA_VERSION"
+  else
+    remove_binary "${binaries_name[i]}"
+  fi
+done
+
 monitoring_cleanup
+explorer_cleanup
+sidecar_cleanup
