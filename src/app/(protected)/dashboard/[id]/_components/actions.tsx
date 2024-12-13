@@ -11,7 +11,6 @@
 
 "use client";
 import { useParams } from "next/navigation";
-import Link from "next/link";
 import { useEffect } from "react";
 import { useModalStore } from "@/store/modal";
 import { Button, IconButton } from "@/lib/components/Button";
@@ -19,12 +18,11 @@ import { Tooltip } from "@/lib/components/Tooltip";
 import SvgTrash from "@/lib/icons/essential/outline/Trash";
 import { useNetworkStore } from "@/store/network";
 import { NetworkDbRow, NodeDbRow, TaskDbRow } from "@/db-queries";
-import { useToggle } from "@/hooks";
 import useApi from "@/api-client";
 
 /** network action component e.g: delete, explorer and monitor */
 const Actions = ({
-  network,
+  // network,
   task,
   explorerUrl: { paraExplorerUrl, analyticsUrl, stateScanUrl },
 }: {
@@ -44,24 +42,26 @@ const Actions = ({
   /** network store */
   const setNetworkStore = useNetworkStore((e) => e.setNetworkInfo);
 
+  const { data: network } = apis.network(networkId);
+
   /** updating network data in store */
   useEffect(() => {
     setNetworkStore({
       data: {
         networkId,
-        networkName: network?.network_name ?? "NA",
-        relayChainType: network?.network_relay_chain_type ?? "NA",
+        networkName: network?.data?.network_name ?? "NA",
+        relayChainType: network?.data?.network_relay_chain_type ?? "NA",
         networkStatus: task?.task_status,
         blockHeight: parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16),
-        parachainId: JSON.parse(network?.network_chain_spec_file_json ?? "{}").para_id,
+        parachainId: JSON.parse(network?.data?.network_chain_spec_file_json ?? "{}").para_id,
       },
       isLoading: false,
     });
   }, [
     blockRpcResponse,
-    network?.network_chain_spec_file_json,
-    network?.network_name,
-    network?.network_relay_chain_type,
+    network?.data?.network_chain_spec_file_json,
+    network?.data?.network_name,
+    network?.data?.network_relay_chain_type,
     networkId,
     setNetworkStore,
     task?.task_status,
@@ -92,17 +92,20 @@ const Actions = ({
         variant={"outline"}
         colorScheme={"accent"}
         isFullWidth
+        onClick={() => {
+          window.open(analyticsUrl);
+        }}
       >
-        <Link href={analyticsUrl} target={"_blank"}>
-          Monitoring
-        </Link>
+        Monitoring
       </Button>
       <Tooltip text="Delete Network" placement={"top-start"}>
         <IconButton
           colorScheme="red"
           variant={"outline"}
           onClick={() => {
-            openModal("deleteNetwork", { deleteNetwork: { networkId, networkName: network?.network_name as string } });
+            openModal("deleteNetwork", {
+              deleteNetwork: { networkId, networkName: network?.data?.network_name as string },
+            });
           }}
         >
           {<SvgTrash className="text-xl" />}

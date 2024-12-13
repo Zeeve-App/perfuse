@@ -34,6 +34,7 @@ import HyperLink from "@/lib/components/utils/hyper-link";
 import { Typography } from "@/lib/components/Typography";
 import { useSelectedAccount } from "@/lib/components/wallet/use-wallet";
 import { useNetworkStore } from "@/store/network";
+import { relayChainRpc } from "@/constants/constant";
 
 /** file card to show the wasm/genesis file with checksum */
 const FileCard = ({
@@ -197,12 +198,18 @@ const RegisterParachainInfoModal = () => {
               upload the <span className="font-semibold">WASM</span> and <span className="font-semibold">Genesis</span>{" "}
               file of the parachain on{" "}
               <HyperLink
-                href={withBasePath("/coretime-page")}
+                href={withBasePath(
+                  `https://polkadot.js.org/apps/?rpc=${encodeURI(
+                    Object.keys(relayChainRpc).includes(network.networkInfo?.data?.relayChainType ?? "")
+                      ? relayChainRpc[network.networkInfo?.data?.relayChainType as keyof typeof relayChainRpc]
+                      : "wss://rpc.polkadot.io",
+                  )}`,
+                )}
                 onClick={() => {
                   onClose();
                 }}
               >
-                coretime.
+                Polkadot.js explorer.
               </HyperLink>
             </ModalText>
             {/*  <ModalText>
