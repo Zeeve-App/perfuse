@@ -1,43 +1,60 @@
-## How to register the testnet parachain
+# Parachain Registration Guide
 
-2. Parachain Registration Process
+## 1. Registering Your Blockchain as a Parachain on the Paseo Testnet
+
+### 1.1 Application Submission
 To register your blockchain as a parachain on the Paseo Testnet:
+- Open an issue in the [Paseo Testnet Support Repository](https://github.com/paseo-network/testnet-support).
+- Provide the following details:
+  - Technical specifications of your blockchain.
+  - Information about your team.
+  - Objectives for joining the testnet.
 
-2.1 Application Submission
-Submit an application by opening an issue in the Paseo Testnet Support Repository. Include technical details of your blockchain, team information, and your objectives for joining the testnet.
-2.2 Review and Approval
-The Paseo team will review your submission. Approval is based on the readiness of your technology, the potential impact on the Paseo ecosystem, and the availability of parachain slots.
-2.3 Slot Allocation
-While coretime is not yet live, feel free to request a slot directly by contacting the Paseo team. Detailed procedures for requesting a slot are provided upon contact. For more details, please refer to PAS#9.
+### 1.2 Review and Approval
+- The Paseo team will review your application.
+- Approval is based on:
+  - Readiness of your technology.
+  - Potential contribution to the Paseo ecosystem.
+  - Availability of parachain slots.
 
-## How to register the mainnet parachain
-It will take time for your collator to sync with the Kusama/polkadot Relay chain.
-We now need to onboard the parachain to Paseo.
-Go to the Parachains tab.
-![image](https://github.com/user-attachments/assets/c40f5006-be6c-4734-885c-f3d50e29ada3)
+### 1.3 Slot Allocation
+- As coretime is not yet live, you can request a slot directly by contacting the Paseo team.
+- Detailed procedures for requesting a slot are available upon contact.
 
-Parachains Tab
-Select "+ ParaId" and make sure to use the stash account:
-![image](https://github.com/user-attachments/assets/b87de9e2-36bd-4d31-afb0-6aab07a49017)
+---
 
-Reserve ParaId
-Next, select "+ ParaThread". Make sure to use the stash account, upload your wasm and genesis state:
-![image](https://github.com/user-attachments/assets/5e20fd71-4ae3-4bf4-ad61-ef489672f06b)
+## 2. Registering Your Blockchain as a Parachain on the Kusama/Polkadot Mainnet
 
-Register ParaThread
-It will take a moment for the ParaThread to onboard:
-![image](https://github.com/user-attachments/assets/c2450f31-ecbd-4379-b4b1-54c97550a05e)
+### 2.1 Sync Your Collator
+- Ensure your collator synchronizes with the Kusama/Polkadot Relay Chain before proceeding.
 
+### 2.2 Onboarding the Parachain
+- Navigate to the **Parachains** tab in the dashboard:
 
-Purchase coretime and assign a core to your parachain
+  ![Parachains Tab](https://github.com/user-attachments/assets/c40f5006-be6c-4734-885c-f3d50e29ada3)
 
-![image](https://github.com/user-attachments/assets/2748db97-c916-4049-834f-3deae8c6f0ef)
+#### Step 1: Reserve a ParaId
+- Click on **+ ParaId**.
+- Use the stash account for the reservation:
 
+  ![Reserve ParaId](https://github.com/user-attachments/assets/b87de9e2-36bd-4d31-afb0-6aab07a49017)
 
+#### Step 2: Register a ParaThread
+- Select **+ ParaThread**.
+- Use the stash account to upload your WASM and genesis state:
 
-Upgrading Parathread
-You will then see the parathread upgraded to a parachain:
+  ![Register ParaThread](https://github.com/user-attachments/assets/5e20fd71-4ae3-4bf4-ad61-ef489672f06b)
 
-![image](https://github.com/user-attachments/assets/84c72101-033a-424b-a370-f21af445508d)
+- Wait for the ParaThread onboarding process to complete:
 
+  ![ParaThread Onboarding](https://github.com/user-attachments/assets/c2450f31-ecbd-4379-b4b1-54c97550a05e)
 
+### 2.3 Assign Coretime
+- Purchase coretime and assign a core to your parachain:
+
+  ![Purchase Coretime](https://github.com/user-attachments/assets/2748db97-c916-4049-834f-3deae8c6f0ef)
+
+### 2.4 Upgrade to a Parachain
+- After assigning coretime, the parathread will upgrade to a parachain:
+
+  ![Parachain Upgrade](https://github.com/user-attachments/assets/84c72101-033a-424b-a370-f21af445508d)
