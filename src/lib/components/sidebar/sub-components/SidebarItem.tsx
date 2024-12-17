@@ -11,6 +11,7 @@
 
 /* eslint-disable react/display-name */
 import React from "react";
+import Link from "next/link";
 import { PolymorphicComponentPropsWithRef, PolymorphicRef } from "../../core";
 import { tx } from "@/utils/shared";
 
@@ -22,6 +23,7 @@ type SidebarItemProps<C extends React.ElementType> = PolymorphicComponentPropsWi
     iconLeft?: React.ReactElement;
     badge?: React.ReactElement;
     isChild?: boolean;
+    href: string;
   }
 >;
 
@@ -35,7 +37,7 @@ const SidebarItem: SidebarItemComponent = React.forwardRef(
     const Component = as || "a";
 
     return (
-      <Component
+      <Link
         className={tx(
           "group relative flex max-h-14 cursor-pointer items-center justify-start gap-3 px-6 py-4 text-brand-gray transition-all duration-200 ease-in-out hover:bg-gradient-to-r hover:text-brand-pink",
           {
@@ -46,6 +48,7 @@ const SidebarItem: SidebarItemComponent = React.forwardRef(
         )}
         ref={ref}
         {...rest}
+        href={rest.href}
       >
         {iconLeft ? iconLeft : null}
         <span className="flex flex-col gap-y-1 text-base font-medium leading-4 ">
@@ -57,7 +60,7 @@ const SidebarItem: SidebarItemComponent = React.forwardRef(
             isActive ? "block" : "hidden"
           }`}
         /> */}
-      </Component>
+      </Link>
     );
   },
 );
