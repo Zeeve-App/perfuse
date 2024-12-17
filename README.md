@@ -14,7 +14,7 @@ Your project will take flight with these basic specs:
 
 - **Hardware:**
   - **🧠 Processor:** 4 Cores or more
-  - **💾 Memory:** 8GB RAM or more
+  - **💾 Memory:** 16GB RAM or more
   - **💽 Storage:** 250GB available disk space or more
 
 ---
@@ -29,7 +29,7 @@ For the smoothest, most optimal experience, we recommend:
 
 - **Hardware:**
   - **🧠 Processor:** 8 Cores or more
-  - **💾 Memory:** 16GB RAM or more
+  - **💾 Memory:** 32GB RAM or more
   - **💽 Storage:** 800GB available disk space
 
 ---
@@ -44,7 +44,7 @@ Your project will take flight with these basic specs:
 
 - **Hardware:**
   - **🧠 Processor:** 8 Cores or more
-  - **💾 Memory:** 12GB RAM or more
+  - **💾 Memory:** 16GB RAM or more
   - **💽 Storage:** 2TB available disk space or more
 
 ---
@@ -59,7 +59,7 @@ For the smoothest, most optimal experience, we recommend:
 
 - **Hardware:**
   - **🧠 Processor:** 8 Cores or more
-  - **💾 Memory:** 16GB RAM or more
+  - **💾 Memory:** 32GB RAM or more
   - **💽 Storage:** 2.5TB available disk space
 
 ---
@@ -109,7 +109,7 @@ cp .env.example .env
 npm i
 npm run build
 npm i -g pm2
-sudo pm2 start npm --name "perfuse" -- start -- -H 0.0.0.0
+pm2 start npm --name "perfuse" -- start -- -H 0.0.0.0
 ```
 
 ## License
