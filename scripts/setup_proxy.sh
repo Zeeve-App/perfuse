@@ -91,7 +91,7 @@ server {
         }
         location /${RPC_API_KEY}/statescan/ {
             alias ${STATESCAN_PATH}/;
-            rewrite ^/imgs/(.*)\$ /${RPC_API_KEY}/statescan/imgs/\$1 last;
+            #rewrite ^/imgs/(.*)\$ /${RPC_API_KEY}/statescan/imgs/\$1 last;
             try_files \$uri \$uri/ =404;
         }
     }

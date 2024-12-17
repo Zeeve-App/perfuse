@@ -129,7 +129,7 @@ WS_ENDPOINT="ws://$(hostname -I | awk '{print $1}')/${RPC_API_KEY}/para-rpc"
 sed -i "s|wss://abc.zeeve.net/rpc|$WS_ENDPOINT|g" scan.pm2.yaml
 
 cd ..
-
+sed -i "s|wss://abc.zeeve.net/rpc|$WS_ENDPOINT|g" compose.yaml
 # Start backend services
 if [ ! -f "compose.yaml" ]; then
     echo "compose.yaml not found"
@@ -185,6 +185,17 @@ if [ ! -f "dockerfile" ]; then
 fi
 
 remove_package_manager_entry "package.json"
+
+echo "Adding homepage property in package.json"
+
+jq --arg RPC_API_KEY "$RPC_API_KEY" '.["homepage"] = "/\($RPC_API_KEY)\/statescan/"' package.json > package.json.new && mv package.json.new package.json
+
+#update browser router property 
+echo "updating browser router property"
+sed -i "s/<Router>/<Router basename=\"\/$RPC_API_KEY\/statescan\/\">/g" src/App.js || error_exit "sed command failed while updating browser router"
+
+
+
 
 # Update "start" script in package.json
 #sed -i 's|"start": "BROWSER=none react-scripts start",|"start": "PORT=4334 BROWSER=none react-scripts start",|' package.json
