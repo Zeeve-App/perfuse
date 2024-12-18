@@ -20,6 +20,8 @@ import { Modal, ModalOverlay, ModalContent, ModalBody, ModalTitle } from "@/lib/
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
 import useApi from "@/api-client";
 import NetworkStatus from "@/app/(protected)/dashboard/[id]/_components/network-status";
+import SvgCheckCircle from "@/lib/icons/essential/outline/CheckCircle";
+import SvgXMarkCircle from "@/lib/icons/essential/outline/XMarkCircle";
 
 /** node details modal to show collator / rpc node details */
 const NodeDetailsModal = () => {
@@ -107,6 +109,19 @@ const NodeDetailsModal = () => {
                       tooltipText={data?.data?.node_collator_session_address ?? "NA"}
                       isLoading={isLoading}
                       shouldAllowCopy
+                    />
+                    <KeyValuePair
+                      label={"Seed phrase Added"}
+                      className="col-span-12 md:col-span-6 lg:col-span-4"
+                      value={
+                        data?.data?.node_collator_seed_added ? (
+                          <SvgCheckCircle className="size-5 text-brand-green" />
+                        ) : (
+                          <SvgXMarkCircle className="size-5 text-brand-red" />
+                        )
+                      }
+                      shouldAllowCopy
+                      isLoading={isLoading}
                     />
                   </div>
                 </div>
