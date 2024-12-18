@@ -10,9 +10,7 @@
  */
 
 import ZeeveSidebarItemProps from "../lib/components/sidebar/type";
-import SvgElement3 from "@/lib/icons/grid/outline/Element3";
 import SvgBook2 from "@/lib/icons/school/outline/Book2";
-import SvgBubbles from "@/lib/icons/essential/outline/Bubbles";
 import Svg4Square from "@/lib/icons/grid/outline/4Square";
 import Svg3dBlock from "@/lib/icons/grid/outline/3dBlock";
 import SvgCpu from "@/lib/icons/programming/outline/Cpu";
