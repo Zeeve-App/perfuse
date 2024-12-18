@@ -53,7 +53,7 @@ const Parameters = ({ data, isLoading, blockHeight }: ParametersProps) => {
       <div className="grid grid-cols-12 gap-3 lg:gap-6">
         <div className="col-span-12 lg:col-span-6">
           <CardKeyValuePair
-            label={"Parchain Block Height"}
+            label={"Parachain Block Height"}
             value={blockHeight}
             className="bg-theme-purple-gradient p-4 lg:p-7"
             isLoading={isLoading}
