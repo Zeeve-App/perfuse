@@ -94,7 +94,7 @@ cd perfuse
 ## Install nodejs dependency and start the server locally
 
 ```bash
-cp .env.exampe .env
+cp .env.example .env
 npm install
 npm run build
 npm run start
