@@ -78,7 +78,7 @@ const NodeDetailsModal = () => {
                 isLoading={isLoading}
               />
               <KeyValuePair
-                label={"Parchain Block Height"}
+                label={"Parachain Block Height"}
                 value={blockHeight ?? "NA"}
                 className="col-span-12 md:col-span-6 lg:col-span-4"
                 isLoading={blockRpcLoading}
