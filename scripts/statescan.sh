@@ -211,20 +211,6 @@ if [ ! -d "build" ]; then
     yarn build
 else
     echo "site already build and ready to be served"
-
-#change the src and href paths from index.html
-    INDEX_FILE="build/index.html"
-
-# Check if file exists
-if [[ -f "$INDEX_FILE" ]]; then
-  # Remove leading slashes from href and src attributes
-  sed -i -E 's|href="/|href="|g' "$INDEX_FILE"
-  sed -i -E 's|src="/|src="|g' "$INDEX_FILE"
-  
-  echo "Updated $INDEX_FILE successfully!"
-else
-  echo "File $INDEX_FILE not found!"
-fi
     sudo mkdir -p /var/www/statescan/
     sudo cp -ur build/* /var/www/statescan/
 fi
