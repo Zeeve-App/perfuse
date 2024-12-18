@@ -21,7 +21,15 @@ Upon successful deployment, you will be prompted to register the parachain. Foll
 
 ## **Checking Wallet Balances**
 
-After setting up the network, you can check wallet balances by allowing the Perfuse app to access your Polkadot.js wallet. The app will display balances in the relay chain where the parachain is deployed.
+After setting up the network, you can check wallet balances by allowing the Perfuse app to access your Polkadot.js wallet. The app will display balances in the relay chain where the parachain is deployed. It is showing in the top right corner of the nav menu.
+
+---
+
+## **Monitoring with Grafana**
+
+Once the network is set up, you can view analytics by clicking the **Monitoring** button located next to the **Explorer** button. Clicking on the **Monitoring** button will open Grafana.  
+
+To log in, use **admin** as both the username and password. After logging in, you have the option to reset your password or skip this step. Once logged in, you will be directed to the analytics dashboard.
 
 ---
 
