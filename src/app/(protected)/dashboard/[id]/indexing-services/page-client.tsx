@@ -25,7 +25,7 @@ const IndexingServiceComponent = ({ network }: { network?: NetworkDbRow }) => {
           "Traceye combines its most reliable enterprise-grade infrastructure with The Graph’s data  indexing protocol to provide an easy, predictable, and smooth experience for using subgraphs and subquery."
         }
         serviceLink={`https://app.traceye.io`}
-        docLink={`https://docs.zeeve.io/traceye/shared-indexing/hosted-subquery`}
+        docLink={`https://github.com/Zeeve-App/perfuse/blob/main/docs/tutorial/indexing-service.md`}
         imageSrc={"/assets/images/indexing-service/traceye-logo.svg"}
       />
     </Card>
