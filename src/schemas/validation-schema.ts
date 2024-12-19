@@ -10,11 +10,12 @@
  */
 
 import * as yup from "yup";
+import { isAddress } from "@polkadot/util-crypto";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import { networkEnvType, templateOption } from "@/constants/create-network";
 
 // Custom method to check for unique addresses
-const uniqueAddresses = (accounts: Array<{ address: string; balance: string }>): boolean => {
+const uniqueAddresses = (accounts: Array<{ address: string; balance: number }>): boolean => {
   if (accounts.length <= 1) return true; // Empty or single item arrays are unique by default
 
   const seenAddresses = new Set<string>();
@@ -34,37 +35,102 @@ export const deployNetworkValidationSchema = yup
     networkEnvironment: yup.object({
       value: yup.string<networkEnvType>().required("Select a network environment."),
     }),
-    sudoKey: yup.string().required(),
+    sudoKey: yup
+      .string()
+      .required("Sudo Key is required")
+      .test({
+        test: (publicKey: string) => {
+          // Ensure it's a hex string, has 64 characters (32 bytes) and that the length is correct when converted to U8 array
+          return isAddress(publicKey);
+        },
+        message: "invalid sudo key",
+      }),
     relayChain: yup.object({
       value: yup.string().required("Select a relay chain."),
     }),
     tokenName: yup
       .string()
       .required("Token symbol is required")
-      .matches(/^[A-Za-z]+$/, "Token symbol can only contains alphabets, no other character"),
+      .matches(/^[A-Za-z]+$/, "Token symbol can only contains alphabets, no other character")
+      .max(30)
+      .min(2),
     chainName: yup
       .string()
       .required("Chain name is required")
-      .matches(/^[A-Za-z]+$/, "Chain name can only contains alphabets, no other character"),
+      .matches(
+        /^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$/,
+        "Chain name can only contains alphanumeric and '-', no other character",
+      )
+      .max(30)
+      .min(2),
     template: yup.object({
       value: yup.string<(typeof templateOption)[number]["value"]>().required("Select a template."),
     }),
-    paraId: yup.number().required(),
-    decimalValue: yup.number().required(),
-    id: yup.string().required(),
-    protocolId: yup.string().required(),
-    ss58Format: yup.number().required(),
+    paraId: yup
+      .number()
+      .required("ParaId is required")
+      .max(99999, "ParaId must be less than or equal to 99999")
+      .min(1000, "ParaId must be greater than or equal to 1000"),
+    decimalValue: yup
+      .number()
+      .required("Decimal value is required")
+      .max(18, "Decimal value must be less than or equal to 18")
+      .min(1, "Decimal value must be greater than or equal to 1"),
+    id: yup
+      .string()
+      .required("Id is required")
+      .matches(
+        /^[A-Za-z0-9_]+([-_][A-Za-z0-9_]+)*$/,
+        "Id can only contains alphanumeric, '_' and '-', no other character",
+      )
+      .max(30)
+      .min(2),
+    protocolId: yup
+      .string()
+      .required("Protocol Id is required")
+      .matches(
+        /^[A-Za-z0-9_]+([-_][A-Za-z0-9_]+)*$/,
+        "Protocol Id can only contains alphanumeric, '_' and '-', no other character",
+      )
+      .max(30)
+      .min(2),
+    ss58Format: yup
+      .number()
+      .required("ss58Format is required")
+      .max(255, "ss58Format must be less than or equal to 255")
+      .min(0, "ss58Format must be greater than or equal to 0"),
     rpcNode: yup.object({
-      http: yup.boolean(),
-      ws: yup.boolean(),
+      http: yup.boolean().default(true),
+      ws: yup.boolean().default(true),
     }),
-    sidecar: yup.boolean(),
+    sidecar: yup.boolean().default(true),
     accounts: yup
       .array(
         yup.object({
-          address: yup.string().required(),
-          balance: yup.string().required(),
-          sessionKey: yup.string().required(),
+          address: yup
+            .string()
+            .required("Address is required")
+            .test({
+              test: (publicKey: string) => {
+                // Ensure it's a hex string, has 64 characters (32 bytes) and that the length is correct when converted to U8 array
+                return isAddress(publicKey);
+              },
+              message: "invalid address",
+            }),
+          balance: yup
+            .number()
+            .required("Balance is required")
+            .min(1152921504606847000, "Balance must be greater than or equal to 1152921504606847000"),
+          sessionKey: yup
+            .string()
+            .required("Session address is required")
+            .test({
+              test: (publicKey: string) => {
+                // Ensure it's a hex string, has 64 characters (32 bytes) and that the length is correct when converted to U8 array
+                return isAddress(publicKey);
+              },
+              message: "invalid session key",
+            }),
         }),
       )
       .test({

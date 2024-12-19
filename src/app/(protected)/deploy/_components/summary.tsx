@@ -12,6 +12,7 @@ import { UseFormReturn } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
 import { CreatePerfuseApiPayload } from "../../api/create/route";
 import { DeployStepTypes } from "../page-client";
 import { Card } from "@/lib/components/Card";
@@ -49,6 +50,10 @@ export default function DeploySummary({
   /** toast hook */
   const toast = useToast();
 
+  useEffect(() => {
+    console.log({ error: formData.formState.errors });
+  }, [formData.formState.errors, formData.watch("chainSpecFile.contents.chainType")]);
+
   const onSubmit = async (data: DeployNetworkValidationSchemaType) => {
     const chainSpec = data.chainSpecFile.contents;
     if (chainSpec.para_id) chainSpec.para_id = data.paraId;
@@ -62,7 +67,7 @@ export default function DeploySummary({
     const runtimeGenesis = chainSpec.genesis.runtimeGenesis;
 
     runtimeGenesis.patch.balances.balances =
-      data.accounts?.map((account) => [account?.address ?? "", parseInt(account?.balance ?? "0")]) || [];
+      data.accounts?.map((account) => [account?.address ?? "", account?.balance ?? "0"]) || [];
 
     runtimeGenesis.patch.collatorSelection.invulnerables = data.accounts.map((e) => e.address);
 
@@ -109,7 +114,7 @@ export default function DeploySummary({
           node_rpc_cors: "*",
           node_type: "collator",
           node_address: data.accounts?.[0]?.address,
-          node_balance: parseInt(data.accounts?.[0]?.balance),
+          node_balance: data.accounts?.[0]?.balance,
           node_collator_session_address: data.accounts?.[0]?.sessionKey,
         },
         {
@@ -117,7 +122,7 @@ export default function DeploySummary({
           node_rpc_cors: "*",
           node_type: "collator",
           node_address: data.accounts?.[1]?.address,
-          node_balance: parseInt(data.accounts?.[1]?.balance),
+          node_balance: data.accounts?.[1]?.balance,
           node_collator_session_address: data.accounts?.[1]?.sessionKey,
         },
       ],
@@ -300,7 +305,7 @@ export default function DeploySummary({
             className="w-full rounded-md"
             colorScheme="gradient"
             type="submit"
-            isDisabled={!formData.formState.isValid || deployed}
+            isDisabled={!formData.formState.isValid}
           >
             Deploy
           </Button>

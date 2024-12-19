@@ -40,7 +40,7 @@ import { Typography } from "@/lib/components/Typography";
 const collatorAddKeySchema = yup.object({
   seed: yup
     .string()
-    .required()
+    .required("Please enter seed phrase")
     .test({
       test: (seedPhrase: string) => {
         return mnemonicValidate(seedPhrase);
@@ -131,8 +131,11 @@ const CollatorAddKey = () => {
                     status: "error",
                     text: formData.formState.errors.seed?.message?.toString(),
                   }}
+                  label={{
+                    text: "Seed",
+                    isRequired: true,
+                  }}
                 >
-                  <Typography variant="subtitle">Seed</Typography>
                   <Input
                     placeholder="Enter Your Seed"
                     {...formData.register("seed")}
@@ -148,8 +151,11 @@ const CollatorAddKey = () => {
                     status: "error",
                     text: formData.formState.errors.pubKey?.message?.toString(),
                   }}
+                  label={{
+                    text: "Public Key",
+                    isRequired: true,
+                  }}
                 >
-                  <Typography variant="subtitle">Public Key</Typography>
                   <Input
                     placeholder="Enter Your Public Key"
                     isDisabled
@@ -166,7 +172,7 @@ const CollatorAddKey = () => {
             <Button colorScheme={"accent"} variant={"outline"} onClick={onClose} isDisabled={isLoading}>
               Cancel
             </Button>
-            <Button type="submit" colorScheme="gradient" isLoading={isLoading}>
+            <Button type="submit" colorScheme="gradient" isLoading={isLoading} isDisabled={!formData.formState.isValid}>
               Confirm
             </Button>
           </ModalFooter>
