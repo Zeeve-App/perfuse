@@ -20,7 +20,7 @@ import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from "@/lib/
 import { tx } from "@/utils/shared";
 import { Heading } from "@/lib/components/Heading";
 import { FormField } from "@/lib/components/Form/FormField";
-import { Checkbox, Input, Label, Switch } from "@/lib/components/Form";
+import { Checkbox, Input, Switch } from "@/lib/components/Form";
 import { Button } from "@/lib/components/Button";
 import HTTP_STATUS from "@/constants/http";
 import { ChainSpecFileType } from "@/types/chain-spec";
@@ -71,6 +71,11 @@ const DeployStep3 = forwardRef<
 
   useEffect(() => {
     if (formState.template?.value !== "custom") {
+      /** clearing the file input from custom template data */
+      formData.setValue("binaryFile.name", "");
+      formData.setValue("chainSpecFile.name", "");
+      formData.setValue("chainSpecFile.contents", undefined as unknown as ChainSpecFileType);
+      formData.setValue("binaryFile.path", "");
       axios
         .get(`/template/${templatesMap[formState.template?.value]}`)
         .then((res) => res.data)
@@ -130,8 +135,8 @@ const DeployStep3 = forwardRef<
   /**
    * Reading uploaded chain spec json file and applying values to fields.
    */
-  const handleChainSpecFile = (e: React.ChangeEvent<HTMLInputElement> & React.DragEvent<HTMLDivElement>) => {
-    const selectedFile = e.dataTransfer?.files?.[0] ?? e.target?.files?.[0];
+  const handleChainSpecFile = (e?: React.ChangeEvent<HTMLInputElement> & React.DragEvent<HTMLDivElement>) => {
+    const selectedFile = e?.dataTransfer?.files?.[0] ?? e?.target?.files?.[0];
     if (selectedFile) {
       // set selected chain spec file name
       formData.setValue("chainSpecFile.name", selectedFile.name);
@@ -144,46 +149,56 @@ const DeployStep3 = forwardRef<
       };
 
       reader.readAsText(selectedFile);
+    } else {
+      /** clear the file input event is undefined */
+      formData.setValue("chainSpecFile.name", "");
+      formData.setValue("chainSpecFile.contents", undefined as unknown as ChainSpecFileType);
     }
   };
 
   /**
    * Upload binary file to server.
    */
-  const handleBinaryFile = async (event: React.ChangeEvent<HTMLInputElement> & React.DragEvent<HTMLDivElement>) => {
+  const handleBinaryFile = async (event?: React.ChangeEvent<HTMLInputElement> & React.DragEvent<HTMLDivElement>) => {
     // TODO: handle abort controller
     console.log({ event });
 
     try {
-      const files = event?.dataTransfer?.files ?? event?.target?.files;
-      if (files?.length) {
-        const selectedFile = files[0];
+      if (event) {
+        const files = event?.dataTransfer?.files ?? event?.target?.files;
+        if (files?.length) {
+          const selectedFile = files[0];
 
-        // set binary file states
-        formData.setValue("binaryFile.name", selectedFile.name);
-        // setIsBinaryFileUploading(true);
+          // set binary file states
+          formData.setValue("binaryFile.name", selectedFile.name);
+          // setIsBinaryFileUploading(true);
 
-        // prepare form data
-        const form = new FormData();
-        form.append("file", selectedFile);
+          // prepare form data
+          const form = new FormData();
+          form.append("file", selectedFile);
 
-        // upload binary file
-        const response = await apis.uploadApi(form, {
-          onUploadProgress(progressEvent) {
-            if (progressEvent.lengthComputable) {
-              setProgressTotal(progressEvent.total);
-              setProgressValue(progressEvent.loaded);
-            }
-          },
-        });
+          // upload binary file
+          const response = await apis.uploadApi(form, {
+            onUploadProgress(progressEvent) {
+              if (progressEvent.lengthComputable) {
+                setProgressTotal(progressEvent.total);
+                setProgressValue(progressEvent.loaded);
+              }
+            },
+          });
 
-        if (response.status === HTTP_STATUS.OK && response.data.success) {
-          // set global network id
-          // setBinaryFile()
+          if (response.status === HTTP_STATUS.OK && response.data.success) {
+            // set global network id
+            // setBinaryFile()
 
-          formData.setValue("binaryFile.path", response.data.data.path);
-        }
-      } else throw new Error("File not uploaded properly");
+            formData.setValue("binaryFile.path", response.data.data.path);
+          }
+        } else throw new Error("File not uploaded properly");
+      } else {
+        /** clear the file input if event is undefined */
+        formData.setValue("binaryFile.name", "");
+        formData.setValue("binaryFile.path", "");
+      }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       // reset states
@@ -270,6 +285,7 @@ const DeployStep3 = forwardRef<
                         fileName={formState.chainSpecFile?.name}
                         id={"chainSpecFile"}
                         floatingLabelText={"Upload Chain-specification"}
+                        accept=".json"
                       />
                     );
                   }}
