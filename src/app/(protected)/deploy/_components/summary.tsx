@@ -27,7 +27,6 @@ import { Typography } from "@/lib/components/Typography/Typography";
 import { Badge } from "@/lib/components/Badge/Badge";
 import { withBasePath } from "@/utils/helpers";
 import { useToast } from "@/lib/components/Toast";
-import SvgCheckCircle from "@/lib/icons/essential/outline/CheckCircle";
 import { tx } from "@/utils/shared";
 import SvgCheck from "@/lib/icons/essential/outline/Check";
 
@@ -51,10 +50,6 @@ export default function DeploySummary({
 
   /** toast hook */
   const toast = useToast();
-
-  useEffect(() => {
-    console.log({ error: formData.formState.errors });
-  }, [formData.formState.errors, formData.watch("chainSpecFile.contents.chainType")]);
 
   const onSubmit = async (data: DeployNetworkValidationSchemaType) => {
     const chainSpec = data.chainSpecFile.contents;
@@ -307,7 +302,7 @@ export default function DeploySummary({
             className="w-full rounded-md"
             colorScheme="gradient"
             type="submit"
-            isDisabled={!formData.formState.isValid}
+            isDisabled={!formData.formState.isValid || deployed}
           >
             Deploy
           </Button>
