@@ -50,10 +50,6 @@ export default function DeploySummary({
   /** toast hook */
   const toast = useToast();
 
-  useEffect(() => {
-    console.log({ error: formData.formState.errors });
-  }, [formData.formState.errors, formData.watch("chainSpecFile.contents.chainType")]);
-
   const onSubmit = async (data: DeployNetworkValidationSchemaType) => {
     const chainSpec = data.chainSpecFile.contents;
     if (chainSpec.para_id) chainSpec.para_id = data.paraId;
@@ -305,7 +301,7 @@ export default function DeploySummary({
             className="w-full rounded-md"
             colorScheme="gradient"
             type="submit"
-            isDisabled={!formData.formState.isValid}
+            isDisabled={!formData.formState.isValid || deployed}
           >
             Deploy
           </Button>
