@@ -99,12 +99,12 @@ const DeployStep3 = forwardRef<
       updateAccount(0, {
         address: collatorAddresses?.[0]?.[0].toString() ?? "",
         sessionKey: getSessionKey(runtimeGenesis, collatorAddresses?.[0]?.[0].toString() ?? ""),
-        balance: parseInt(collatorAddresses?.[0]?.[1].toString() ?? "0").toString(),
+        balance: parseInt(collatorAddresses?.[0]?.[1].toString() ?? "0"),
       });
 
       updateAccount(1, {
         address: collatorAddresses?.[1]?.[0].toString() ?? "",
-        balance: parseInt(collatorAddresses?.[1]?.[1].toString() ?? "0").toString(),
+        balance: parseInt(collatorAddresses?.[1]?.[1].toString() ?? "0"),
         sessionKey: getSessionKey(runtimeGenesis, collatorAddresses?.[1]?.[0].toString() ?? ""),
       });
 
@@ -122,6 +122,10 @@ const DeployStep3 = forwardRef<
       });
     }
   };
+
+  useEffect(() => {
+    formData.setValue("id", formState.chainName + "_" + formState.relayChain.value.toLowerCase());
+  }, [formData, formState.chainName, formState.relayChain.value]);
 
   /**
    * Reading uploaded chain spec json file and applying values to fields.
@@ -198,12 +202,12 @@ const DeployStep3 = forwardRef<
   useEffect(() => {
     appendAccount({
       address: "",
-      balance: "",
+      balance: 0,
       sessionKey: "",
     });
     appendAccount({
       address: "",
-      balance: "",
+      balance: 0,
       sessionKey: "",
     });
   }, []);
@@ -213,7 +217,7 @@ const DeployStep3 = forwardRef<
       <div tabIndex={2} ref={ref} className={tx(className, "bg-theme-foreground rounded-lg")}>
         <Card variant={"grid-no-pad"} className="col-span-12 gap-0 py-3">
           <Heading as="h5" className="col-span-12 p-2 px-4">
-            Chain Template Selection
+            Chain Template Selection <span className="text-brand-red">*</span>
           </Heading>
           <Card variant={"grid"} className="col-span-12 gap-2 ">
             {templateOption.map((e) => (
@@ -328,11 +332,12 @@ const DeployStep3 = forwardRef<
                     status: "error",
                     text: formData.formState.errors.paraId?.message?.toString(),
                   }}
+                  label={{
+                    text: "ParaID",
+                    isRequired: true,
+                  }}
                 >
-                  <Heading as="h5" className="">
-                    ParaID
-                  </Heading>
-                  <Input placeholder="DOT" {...formData.register("paraId")} isRequired />
+                  <Input placeholder="ParaId" {...formData.register("paraId")} isRequired type="number" />
                 </FormField>
                 <FormField
                   className="col-span-6"
@@ -340,11 +345,12 @@ const DeployStep3 = forwardRef<
                     status: "error",
                     text: formData.formState.errors.decimalValue?.message?.toString(),
                   }}
+                  label={{
+                    text: "Token Decimal",
+                    isRequired: true,
+                  }}
                 >
-                  <Heading as="h5" className="">
-                    Token Decimal
-                  </Heading>
-                  <Input placeholder="DOT" {...formData.register("decimalValue")} isRequired />
+                  <Input placeholder="Token Decimal" {...formData.register("decimalValue")} isRequired type="number" />
                 </FormField>
                 <Card variant={"grid-no-pad"} className="col-span-12 py-3 lg:col-span-6">
                   <Card variant={"grid-no-pad"} className="col-span-12 lg:col-span-6">
@@ -385,11 +391,12 @@ const DeployStep3 = forwardRef<
                     status: "error",
                     text: formData.formState.errors.ss58Format?.message?.toString(),
                   }}
+                  label={{
+                    text: "ss58Format",
+                    isRequired: true,
+                  }}
                 >
-                  <Heading as="h5" className="">
-                    ss58Format
-                  </Heading>
-                  <Input placeholder="DOT" {...formData.register("ss58Format")} isRequired />
+                  <Input placeholder="ss58Format" {...formData.register("ss58Format")} isRequired type="number" />
                 </FormField>
                 <FormField
                   className="col-span-6"
@@ -397,10 +404,11 @@ const DeployStep3 = forwardRef<
                     status: "error",
                     text: formData.formState.errors.protocolId?.message?.toString(),
                   }}
+                  label={{
+                    text: "Protocol Id",
+                    isRequired: true,
+                  }}
                 >
-                  <Heading as="h5" className="">
-                    Protocol Id
-                  </Heading>
                   <Input placeholder="Protocol Id" {...formData.register("protocolId")} isRequired />
                 </FormField>
                 <FormField
@@ -409,10 +417,11 @@ const DeployStep3 = forwardRef<
                     status: "error",
                     text: formData.formState.errors.id?.message?.toString(),
                   }}
+                  label={{
+                    text: "Id",
+                    isRequired: true,
+                  }}
                 >
-                  <Heading as="h5" className="">
-                    id
-                  </Heading>
                   <Input placeholder="Id" {...formData.register("id")} isRequired />
                 </FormField>
                 <FormField
@@ -421,11 +430,12 @@ const DeployStep3 = forwardRef<
                     status: "error",
                     text: formData.formState.errors.sudoKey?.message?.toString(),
                   }}
+                  label={{
+                    text: "Sudo Key",
+                    isRequired: true,
+                  }}
                 >
-                  <Heading as="h5" className="">
-                    Sudo Key
-                  </Heading>
-                  <Input placeholder="Id" {...formData.register("sudoKey")} isRequired />
+                  <Input placeholder="Sudo Key" {...formData.register("sudoKey")} isRequired />
                 </FormField>
                 <Heading as="h5" className="col-span-12">
                   Accounts
@@ -442,8 +452,11 @@ const DeployStep3 = forwardRef<
                             formData.formState.errors.accounts?.[idx]?.address?.message?.toString() ||
                             formData.formState.errors.accounts?.[idx]?.message?.toString(),
                         }}
+                        label={{
+                          text: `Address ${idx + 1}`,
+                          isRequired: true,
+                        }}
                       >
-                        <Label>Address {idx + 1}</Label>
                         <Input placeholder="Address" {...formData.register(`accounts.${idx}.address`)} isRequired />
                       </FormField>
                       <FormField
@@ -454,8 +467,11 @@ const DeployStep3 = forwardRef<
                             formData.formState.errors.accounts?.message?.toString() ||
                             formData.formState.errors.accounts?.[idx]?.sessionKey?.message?.toString(),
                         }}
+                        label={{
+                          text: `Session Key ${idx + 1}`,
+                          isRequired: true,
+                        }}
                       >
-                        <Label>Session Key {idx + 1}</Label>
                         <Input placeholder="Address" {...formData.register(`accounts.${idx}.sessionKey`)} isRequired />
                       </FormField>
                       <FormField
@@ -464,10 +480,17 @@ const DeployStep3 = forwardRef<
                           status: "error",
                           text: formData.formState.errors.accounts?.[idx]?.balance?.message?.toString(),
                         }}
+                        label={{
+                          text: `Balance ${idx + 1}`,
+                          isRequired: true,
+                        }}
                       >
-                        <Label>Balance {idx + 1}</Label>
-
-                        <Input placeholder="Balance" {...formData.register(`accounts.${idx}.balance`)} isRequired />
+                        <Input
+                          placeholder="Balance"
+                          {...formData.register(`accounts.${idx}.balance`)}
+                          isRequired
+                          type="number"
+                        />
                       </FormField>
                       {/* TODO: uncomment for deleting address */}
                       {/* <FormField className="col-span-1">
@@ -495,7 +518,7 @@ const DeployStep3 = forwardRef<
                     onClick={() => {
                       appendAccount({
                         address: "",
-                        balance: "",
+                        balance: 0,
                         sessionKey: "",
                       });
                     }}

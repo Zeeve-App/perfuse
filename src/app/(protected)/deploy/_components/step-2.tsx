@@ -38,10 +38,11 @@ const DeployStep2 = forwardRef<
             status: "error",
             text: formData.formState.errors.chainName?.message?.toString(),
           }}
+          label={{
+            text: "Chain Name",
+            isRequired: true,
+          }}
         >
-          <Heading as="h5" className="col-span-12">
-            Chain Name
-          </Heading>
           <Input
             placeholder="Chain Name"
             {...formData.register("chainName")}
@@ -58,10 +59,11 @@ const DeployStep2 = forwardRef<
             status: "error",
             text: formData.formState.errors.tokenName?.message?.toString(),
           }}
+          label={{
+            text: "Token Symbol",
+            isRequired: true,
+          }}
         >
-          <Heading as="h5" className="">
-            Token Symbol
-          </Heading>
           <Input placeholder="DOT" {...formData.register("tokenName")} isRequired />
         </FormField>
       </Card>

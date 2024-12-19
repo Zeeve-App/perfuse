@@ -60,10 +60,13 @@ const FormField = (props: FormFieldProps) => {
 
   return (
     // container
-    <div className={tx("flex flex-col gap-1", className)}>
+    <div className={tx("flex flex-col gap-3", className)}>
       {/* label with tooltip */}
       {label?.text ? (
-        <Label isRequired={label.isRequired} className={tx("flex flex-row items-center gap-1", label.className)}>
+        <Label
+          isRequired={label.isRequired}
+          className={tx("flex flex-row items-center gap-1 font-semibold text-theme-primary-content", label.className)}
+        >
           {label.text}
           {label?.tooltip?.text ? (
             <Tooltip
