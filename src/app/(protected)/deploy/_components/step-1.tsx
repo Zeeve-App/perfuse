@@ -39,7 +39,7 @@ const DeployStep1 = forwardRef<
     <Card tabIndex={0} ref={ref} className={className}>
       {/* env and relay chain options */}
       <Heading as="h5" className="col-span-12">
-        Select your Network Environment
+        Select your Network Environment <span className="text-brand-red">*</span>
       </Heading>
       {/* env option */}
       {envAndRelayChainOption.map((e) => {
