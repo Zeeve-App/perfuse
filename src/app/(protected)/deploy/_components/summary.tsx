@@ -57,6 +57,8 @@ export default function DeploySummary({
     if (chainSpec.properties?.tokenSymbol) chainSpec.properties.tokenSymbol = data.tokenName;
     if (chainSpec.protocolId) chainSpec.protocolId = data.protocolId;
     if (chainSpec.id) chainSpec.id = data.id;
+    if (chainSpec.genesis.runtimeGenesis.patch.parachainInfo.parachainId)
+      chainSpec.genesis.runtimeGenesis.patch.parachainInfo.parachainId = data.paraId;
     if (chainSpec.properties.ss58Format) chainSpec.properties.ss58Format = data.ss58Format;
     chainSpec.name = data.chainName;
     chainSpec.relay_chain = data.relayChain.value.toLowerCase();
