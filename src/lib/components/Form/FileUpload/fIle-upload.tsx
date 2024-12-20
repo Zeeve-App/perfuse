@@ -127,7 +127,7 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>((props, ref) =>
               />
             </p>
           )}
-          {(error || fileName) && (
+          {fileName && (
             <div>
               <span
                 className={tx("bg-brand-light-teal  rounded-md  px-2 py-1 text-xs text-brand-gray", {
