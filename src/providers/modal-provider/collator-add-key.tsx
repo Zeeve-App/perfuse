@@ -35,6 +35,7 @@ import { Card } from "@/lib/components/Card";
 import { FormField } from "@/lib/components/Form/FormField";
 import { Input } from "@/lib/components/Form";
 import { Typography } from "@/lib/components/Typography";
+import { tx } from "@/utils/shared";
 
 /** collator add key schema */
 const collatorAddKeySchema = yup.object({
@@ -165,6 +166,23 @@ const CollatorAddKey = () => {
                     isRequired
                   />
                 </FormField>
+                <Card
+                  className={tx(
+                    "col-span-12 flex flex-row items-center border border-brand-yellow bg-brand-yellow/5 gap-3",
+                  )}
+                >
+                  <div className="2xl:flex 2xl:grow 2xl:flex-row 2xl:items-center 2xl:justify-between">
+                    <div className="">
+                      <Typography variant="paragraph" className="font-bold">
+                        Note:{" "}
+                      </Typography>
+                      <Typography variant="paragraph">
+                        Please ensure the same seed phrase is used as the one associated with the address{" "}
+                        <span className="font-semibold">{data.addKey?.sessionAddress}</span>.
+                      </Typography>
+                    </div>
+                  </div>
+                </Card>
               </Card>
             </div>
           </ModalBody>
