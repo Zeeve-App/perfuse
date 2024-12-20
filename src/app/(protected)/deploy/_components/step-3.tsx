@@ -92,6 +92,10 @@ const DeployStep3 = forwardRef<
       const runtimeGenesis = chainSpec.genesis.runtimeGenesis;
 
       formData.setValue("paraId", chainSpec.para_id);
+      formData.setValue(
+        "chainSpecFile.contents.genesis.runtimeGenesis.patch.parachainInfo.parachainId",
+        chainSpec.para_id,
+      );
       formData.setValue("decimalValue", chainSpec.properties?.tokenDecimals ?? 12);
       formData.setValue("protocolId", chainSpec.protocolId ?? "m2perfuse");
       formData.setValue("id", chainSpec.id ?? "new_testnet");
@@ -118,7 +122,7 @@ const DeployStep3 = forwardRef<
       // setting values from chain spec file
       formData.setValue("chainSpecFile.contents", chainSpec);
       // trigger validation
-      // formData.trigger();
+      formData.trigger();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast("Error while Loading chain spec file", {
@@ -202,7 +206,7 @@ const DeployStep3 = forwardRef<
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       // reset states
-      formData.setValue("binaryFile", {});
+      formData.setValue("binaryFile", { name: "", path: "" });
 
       formData.setError("binaryFile.name", { message: error?.message ?? "Something Wrong" });
       // toast("Error uploading binary file.", {
@@ -297,7 +301,11 @@ const DeployStep3 = forwardRef<
                 className="col-span-12"
                 helper={{
                   status: "error",
-                  text: formData.formState.errors.binaryFile?.name?.message?.toString(),
+                  text:
+                    formData.formState.errors.binaryFile?.message ??
+                    formData.formState.errors.binaryFile?.root?.message ??
+                    formData.formState.errors.binaryFile?.name?.message ??
+                    formData.formState.errors.binaryFile?.path?.message,
                 }}
               >
                 <Controller
@@ -315,7 +323,7 @@ const DeployStep3 = forwardRef<
                           },
                           value,
                         }}
-                        error={formData.formState.errors.binaryFile?.name?.message}
+                        error={formData.formState.errors.binaryFile?.root?.message}
                         progressValue={progressValue}
                         progressTotal={progressTotal}
                         fileName={formState.binaryFile?.name}
