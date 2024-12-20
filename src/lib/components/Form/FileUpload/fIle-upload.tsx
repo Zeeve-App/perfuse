@@ -17,9 +17,9 @@ import { Button } from "../../Button";
 import { useID } from "@/hooks";
 import SvgArrowUpFromBucket from "@/lib/icons/arrows/outline/ArrowUpFromBucket";
 import { Progress } from "@/lib/components/Progress";
-import SvgCheckCircle from "@/lib/icons/essential/outline/CheckCircle";
 import { tx } from "@/utils/shared";
 import SvgCheck from "@/lib/icons/essential/outline/Check";
+import SvgXMark from "@/lib/icons/essential/outline/XMark";
 
 /** file upload component props */
 interface FileUploadProps {
@@ -31,6 +31,7 @@ interface FileUploadProps {
   floatingLabelText: string;
   error?: string;
   fileType: string;
+  accept?: string;
   iconRight?: React.ReactElement;
 }
 
@@ -110,10 +111,23 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>((props, ref) =>
           </div>
           {fileName && (
             <p className="text-theme-primary-content">
-              <span className="text-brand-gray ">File Name:</span> {fileName}
+              <span className="text-brand-gray ">File Name:</span> {fileName}{" "}
+              <SvgXMark
+                className="inline size-4 place-content-around text-brand-red"
+                onClick={(e) => {
+                  e.preventDefault();
+                  console.log("clear is called");
+                  onChange();
+
+                  // Clear the file input
+                  if (ref && typeof ref !== "function" && ref.current) {
+                    ref.current.value = ""; // Reset file input
+                  }
+                }}
+              />
             </p>
           )}
-          {(error || fileName) && (
+          {fileName && (
             <div>
               <span
                 className={tx("bg-brand-light-teal  rounded-md  px-2 py-1 text-xs text-brand-gray", {
@@ -146,6 +160,7 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>((props, ref) =>
         }}
         type="file"
         className="hidden"
+        accept={props.accept}
         id={_id}
         ref={ref}
       />

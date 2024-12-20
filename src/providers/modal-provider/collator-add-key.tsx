@@ -35,12 +35,13 @@ import { Card } from "@/lib/components/Card";
 import { FormField } from "@/lib/components/Form/FormField";
 import { Input } from "@/lib/components/Form";
 import { Typography } from "@/lib/components/Typography";
+import { tx } from "@/utils/shared";
 
 /** collator add key schema */
 const collatorAddKeySchema = yup.object({
   seed: yup
     .string()
-    .required()
+    .required("Please enter seed phrase")
     .test({
       test: (seedPhrase: string) => {
         return mnemonicValidate(seedPhrase);
@@ -131,8 +132,11 @@ const CollatorAddKey = () => {
                     status: "error",
                     text: formData.formState.errors.seed?.message?.toString(),
                   }}
+                  label={{
+                    text: "Seed",
+                    isRequired: true,
+                  }}
                 >
-                  <Typography variant="subtitle">Seed</Typography>
                   <Input
                     placeholder="Enter Your Seed"
                     {...formData.register("seed")}
@@ -148,8 +152,11 @@ const CollatorAddKey = () => {
                     status: "error",
                     text: formData.formState.errors.pubKey?.message?.toString(),
                   }}
+                  label={{
+                    text: "Public Key",
+                    isRequired: true,
+                  }}
                 >
-                  <Typography variant="subtitle">Public Key</Typography>
                   <Input
                     placeholder="Enter Your Public Key"
                     isDisabled
@@ -159,6 +166,23 @@ const CollatorAddKey = () => {
                     isRequired
                   />
                 </FormField>
+                <Card
+                  className={tx(
+                    "col-span-12 flex flex-row items-center border border-brand-yellow bg-brand-yellow/5 gap-3",
+                  )}
+                >
+                  <div className="2xl:flex 2xl:grow 2xl:flex-row 2xl:items-center 2xl:justify-between">
+                    <div className="">
+                      <Typography variant="paragraph" className="font-bold">
+                        Note:{" "}
+                      </Typography>
+                      <Typography variant="paragraph">
+                        Please ensure the same seed phrase is used as the one associated with the address{" "}
+                        <span className="font-semibold">{data.addKey?.sessionAddress}</span>.
+                      </Typography>
+                    </div>
+                  </div>
+                </Card>
               </Card>
             </div>
           </ModalBody>
@@ -166,7 +190,7 @@ const CollatorAddKey = () => {
             <Button colorScheme={"accent"} variant={"outline"} onClick={onClose} isDisabled={isLoading}>
               Cancel
             </Button>
-            <Button type="submit" colorScheme="gradient" isLoading={isLoading}>
+            <Button type="submit" colorScheme="gradient" isLoading={isLoading} isDisabled={!formData.formState.isValid}>
               Confirm
             </Button>
           </ModalFooter>

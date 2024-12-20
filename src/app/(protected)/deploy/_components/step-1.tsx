@@ -17,6 +17,8 @@ import { RadioCard } from "@/lib/components/RadioCard";
 import { Radio } from "@/lib/components/Form";
 import { DeployNetworkValidationSchemaType } from "@/schemas/validation-schema";
 import { envAndRelayChainOption } from "@/constants/create-network";
+import SvgXMark from "@/lib/icons/essential/outline/XMark";
+import { tx } from "@/utils/shared";
 
 /** deploy page step 1 */
 const DeployStep1 = forwardRef<
@@ -39,7 +41,7 @@ const DeployStep1 = forwardRef<
     <Card tabIndex={0} ref={ref} className={className}>
       {/* env and relay chain options */}
       <Heading as="h5" className="col-span-12">
-        Select your Network Environment
+        Select your Network Environment <span className="text-brand-red">*</span>
       </Heading>
       {/* env option */}
       {envAndRelayChainOption.map((e) => {
@@ -75,6 +77,13 @@ const DeployStep1 = forwardRef<
           </div>
         );
       })}
+      {formData.formState.errors.relayChain?.value?.message && (
+        <div className="col-span-12">
+          <span className={tx("text-xs text-brand-red", {})}>
+            {formData.formState.errors.relayChain?.value?.message}
+          </span>
+        </div>
+      )}
     </Card>
   );
 });

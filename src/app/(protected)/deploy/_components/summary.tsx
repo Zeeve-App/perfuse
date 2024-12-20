@@ -8,11 +8,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { error } from "console";
 import { UseFormReturn } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
 import { CreatePerfuseApiPayload } from "../../api/create/route";
 import { DeployStepTypes } from "../page-client";
 import { Card } from "@/lib/components/Card";
@@ -26,7 +26,6 @@ import { Typography } from "@/lib/components/Typography/Typography";
 import { Badge } from "@/lib/components/Badge/Badge";
 import { withBasePath } from "@/utils/helpers";
 import { useToast } from "@/lib/components/Toast";
-import SvgCheckCircle from "@/lib/icons/essential/outline/CheckCircle";
 import { tx } from "@/utils/shared";
 import SvgCheck from "@/lib/icons/essential/outline/Check";
 
@@ -58,13 +57,15 @@ export default function DeploySummary({
     if (chainSpec.properties?.tokenSymbol) chainSpec.properties.tokenSymbol = data.tokenName;
     if (chainSpec.protocolId) chainSpec.protocolId = data.protocolId;
     if (chainSpec.id) chainSpec.id = data.id;
+    if (chainSpec.genesis.runtimeGenesis.patch.parachainInfo.parachainId)
+      chainSpec.genesis.runtimeGenesis.patch.parachainInfo.parachainId = data.paraId;
     if (chainSpec.properties.ss58Format) chainSpec.properties.ss58Format = data.ss58Format;
     chainSpec.name = data.chainName;
     chainSpec.relay_chain = data.relayChain.value.toLowerCase();
     const runtimeGenesis = chainSpec.genesis.runtimeGenesis;
 
     runtimeGenesis.patch.balances.balances =
-      data.accounts?.map((account) => [account?.address ?? "", parseInt(account?.balance ?? "0")]) || [];
+      data.accounts?.map((account) => [account?.address ?? "", account?.balance ?? "0"]) || [];
 
     runtimeGenesis.patch.collatorSelection.invulnerables = data.accounts.map((e) => e.address);
 
@@ -111,7 +112,7 @@ export default function DeploySummary({
           node_rpc_cors: "*",
           node_type: "collator",
           node_address: data.accounts?.[0]?.address,
-          node_balance: parseInt(data.accounts?.[0]?.balance),
+          node_balance: data.accounts?.[0]?.balance,
           node_collator_session_address: data.accounts?.[0]?.sessionKey,
         },
         {
@@ -119,7 +120,7 @@ export default function DeploySummary({
           node_rpc_cors: "*",
           node_type: "collator",
           node_address: data.accounts?.[1]?.address,
-          node_balance: parseInt(data.accounts?.[1]?.balance),
+          node_balance: data.accounts?.[1]?.balance,
           node_collator_session_address: data.accounts?.[1]?.sessionKey,
         },
       ],
@@ -215,7 +216,7 @@ export default function DeploySummary({
             )}
             {formWatchState.binaryFile?.name && (
               <div className="flex justify-between text-sm">
-                <span className="font-bold">Chain-specification</span>
+                <span className="font-bold">Binary-File</span>
                 <span
                   className={tx("bg-brand-light-teal  rounded-md  px-2 py-1 text-xs text-brand-gray", {
                     // "bg-brand-warning": error,

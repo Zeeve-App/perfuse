@@ -20,7 +20,7 @@ import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from "@/lib/
 import { tx } from "@/utils/shared";
 import { Heading } from "@/lib/components/Heading";
 import { FormField } from "@/lib/components/Form/FormField";
-import { Checkbox, Input, Label, Switch } from "@/lib/components/Form";
+import { Checkbox, Input, Switch } from "@/lib/components/Form";
 import { Button } from "@/lib/components/Button";
 import HTTP_STATUS from "@/constants/http";
 import { ChainSpecFileType } from "@/types/chain-spec";
@@ -71,6 +71,11 @@ const DeployStep3 = forwardRef<
 
   useEffect(() => {
     if (formState.template?.value !== "custom") {
+      /** clearing the file input from custom template data */
+      formData.setValue("binaryFile.name", "");
+      formData.setValue("chainSpecFile.name", "");
+      formData.setValue("chainSpecFile.contents", undefined as unknown as ChainSpecFileType);
+      formData.setValue("binaryFile.path", "");
       axios
         .get(`/template/${templatesMap[formState.template?.value]}`)
         .then((res) => res.data)
@@ -99,12 +104,12 @@ const DeployStep3 = forwardRef<
       updateAccount(0, {
         address: collatorAddresses?.[0]?.[0].toString() ?? "",
         sessionKey: getSessionKey(runtimeGenesis, collatorAddresses?.[0]?.[0].toString() ?? ""),
-        balance: parseInt(collatorAddresses?.[0]?.[1].toString() ?? "0").toString(),
+        balance: parseInt(collatorAddresses?.[0]?.[1].toString() ?? "0"),
       });
 
       updateAccount(1, {
         address: collatorAddresses?.[1]?.[0].toString() ?? "",
-        balance: parseInt(collatorAddresses?.[1]?.[1].toString() ?? "0").toString(),
+        balance: parseInt(collatorAddresses?.[1]?.[1].toString() ?? "0"),
         sessionKey: getSessionKey(runtimeGenesis, collatorAddresses?.[1]?.[0].toString() ?? ""),
       });
 
@@ -113,7 +118,7 @@ const DeployStep3 = forwardRef<
       // setting values from chain spec file
       formData.setValue("chainSpecFile.contents", chainSpec);
       // trigger validation
-      // formData.trigger();
+      formData.trigger();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast("Error while Loading chain spec file", {
@@ -123,11 +128,15 @@ const DeployStep3 = forwardRef<
     }
   };
 
+  useEffect(() => {
+    formData.setValue("id", formState.chainName + "_" + formState.relayChain.value.toLowerCase());
+  }, [formData, formState.chainName, formState.relayChain.value]);
+
   /**
    * Reading uploaded chain spec json file and applying values to fields.
    */
-  const handleChainSpecFile = (e: React.ChangeEvent<HTMLInputElement> & React.DragEvent<HTMLDivElement>) => {
-    const selectedFile = e.dataTransfer?.files?.[0] ?? e.target?.files?.[0];
+  const handleChainSpecFile = (e?: React.ChangeEvent<HTMLInputElement> & React.DragEvent<HTMLDivElement>) => {
+    const selectedFile = e?.dataTransfer?.files?.[0] ?? e?.target?.files?.[0];
     if (selectedFile) {
       // set selected chain spec file name
       formData.setValue("chainSpecFile.name", selectedFile.name);
@@ -140,50 +149,60 @@ const DeployStep3 = forwardRef<
       };
 
       reader.readAsText(selectedFile);
+    } else {
+      /** clear the file input event is undefined */
+      formData.setValue("chainSpecFile.name", "");
+      formData.setValue("chainSpecFile.contents", undefined as unknown as ChainSpecFileType);
     }
   };
 
   /**
    * Upload binary file to server.
    */
-  const handleBinaryFile = async (event: React.ChangeEvent<HTMLInputElement> & React.DragEvent<HTMLDivElement>) => {
+  const handleBinaryFile = async (event?: React.ChangeEvent<HTMLInputElement> & React.DragEvent<HTMLDivElement>) => {
     // TODO: handle abort controller
     console.log({ event });
 
     try {
-      const files = event?.dataTransfer?.files ?? event?.target?.files;
-      if (files?.length) {
-        const selectedFile = files[0];
+      if (event) {
+        const files = event?.dataTransfer?.files ?? event?.target?.files;
+        if (files?.length) {
+          const selectedFile = files[0];
 
-        // set binary file states
-        formData.setValue("binaryFile.name", selectedFile.name);
-        // setIsBinaryFileUploading(true);
+          // set binary file states
+          formData.setValue("binaryFile.name", selectedFile.name);
+          // setIsBinaryFileUploading(true);
 
-        // prepare form data
-        const form = new FormData();
-        form.append("file", selectedFile);
+          // prepare form data
+          const form = new FormData();
+          form.append("file", selectedFile);
 
-        // upload binary file
-        const response = await apis.uploadApi(form, {
-          onUploadProgress(progressEvent) {
-            if (progressEvent.lengthComputable) {
-              setProgressTotal(progressEvent.total);
-              setProgressValue(progressEvent.loaded);
-            }
-          },
-        });
+          // upload binary file
+          const response = await apis.uploadApi(form, {
+            onUploadProgress(progressEvent) {
+              if (progressEvent.lengthComputable) {
+                setProgressTotal(progressEvent.total);
+                setProgressValue(progressEvent.loaded);
+              }
+            },
+          });
 
-        if (response.status === HTTP_STATUS.OK && response.data.success) {
-          // set global network id
-          // setBinaryFile()
+          if (response.status === HTTP_STATUS.OK && response.data.success) {
+            // set global network id
+            // setBinaryFile()
 
-          formData.setValue("binaryFile.path", response.data.data.path);
-        }
-      } else throw new Error("File not uploaded properly");
+            formData.setValue("binaryFile.path", response.data.data.path);
+          }
+        } else throw new Error("File not uploaded properly");
+      } else {
+        /** clear the file input if event is undefined */
+        formData.setValue("binaryFile.name", "");
+        formData.setValue("binaryFile.path", "");
+      }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       // reset states
-      formData.setValue("binaryFile", {});
+      formData.setValue("binaryFile", { name: "", path: "" });
 
       formData.setError("binaryFile.name", { message: error?.message ?? "Something Wrong" });
       // toast("Error uploading binary file.", {
@@ -195,25 +214,12 @@ const DeployStep3 = forwardRef<
     }
   };
 
-  useEffect(() => {
-    appendAccount({
-      address: "",
-      balance: "",
-      sessionKey: "",
-    });
-    appendAccount({
-      address: "",
-      balance: "",
-      sessionKey: "",
-    });
-  }, []);
-
   return (
     <div className="col-span-12">
       <div tabIndex={2} ref={ref} className={tx(className, "bg-theme-foreground rounded-lg")}>
         <Card variant={"grid-no-pad"} className="col-span-12 gap-0 py-3">
           <Heading as="h5" className="col-span-12 p-2 px-4">
-            Chain Template Selection
+            Chain Template Selection <span className="text-brand-red">*</span>
           </Heading>
           <Card variant={"grid"} className="col-span-12 gap-2 ">
             {templateOption.map((e) => (
@@ -266,6 +272,7 @@ const DeployStep3 = forwardRef<
                         fileName={formState.chainSpecFile?.name}
                         id={"chainSpecFile"}
                         floatingLabelText={"Upload Chain-specification"}
+                        accept=".json"
                       />
                     );
                   }}
@@ -277,7 +284,11 @@ const DeployStep3 = forwardRef<
                 className="col-span-12"
                 helper={{
                   status: "error",
-                  text: formData.formState.errors.binaryFile?.name?.message?.toString(),
+                  text:
+                    formData.formState.errors.binaryFile?.message ||
+                    formData.formState.errors.binaryFile?.root?.message ||
+                    formData.formState.errors.binaryFile?.name?.message ||
+                    formData.formState.errors.binaryFile?.path?.message,
                 }}
               >
                 <Controller
@@ -292,10 +303,10 @@ const DeployStep3 = forwardRef<
                           onChange: async (event) => {
                             onChange(event);
                             await handleBinaryFile(event);
+                            formData.trigger();
                           },
                           value,
                         }}
-                        error={formData.formState.errors.binaryFile?.name?.message}
                         progressValue={progressValue}
                         progressTotal={progressTotal}
                         fileName={formState.binaryFile?.name}
@@ -328,11 +339,12 @@ const DeployStep3 = forwardRef<
                     status: "error",
                     text: formData.formState.errors.paraId?.message?.toString(),
                   }}
+                  label={{
+                    text: "ParaID",
+                    isRequired: true,
+                  }}
                 >
-                  <Heading as="h5" className="">
-                    ParaID
-                  </Heading>
-                  <Input placeholder="DOT" {...formData.register("paraId")} isRequired />
+                  <Input placeholder="ParaId" {...formData.register("paraId")} isRequired type="number" />
                 </FormField>
                 <FormField
                   className="col-span-6"
@@ -340,11 +352,12 @@ const DeployStep3 = forwardRef<
                     status: "error",
                     text: formData.formState.errors.decimalValue?.message?.toString(),
                   }}
+                  label={{
+                    text: "Token Decimal",
+                    isRequired: true,
+                  }}
                 >
-                  <Heading as="h5" className="">
-                    Token Decimal
-                  </Heading>
-                  <Input placeholder="DOT" {...formData.register("decimalValue")} isRequired />
+                  <Input placeholder="Token Decimal" {...formData.register("decimalValue")} isRequired type="number" />
                 </FormField>
                 <Card variant={"grid-no-pad"} className="col-span-12 py-3 lg:col-span-6">
                   <Card variant={"grid-no-pad"} className="col-span-12 lg:col-span-6">
@@ -385,11 +398,12 @@ const DeployStep3 = forwardRef<
                     status: "error",
                     text: formData.formState.errors.ss58Format?.message?.toString(),
                   }}
+                  label={{
+                    text: "ss58Format",
+                    isRequired: true,
+                  }}
                 >
-                  <Heading as="h5" className="">
-                    ss58Format
-                  </Heading>
-                  <Input placeholder="DOT" {...formData.register("ss58Format")} isRequired />
+                  <Input placeholder="ss58Format" {...formData.register("ss58Format")} isRequired type="number" />
                 </FormField>
                 <FormField
                   className="col-span-6"
@@ -397,10 +411,11 @@ const DeployStep3 = forwardRef<
                     status: "error",
                     text: formData.formState.errors.protocolId?.message?.toString(),
                   }}
+                  label={{
+                    text: "Protocol Id",
+                    isRequired: true,
+                  }}
                 >
-                  <Heading as="h5" className="">
-                    Protocol Id
-                  </Heading>
                   <Input placeholder="Protocol Id" {...formData.register("protocolId")} isRequired />
                 </FormField>
                 <FormField
@@ -409,10 +424,11 @@ const DeployStep3 = forwardRef<
                     status: "error",
                     text: formData.formState.errors.id?.message?.toString(),
                   }}
+                  label={{
+                    text: "Id",
+                    isRequired: true,
+                  }}
                 >
-                  <Heading as="h5" className="">
-                    id
-                  </Heading>
                   <Input placeholder="Id" {...formData.register("id")} isRequired />
                 </FormField>
                 <FormField
@@ -421,11 +437,12 @@ const DeployStep3 = forwardRef<
                     status: "error",
                     text: formData.formState.errors.sudoKey?.message?.toString(),
                   }}
+                  label={{
+                    text: "Sudo Key",
+                    isRequired: true,
+                  }}
                 >
-                  <Heading as="h5" className="">
-                    Sudo Key
-                  </Heading>
-                  <Input placeholder="Id" {...formData.register("sudoKey")} isRequired />
+                  <Input placeholder="Sudo Key" {...formData.register("sudoKey")} isRequired />
                 </FormField>
                 <Heading as="h5" className="col-span-12">
                   Accounts
@@ -442,8 +459,11 @@ const DeployStep3 = forwardRef<
                             formData.formState.errors.accounts?.[idx]?.address?.message?.toString() ||
                             formData.formState.errors.accounts?.[idx]?.message?.toString(),
                         }}
+                        label={{
+                          text: `Address ${idx + 1}`,
+                          isRequired: true,
+                        }}
                       >
-                        <Label>Address {idx + 1}</Label>
                         <Input placeholder="Address" {...formData.register(`accounts.${idx}.address`)} isRequired />
                       </FormField>
                       <FormField
@@ -454,8 +474,11 @@ const DeployStep3 = forwardRef<
                             formData.formState.errors.accounts?.message?.toString() ||
                             formData.formState.errors.accounts?.[idx]?.sessionKey?.message?.toString(),
                         }}
+                        label={{
+                          text: `Session Key ${idx + 1}`,
+                          isRequired: true,
+                        }}
                       >
-                        <Label>Session Key {idx + 1}</Label>
                         <Input placeholder="Address" {...formData.register(`accounts.${idx}.sessionKey`)} isRequired />
                       </FormField>
                       <FormField
@@ -464,10 +487,17 @@ const DeployStep3 = forwardRef<
                           status: "error",
                           text: formData.formState.errors.accounts?.[idx]?.balance?.message?.toString(),
                         }}
+                        label={{
+                          text: `Balance ${idx + 1}`,
+                          isRequired: true,
+                        }}
                       >
-                        <Label>Balance {idx + 1}</Label>
-
-                        <Input placeholder="Balance" {...formData.register(`accounts.${idx}.balance`)} isRequired />
+                        <Input
+                          placeholder="Balance"
+                          {...formData.register(`accounts.${idx}.balance`)}
+                          isRequired
+                          type="number"
+                        />
                       </FormField>
                       {/* TODO: uncomment for deleting address */}
                       {/* <FormField className="col-span-1">
@@ -495,7 +525,7 @@ const DeployStep3 = forwardRef<
                     onClick={() => {
                       appendAccount({
                         address: "",
-                        balance: "",
+                        balance: 0,
                         sessionKey: "",
                       });
                     }}
