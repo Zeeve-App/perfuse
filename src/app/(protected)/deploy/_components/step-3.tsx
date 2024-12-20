@@ -92,10 +92,6 @@ const DeployStep3 = forwardRef<
       const runtimeGenesis = chainSpec.genesis.runtimeGenesis;
 
       formData.setValue("paraId", chainSpec.para_id);
-      formData.setValue(
-        "chainSpecFile.contents.genesis.runtimeGenesis.patch.parachainInfo.parachainId",
-        chainSpec.para_id,
-      );
       formData.setValue("decimalValue", chainSpec.properties?.tokenDecimals ?? 12);
       formData.setValue("protocolId", chainSpec.protocolId ?? "m2perfuse");
       formData.setValue("id", chainSpec.id ?? "new_testnet");
