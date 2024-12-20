@@ -63,16 +63,16 @@ export const deployNetworkValidationSchema = yup
       )
       .max(30)
       .min(2),
-    template: yup.object({
-      value: yup.string<(typeof templateOption)[number]["value"]>().required("Select a template."),
-    }),
+
     paraId: yup
       .number()
+      .typeError("ParaId must be a valid number")
       .required("ParaId is required")
       .max(99999, "ParaId must be less than or equal to 99999")
       .min(1000, "ParaId must be greater than or equal to 1000"),
     decimalValue: yup
       .number()
+      .typeError("Decimal value must be a valid number")
       .required("Decimal value is required")
       .max(18, "Decimal value must be less than or equal to 18")
       .min(1, "Decimal value must be greater than or equal to 1"),
@@ -96,6 +96,7 @@ export const deployNetworkValidationSchema = yup
       .min(2),
     ss58Format: yup
       .number()
+      .typeError("ss58Format must be a valid number")
       .required("ss58Format is required")
       .max(255, "ss58Format must be less than or equal to 255")
       .min(0, "ss58Format must be greater than or equal to 0"),
@@ -119,6 +120,7 @@ export const deployNetworkValidationSchema = yup
             }),
           balance: yup
             .number()
+            .typeError("Balance must be a valid number")
             .required("Balance is required")
             .min(1152921504606847000, "Balance must be greater than or equal to 1152921504606847000"),
           sessionKey: yup
@@ -138,16 +140,40 @@ export const deployNetworkValidationSchema = yup
         test: (value) => Array.isArray(value) && uniqueAddresses(value),
       })
       .required(),
+    template: yup.object({
+      value: yup.string<(typeof templateOption)[number]["value"]>().required("Select a template."),
+    }),
     chainSpecFile: yup
       .object({
         contents: yup.mixed<ChainSpecFileType>().required("Chain spec file is required."),
-        name: yup.string(),
+        name: yup.string().when("template.value", {
+          is: "custom",
+          then: (schema) => schema.required("Chain spec file is required for custom template."),
+          otherwise: (schema) => schema.notRequired(),
+        }),
       })
       .required("Chain spec file is required."),
-    binaryFile: yup.object({
-      name: yup.string(),
-      path: yup.string(),
-    }),
+    binaryFile: yup
+      .object({
+        name: yup.string().when("template", {
+          is: (template: { value: string }) => template?.value === "custom",
+          then: (schema) => schema.required("Binary file name is required for custom template."),
+          otherwise: (schema) => schema.notRequired(),
+        }),
+        path: yup.string().when("template", {
+          is: (template: { value: string }) => template?.value === "custom",
+          then: (schema) => schema.required("Binary file name is required for custom template."),
+          otherwise: (schema) => schema.notRequired(),
+        }),
+      })
+      .when("template", {
+        is: (template: { value: string }) => {
+          console.log(template);
+          return template?.value === "custom";
+        },
+        then: (schema) => schema.required("Binary file is required for custom template."),
+        otherwise: (schema) => schema.notRequired(),
+      }),
   })
   .required();
 

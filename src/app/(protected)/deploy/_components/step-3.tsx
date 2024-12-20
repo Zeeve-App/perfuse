@@ -214,18 +214,18 @@ const DeployStep3 = forwardRef<
     }
   };
 
-  useEffect(() => {
-    appendAccount({
-      address: "",
-      balance: 0,
-      sessionKey: "",
-    });
-    appendAccount({
-      address: "",
-      balance: 0,
-      sessionKey: "",
-    });
-  }, []);
+  // useEffect(() => {
+  //   appendAccount({
+  //     address: "",
+  //     balance: 0,
+  //     sessionKey: "",
+  //   });
+  //   appendAccount({
+  //     address: "",
+  //     balance: 0,
+  //     sessionKey: "",
+  //   });
+  // }, []);
 
   return (
     <div className="col-span-12">
