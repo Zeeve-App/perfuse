@@ -164,12 +164,8 @@ export const deployNetworkValidationSchema = yup
         name: "is-custom-template",
         message: "Binary file is required for custom template.",
         test(value) {
-          console.log(this.parent);
-
           if (this.parent.template?.value === "custom") {
             if (!this.parent.binaryFile.name || !this.parent.binaryFile.path) {
-              console.log("returned false");
-
               return false;
             }
           }

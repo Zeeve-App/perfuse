@@ -214,7 +214,7 @@ export default function DeploySummary({
             )}
             {formWatchState.binaryFile?.name && (
               <div className="flex justify-between text-sm">
-                <span className="font-bold">Chain-specification</span>
+                <span className="font-bold">Binary-File</span>
                 <span
                   className={tx("bg-brand-light-teal  rounded-md  px-2 py-1 text-xs text-brand-gray", {
                     // "bg-brand-warning": error,
