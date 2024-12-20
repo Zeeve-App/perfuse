@@ -302,9 +302,9 @@ const DeployStep3 = forwardRef<
                 helper={{
                   status: "error",
                   text:
-                    formData.formState.errors.binaryFile?.message ??
-                    formData.formState.errors.binaryFile?.root?.message ??
-                    formData.formState.errors.binaryFile?.name?.message ??
+                    formData.formState.errors.binaryFile?.message ||
+                    formData.formState.errors.binaryFile?.root?.message ||
+                    formData.formState.errors.binaryFile?.name?.message ||
                     formData.formState.errors.binaryFile?.path?.message,
                 }}
               >
@@ -320,10 +320,10 @@ const DeployStep3 = forwardRef<
                           onChange: async (event) => {
                             onChange(event);
                             await handleBinaryFile(event);
+                            formData.trigger();
                           },
                           value,
                         }}
-                        error={formData.formState.errors.binaryFile?.root?.message}
                         progressValue={progressValue}
                         progressTotal={progressTotal}
                         fileName={formState.binaryFile?.name}
