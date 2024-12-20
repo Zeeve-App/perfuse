@@ -194,23 +194,19 @@ const RegisterParachainInfoModal = () => {
           <div className="flex flex-col gap-y-1">
             <ModalTitle className="text-xl">Register Parachain</ModalTitle>
             <ModalText>
-              Parachain setup will be done only when you authorize it by registering it on the relay chain. You need to
+              Parachain setup will be done only when you authorize it by registering it on the relay chain. Please
               upload the <span className="font-semibold">WASM</span> and <span className="font-semibold">Genesis</span>{" "}
-              file of the parachain on{" "}
+              files of the parachain to the relay chain. Refer to the{" "}
               <HyperLink
-                href={withBasePath(
-                  `https://polkadot.js.org/apps/?rpc=${encodeURI(
-                    Object.keys(relayChainRpc).includes(network.networkInfo?.data?.relayChainType ?? "")
-                      ? relayChainRpc[network.networkInfo?.data?.relayChainType as keyof typeof relayChainRpc]
-                      : "wss://rpc.polkadot.io",
-                  )}`,
-                )}
+                href={"https://github.com/Zeeve-App/perfuse/blob/main/docs/tutorial/parachain-registration.md"}
                 onClick={() => {
                   onClose();
                 }}
+                target="_blank"
               >
-                Polkadot.js explorer.
-              </HyperLink>
+                Parachain registration
+              </HyperLink>{" "}
+              documentation for detailed instructions.
             </ModalText>
             {/*  <ModalText>
               You can follow this github{" "}

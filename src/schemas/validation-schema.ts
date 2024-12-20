@@ -140,9 +140,11 @@ export const deployNetworkValidationSchema = yup
         test: (value) => Array.isArray(value) && uniqueAddresses(value),
       })
       .required(),
-    template: yup.object({
-      value: yup.string<(typeof templateOption)[number]["value"]>().required("Select a template."),
-    }),
+    template: yup
+      .object({
+        value: yup.string<(typeof templateOption)[number]["value"]>().required("Select a template."),
+      })
+      .required(),
     chainSpecFile: yup
       .object({
         contents: yup.mixed<ChainSpecFileType>().required("Chain spec file is required."),
@@ -155,24 +157,24 @@ export const deployNetworkValidationSchema = yup
       .required("Chain spec file is required."),
     binaryFile: yup
       .object({
-        name: yup.string().when("template", {
-          is: (template: { value: string }) => template?.value === "custom",
-          then: (schema) => schema.required("Binary file name is required for custom template."),
-          otherwise: (schema) => schema.notRequired(),
-        }),
-        path: yup.string().when("template", {
-          is: (template: { value: string }) => template?.value === "custom",
-          then: (schema) => schema.required("Binary file name is required for custom template."),
-          otherwise: (schema) => schema.notRequired(),
-        }),
+        name: yup.string(),
+        path: yup.string(),
       })
-      .when("template", {
-        is: (template: { value: string }) => {
-          console.log(template);
-          return template?.value === "custom";
+      .test({
+        name: "is-custom-template",
+        message: "Binary file is required for custom template.",
+        test(value) {
+          console.log(this.parent);
+
+          if (this.parent.template?.value === "custom") {
+            if (!this.parent.binaryFile.name || !this.parent.binaryFile.path) {
+              console.log("returned false");
+
+              return false;
+            }
+          }
+          return true;
         },
-        then: (schema) => schema.required("Binary file is required for custom template."),
-        otherwise: (schema) => schema.notRequired(),
       }),
   })
   .required();
