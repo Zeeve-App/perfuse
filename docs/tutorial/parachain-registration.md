@@ -4,7 +4,7 @@
 
 ### 1.1 Application Submission
 To register your blockchain as a parachain on the Paseo Testnet:
-- Open an issue in the [Paseo Testnet Support Repository](https://github.com/paseo-network/testnet-support).
+- Open an issue in the [Paseo Testnet Support Repository](https://github.com/paseo-network/support).
 - Provide the following details:
   - Technical specifications of your blockchain.
   - Information about your team.
