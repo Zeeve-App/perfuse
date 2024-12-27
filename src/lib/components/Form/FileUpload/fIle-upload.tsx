@@ -116,7 +116,6 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>((props, ref) =>
                 className="inline size-4 place-content-around text-brand-red"
                 onClick={(e) => {
                   e.preventDefault();
-                  console.log("clear is called");
                   onChange();
 
                   // Clear the file input
