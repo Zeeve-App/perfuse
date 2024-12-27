@@ -17,7 +17,6 @@ import { Button } from "../../Button";
 import { useID } from "@/hooks";
 import SvgArrowUpFromBucket from "@/lib/icons/arrows/outline/ArrowUpFromBucket";
 import { Progress } from "@/lib/components/Progress";
-import SvgCheckCircle from "@/lib/icons/essential/outline/CheckCircle";
 import { tx } from "@/utils/shared";
 import SvgCheck from "@/lib/icons/essential/outline/Check";
 

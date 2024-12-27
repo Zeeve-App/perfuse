@@ -8,7 +8,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { error } from "console";
 import { UseFormReturn } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -26,7 +25,6 @@ import { Typography } from "@/lib/components/Typography/Typography";
 import { Badge } from "@/lib/components/Badge/Badge";
 import { withBasePath } from "@/utils/helpers";
 import { useToast } from "@/lib/components/Toast";
-import SvgCheckCircle from "@/lib/icons/essential/outline/CheckCircle";
 import { tx } from "@/utils/shared";
 import SvgCheck from "@/lib/icons/essential/outline/Check";
 
