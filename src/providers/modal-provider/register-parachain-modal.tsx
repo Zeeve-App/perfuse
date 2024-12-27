@@ -130,7 +130,7 @@ const RegisterParachainInfoModal = () => {
     return { response, mimeType };
   }
 
-  // Function to register a parachain
+  /*   Function to register a parachain */
   async function registerParachain() {
     try {
       if (!selectedAccount?.address) throw new Error("No account selected");
@@ -151,6 +151,35 @@ const RegisterParachainInfoModal = () => {
       // Step 6: Submit the transaction to register the parachain
       const unsub = await relayChainApi.tx.registrar
         .register(paraId, validationCode, genesisHead)
+        .signAndSend(selectedAccount?.address, { signer: injector.signer }, ({ status, events }) => {
+          if (status.isInBlock) {
+            console.log(`Transaction included in block: ${status.asInBlock}`);
+          } else if (status.isFinalized) {
+            console.log(`Transaction finalized in block: ${status.asFinalized}`);
+            unsub(); // Unsubscribe from updates
+          }
+        });
+    } catch (error) {
+      console.error("Error during parachain registration:", error);
+    }
+  }
+
+  /* Function to register a parachain */
+  async function reserveParaId() {
+    try {
+      if (!selectedAccount?.address) throw new Error("No account selected");
+      if (!relayChainApi) throw new Error("No relay chain api found");
+      const injector = await web3FromAddress(selectedAccount?.address);
+
+      console.log(`Using account: ${selectedAccount?.address}`);
+
+      // Step 5: Define parachain registration parameters
+      // Specify the paraId you want to reserve (or leave blank to auto-assign the next one)
+      // const paraId = network.networkInfo.data?.parachainId;
+
+      // Step 6: Submit the transaction to register the parachain
+      const unsub = await relayChainApi.tx.registrar
+        .reserve()
         .signAndSend(selectedAccount?.address, { signer: injector.signer }, ({ status, events }) => {
           if (status.isInBlock) {
             console.log(`Transaction included in block: ${status.asInBlock}`);
@@ -230,9 +259,12 @@ const RegisterParachainInfoModal = () => {
           <Button variant="ghost" colorScheme={"accent"} onClick={onClose}>
             Close
           </Button>
-          {/* <Button variant="ghost" colorScheme={"accent"} onClick={registerParachain}>
+          <Button variant="ghost" colorScheme={"accent"} onClick={() => reserveParaId()}>
+            Reserve ParaId
+          </Button>
+          <Button variant="ghost" colorScheme={"accent"} onClick={registerParachain}>
             Register ParaId
-          </Button> */}
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
