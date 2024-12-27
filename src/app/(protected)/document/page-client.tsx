@@ -9,6 +9,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 "use client";
+import React from "react";
 import { Card } from "@/lib/components/Card";
 import { Typography } from "@/lib/components/Typography";
 import HyperLink from "@/lib/components/utils/hyper-link";

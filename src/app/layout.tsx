@@ -9,11 +9,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import React from "react";
 import type { Metadata } from "next";
 import "./globals.css";
 import { headers } from "next/headers";
 import { parseCookie } from "next/dist/compiled/@edge-runtime/cookies";
-import { redirect } from "next/navigation";
 import { dmSans, poppins } from "@/utils/fonts";
 import ToastProvider from "@/providers/toast-provider";
 import ModalProvider from "@/providers/modal-provider";

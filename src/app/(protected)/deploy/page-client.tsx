@@ -10,6 +10,7 @@
  */
 
 "use client";
+import React from "react";
 import { useEffect, useRef } from "react";
 import { ClassValue } from "class-variance-authority/types";
 import { yupResolver } from "@hookform/resolvers/yup";

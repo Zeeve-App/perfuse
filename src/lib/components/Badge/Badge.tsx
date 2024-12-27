@@ -10,6 +10,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import React from "react";
 import { forwardRef } from "react";
 import { cva, VariantProps } from "class-variance-authority";
 import { PolymorphicComponentPropsWithRef, PolymorphicRef } from "../core";

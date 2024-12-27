@@ -9,6 +9,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import React from "react";
 import { Metadata } from "next";
 import IndexingServiceComponent from "./page-client";
 

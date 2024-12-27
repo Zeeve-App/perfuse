@@ -9,6 +9,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import React from "react";
 import type { Metadata } from "next";
 import "../globals.css";
 import { headers } from "next/headers";

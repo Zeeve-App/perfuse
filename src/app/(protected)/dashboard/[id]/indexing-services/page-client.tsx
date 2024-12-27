@@ -9,6 +9,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import React from "react";
 import { IndexingServiceCard } from "./_components/indexing-service-card";
 import { NetworkDbRow } from "@/db-queries";
 import { Card } from "@/lib/components/Card";

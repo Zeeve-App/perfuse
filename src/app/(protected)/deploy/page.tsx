@@ -8,6 +8,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import React from "react";
 import { Metadata } from "next";
 import Deploy from "./page-client";
 import { getNetworks } from "@/db-queries";

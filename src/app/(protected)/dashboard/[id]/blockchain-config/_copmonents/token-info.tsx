@@ -9,6 +9,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import React from "react";
 import Image from "next/image";
 import { Card } from "@/lib/components/Card";
 import { Typography } from "@/lib/components/Typography";
