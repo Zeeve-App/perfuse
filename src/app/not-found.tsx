@@ -1,3 +1,4 @@
+import React from "react";
 import { headers } from "next/headers";
 import { parseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { redirect } from "next/navigation";

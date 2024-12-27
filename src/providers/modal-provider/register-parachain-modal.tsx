@@ -183,6 +183,7 @@ const RegisterParachainInfoModal = () => {
         .signAndSend(selectedAccount?.address, { signer: injector.signer }, ({ status, events }) => {
           if (status.isInBlock) {
             console.log(`Transaction included in block: ${status.asInBlock}`);
+            // events.find(e=>e.forEach())
           } else if (status.isFinalized) {
             console.log(`Transaction finalized in block: ${status.asFinalized}`);
             unsub(); // Unsubscribe from updates

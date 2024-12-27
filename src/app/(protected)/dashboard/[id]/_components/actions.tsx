@@ -10,6 +10,7 @@
  */
 
 "use client";
+import React from "react";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { useModalStore } from "@/store/modal";
