@@ -36,6 +36,8 @@ fi
 REPO_URL="https://github.com/opensquare-network/statescan-v2.git"
 WORK_DIR="/home/perfuse/statescan_setup"
 FILES_REPO_URL="https://raw.githubusercontent.com/Mrigesh901/statescan/refs/heads/main"
+PERFUSE_JS_PATH="site/src/utils/consts/chains/perfuse.js"
+CHAINSPEC_FILE="$SCRIPT_DIR/../perfuse/chainspec.json"
 
 cd $SCRIPT_DIR/../../
 # Clone the repository
@@ -165,7 +167,7 @@ update_env_file() {
     sed -i "s|^REACT_APP_PUBLIC_API_END_POINT=.*|REACT_APP_PUBLIC_API_END_POINT=http://${server_ip}:5010/|" "$env_file"
     sed -i "s|^REACT_APP_PUBLIC_GRAPHQL_API_END_POINT=.*|REACT_APP_PUBLIC_GRAPHQL_API_END_POINT=http://${server_ip}:7100/|" "$env_file"
     sed -i "s|^#REACT_APP_BROWSER_ROUTER=.*|REACT_APP_BROWSER_ROUTER=1|" "$env_file"
-
+    sed -i "s|^REACT_APP_PUBLIC_CHAIN=.*|REACT_APP_PUBLIC_CHAIN=$NETWORK_TYPE|" "$env_file"
     echo ".env file has been updated with the server IP: $server_ip"
 }
 
@@ -194,11 +196,56 @@ jq --arg RPC_API_KEY "$RPC_API_KEY" '.["homepage"] = "/\($RPC_API_KEY)\/statesca
 echo "updating browser router property"
 sed -i "s/<Router>/<Router basename=\"\/$RPC_API_KEY\/statescan\/\">/g" src/App.js || error_exit "sed command failed while updating browser router"
 
+# edit index.js to add support for custom parachain
+sed -i '1i import perfuse from "./perfuse";' "src/utils/consts/chains/index.js" || error_exit "sed command failed while updating perfuse chain in src/utils/consts/chains/index.js"
+sed -i '/const chains = {/a \  perfuse,' "src/utils/consts/chains/index.js" || error_exit "sed command failed while updating perfuse chain in src/utils/consts/chains/index.js"
 
+# delete lines from index.js to disable dropdown options
+sed -i '/<NodeSwitch \/>/d' "src/components/header/index.js" || error_exit "could not edit header/index.js"
+sed -i '/<ChainSwitch mobile\/>/d' "src/components/header/index.js" || error_exit "could not edit header/index.js"
+sed -i '/<ChainSwitch \/>/d' "src/components/header/index.js" || error_exit "could not edit header/index.js"
+sed -i '/<MobileNodeSwitch \/>/d' "src/components/header/index.js" || error_exit "could not edit header/index.js"
 
+if [[ ! -f "$CHAINSPEC_FILE" ]]; then
+    echo "Error: File not found at $CHAINSPEC_FILE"
+    return 1
+fi
+name=$(jq -r '.name' "$CHAINSPEC_FILE")
+token_decimals=$(jq -r '.properties.tokenDecimals' "$CHAINSPEC_FILE")
+token_symbol=$(jq -r '.properties.tokenSymbol' "$CHAINSPEC_FILE")
 
-# Update "start" script in package.json
-#sed -i 's|"start": "BROWSER=none react-scripts start",|"start": "PORT=4334 BROWSER=none react-scripts start",|' package.json
+# Write the specified content to the file
+cat <<EOF > "$PERFUSE_JS_PATH"
+import GargantuaIcon from "../../../components/icons/gargantuaIcon";
+import { collectivesModules } from "./collectives";
+
+const nodes = [
+  {
+    name: "Perfuse",
+    url: "${WS_ENDPOINT}",
+  },
+];
+
+const perfuse = {
+  name: "Perfuse",
+  icon: <GargantuaIcon />,
+  identity: "rococo",
+  chain: "${name}",
+  value: "${name}",
+  symbol: "${token_symbol}",
+  decimals: ${token_decimals},
+  color: "#E13D90",
+  colorSecondary: "rgba(225,61,144, 0.1)",
+  modules: collectivesModules,
+  nodes,
+  useOnChainBlockData: true,
+};
+
+export default perfuse;
+EOF
+
+# Confirmation message
+echo "perfuse.js has been created at $PERFUSE_JS_PATH"
 
 # Install dependencies and start the application
 echo "Installing dependencies with Yarn..."
