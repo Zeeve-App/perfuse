@@ -36,7 +36,7 @@ fi
 REPO_URL="https://github.com/opensquare-network/statescan-v2.git"
 WORK_DIR="/home/perfuse/statescan_setup"
 FILES_REPO_URL="https://raw.githubusercontent.com/Mrigesh901/statescan/refs/heads/main"
-PERFUSE_JS_PATH="site/src/utils/consts/chains/perfuse.js"
+PERFUSE_JS_PATH="$SCRIPT_DIR/../../statescan-v2/site/src/utils/consts/chains/perfuse.js"
 CHAINSPEC_FILE="$SCRIPT_DIR/../perfuse/chainspec.json"
 
 cd $SCRIPT_DIR/../../
@@ -139,11 +139,11 @@ if [ ! -f "compose.yaml" ]; then
 fi
 
 echo "Starting backend services with Docker Compose..."
+sudo docker compose build --no-cache
 sudo docker compose up -d
 
 # Configure site directory
 cd site
-
 # Function to update .env file
 update_env_file() {
     local env_example=".env.example"
@@ -214,8 +214,9 @@ name=$(jq -r '.name' "$CHAINSPEC_FILE")
 token_decimals=$(jq -r '.properties.tokenDecimals' "$CHAINSPEC_FILE")
 token_symbol=$(jq -r '.properties.tokenSymbol' "$CHAINSPEC_FILE")
 
+sudo mkdir -p "$(dirname "PERFUSE_JS_PATH")" || log "could not create perfuse.js path"
 # Write the specified content to the file
-cat <<EOF > "$PERFUSE_JS_PATH"
+sudo tee "$PERFUSE_JS_PATH" > /dev/null <<EOF
 import GargantuaIcon from "../../../components/icons/gargantuaIcon";
 import { collectivesModules } from "./collectives";
 
