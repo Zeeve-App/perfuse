@@ -196,6 +196,17 @@ jq --arg RPC_API_KEY "$RPC_API_KEY" '.["homepage"] = "/\($RPC_API_KEY)\/statesca
 echo "updating browser router property"
 sed -i "s/<Router>/<Router basename=\"\/$RPC_API_KEY\/statescan\/\">/g" src/App.js || error_exit "sed command failed while updating browser router"
 
+
+
+
+echo "Adding homepage property in package.json"
+
+jq --arg RPC_API_KEY "$RPC_API_KEY" '.["homepage"] = "/\($RPC_API_KEY)\/statescan/"' package.json > package.json.new && mv package.json.new package.json
+
+#update browser router property 
+echo "updating browser router property"
+sed -i "s/<Router>/<Router basename=\"\/$RPC_API_KEY\/statescan\/\">/g" src/App.js || error_exit "sed command failed while updating browser router"
+
 # edit index.js to add support for custom parachain
 sed -i '1i import perfuse from "./perfuse";' "src/utils/consts/chains/index.js" || error_exit "sed command failed while updating perfuse chain in src/utils/consts/chains/index.js"
 sed -i '/const chains = {/a \  perfuse,' "src/utils/consts/chains/index.js" || error_exit "sed command failed while updating perfuse chain in src/utils/consts/chains/index.js"
