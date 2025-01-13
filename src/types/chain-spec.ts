@@ -41,7 +41,7 @@ interface Patch {
   parachainInfo: ParachainInfo;
   polkadotXcm: PolkadotXcm;
   session: Session;
-  sudo: Sudo;
+  sudo?: Sudo;
 }
 
 interface Balances {

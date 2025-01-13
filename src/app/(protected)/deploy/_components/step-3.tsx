@@ -96,7 +96,8 @@ const DeployStep3 = forwardRef<
       formData.setValue("protocolId", chainSpec.protocolId ?? "m2perfuse");
       formData.setValue("id", chainSpec.id ?? "new_testnet");
       formData.setValue("ss58Format", chainSpec.properties?.ss58Format ?? 42);
-      formData.setValue("sudoKey", runtimeGenesis.patch.sudo.key ?? "");
+      formData.setValue("sudoKey", runtimeGenesis?.patch?.sudo?.key ?? "");
+      formData.setValue("isSudoKeyRequired", runtimeGenesis?.patch?.sudo?.key ? true : false);
       formData.setValue("id", formState.chainName + "_" + formState.relayChain.value.toLowerCase());
 
       const collatorAddresses = runtimeGenesis?.patch?.balances.balances;
@@ -431,19 +432,21 @@ const DeployStep3 = forwardRef<
                 >
                   <Input placeholder="Id" {...formData.register("id")} isRequired />
                 </FormField>
-                <FormField
-                  className="col-span-6"
-                  helper={{
-                    status: "error",
-                    text: formData.formState.errors.sudoKey?.message?.toString(),
-                  }}
-                  label={{
-                    text: "Sudo Key",
-                    isRequired: true,
-                  }}
-                >
-                  <Input placeholder="Sudo Key" {...formData.register("sudoKey")} isRequired />
-                </FormField>
+                {formState.isSudoKeyRequired && (
+                  <FormField
+                    className="col-span-6"
+                    helper={{
+                      status: "error",
+                      text: formData.formState.errors.sudoKey?.message?.toString(),
+                    }}
+                    label={{
+                      text: "Sudo Key",
+                      isRequired: true,
+                    }}
+                  >
+                    <Input placeholder="Sudo Key" {...formData.register("sudoKey")} isRequired />
+                  </FormField>
+                )}
                 <Heading as="h5" className="col-span-12">
                   Accounts
                 </Heading>
