@@ -5,8 +5,8 @@ set -e
 
 SCRIPT_DIR=$(realpath $(dirname "${BASH_SOURCE[0]}"))
 # Load environment variables from .env file
-if [ -f "$SCRIPT_DIR/../perfuse/.env" ]; then
-    source "$SCRIPT_DIR/../perfuse/.env"
+if [ -f "$SCRIPT_DIR/../perfuse/.env.subquery" ]; then
+    source "$SCRIPT_DIR/../perfuse/.env.subquery"
     echo "Env Variables Loaded"
 else
     echo "ERROR: .env file not found."
