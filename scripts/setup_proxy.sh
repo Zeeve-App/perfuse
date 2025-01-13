@@ -48,7 +48,7 @@ SIDECAR_PORT=9099
 GRAFANA_PORT=9111
 POLKADOTJS_PORT=8080
 STATESCAN_PORT=4334
-
+SUBQL_PORT=3001
 # Ensure necessary directories exist
 sudo mkdir -p "$JSAPPS_PATH"
 sudo mkdir -p "$STATESCAN_PATH"
@@ -93,6 +93,9 @@ server {
             alias ${STATESCAN_PATH}/;
             #rewrite ^/imgs/(.*)\$ /${RPC_API_KEY}/statescan/imgs/\$1 last;
             try_files \$uri \$uri/ =404;
+        }
+        location /${RPC_API_KEY}/subql {
+            proxy_pass http://127.0.0.1:${SUBQL_PORT};
         }
     }
 }

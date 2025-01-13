@@ -112,6 +112,13 @@ npm i -g pm2
 pm2 start npm --name "perfuse" -- start -- -H 0.0.0.0
 ```
 
+## Login credentials
+Once  the server is running, access it at http://localhost:3000/ .
+You will be directed to a login page. To proceed, enter the following credentials:
+
+- **Email**: *perfuse@perfuse.io*
+- **Password**: *perfuse@123*
+
 ## License
 
 - Perfuse application source is licensed under GNU AGPLv3 [license](https://github.com/Zeeve-App/perfuse/blob/main/license)

@@ -167,7 +167,7 @@ monitoring_cleanup() {
 #sidecar cleanup
 sidecar_cleanup() {
     log "starting sidecar cleanup"
-    if [[ $SIDECAR == 1 ]] ; then
+    if pm2 list | grep -q "substrate-api-sidecar" ; then
         pm2 delete substrate-api-sidecar
         log "sidecar deleted successfully"
     else
@@ -191,6 +191,40 @@ explorer_cleanup() {
     fi
 }
 
+subquery_cleanup() {
+    log "Checking if subquery is installed"
+    if [ -d "$SCRIPT_DIR/../../subquery/subql-starter"]; then
+        log "Subquery installed"
+        log "Starting subquery cleanup"
+        cd $SCRIPT_DIR/../../subquery/scripts
+        SUBQUERY_INDEX_NODE=scripts-subquery-index-node-1
+        SUBQUERY_QUERY_NODE=scripts-subquery-query-node-1
+        SUBQUERY_IPFS=ipfs-subquery
+        SUBQUERY_POSTGRES=postgres-subquery
+        if docker ps -a --format '{{.Names}}' | grep -q -e "^$SUBQUERY_INDEX_NODE\$" -e "^$SUBQUERY_QUERY_NODE\$"; then
+            log "Containers exist. Running stop-subquery.sh..."
+            bash stop-subquery.sh
+        else
+            log "Subquery containers does not exist.. removing orphans"
+            docker compose -f compose-subquery.yaml down  --volumes --remove-orphans
+        fi
+
+        if docker ps -a --format '{{.Names}}' | grep -q -e "^$SUBQUERY_IPFS\$" -e "^$SUBQUERY_POSTGRES\$"; then
+            log "Containers exist. Running stop-prerequisite.sh..."
+            bash stop-prerequisite.sh
+        else
+            log "Subquery containers ipfs and postgres does not exist.. removing orphans"
+            docker compose -f compose-prerequisite.yaml down  --volumes --remove-orphans
+        fi
+
+        cd $SCRIPT_DIR/..
+        remove_directory "$SCRIPT_DIR/../../subquery"
+        log "Subquery deleted successfully"
+    else
+        log "subquery not installed"
+    fi
+}
+
 # Main loop
 
 for i in "${!service_names[@]}"; do
@@ -208,3 +242,4 @@ done
 monitoring_cleanup
 explorer_cleanup
 sidecar_cleanup
+subquery_cleanup
