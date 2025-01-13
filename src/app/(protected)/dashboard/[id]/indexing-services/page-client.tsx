@@ -9,15 +9,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+"use client";
 import React from "react";
 import { IndexingServiceCard } from "./_components/indexing-service-card";
 import { NetworkDbRow } from "@/db-queries";
 import { Card } from "@/lib/components/Card";
+import { useModalStore } from "@/store/modal";
 
 /** coreTime page client component */
 const IndexingServiceComponent = ({ network }: { network?: NetworkDbRow }) => {
+  const { openModal } = useModalStore();
   return (
-    <Card variant={"grid-no-pad"} className="">
+    <Card variant={"grid-no-pad"} className="items-start">
       <IndexingServiceCard
         protocolId={"123"}
         protocolName={"Traceye"}
@@ -28,6 +31,20 @@ const IndexingServiceComponent = ({ network }: { network?: NetworkDbRow }) => {
         serviceLink={`https://app.traceye.io`}
         docLink={`https://github.com/Zeeve-App/perfuse/blob/main/docs/tutorial/indexing-service.md`}
         imageSrc={"/assets/images/indexing-service/traceye-logo.svg"}
+      />
+      <IndexingServiceCard
+        protocolId={"123"}
+        protocolName={"Traceye"}
+        className="col-span-12 md:col-span-6 lg:col-span-3 "
+        description={
+          "Traceye combines its most reliable enterprise-grade infrastructure with The Graph’s data  indexing protocol to provide an easy, predictable, and smooth experience for using subgraphs and subquery."
+        }
+        docLink={`https://docs.zeeve.io/traceye/shared-indexing/hosted-subquery`}
+        imageSrc={"/assets/images/indexing-service/traceye-logo.svg"}
+        onPrimaryClick={() => {
+          openModal("deploySubgraph", {});
+        }}
+        primaryButton={<button>Deploy</button>}
       />
     </Card>
   );

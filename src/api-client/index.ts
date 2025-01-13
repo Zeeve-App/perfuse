@@ -13,6 +13,7 @@ import useAddKey from "./add-key";
 import useBlockNumberApi from "./block-number";
 import useCreateNetworkApi from "./create-network";
 import useDeleteApi from "./delete";
+import useDeploySubgraph from "./deploy-subgraph";
 import useFileApi from "./file";
 import useNetworkApi from "./network";
 import useNodeApi from "./node";
@@ -28,6 +29,7 @@ const useApi = () => ({
   node: useNodeApi,
   addKey: useAddKey,
   network: useNetworkApi,
+  deployGraph: useDeploySubgraph,
 });
 
 export default useApi;

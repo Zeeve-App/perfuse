@@ -13,7 +13,14 @@ import { create } from "zustand";
 import { NodeDbRow } from "@/db-queries";
 
 /** modal types, based on the type modal will be visible */
-type ModalType = "purchase" | "deleteNetwork" | "registerParachain" | "nodeDetails" | "addKey" | "explorers";
+type ModalType =
+  | "purchase"
+  | "deleteNetwork"
+  | "registerParachain"
+  | "nodeDetails"
+  | "addKey"
+  | "explorers"
+  | "deploySubgraph";
 
 /** modal data for each modal type */
 type ModalData = {
@@ -42,6 +49,9 @@ type ModalData = {
     polkadotLink: string;
     stateScanLink: string;
     traceHawkLink: string;
+  };
+  deploySubgraph?: {
+    networkId: string;
   };
 };
 
