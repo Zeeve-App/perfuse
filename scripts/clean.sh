@@ -185,6 +185,7 @@ explorer_cleanup() {
         sudo docker compose down
         cd $SCRIPT_DIR/../
         remove_directory "$SCRIPT_DIR/../../statescan-v2"
+        remove_directory "$SCRIPT_DIR/../../mongo"
     else
         log "Statescan-v2 not found"
     fi
