@@ -260,9 +260,9 @@ const RegisterParachainInfoModal = () => {
           <Button variant="ghost" colorScheme={"accent"} onClick={onClose}>
             Close
           </Button>
-          <Button variant="ghost" colorScheme={"accent"} onClick={() => reserveParaId()}>
+          {/* <Button variant="ghost" colorScheme={"accent"} onClick={() => reserveParaId()}>
             Reserve ParaId
-          </Button>
+          </Button> */}
           <Button variant="ghost" colorScheme={"accent"} onClick={registerParachain}>
             Register ParaId
           </Button>

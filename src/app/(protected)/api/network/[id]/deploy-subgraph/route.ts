@@ -162,7 +162,7 @@ export async function POST(req: NextRequest) {
         );
 
         /** running the script to create the parachain network */
-        jobShellExecutorBG("make all", process.cwd(), taskId);
+        jobShellExecutorBG("make all", process.cwd(), async () => {}, taskId);
       } catch (error) {
         /** if there is any error while creating network it auto rollback the transaction */
         console.log(error);

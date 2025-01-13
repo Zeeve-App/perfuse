@@ -105,7 +105,7 @@ const IndexingServiceCard = (props: IndexingServiceCardProps) => {
               props.onPrimaryClick && props.onPrimaryClick();
             }}
           >
-            Visit
+            {props.primaryButton ? props.primaryButton : "Visit"}
           </Button>
           <Button
             className="col-span-2 w-full"

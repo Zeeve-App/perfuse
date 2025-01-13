@@ -141,24 +141,6 @@ const DeploySubgraph = () => {
                     isRequired
                   />
                 </FormField>
-                {/* public key */}
-                <FormField
-                  className="col-span-12 lg:col-span-6"
-                  helper={{
-                    status: "error",
-                    text: formData.formState.errors.pubKey?.message?.toString(),
-                  }}
-                >
-                  <Typography variant="subtitle">Public Key</Typography>
-                  <Input
-                    placeholder="Enter Your Public Key"
-                    isDisabled
-                    {...formData.register("pubKey")}
-                    inputContainerProps={{ className: "col-span-12" }}
-                    type="text"
-                    isRequired
-                  />
-                </FormField>
               </Card>
             </div>
           </ModalBody>

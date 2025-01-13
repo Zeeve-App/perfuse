@@ -34,7 +34,7 @@ const IndexingServiceComponent = ({ network }: { network?: NetworkDbRow }) => {
       />
       <IndexingServiceCard
         protocolId={"123"}
-        protocolName={"Traceye"}
+        protocolName={"Traceye [Local]"}
         className="col-span-12 md:col-span-6 lg:col-span-3 "
         description={
           "Traceye combines its most reliable enterprise-grade infrastructure with The Graph’s data  indexing protocol to provide an easy, predictable, and smooth experience for using subgraphs and subquery."
@@ -44,7 +44,7 @@ const IndexingServiceComponent = ({ network }: { network?: NetworkDbRow }) => {
         onPrimaryClick={() => {
           openModal("deploySubgraph", {});
         }}
-        primaryButton={<button>Deploy</button>}
+        primaryButton={"Deploy"}
       />
     </Card>
   );
