@@ -15,6 +15,9 @@ SCRIPTS_DIR = scripts
 # Targets
 all:  initial binary_install generate-genesis-wasm-spec build-parachain polkadotjs_app statescan proxy_setup monitoring
 
+subquery:
+	sudo bash $(SCRIPTS_DIR)/subquery.sh
+
 clean:
 	sudo bash $(SCRIPTS_DIR)/clean.sh
 
