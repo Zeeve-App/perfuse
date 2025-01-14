@@ -17,7 +17,7 @@ import { Card } from "@/lib/components/Card";
 import { useModalStore } from "@/store/modal";
 
 /** coreTime page client component */
-const IndexingServiceComponent = ({ network }: { network?: NetworkDbRow }) => {
+const IndexingServiceComponent = ({ networkId }: { networkId: string }) => {
   const { openModal } = useModalStore();
   return (
     <Card variant={"grid-no-pad"} className="items-start">
@@ -42,7 +42,7 @@ const IndexingServiceComponent = ({ network }: { network?: NetworkDbRow }) => {
         docLink={`https://docs.zeeve.io/traceye/shared-indexing/hosted-subquery`}
         imageSrc={"/assets/images/indexing-service/traceye-logo.svg"}
         onPrimaryClick={() => {
-          openModal("deploySubgraph", {});
+          openModal("deploySubgraph", { deploySubgraph: { networkId: networkId ?? "" } });
         }}
         primaryButton={"Deploy"}
       />

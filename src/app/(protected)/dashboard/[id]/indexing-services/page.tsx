@@ -28,7 +28,7 @@ const Home = async ({
 }) => {
   return (
     <>
-      <IndexingServiceComponent />
+      <IndexingServiceComponent networkId={params.id} />
     </>
   );
 };

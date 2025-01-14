@@ -19,7 +19,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   try {
     const networId = params.id;
     await deleteNetwork(networId);
-    jobShellExecutorBG("make clean", process.cwd());
+    jobShellExecutorBG("make clean", process.cwd(), async () => {});
 
     return sendDataResponse({
       message: "deleted successfully",

@@ -79,7 +79,13 @@ interface TaskDbRow {
   /** Task ID */
   task_id: string;
   /** Task type */
-  task_type: "network_provision" | "add_node" | "node_provision" | "delete_node" | "delete_infra";
+  task_type:
+    | "network_provision"
+    | "add_node"
+    | "node_provision"
+    | "delete_node"
+    | "delete_infra"
+    | "subgraph_deployment";
   /** Task execution state */
   task_status: "pending" | "inprogress" | "completed" | "failed";
   /** Task associated network ID */

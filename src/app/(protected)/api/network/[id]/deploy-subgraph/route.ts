@@ -15,39 +15,48 @@ import { NextRequest } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { headers } from "next/headers";
 import { sendDataResponse, sendErrorResponse } from "../../../_helpers/response";
-import { NodeDbRow, addTask, saveNetworkData, saveNodeData } from "@/db-queries";
+import { NodeDbRow, addTask, getNodeData, saveNetworkData, saveNodeData } from "@/db-queries";
 import { knexHandler } from "@/db-queries/knexfile";
 import { config } from "@/config/config";
 import { jobShellExecutorBG } from "@/utils/job-shell-executor";
 
 export interface DeploySubgraphApiPayload {
-  sub_ql_access_token: string;
+  subqlAccessToken: string;
 }
 
-/** post api for creating parachain network */
-export async function POST(req: NextRequest) {
+/** post api for deploying subgraph */
+export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
   try {
     /** getting json data from the api request body */
     const formData: DeploySubgraphApiPayload = await req.json();
-    /** http headers of the request */
-    const headersList = headers();
-    const host = headersList.get("host");
-    const domain = host?.split(":")[0];
-
-    const network_id = uuidv4();
+    const networkId = params.id;
     const taskId = uuidv4();
-    const apiKey = crypto.randomBytes(30).toString("hex");
 
     /** creating knex transaction */
     await knexHandler.transaction(async (trx) => {
       try {
-        /** saving network details */
+        /** adding task in the db */
+        await addTask(
+          {
+            task_id: taskId,
+            task_type: "subgraph_deployment",
+            task_status: "inprogress",
+            task_description: "this task is to deploy subgraph",
+            task_associated_network_id: networkId,
+            task_retry_count: 5,
+            task_created_at: new Date().toISOString(),
+            task_updated_at: new Date().toISOString(),
+          },
+          trx,
+        );
+        /** getting rpc api key from db */
+        const apiKey = (await getNodeData({ network_id: networkId, node_type: "rpc" }, trx)).node_api_key;
 
         /** creating env file for the scripts */
-        await writeFile(config.server.envFilePathForCopy, createEnvFile(formData));
+        await writeFile(config.server.subquery, createEnvFile(formData, apiKey));
 
-        /** running the script to create the parachain network */
-        jobShellExecutorBG("make all", process.cwd(), async () => {}, taskId);
+        /** running the script to deploy subgraph */
+        jobShellExecutorBG("make subquery", process.cwd(), async () => {}, taskId);
       } catch (error) {
         /** if there is any error while creating network it auto rollback the transaction */
         console.log(error);
@@ -56,7 +65,7 @@ export async function POST(req: NextRequest) {
     });
 
     /** sending response back to the client */
-    return sendDataResponse({ network_id });
+    return sendDataResponse({ networkId });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.log(error);
@@ -69,8 +78,8 @@ export async function POST(req: NextRequest) {
 }
 
 /** creating env file for script from the api request payload */
-const createEnvFile = (data: DeploySubgraphApiPayload) => {
-  const envFile = `SUBQL_ACCESS_TOKEN=${data.sub_ql_access_token}\n` + ``;
+const createEnvFile = (data: DeploySubgraphApiPayload, apiKey?: string) => {
+  const envFile = `RPC_API_KEY=${apiKey ?? ""}\n` + `SUBQL_ACCESS_TOKEN=${data.subqlAccessToken}\n` + ``;
 
   return envFile;
 };
