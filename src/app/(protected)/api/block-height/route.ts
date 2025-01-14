@@ -31,3 +31,8 @@ export async function GET() {
     });
   }
 }
+
+/**
+ * to forces the route handler to be dynamically evaluated, export a `dynamic` variable
+ */
+export const dynamic = "force-dynamic";
