@@ -1,0 +1,30 @@
+name: Build on Pull Request
+
+on:
+  pull_request:
+    # This listens for pull requests to any branch
+    branches:
+      - '*'  # Wildcard that matches any branch
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22 # Specify the Node.js version you want to use
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Run build command
+      - name: Run build
+        run: npm run build
