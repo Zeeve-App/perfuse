@@ -38,25 +38,7 @@ import { Typography } from "@/lib/components/Typography";
 
 /** collator add key schema */
 const DeploySubgraphSchema = yup.object({
-  seed: yup
-    .string()
-    .required()
-    .test({
-      test: (seedPhrase: string) => {
-        return mnemonicValidate(seedPhrase);
-      },
-      message: "invalid seed phrase",
-    }),
-  pubKey: yup
-    .string()
-    .required("Public key is required")
-    .test({
-      test: (publicKey: string) => {
-        // Ensure it's a hex string, has 64 characters (32 bytes) and that the length is correct when converted to U8 array
-        return isAddress(publicKey);
-      },
-      message: "invalid public key",
-    }),
+  subqlAccessToken: yup.string().required("Subql Access Token is required"),
 });
 
 /** collator add key type */
@@ -76,22 +58,16 @@ const DeploySubgraph = () => {
   const formData = useForm<DeploySubgraphSchemaType>({
     resolver: yupResolver(DeploySubgraphSchema),
     mode: "all",
-    defaultValues: {
-      pubKey: data.addKey?.sessionAddress ?? "",
-    },
+    defaultValues: {},
   });
-
-  useEffect(() => {
-    formData.setValue("pubKey", data.addKey?.sessionAddress ?? "");
-  }, [data.addKey?.sessionAddress, formData]);
 
   /** form submit handler */
   const onSubmit = async (formData: DeploySubgraphSchemaType) => {
     try {
-      if (data.addKey) {
+      if (data.deploySubgraph) {
         setLoading(true);
         console.log(formData);
-        apis.deployGraph(data.addKey?.networkId, data.addKey?.nodeId, formData);
+        apis.deployGraph(data.deploySubgraph?.networkId, formData);
         router.refresh();
       } else {
         console.log("undefined values in important variables");
@@ -124,18 +100,18 @@ const DeploySubgraph = () => {
               <ModalTitle className="text-xl">Deploy Subgraph</ModalTitle>
               <ModalText>Deploy the subgraph in local</ModalText>
               <Card variant={"grid-no-pad"} className="col-span-12 lg:col-span-12 ">
-                {/* seed phrase */}
+                {/*subql access token*/}
                 <FormField
                   className="col-span-12 lg:col-span-6"
                   helper={{
                     status: "error",
-                    text: formData.formState.errors.seed?.message?.toString(),
+                    text: formData.formState.errors.subqlAccessToken?.message?.toString(),
                   }}
                 >
-                  <Typography variant="subtitle">Seed</Typography>
+                  <Typography variant="subtitle">Subql Access Token</Typography>
                   <Input
-                    placeholder="Enter Your Seed"
-                    {...formData.register("seed")}
+                    placeholder="Enter Your Subql Access Token"
+                    {...formData.register("subqlAccessToken")}
                     inputContainerProps={{ className: "col-span-12" }}
                     type="password"
                     isRequired

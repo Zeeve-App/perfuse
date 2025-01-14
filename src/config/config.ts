@@ -35,6 +35,7 @@ const rawConfig = {
     defaultPassword: process.env.DEFAULT_PASS,
     /** relay chain version which will be saved in the db */
     relayChainVersion: process.env.RELAY_CHAIN_VERSION || "stable2407",
+    subquery: process.env.SUBQUERY || "./perfuse/.env.subquery",
   },
   /** clients & server side configuration */
   client: {
@@ -62,6 +63,7 @@ const envSchema = yup.object({
     defaultEmail: yup.string().required(),
     defaultPassword: yup.string().required(),
     relayChainVersion: yup.string().required(),
+    subquery: yup.string().required(),
   }),
   client: yup.object({
     host: yup.string().required(),

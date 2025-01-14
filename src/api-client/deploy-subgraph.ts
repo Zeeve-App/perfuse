@@ -12,13 +12,8 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { withBasePath } from "@/utils/helpers";
 import { backendAxiosInstance } from "@/utils/axios";
+import { DeploySubgraphApiPayload } from "@/app/(protected)/api/network/[id]/deploy-subgraph/route";
 
-type ApiRequest = {
-  /** seed phrase for collator node */
-  seed: string;
-  /** public key for the collator */
-  pubKey: string;
-};
 type ApiResponse = {
   /** success status false if there is a error */
   success: boolean;
@@ -26,16 +21,15 @@ type ApiResponse = {
   data: Record<string, never>;
 };
 
-/** hook to add key in collator node */
+/** hook to deploy subgraph */
 const useDeploySubgraph = (
   networkId: string,
-  nodeId: string,
-  formData: ApiRequest,
-  config?: AxiosRequestConfig<ApiRequest>,
+  formData: DeploySubgraphApiPayload,
+  config?: AxiosRequestConfig<DeploySubgraphApiPayload>,
 ) => {
-  const request = backendAxiosInstance.post<ApiResponse, AxiosResponse<ApiResponse>, ApiRequest>;
+  const request = backendAxiosInstance.post<ApiResponse, AxiosResponse<ApiResponse>, DeploySubgraphApiPayload>;
   /** Api endpoint for getting the data */
-  const apiEndpoint = withBasePath(`/api/network/${networkId}/node/${nodeId}/add-key`);
+  const apiEndpoint = withBasePath(`/api/network/${networkId}/deploy-subgraph`);
 
   return request(apiEndpoint, formData, config);
 };
