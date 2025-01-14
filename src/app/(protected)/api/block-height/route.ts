@@ -8,7 +8,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-"use server";
 import axios, { AxiosResponse } from "axios";
 import { sendErrorResponse } from "../_helpers/response";
 import { BlockHeightResponsePayload } from "@/api-client/block-number";
@@ -31,3 +30,8 @@ export async function GET() {
     });
   }
 }
+
+/**
+ * to forces the route handler to be dynamically evaluated, export a `dynamic` variable
+ */
+export const dynamic = "force-dynamic";
