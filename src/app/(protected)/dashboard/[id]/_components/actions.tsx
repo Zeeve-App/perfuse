@@ -54,13 +54,11 @@ const Actions = ({
         relayChainType: network?.data?.network_relay_chain_type ?? "NA",
         networkStatus: task?.task_status,
         blockHeight: parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16),
-        parachainId: JSON.parse(network?.data?.network_chain_spec_file_json ?? "{}").para_id,
       },
       isLoading: false,
     });
   }, [
     blockRpcResponse,
-    network?.data?.network_chain_spec_file_json,
     network?.data?.network_name,
     network?.data?.network_relay_chain_type,
     networkId,

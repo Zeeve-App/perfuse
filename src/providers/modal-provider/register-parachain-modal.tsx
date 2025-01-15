@@ -98,7 +98,7 @@ const RegisterParachainInfoModal = () => {
   const params = useParams();
   const networkId = params.id as string;
 
-  const network = useNetworkStore();
+  const networkInfo = useApi().network(networkId, true);
 
   const [checksum, setChecksum] = useState<{ wasm: string; genesis: string }>();
 
@@ -140,7 +140,7 @@ const RegisterParachainInfoModal = () => {
       console.log(`Using account: ${selectedAccount?.address}`);
 
       // Step 5: Define parachain registration parameters
-      const paraId = network.networkInfo.data?.parachainId; // Replace with your parachain ID
+      const paraId = networkInfo.data?.data?.network_chain_spec_file_json.para_id; // Replace with your parachain ID
       const genesisHead = await blobToHex((await getFileBlob("genesis")).response.data); // Replace with your parachain's genesis head
       const validationCode = await blobToHex((await getFileBlob("wasm")).response.data); // Replace with your parachain's validation code
 

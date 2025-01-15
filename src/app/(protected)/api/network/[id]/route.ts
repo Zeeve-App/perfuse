@@ -17,10 +17,15 @@ import { sendDataResponse, sendErrorResponse } from "@/app/(protected)/api/_help
 export async function GET(req: NextRequest, { params }: { params: { id: string; networkId: string } }) {
   try {
     const networkId = params.id;
+    // Extract the 'includeChainSpec' query parameter
+    const includeChainSpec = req.nextUrl.searchParams.get("includeChainSpec") === "true";
 
     const network = await getNetworkData(networkId);
 
-    return sendDataResponse({ ...network });
+    return sendDataResponse({
+      ...network,
+      network_chain_spec_file_json: includeChainSpec ? JSON.parse(network?.network_chain_spec_file_json ?? "{}") : {},
+    });
   } catch (error) {
     return sendErrorResponse({
       message: "Error while uploading file",
