@@ -34,15 +34,13 @@ const IndexingServiceComponent = ({ networkId }: { networkId: string }) => {
       />
       <IndexingServiceCard
         protocolId={"123"}
-        protocolName={"Traceye [Local]"}
+        protocolName={"Subquery"}
         className="col-span-12 md:col-span-6 lg:col-span-3 "
-        description={
-          "Traceye combines its most reliable enterprise-grade infrastructure with The Graph’s data  indexing protocol to provide an easy, predictable, and smooth experience for using subgraphs and subquery."
-        }
+        description={"SubQuery is an Open, Flexible, Fast and Universal data indexing framework for web3."}
         docLink={`https://docs.zeeve.io/traceye/shared-indexing/hosted-subquery`}
-        imageSrc={"/assets/images/indexing-service/traceye-logo.svg"}
+        imageSrc={"/assets/images/indexing-service/subquery-logo.png"}
         onPrimaryClick={() => {
-          openModal("deploySubgraph", { deploySubgraph: { networkId: networkId ?? "" } });
+          openModal("deploySubquery", { deploySubquery: { networkId: networkId ?? "" } });
         }}
         primaryButton={"Deploy"}
       />

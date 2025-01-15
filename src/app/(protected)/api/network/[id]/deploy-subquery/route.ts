@@ -20,15 +20,15 @@ import { knexHandler } from "@/db-queries/knexfile";
 import { config } from "@/config/config";
 import { jobShellExecutorBG } from "@/utils/job-shell-executor";
 
-export interface DeploySubgraphApiPayload {
+export interface DeploySubqueryApiPayload {
   subqlAccessToken: string;
 }
 
-/** post api for deploying subgraph */
+/** post api for deploying subquery */
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
   try {
     /** getting json data from the api request body */
-    const formData: DeploySubgraphApiPayload = await req.json();
+    const formData: DeploySubqueryApiPayload = await req.json();
     const networkId = params.id;
     const taskId = uuidv4();
 
@@ -39,9 +39,9 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         await addTask(
           {
             task_id: taskId,
-            task_type: "subgraph_deployment",
+            task_type: "subquery_deployment",
             task_status: "inprogress",
-            task_description: "this task is to deploy subgraph",
+            task_description: "this task is to deploy subquery",
             task_associated_network_id: networkId,
             task_retry_count: 5,
             task_created_at: new Date().toISOString(),
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         /** creating env file for the scripts */
         await writeFile(config.server.subquery, createEnvFile(formData, apiKey));
 
-        /** running the script to deploy subgraph */
+        /** running the script to deploy subquery */
         jobShellExecutorBG("make subquery", process.cwd(), async () => {}, taskId);
       } catch (error) {
         /** if there is any error while creating network it auto rollback the transaction */
@@ -78,7 +78,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 }
 
 /** creating env file for script from the api request payload */
-const createEnvFile = (data: DeploySubgraphApiPayload, apiKey?: string) => {
+const createEnvFile = (data: DeploySubqueryApiPayload, apiKey?: string) => {
   const envFile = `RPC_API_KEY=${apiKey ?? ""}\n` + `SUBQL_ACCESS_TOKEN=${data.subqlAccessToken}\n` + ``;
 
   return envFile;

@@ -35,39 +35,40 @@ import { Card } from "@/lib/components/Card";
 import { FormField } from "@/lib/components/Form/FormField";
 import { Input } from "@/lib/components/Form";
 import { Typography } from "@/lib/components/Typography";
+import { tx } from "@/utils/shared";
 
 /** collator add key schema */
-const DeploySubgraphSchema = yup.object({
+const DeploySubquerySchema = yup.object({
   subqlAccessToken: yup.string().required("Subql Access Token is required"),
 });
 
 /** collator add key type */
-export type DeploySubgraphSchemaType = yup.InferType<typeof DeploySubgraphSchema>;
+export type DeploySubquerySchemaType = yup.InferType<typeof DeploySubquerySchema>;
 
 /** collator add key modal component */
-const DeploySubgraph = () => {
+const DeploySubquery = () => {
   const [isLoading, setLoading] = useState(false);
   const { isOpen, onClose, type, data } = useModalStore();
   const toast = useToast();
   const router = useRouter();
 
-  const isModalOpen = isOpen && type === "deploySubgraph";
+  const isModalOpen = isOpen && type === "deploySubquery";
 
   const apis = useApi();
 
-  const formData = useForm<DeploySubgraphSchemaType>({
-    resolver: yupResolver(DeploySubgraphSchema),
+  const formData = useForm<DeploySubquerySchemaType>({
+    resolver: yupResolver(DeploySubquerySchema),
     mode: "all",
     defaultValues: {},
   });
 
   /** form submit handler */
-  const onSubmit = async (formData: DeploySubgraphSchemaType) => {
+  const onSubmit = async (formData: DeploySubquerySchemaType) => {
     try {
-      if (data.deploySubgraph) {
+      if (data.deploySubquery) {
         setLoading(true);
         console.log(formData);
-        apis.deployGraph(data.deploySubgraph?.networkId, formData);
+        apis.deploySubquery(data.deploySubquery?.networkId, formData);
         router.refresh();
       } else {
         console.log("undefined values in important variables");
@@ -97,8 +98,7 @@ const DeploySubgraph = () => {
         <ModalContent className="max-h-screen w-full max-w-3xl overflow-y-auto">
           <ModalBody className="grid grid-cols-12">
             <div className="col-span-12 flex flex-col gap-y-1">
-              <ModalTitle className="text-xl">Deploy Subgraph</ModalTitle>
-              <ModalText>Deploy the subgraph in local</ModalText>
+              <ModalTitle className="text-xl">Deploy Subquery</ModalTitle>
               <Card variant={"grid-no-pad"} className="col-span-12 lg:col-span-12 ">
                 {/*subql access token*/}
                 <FormField
@@ -117,6 +117,28 @@ const DeploySubgraph = () => {
                     isRequired
                   />
                 </FormField>
+                <Card
+                  className={tx(
+                    "col-span-12 flex flex-row items-center border border-brand-yellow bg-brand-yellow/5 gap-3",
+                  )}
+                >
+                  <div className="2xl:flex 2xl:grow 2xl:flex-row 2xl:items-center 2xl:justify-between">
+                    <div className="">
+                      <Typography variant="paragraph" className="font-bold">
+                        Note:{" "}
+                      </Typography>
+                      <Typography variant="paragraph">
+                        To generate Subql access token, register{" "}
+                        <span className="font-bold">
+                          <a href="https://managedservice.subquery.network/" target="_blank">
+                            here{" "}
+                          </a>
+                        </span>
+                        .
+                      </Typography>
+                    </div>
+                  </div>
+                </Card>
               </Card>
             </div>
           </ModalBody>
@@ -134,4 +156,4 @@ const DeploySubgraph = () => {
   );
 };
 
-export default DeploySubgraph;
+export default DeploySubquery;
