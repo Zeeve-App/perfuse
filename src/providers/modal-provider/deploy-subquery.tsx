@@ -36,6 +36,7 @@ import { FormField } from "@/lib/components/Form/FormField";
 import { Input } from "@/lib/components/Form";
 import { Typography } from "@/lib/components/Typography";
 import { tx } from "@/utils/shared";
+import { SUBQL_ACCESS_TOKEN_URL } from "@/constants/constant";
 
 /** collator add key schema */
 const DeploySubquerySchema = yup.object({
@@ -130,7 +131,7 @@ const DeploySubquery = () => {
                       <Typography variant="paragraph">
                         To generate Subql access token, register{" "}
                         <span className="font-bold">
-                          <a href="https://managedservice.subquery.network/" target="_blank">
+                          <a href={SUBQL_ACCESS_TOKEN_URL} target="_blank" rel="noreferrer">
                             here{" "}
                           </a>
                         </span>
