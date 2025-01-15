@@ -12,7 +12,7 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { withBasePath } from "@/utils/helpers";
 import { backendAxiosInstance } from "@/utils/axios";
-import { DeploySubgraphApiPayload } from "@/app/(protected)/api/network/[id]/deploy-subgraph/route";
+import { DeploySubqueryApiPayload } from "@/app/(protected)/api/network/[id]/deploy-subquery/route";
 
 type ApiResponse = {
   /** success status false if there is a error */
@@ -21,17 +21,17 @@ type ApiResponse = {
   data: Record<string, never>;
 };
 
-/** hook to deploy subgraph */
-const useDeploySubgraph = (
+/** hook to deploy subquery */
+const useDeploySubquery = (
   networkId: string,
-  formData: DeploySubgraphApiPayload,
-  config?: AxiosRequestConfig<DeploySubgraphApiPayload>,
+  formData: DeploySubqueryApiPayload,
+  config?: AxiosRequestConfig<DeploySubqueryApiPayload>,
 ) => {
-  const request = backendAxiosInstance.post<ApiResponse, AxiosResponse<ApiResponse>, DeploySubgraphApiPayload>;
+  const request = backendAxiosInstance.post<ApiResponse, AxiosResponse<ApiResponse>, DeploySubqueryApiPayload>;
   /** Api endpoint for getting the data */
-  const apiEndpoint = withBasePath(`/api/network/${networkId}/deploy-subgraph`);
+  const apiEndpoint = withBasePath(`/api/network/${networkId}/deploy-subquery`);
 
   return request(apiEndpoint, formData, config);
 };
 
-export default useDeploySubgraph;
+export default useDeploySubquery;

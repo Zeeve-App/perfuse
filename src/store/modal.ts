@@ -20,7 +20,7 @@ type ModalType =
   | "nodeDetails"
   | "addKey"
   | "explorers"
-  | "deploySubgraph";
+  | "deploySubquery";
 
 /** modal data for each modal type */
 type ModalData = {
@@ -50,7 +50,7 @@ type ModalData = {
     stateScanLink: string;
     traceHawkLink: string;
   };
-  deploySubgraph?: {
+  deploySubquery?: {
     networkId: string;
   };
 };
