@@ -114,7 +114,7 @@ export const deployNetworkValidationSchema = yup
       http: yup.boolean().default(true),
       ws: yup.boolean().default(true),
     }),
-    sidecar: yup.string().optional(),
+    sidecar: yup.string().nullable(),
     accounts: yup
       .array(
         yup.object({
@@ -155,8 +155,8 @@ export const deployNetworkValidationSchema = yup
         value: yup.string<(typeof templateOption)[number]["value"]>().required("Select a template."),
       })
       .required(),
-    polkadotjsExplorer: yup.string().optional(),
-    statescanExplorer: yup.string().optional(),
+    polkadotjsExplorer: yup.string().nullable(),
+    statescanExplorer: yup.string().nullable(),
     chainSpecFile: yup
       .object({
         contents: yup.mixed<ChainSpecFileType>().required("Chain spec file is required."),
