@@ -10,14 +10,10 @@
  */
 import React from "react";
 import type { Metadata } from "next";
-import "../globals.css";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { dmSans, poppins } from "@/utils/fonts";
 import LayoutProvider from "@/providers/layout-provider";
-import ToastProvider from "@/providers/toast-provider";
-import ModalProvider from "@/providers/modal-provider";
-import { authFromHeader, themeFromHeader } from "@/middleware";
+import { authFromHeader } from "@/middleware";
 
 /** default metadata */
 export const metadata: Metadata = {
@@ -33,22 +29,9 @@ export default async function RootLayout({
 }>) {
   const header = headers();
   const data = await authFromHeader(header);
-  const theme = themeFromHeader(header);
   if (!data?.email) {
     return redirect("/login");
   }
 
-  return (
-    <html lang="en" className={`${theme === "dark" ? "dark" : ""}`}>
-      <head>
-        <link rel="icon" href="/logo.png" />
-      </head>
-      <body className={`${dmSans.variable} ${poppins.variable}  font-poppins`}>
-        <ToastProvider>
-          <ModalProvider />
-          <LayoutProvider>{children}</LayoutProvider>
-        </ToastProvider>
-      </body>
-    </html>
-  );
+  return <LayoutProvider>{children}</LayoutProvider>;
 }

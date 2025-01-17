@@ -17,7 +17,7 @@ import { parseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { dmSans, poppins } from "@/utils/fonts";
 import ToastProvider from "@/providers/toast-provider";
 import ModalProvider from "@/providers/modal-provider";
-import LayoutProvider from "@/providers/layout-provider";
+import { themeFromHeader } from "@/middleware";
 
 /** default metadata for unprotected */
 export const metadata: Metadata = {
@@ -35,6 +35,8 @@ export default function RootLayout({
   const rawCookie = header.get("cookie");
   const cookie = parseCookie(rawCookie ?? "");
   const token = cookie.get("accessToken");
+  const theme = themeFromHeader(header);
+
   if (!token) {
     console.log(token);
 
@@ -42,14 +44,14 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="en">
+    <html lang="en" className={`${theme === "dark" ? "dark" : ""}`}>
       <head>
         <link rel="icon" href="/logo.png" />
       </head>
       <body className={`${dmSans.variable} ${poppins.variable} bg-theme-background font-poppins`}>
         <ToastProvider>
           <ModalProvider />
-          {token ? <LayoutProvider>{children}</LayoutProvider> : children}
+          {children}
         </ToastProvider>
       </body>
     </html>
