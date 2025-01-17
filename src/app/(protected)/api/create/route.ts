@@ -213,6 +213,8 @@ const createEnvFile = (data: CreatePerfuseApiPayload, apiKey?: string) => {
     `SSL_TLS=0\n` +
     `ACCOUNT_ADDRESS=${data.network.network_user_address}\n` +
     `REPO=\n` +
+    `POLKADOT=${data.network.network_blockchain_explorer_type.includes("polkadotjs") ? 1 : 0}\n` +
+    `STATESCAN=${data.network.network_blockchain_explorer_type.includes("statescan") ? 1 : 0}\n` +
     ``;
 
   return envFile;

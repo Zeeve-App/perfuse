@@ -11,6 +11,7 @@
 import React, { forwardRef, RefObject, useEffect, useState } from "react";
 import { Controller, useFieldArray, UseFormReturn } from "react-hook-form";
 import axios from "axios";
+import Image from "next/image";
 import { DeployStepTypes } from "../page-client";
 import { Card } from "@/lib/components/Card";
 import { RadioCard } from "@/lib/components/RadioCard";
@@ -28,7 +29,7 @@ import useApi from "@/api-client";
 import { FileUpload } from "@/lib/components/Form/FileUpload";
 import { Spinner } from "@/lib/components/Spinner";
 import SvgArrowUpFromBucket from "@/lib/icons/arrows/outline/ArrowUpFromBucket";
-import { getSessionKey } from "@/utils/helpers";
+import { getSessionKey, withBasePath } from "@/utils/helpers";
 import { useToast } from "@/lib/components/Toast";
 
 /** template and there location in the repo */
@@ -214,6 +215,22 @@ const DeployStep3 = forwardRef<
       setIsBinaryFileUploading(false);
     }
   };
+  // function to handle selection of explorer radio buttons
+  const explorerChangeHandler = (explorer?: "polkadotjs" | "statescan") => {
+    const currentValue =
+      explorer === "polkadotjs" ? formData.getValues("polkadotjsExplorer") : formData.getValues("statescanExplorer");
+    const newValue = currentValue === explorer ? "" : explorer;
+    explorer === "polkadotjs"
+      ? formData.setValue("polkadotjsExplorer", newValue)
+      : formData.setValue("statescanExplorer", newValue);
+  };
+
+  // function to handle selection of sidecar radio button
+  const sidecarChangeHandler = () => {
+    const currentValue = formData.getValues("sidecar");
+    const newValue = currentValue === "sidecar" ? "" : "sidecar";
+    formData.setValue("sidecar", newValue);
+  };
 
   return (
     <div className="col-span-12">
@@ -330,7 +347,113 @@ const DeployStep3 = forwardRef<
         )}
         <Accordion className="rounded-none bg-theme-background">
           <AccordionItem>
-            <AccordionHeader>Advance</AccordionHeader>
+            <AccordionHeader>Explorers and RPCs</AccordionHeader>
+            <AccordionBody>
+              <Card variant={"grid"} className="lg:gap-4">
+                <hr className="col-span-12" />
+                <Card variant={"grid"} className="col-span-12 px-0">
+                  <Heading as="h5" className="col-span-12">
+                    Explorer
+                  </Heading>
+                  <RadioCard
+                    key="polkadotjs"
+                    className="col-span-4 h-24 lg:h-14"
+                    value="polkadotjs"
+                    hideRadioCircle
+                    {...formData.register("polkadotjsExplorer")}
+                    isChecked={formData.watch("polkadotjsExplorer") === "polkadotjs"}
+                    onClick={() => explorerChangeHandler("polkadotjs")}
+                  >
+                    <div className="m-auto flex flex-col items-center justify-center gap-2 align-middle lg:flex-row">
+                      <div className="flex size-10 items-center  justify-center rounded-full border border-brand-gray/45 bg-white p-2">
+                        <Image
+                          height={19}
+                          width={19}
+                          alt={"eth"}
+                          src={withBasePath("/assets/images/modals/explorers/polkadot-explorer.svg")}
+                        ></Image>
+                      </div>
+                      Polkadot JS
+                    </div>
+                  </RadioCard>
+                  <RadioCard
+                    key="statescan"
+                    className="col-span-4 h-24 lg:h-14"
+                    value="statescan"
+                    hideRadioCircle
+                    {...formData.register("statescanExplorer")}
+                    isChecked={formData.watch("statescanExplorer") === "statescan"}
+                    onClick={() => explorerChangeHandler("statescan")}
+                  >
+                    <div className="m-auto flex flex-col items-center justify-center gap-2 align-middle lg:flex-row">
+                      <div className="flex size-10 items-center  justify-center rounded-full border border-brand-gray/45 bg-white p-2">
+                        <Image
+                          height={19}
+                          width={19}
+                          alt={"eth"}
+                          src={withBasePath("/assets/images/modals/explorers/statescan-explorer.svg")}
+                        ></Image>
+                      </div>
+                      Statescan
+                    </div>
+                  </RadioCard>
+                </Card>
+                <Card variant={"grid"} className="col-span-12 px-0">
+                  <Heading as="h5" className="col-span-12">
+                    Sidecar
+                  </Heading>
+                  <RadioCard
+                    key="sidecar"
+                    className="col-span-4 h-24 lg:h-14"
+                    value="sidecar"
+                    hideRadioCircle
+                    {...formData.register("sidecar")}
+                    isChecked={formData.watch("sidecar") === "sidecar"}
+                    onClick={() => sidecarChangeHandler()}
+                  >
+                    <div className="m-auto flex flex-col items-center justify-center gap-2 align-middle lg:flex-row">
+                      <div className="flex size-10 items-center  justify-center rounded-full border border-brand-gray/45 bg-white p-2">
+                        <Image
+                          height={22}
+                          width={22}
+                          alt={"eth"}
+                          src={withBasePath("/assets/images/create/sidecar.png")}
+                        ></Image>
+                      </div>
+                      Sidecar
+                    </div>
+                  </RadioCard>
+                </Card>
+                <Card variant={"grid-no-pad"} className="col-span-12 py-3 lg:col-span-6">
+                  <Card variant={"grid-no-pad"} className="col-span-12 lg:col-span-6">
+                    <Heading as="h5" className="col-span-12">
+                      RPC API
+                    </Heading>
+                    <Checkbox
+                      {...formData.register("rpcNode.http")}
+                      checkboxLabelProps={{
+                        className: "col-span-6",
+                      }}
+                    >
+                      HTTPS
+                    </Checkbox>
+                    <Checkbox
+                      {...formData.register("rpcNode.ws")}
+                      checkboxLabelProps={{
+                        className: "col-span-6",
+                      }}
+                    >
+                      WSS
+                    </Checkbox>
+                  </Card>
+                </Card>
+              </Card>
+            </AccordionBody>
+          </AccordionItem>
+        </Accordion>
+        <Accordion className="rounded-none bg-theme-background">
+          <AccordionItem>
+            <AccordionHeader>Advance Chainspec Config</AccordionHeader>
             <AccordionBody>
               <Card variant={"grid"} className="lg:gap-4">
                 <hr className="col-span-12" />
@@ -360,39 +483,6 @@ const DeployStep3 = forwardRef<
                 >
                   <Input placeholder="Token Decimal" {...formData.register("decimalValue")} isRequired type="number" />
                 </FormField>
-                <Card variant={"grid-no-pad"} className="col-span-12 py-3 lg:col-span-6">
-                  <Card variant={"grid-no-pad"} className="col-span-12 lg:col-span-6">
-                    <Heading as="h5" className="col-span-12">
-                      RPC API
-                    </Heading>
-                    <Checkbox
-                      {...formData.register("rpcNode.http")}
-                      checkboxLabelProps={{
-                        className: "col-span-6",
-                      }}
-                    >
-                      HTTPS
-                    </Checkbox>
-                    <Checkbox
-                      {...formData.register("rpcNode.ws")}
-                      checkboxLabelProps={{
-                        className: "col-span-6",
-                      }}
-                    >
-                      WSS
-                    </Checkbox>
-                  </Card>
-                  <Card variant={"grid-no-pad"} className="col-span-12 lg:col-span-6">
-                    <Heading as="h5" className="col-span-12">
-                      Sidecar
-                    </Heading>
-                    <div className="col-span-12 flex items-center justify-start">
-                      <Switch {...formData.register("sidecar")} colorScheme={"blue"}>
-                        Enable
-                      </Switch>
-                    </div>
-                  </Card>
-                </Card>
                 <FormField
                   className="col-span-6"
                   helper={{

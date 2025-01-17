@@ -11,7 +11,7 @@
 
 /* eslint-disable react/display-name */
 import { VariantProps, cva } from "class-variance-authority";
-import React, { forwardRef } from "react";
+import React, { forwardRef, MouseEventHandler } from "react";
 import { Label, LabelProps } from "../Label";
 import { RemoveProperties } from "../../core";
 import { useID } from "@/hooks";
@@ -82,6 +82,7 @@ interface RadioProps
   hideRadioCircle?: boolean;
   radioLabelProps?: React.ComponentPropsWithRef<"label">;
   rightCheckedIcon?: JSX.Element;
+  onClickIt?: MouseEventHandler<HTMLInputElement>;
 }
 
 /** radio component */
@@ -98,6 +99,7 @@ const Radio = forwardRef<HTMLInputElement, RadioProps>((props, ref) => {
     id,
     hideRadioCircle,
     rightCheckedIcon,
+    onClickIt,
     ...rest
   } = props;
 
@@ -120,6 +122,7 @@ const Radio = forwardRef<HTMLInputElement, RadioProps>((props, ref) => {
         checked={isChecked}
         disabled={isDisabled}
         required={isRequired}
+        onClick={onClickIt}
         {...rest}
       />
 

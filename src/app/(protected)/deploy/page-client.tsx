@@ -40,13 +40,15 @@ export default function DeployPage({ deployed }: { deployed: boolean }) {
         http: true,
         ws: true,
       },
-      sidecar: true,
+      sidecar: "sidecar",
       networkEnvironment: {
         value: "testnet",
       },
       relayChain: {
         value: "local",
       },
+      polkadotjsExplorer: "polkadotjs",
+      statescanExplorer: "statescan",
     },
   });
 
