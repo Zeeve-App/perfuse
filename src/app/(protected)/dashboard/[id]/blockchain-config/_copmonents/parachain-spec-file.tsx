@@ -56,10 +56,13 @@ const ParachainSpecFile = ({ data, isLoading }: ParachainSpecFileProps) => {
             colorScheme="primary"
             variant={"text"}
             size={"large"}
-            isDisabled={!networkInfo.data?.data}
+            isDisabled={!networkInfo.data?.data?.network_chain_spec_file_json}
             onClick={() => {
               if (networkInfo.data?.data) {
-                downloadFile(JSON.stringify(networkInfo.data.data, null, 4), `${networkId}-parachain-spec-file.json`);
+                downloadFile(
+                  JSON.stringify(networkInfo.data.data.network_chain_spec_file_json, null, 4),
+                  `${networkId}-parachain-spec-file.json`,
+                );
               }
             }}
           >
