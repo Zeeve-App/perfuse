@@ -22,6 +22,7 @@ import { tx } from "@/utils/shared";
 import { Typography } from "@/lib/components/Typography";
 import { Card } from "@/lib/components/Card";
 import SvgCopy from "@/lib/icons/design-tool/outline/Copy";
+import useApi from "@/api-client";
 
 /** props */
 interface ParachainSpecFileProps {
@@ -33,6 +34,7 @@ interface ParachainSpecFileProps {
 const ParachainSpecFile = ({ data, isLoading }: ParachainSpecFileProps) => {
   const params = useParams();
   const networkId = params.id as string;
+  const networkInfo = useApi().network(networkId, true);
   const ExtraComponent = lazy(() => import("./parachain-chainspec-preview"));
 
   return (
@@ -54,10 +56,10 @@ const ParachainSpecFile = ({ data, isLoading }: ParachainSpecFileProps) => {
             colorScheme="primary"
             variant={"text"}
             size={"large"}
-            isDisabled={!data}
+            isDisabled={!networkInfo.data?.data}
             onClick={() => {
-              if (data) {
-                downloadFile(JSON.stringify(data, null, 4), `${networkId}-parachain-spec-file.json`);
+              if (networkInfo.data?.data) {
+                downloadFile(JSON.stringify(networkInfo.data.data, null, 4), `${networkId}-parachain-spec-file.json`);
               }
             }}
           >
