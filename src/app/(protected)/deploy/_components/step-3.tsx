@@ -215,20 +215,21 @@ const DeployStep3 = forwardRef<
       setIsBinaryFileUploading(false);
     }
   };
-
-  const handleToggle = (explorer?: "polkadotjs" | "statescan", sidecar?: "sidecar") => {
-    if (sidecar) {
-      const currentValue = formData.getValues("sidecar");
-      const newValue = currentValue === "sidecar" ? "" : "sidecar";
-      formData.setValue("sidecar", newValue);
-      return;
-    }
+  // function to handle selection of explorer radio buttons
+  const explorerChangeHandler = (explorer?: "polkadotjs" | "statescan") => {
     const currentValue =
       explorer === "polkadotjs" ? formData.getValues("polkadotjsExplorer") : formData.getValues("statescanExplorer");
     const newValue = currentValue === explorer ? "" : explorer;
     explorer === "polkadotjs"
       ? formData.setValue("polkadotjsExplorer", newValue)
       : formData.setValue("statescanExplorer", newValue);
+  };
+
+  // function to handle selection of sidecar radio button
+  const sidecarChangeHandler = () => {
+    const currentValue = formData.getValues("sidecar");
+    const newValue = currentValue === "sidecar" ? "" : "sidecar";
+    formData.setValue("sidecar", newValue);
   };
 
   return (
@@ -361,7 +362,7 @@ const DeployStep3 = forwardRef<
                     hideRadioCircle
                     {...formData.register("polkadotjsExplorer")}
                     isChecked={formData.watch("polkadotjsExplorer") === "polkadotjs"}
-                    onClick={() => handleToggle("polkadotjs")}
+                    onClick={() => explorerChangeHandler("polkadotjs")}
                   >
                     <div className="m-auto flex flex-col items-center justify-center gap-2 align-middle lg:flex-row">
                       <div className="flex size-10 items-center  justify-center rounded-full border border-brand-gray/45 bg-white p-2">
@@ -382,7 +383,7 @@ const DeployStep3 = forwardRef<
                     hideRadioCircle
                     {...formData.register("statescanExplorer")}
                     isChecked={formData.watch("statescanExplorer") === "statescan"}
-                    onClick={() => handleToggle("statescan")}
+                    onClick={() => explorerChangeHandler("statescan")}
                   >
                     <div className="m-auto flex flex-col items-center justify-center gap-2 align-middle lg:flex-row">
                       <div className="flex size-10 items-center  justify-center rounded-full border border-brand-gray/45 bg-white p-2">
@@ -408,7 +409,7 @@ const DeployStep3 = forwardRef<
                     hideRadioCircle
                     {...formData.register("sidecar")}
                     isChecked={formData.watch("sidecar") === "sidecar"}
-                    onClick={() => handleToggle(undefined, "sidecar")}
+                    onClick={() => sidecarChangeHandler()}
                   >
                     <div className="m-auto flex flex-col items-center justify-center gap-2 align-middle lg:flex-row">
                       <div className="flex size-10 items-center  justify-center rounded-full border border-brand-gray/45 bg-white p-2">
