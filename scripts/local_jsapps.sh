@@ -56,5 +56,10 @@ setup_nginx() {
     sudo systemctl restart nginx
 }
 
-install_and_build
-setup_nginx
+if [[ $POLKADOT == 1 ]]; then
+  echo "Configuring the Polkadotjs......."
+  install_and_build
+  setup_nginx
+else
+  echo "Skipping the Polkadotjs Setup"
+fi

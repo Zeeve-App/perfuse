@@ -32,6 +32,7 @@ else
     exit 1
 fi
 
+main() {
 # configuration variables
 REPO_URL="https://github.com/opensquare-network/statescan-v2.git"
 WORK_DIR="/home/perfuse/statescan_setup"
@@ -268,3 +269,11 @@ cd ../..
 rm -rf "$WORK_DIR"
 
 echo "Explorer setup completed successfully."
+}
+
+if [[ $STATESCAN == 1 ]]; then
+  echo "Configuring the statescan explorer..."
+  main
+else
+  echo "Skipping the Statescan Setup"
+fi
