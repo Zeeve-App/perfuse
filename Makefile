@@ -13,7 +13,23 @@
 SCRIPTS_DIR = scripts
 
 # Targets
-all:  initial binary_install generate-genesis-wasm-spec build-parachain polkadotjs_app statescan proxy_setup monitoring
+#all:  initial binary_install generate-genesis-wasm-spec build-parachain polkadotjs_app statescan proxy_setup monitoring
+
+all: parachain_setup polkadotjs_app statescan proxy_setup monitoring
+
+init:
+	env $(shell cat ./perfuse/.env | xargs) sudo docker compose up init --build
+	if [ $$(sudo docker inspect init --format='{{.State.ExitCode}}') -eq 0 ]; then \
+	  echo "Init service completed successfully."; \
+	else \
+	  echo "Init service failed. Aborting."; \
+	  exit 1; \
+	fi
+
+parachain_main: init
+	env $(shell cat ./perfuse/.env | xargs) sudo docker compose up collator_1 collator_2 rpc_node sidecar --build -d
+
+parachain_setup: init parachain_main
 
 subquery:
 	sudo bash $(SCRIPTS_DIR)/subquery.sh

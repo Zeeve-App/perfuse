@@ -1,0 +1,104 @@
+version: "3.9"
+
+services:
+  init:
+    container_name: init
+    build: .
+    env_file:
+      - ./perfuse/.env
+    volumes:
+      - /home/perfuse/parachain:/home/perfuse/parachain
+      - /home/perfuse/parachain_keys:/home/perfuse/parachain_keys
+    entrypoint: ["/init.sh"]
+
+  collator_1:
+    container_name: collator_1
+    build: .
+    env_file:
+      - ./perfuse/.env
+    environment:
+      - IS_COL=1
+#      - NODE_NAME=$COL_NAME_1
+      - COL_NUM=1
+      - PORT=40334
+      - RPC_PORT=9008
+      - PROMETHEUS_PORT=8004
+#      - NETWORK_TYPE=$NETWORK_TYPE
+      - PARACHAIN_KEY_DIR=/home/perfuse/parachain_keys
+      - PARACHAIN_DIR=/home/perfuse/parachain
+    volumes:
+      - /home/perfuse/parachain:/home/perfuse/parachain
+      - /home/perfuse/parachain_keys:/home/perfuse/parachain_keys
+      - /home/perfuse/parachain/collator_1/data:/home/perfuse/parachain/$COL_NAME_1/data
+
+    ports:
+      - "40334:40334"
+      - "9008:9008"
+      - "8004:8004"
+    entrypoint: ["/parachain-entrypoint.sh"]
+
+  collator_2:
+    container_name: collator_2
+    build: .
+    env_file:
+      - ./perfuse/.env
+    environment:
+#      - NODE_NAME=$COL_NAME_2
+      - IS_COL=1
+      - COL_NUM=2
+      - PORT=40335
+      - RPC_PORT=9009
+      - PROMETHEUS_PORT=8005
+#      - NETWORK_TYPE=$NETWORK_TYPE
+      - PARACHAIN_KEY_DIR=/home/perfuse/parachain_keys
+      - PARACHAIN_DIR=/home/perfuse/parachain
+
+    volumes:
+      - /home/perfuse/parachain:/home/perfuse/parachain
+      - /home/perfuse/parachain_keys:/home/perfuse/parachain_keys
+      - /home/perfuse/parachain/collator_2/data:/home/perfuse/parachain/$COL_NAME_2/data
+    ports:
+      - "40335:40335"
+      - "9009:9009"
+      - "8005:8005"
+    entrypoint: ["/parachain-entrypoint.sh"]
+
+  rpc_node:
+    container_name: rpc_node
+    build: .
+    env_file:
+      - ./perfuse/.env
+    environment:
+ #     - NODE_NAME=$RPC_NAME
+      - IS_COL=0
+      - PORT=40336
+      - RPC_PORT=9010
+      - PROMETHEUS_PORT=8006
+ #     - NETWORK_TYPE=$NETWORK_TYPE
+      - PARACHAIN_KEY_DIR=/home/perfuse/parachain_keys
+      - PARACHAIN_DIR=/home/perfuse/parachain
+
+    volumes:
+      - /home/perfuse/parachain:/home/perfuse/parachain
+      - /home/perfuse/parachain/rpc-node/data:/home/perfuse/parachain/$RPC_NAME/data
+    ports:
+      - "40336:40336"
+      - "9010:9010"
+      - "8006:8006"
+    entrypoint: ["/parachain-entrypoint.sh"]
+
+  sidecar:
+    container_name: sidecar-perfuse
+    image: parity/substrate-api-sidecar:latest
+    restart: "no"
+    stdin_open: true
+    tty: true
+    read_only: true
+
+    env_file:
+      - ./perfuse/.env
+      - scripts/.env.docker
+    ports:
+      - "9099:8080"
+    deploy:
+      replicas: ${SIDECAR:-0}
