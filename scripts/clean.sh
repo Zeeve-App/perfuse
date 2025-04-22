@@ -227,19 +227,23 @@ subquery_cleanup() {
 
 # Main loop
 
-for i in "${!service_names[@]}"; do
-    cleanup_service "${service_names[i]}"
-done
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    # Script is being run directly, not sourced — safe to execute main cleanup
+    for i in "${!service_names[@]}"; do
+        cleanup_service "${service_names[i]}"
+    done
 
-for i in "${!binaries_name[@]}"; do
-  if [[ $binaries_name[i] == "polkadot" || $binaries_name[i] == "polkadot-parachain" ]]; then
-    remove_binary "${binaries_name[i]}" "$POLKA_VERSION"
-  else
-    remove_binary "${binaries_name[i]}"
-  fi
-done
+    for i in "${!binaries_name[@]}"; do
+      if [[ $binaries_name[i] == "polkadot" || $binaries_name[i] == "polkadot-parachain" ]]; then
+        remove_binary "${binaries_name[i]}" "$POLKA_VERSION"
+      else
+        remove_binary "${binaries_name[i]}"
+      fi
+    done
 
-monitoring_cleanup
-explorer_cleanup
-sidecar_cleanup
-subquery_cleanup
+    monitoring_cleanup
+    explorer_cleanup
+    sidecar_cleanup
+    subquery_cleanup
+
+fi
