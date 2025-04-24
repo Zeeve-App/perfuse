@@ -34,13 +34,12 @@ cleanup_service "$COL_NAME_1"
 cleanup_service "$COL_NAME_2"
 cleanup_service "$RPC_NAME"
 subquery_cleanup
+statescan_cleanup
 remove_directory "$PARACHAIN_DIR"
 
 
-source  "$SCRIPT_DIR/generate_json.sh"
 sudo bash "$SCRIPT_DIR/generate_json.sh"
 
-
 sudo bash "$SCRIPT_DIR/setup_parachain.sh"
-source "$SCRIPT_DIR/setup_parachain.sh"
 
+sudo bash "$SCRIPT_DIR/statescan.sh"
