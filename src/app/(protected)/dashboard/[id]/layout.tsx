@@ -16,6 +16,7 @@ import { Navigation } from "@/lib/components/navigation";
 import { getNetworkData, getNodes, getTask } from "@/db-queries";
 import { config } from "@/config/config";
 import { Badge } from "@/lib/components/Badge/Badge";
+import { isSelected } from "@/constants/create-network";
 
 /** dashboard layout component */
 const DashboardLayout: React.FC<{ children: React.ReactNode; params: { id: string } }> = async ({
@@ -31,6 +32,11 @@ const DashboardLayout: React.FC<{ children: React.ReactNode; params: { id: strin
   const nodes = await getNodes(id);
   /** rpc node details */
   const rpcNode = nodes.filter((e) => e.node_type === "rpc")?.[0];
+
+  const isSelected: isSelected = {
+    polkadot: network?.network_blockchain_explorer_type.includes("polkadotjs") ?? false,
+    statescan: network?.network_blockchain_explorer_type.includes("statescan") ?? false,
+  };
 
   /** creating rpc url for explorer */
   let rpcWsUrl = "";
@@ -68,6 +74,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode; params: { id: strin
           network={network}
           task={task}
           explorerUrl={{ paraExplorerUrl, traceUrl, analyticsUrl, stateScanUrl }}
+          isSelected={isSelected}
         />
       </Navigation>
       <TabContainer

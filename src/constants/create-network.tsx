@@ -119,3 +119,8 @@ export const authenticationMethods: {
     isDisabled: true,
   },
 ];
+
+export type isSelected = {
+  polkadot: boolean;
+  statescan: boolean;
+};

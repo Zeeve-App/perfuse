@@ -11,6 +11,7 @@
 
 import { create } from "zustand";
 import { NodeDbRow } from "@/db-queries";
+import { isSelected } from "@/constants/create-network";
 
 /** modal types, based on the type modal will be visible */
 type ModalType =
@@ -49,6 +50,7 @@ type ModalData = {
     polkadotLink: string;
     stateScanLink: string;
     traceHawkLink: string;
+    isSelected: isSelected;
   };
   deploySubquery?: {
     networkId: string;

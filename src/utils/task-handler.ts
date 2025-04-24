@@ -10,6 +10,7 @@
  */
 
 import { copyFile, readFile, writeFile } from "fs/promises";
+import { updateNetworkData } from "@/db-queries";
 
 /** task handle once the network is created */
 export const createTaskHandler = async () => {
@@ -31,5 +32,15 @@ export const createTaskHandler = async () => {
   console.log("outputChecksum", outputChecksum);
 
   await writeFile("./public/output/checksum.json", JSON.stringify(outputChecksum));
+  return;
+};
+
+/**handle task once the explorer is deployed */
+export const createExplorerHandler = async (networkId: string) => {
+  const explorer = "";
+  await updateNetworkData({ network_blockchain_explorer_type: explorer }, networkId);
+
+  // console.log("outputChecksum", outputChecksum);
+
   return;
 };
