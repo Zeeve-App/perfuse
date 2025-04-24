@@ -175,10 +175,7 @@ sidecar_cleanup() {
     fi
 }
 
-explorer_cleanup() {
-    log "Starting explorer cleanup"
-    remove_directory "/var/www/jsapps"
-    remove_directory "$SCRIPT_DIR/../apps"
+statescan_cleanup() {
     remove_directory "/var/www/statescan"
     if [ -d "$SCRIPT_DIR/../../statescan-v2" ]; then
         cd $SCRIPT_DIR/../../statescan-v2
@@ -189,6 +186,13 @@ explorer_cleanup() {
     else
         log "Statescan-v2 not found"
     fi
+}
+
+explorer_cleanup() {
+    log "Starting explorer cleanup"
+    remove_directory "/var/www/jsapps"
+    remove_directory "$SCRIPT_DIR/../apps"
+    statescan_cleanup
 }
 
 subquery_cleanup() {
