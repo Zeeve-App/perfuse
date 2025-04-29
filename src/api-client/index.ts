@@ -17,6 +17,7 @@ import useDeploySubquery from "./deploy-subquery";
 import useFileApi from "./file";
 import useNetworkApi from "./network";
 import useNodeApi from "./node";
+import useReCreateNetworkApi from "./re-create-network";
 import useUploadApi from "./upload";
 
 /** grouping all the api hooks in one hook */
@@ -30,6 +31,7 @@ const useApi = () => ({
   addKey: useAddKey,
   network: useNetworkApi,
   deploySubquery: useDeploySubquery,
+  reCreateNetwork : useReCreateNetworkApi,
 });
 
 export default useApi;
