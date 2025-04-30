@@ -23,6 +23,8 @@ export const knexHandler = knex({
     filename: config.server.dbLocation,
   },
   pool: {
+    min: 2,
+    max: 10,
     afterCreate: (conn: Database, cb: (this: RunResult, err: Error | null) => void) =>
       conn.run("PRAGMA foreign_keys = ON", cb),
   },
