@@ -15,7 +15,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { web3FromAddress } from "@polkadot/extension-dapp";
 import { useModalStore } from "@/store/modal";
-import { blobToHex, downloadFile, toShortString, withBasePath } from "@/utils/helpers";
+import { blobToHex, downloadFile, toShortString } from "@/utils/helpers";
 import { IconButton, CopyButton, Button } from "@/lib/components/Button";
 import {
   Modal,
@@ -33,8 +33,6 @@ import useApi from "@/api-client";
 import HyperLink from "@/lib/components/utils/hyper-link";
 import { Typography } from "@/lib/components/Typography";
 import { useSelectedAccount } from "@/lib/components/wallet/use-wallet";
-import { useNetworkStore } from "@/store/network";
-import { relayChainRpc } from "@/constants/constant";
 
 /** file card to show the wasm/genesis file with checksum */
 const FileCard = ({

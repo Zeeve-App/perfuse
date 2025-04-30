@@ -21,7 +21,8 @@ type ModalType =
   | "nodeDetails"
   | "addKey"
   | "explorers"
-  | "deploySubquery";
+  | "deploySubquery"
+  | "reDeployNetwork";
 
 /** modal data for each modal type */
 type ModalData = {
@@ -32,6 +33,7 @@ type ModalData = {
     networkName: string;
     networkId: string;
   };
+  reDeployNetwork?: { networkName: string; networkId: string };
   registerParachain?: {
     networkId: string;
   };

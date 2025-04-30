@@ -25,28 +25,33 @@ import { tx } from "@/utils/shared";
 import { deployNetworkValidationSchema, DeployNetworkValidationSchemaType } from "@/schemas/validation-schema";
 import { Badge } from "@/lib/components/Badge/Badge";
 import SvgExclamationTriangle from "@/lib/icons/essential/outline/ExclamationTriangle";
+import { NetworkDbRow } from "@/db-queries";
+import { networkEnvType, templateOption } from "@/constants/create-network";
 
 /** component name for deploy page  to focus */
 const componentNameForDeploy = ["step1", "step2", "step3", "summary"] as const;
 /** deploy steps types */
 export type DeployStepTypes = (typeof componentNameForDeploy)[number];
 /** Deploy page component */
-export default function DeployPage({ deployed }: { deployed: boolean }) {
+const DeployPage = ({ network }: { network: NetworkDbRow[] }) => {
+  const deployed = Boolean(network.length);
+  console.log({ network, deployed });
   const formData = useForm<DeployNetworkValidationSchemaType>({
     resolver: yupResolver(deployNetworkValidationSchema),
     mode: "all",
     defaultValues: {
+      networkEnvironment: {
+        value: deployed ? (network[0].network_env as networkEnvType) : "testnet",
+      },
+      relayChain: {
+        value: deployed ? network[0].network_relay_chain_type : "local",
+      },
+      chainName: deployed ? network[0].network_name : undefined,
       rpcNode: {
         http: true,
         ws: true,
       },
       sidecar: "sidecar",
-      networkEnvironment: {
-        value: "testnet",
-      },
-      relayChain: {
-        value: "local",
-      },
       polkadotjsExplorer: "polkadotjs",
       statescanExplorer: "statescan",
     },
@@ -88,54 +93,54 @@ export default function DeployPage({ deployed }: { deployed: boolean }) {
   }, []);
 
   return (
-    <>
-      <Card variant={"grid"} className="gap-0">
-        <Card variant={"grid"} className="col-span-12">
-          {deployed && (
-            <Badge className="col-span-12 flex items-center gap-4 rounded-md p-4 text-lg" variant="red">
-              <SvgExclamationTriangle className="size-10" /> Network already deployed, Please delete the network and
-              then visit this page
-            </Badge>
-          )}
-          <Heading as="h4" className="col-span-12">
-            Set Up Your Parachain
-          </Heading>
-        </Card>
-        {/* Form */}
-        <Card variant={"grid"} className="col-span-12 lg:col-span-8">
-          {/* 1st step */}
-          <DeployStep1
-            focusOnComponent={focusOnComponent}
-            formData={formData}
-            ref={step1Ref}
-            className={tx("col-span-12 opacity-50", focusClasses)}
-          />
-          {/* 2nd step */}
-          <DeployStep2
-            focusOnComponent={focusOnComponent}
-            formData={formData}
-            ref={step2Ref}
-            className={tx("col-span-12 opacity-50", focusClasses)}
-          />
-          {/* 3rd step  */}
-          <DeployStep3
-            formData={formData}
-            focusOnComponent={focusOnComponent}
-            ref={step3Ref}
-            className={tx("col-span-12 opacity-50", focusClasses)}
-          />
-        </Card>
-        {/* Your selects */}
-        <Card variant={"grid"} className="col-span-12 lg:col-span-4">
-          <DeploySummary
-            focusOnComponent={focusOnComponent}
-            formData={formData}
-            // ref={summaryRef}
-            className={tx("col-span-12")}
-            deployed={deployed}
-          />
-        </Card>
+    <Card variant={"grid"} className="gap-0">
+      <Card variant={"grid"} className="col-span-12">
+        {deployed && (
+          <Badge className="col-span-12 flex items-center gap-4 rounded-md p-4 text-lg" variant="red">
+            <SvgExclamationTriangle className="size-10" />
+            Re-deploying a network will remove the existing deployment and initiate a new one.
+          </Badge>
+        )}
+        <Heading as="h4" className="col-span-12">
+          Set Up Your Parachain
+        </Heading>
       </Card>
-    </>
+      {/* Form */}
+      <Card variant={"grid"} className="col-span-12 lg:col-span-8">
+        {/* 1st step */}
+        <DeployStep1
+          focusOnComponent={focusOnComponent}
+          formData={formData}
+          ref={step1Ref}
+          className={tx("col-span-12 opacity-50", focusClasses)}
+        />
+        {/* 2nd step */}
+        <DeployStep2
+          focusOnComponent={focusOnComponent}
+          formData={formData}
+          ref={step2Ref}
+          className={tx("col-span-12 opacity-50", focusClasses)}
+        />
+        {/* 3rd step  */}
+        <DeployStep3
+          formData={formData}
+          focusOnComponent={focusOnComponent}
+          ref={step3Ref}
+          className={tx("col-span-12 opacity-50", focusClasses)}
+        />
+      </Card>
+      {/* Your selects */}
+      <Card variant={"grid"} className="col-span-12 lg:col-span-4">
+        <DeploySummary
+          focusOnComponent={focusOnComponent}
+          formData={formData}
+          // ref={summaryRef}
+          className={tx("col-span-12")}
+          deployed={deployed}
+        />
+      </Card>
+    </Card>
   );
-}
+};
+
+export default DeployPage;

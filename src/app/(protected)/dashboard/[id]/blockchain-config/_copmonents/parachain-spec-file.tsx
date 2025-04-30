@@ -21,7 +21,6 @@ import { Tooltip } from "@/lib/components/Tooltip";
 import { tx } from "@/utils/shared";
 import { Typography } from "@/lib/components/Typography";
 import { Card } from "@/lib/components/Card";
-import SvgCopy from "@/lib/icons/design-tool/outline/Copy";
 import useApi from "@/api-client";
 
 /** props */

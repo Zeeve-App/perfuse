@@ -21,7 +21,7 @@ import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from "@/lib/
 import { tx } from "@/utils/shared";
 import { Heading } from "@/lib/components/Heading";
 import { FormField } from "@/lib/components/Form/FormField";
-import { Checkbox, Input, Switch } from "@/lib/components/Form";
+import { Checkbox, Input } from "@/lib/components/Form";
 import { Button } from "@/lib/components/Button";
 import HTTP_STATUS from "@/constants/http";
 import { ChainSpecFileType } from "@/types/chain-spec";

@@ -27,7 +27,7 @@ After setting up the network, you can check wallet balances by allowing the Perf
 
 ## **Monitoring with Grafana**
 
-Once the network is set up, you can view analytics by clicking the **Monitoring** button located next to the **Explorer** button. Clicking on the **Monitoring** button will open Grafana.  
+Once the network is set up, you can view analytics by clicking the **Monitoring** button located next to the **Explorer** button. Clicking on the **Monitoring** button will open Grafana.
 
 To log in, use **admin** as both the username and password. After logging in, you have the option to reset your password or skip this step. Once logged in, you will be directed to the analytics dashboard.
 
@@ -56,6 +56,7 @@ This section provides a summary of the parachain, including:
 The **Blockchain Config** tab displays comprehensive details about the parachain’s configuration:
 
 #### **Key Metrics**
+
 - **Parachain Block Height**: Current block height after registration.
 - **Total Token Supply**: Calculated from the chain specification file.
 - **Parachain Config**: Includes:
@@ -67,12 +68,14 @@ The **Blockchain Config** tab displays comprehensive details about the parachain
   - **Telemetry Endpoint**: Monitoring URL.
 
 #### **Token Information**
+
 - **Token Name**: Native token symbol.
 - **Decimal Places**: Precision of the token.
 - **Encoding**: Encoding format as per chain spec.
 - **Candidacy Bond**: Bond value for candidacy, extracted from the chain spec.
 
 #### **Additional Information**
+
 - **Parachain Spec File**: Chain specification file used for deployment, downloadable via the **Download** button.
 - **Pre-mined Accounts**: List of accounts with pre-allocated balances.
 - **Relay Chain Config**: Details of the relay chain hosting the parachain.
@@ -91,6 +94,7 @@ Manage collator nodes for the parachain under the **Collator Nodes** section. Ea
 - **Collator Address**: Collator wallet address.
 
 #### **Adding a Session Key**
+
 To add a session key for a collator node:
 
 1. Click the **key icon** next to the collator node.
@@ -118,6 +122,7 @@ View and manage RPC nodes for the parachain under the **RPC Nodes** section. Eac
 - **CORS Settings**: Allowed origins for cross-origin requests.
 
 #### **Additional Details**
+
 Click the **info icon** to view detailed information about a specific node.
 
 ---

@@ -27,17 +27,15 @@ export async function installExplorer(explorer: string) {
         );
 
         /** running the script to create the parachain network */
-        if (explorer === "polkadotjs")
-          jobShellExecutorBG("make polkadotjs_app", process.cwd(), async () => {}, taskId);
-        else if (explorer === "statescan")
-          jobShellExecutorBG("make statescan", process.cwd(), async () => {}, taskId);
+        if (explorer === "polkadotjs") jobShellExecutorBG("make polkadotjs_app", process.cwd(), async () => {}, taskId);
+        else if (explorer === "statescan") jobShellExecutorBG("make statescan", process.cwd(), async () => {}, taskId);
       } catch (error) {
         /** if there is any error while creating network it auto rollback the transaction */
         console.log(error);
         throw error;
       }
     });
-  } catch (error: any) {
+  } catch (error) {
     console.log(error);
   }
 }

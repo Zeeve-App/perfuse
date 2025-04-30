@@ -13,7 +13,7 @@
 import React, { ComponentPropsWithoutRef } from "react";
 
 import Image from "next/image";
-import { capitalizeFirstLetter, withBasePath } from "@/utils/helpers";
+import { withBasePath } from "@/utils/helpers";
 import { Card } from "@/lib/components/Card";
 import { Button } from "@/lib/components/Button";
 import { useToggle } from "@/hooks";

@@ -11,15 +11,14 @@
 
 "use client";
 import React from "react";
+import { useParams } from "next/navigation";
 import { useModalStore } from "@/store/modal";
 import { Modal, ModalOverlay, ModalContent, ModalBody, ModalTitle, ModalText } from "@/lib/components/Modal";
 import { Card } from "@/lib/components/Card";
 import { IconCard } from "@/lib/components/Card/Icon-Card";
 import { tx } from "@/utils/shared";
 import { Button } from "@/lib/components/Button";
-import { installExplorer } from "./helper";
 import useApi from "@/api-client";
-import { useParams } from "next/navigation";
 
 /** explorer modal to list all the explorer */
 const ExplorersModal = () => {
@@ -65,7 +64,7 @@ const ExplorersModal = () => {
                 isSelected={data.explorers?.isSelected.polkadot ?? false}
               />
               {data.explorers?.isSelected.polkadot && (
-                <div className="inset-x-0 bottom-0 p-2 pb-3 absolute">
+                <div className="absolute inset-x-0 bottom-0 p-2 pb-3">
                   <Button
                     className="col-span-2 w-full"
                     variant={"solid"}
@@ -79,7 +78,7 @@ const ExplorersModal = () => {
                 </div>
               )}
             </Card>
-            <div className="col-span-12  md:col-span-4 rounded-lg bg-theme-foreground">
+            <div className="col-span-12  rounded-lg bg-theme-foreground md:col-span-4">
               <IconCard
                 protocolId={"123"}
                 protocolName={<>Statescan&nbsp;Explorer</>}

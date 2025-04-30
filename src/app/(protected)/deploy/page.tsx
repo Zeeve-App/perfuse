@@ -22,9 +22,5 @@ export const metadata: Metadata = {
 /** deploy page main component */
 export default async function DeployPage() {
   const networks = await getNetworks();
-  return (
-    <>
-      <Deploy deployed={Boolean(networks.length)} />
-    </>
-  );
+  return <Deploy network={networks} />;
 }

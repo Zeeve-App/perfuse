@@ -18,7 +18,6 @@ import { RadioCard } from "@/lib/components/RadioCard";
 import { Radio } from "@/lib/components/Form";
 import { DeployNetworkValidationSchemaType } from "@/schemas/validation-schema";
 import { envAndRelayChainOption } from "@/constants/create-network";
-import SvgXMark from "@/lib/icons/essential/outline/XMark";
 import { tx } from "@/utils/shared";
 
 /** deploy page step 1 */

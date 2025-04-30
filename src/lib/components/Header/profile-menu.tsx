@@ -30,7 +30,6 @@ import SvgProfile from "@/lib/icons/user/outline/Profile";
 import { useToggle } from "@/hooks";
 import SvgArrowLeftFromBucket from "@/lib/icons/arrows/outline/ArrowLeftFromBucket";
 import SvgArrow2Down from "@/lib/icons/arrows/outline/Arrow2Down";
-import SvgChevronDownSquare from "@/lib/icons/arrows/outline/ChevronDownSquare";
 import SvgArrowDown from "@/lib/icons/arrows/outline/ArrowDown";
 
 /** profile dropdown data to show in drop down */
