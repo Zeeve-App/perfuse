@@ -99,7 +99,10 @@ export async function POST(req: NextRequest) {
     /** creating knex transaction */
     await knexHandler.transaction(async (trx) => {
       try {
+        /** delete old network */
+        await deleteNetwork(prevNetworkId, trx);
         /** saving network details */
+
         await saveNetworkData(
           {
             ...formData.network,
@@ -151,9 +154,6 @@ export async function POST(req: NextRequest) {
             await saveNodeData(node, trx);
           }, trx),
         );
-
-        /** delete old network */
-        await deleteNetwork(prevNetworkId);
 
         /** if user didn't used any template  consume old */
         // if (formData.network.network_template === "custom")
