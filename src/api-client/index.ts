@@ -31,7 +31,7 @@ const useApi = () => ({
   addKey: useAddKey,
   network: useNetworkApi,
   deploySubquery: useDeploySubquery,
-  reCreateNetwork : useReCreateNetworkApi,
+  reCreateNetwork: useReCreateNetworkApi,
 });
 
 export default useApi;

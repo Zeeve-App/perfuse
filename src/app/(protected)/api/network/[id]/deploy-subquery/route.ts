@@ -15,7 +15,7 @@ import { NextRequest } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { headers } from "next/headers";
 import { sendDataResponse, sendErrorResponse } from "../../../_helpers/response";
-import { NodeDbRow, addTask, getNodeData, saveNetworkData, saveNodeData } from "@/db-queries";
+import { NodeDbRow, addTask, getNodeData, saveNetworkData, saveNodeData, updateNodeData } from "@/db-queries";
 import { knexHandler } from "@/db-queries/knexfile";
 import { config } from "@/config/config";
 import { jobShellExecutorBG } from "@/utils/job-shell-executor";
@@ -50,7 +50,13 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
           trx,
         );
         /** getting rpc api key from db */
-        const apiKey = (await getNodeData({ network_id: networkId, node_type: "rpc" }, trx)).node_api_key;
+        const nodeData = await getNodeData({ network_id: networkId, node_type: "rpc" }, trx);
+
+        const apiKey = nodeData.node_api_key;
+        const nodeId = nodeData.node_id;
+
+        /** save subquery enabled in nodes db */
+        await updateNodeData({ node_id: nodeId, subquery_enabled: true });
 
         /** creating env file for the scripts */
         await writeFile(config.server.subquery, createEnvFile(formData, apiKey));
