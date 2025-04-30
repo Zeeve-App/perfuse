@@ -17,15 +17,13 @@ type registrationInfo = { show: boolean; isLoading: boolean };
 
 /** network info of parachain */
 type NetworkInfo = {
-  data:
-    | {
-        networkId: string;
-        relayChainType: string;
-        networkName: string;
-        networkStatus?: TaskDbRow["task_status"];
-        blockHeight: number;
-      }
-    | undefined;
+  data: {
+    networkId: string;
+    relayChainType: string;
+    networkName: string;
+    networkStatus?: TaskDbRow["task_status"];
+    blockHeight: number;
+  };
   isLoading: boolean;
 };
 /** state of the store */
@@ -42,8 +40,15 @@ type Actions = {
 };
 
 /** initial state */
+const initialNetwork = {
+  networkId: "NA",
+  relayChainType: "NA",
+  networkName: "NA",
+  networkStatus: undefined,
+  blockHeight: 0,
+};
 const initialState: State = {
-  networkInfo: { data: undefined, isLoading: false },
+  networkInfo: { data: initialNetwork, isLoading: false },
   registrationInfo: { show: false, isLoading: false },
 };
 

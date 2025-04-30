@@ -36,7 +36,10 @@ export const useSelectedAccount = () => {
   }, [accounts]);
 
   useEffect(() => {
-    console.log(network);
+    if (!network.data.relayChainType || network.data.relayChainType === "") {
+      return;
+    }
+    console.log("network info >> ", network);
 
     const initialize = async () => {
       // Enable Polkadot extension
@@ -51,21 +54,23 @@ export const useSelectedAccount = () => {
 
       // Connect to Polkadot
       let provider = new WsProvider("wss://rpc.polkadot.io");
-      if (network.data?.relayChainType)
+
+      if (network.data && network.data.relayChainType)
         provider = new WsProvider(
-          Object.keys(relayChainRpc).includes(network.data.relayChainType ?? "")
+          Object.keys(relayChainRpc).includes(network.data.relayChainType)
             ? relayChainRpc[network.data.relayChainType as keyof typeof relayChainRpc]
             : "wss://rpc.polkadot.io",
         ); // Change to your network if needed
 
-      console.log("endpoint", provider.endpoint);
-
+      const endpoint = provider.endpoint;
       const api = await ApiPromise.create({ provider });
+      // console.log("api-w", api);
 
       setRelayChainApi(api);
 
       // Set the currency symbol from the chain registry
       const symbol = api.registry.chainTokens[0];
+      console.log("endpoint , symbol", endpoint, " -- ", symbol);
       setTokenSymbol(symbol);
 
       // Get account balances and store them
@@ -76,14 +81,15 @@ export const useSelectedAccount = () => {
           const d = data.toJSON() as any;
           return {
             ...e,
-            balance: d.data.free,
+            balance: d.data.free / 10 ** 10,
           };
         }),
       );
       setAccounts(accs);
     };
-
-    initialize();
+    if (network.data.relayChainType && network.data.relayChainType !== "NA") {
+      initialize();
+    }
   }, [network]);
 
   // Save selected account to local storage whenever it changes
