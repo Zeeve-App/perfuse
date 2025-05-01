@@ -11,7 +11,6 @@
 
 "use client";
 import React, { ComponentPropsWithoutRef } from "react";
-
 import Image from "next/image";
 import { capitalizeFirstLetter, withBasePath } from "@/utils/helpers";
 import { Card } from "@/lib/components/Card";
@@ -25,7 +24,8 @@ interface CoreTimeCardProps extends ComponentPropsWithoutRef<"div"> {
   protocolName: string;
   description: string;
   showDescription?: boolean;
-  regionXLink: string;
+  link: string;
+  isDisabled?: boolean;
 }
 
 /** regionX card for core time page */
@@ -89,8 +89,9 @@ const CoreTimeCard = (props: CoreTimeCardProps) => {
         className="col-span-2 w-full"
         variant={"solid"}
         colorScheme={"gradient"}
+        isDisabled={props.isDisabled}
         onClick={() => {
-          window.open(props.regionXLink);
+          window.open(props.link);
         }}
       >
         Visit
@@ -99,6 +100,6 @@ const CoreTimeCard = (props: CoreTimeCardProps) => {
   );
 };
 
-CoreTimeCard.displayName = "RegionX Card";
+CoreTimeCard.displayName = "CoreTime Card";
 export type { CoreTimeCardProps };
 export { CoreTimeCard };

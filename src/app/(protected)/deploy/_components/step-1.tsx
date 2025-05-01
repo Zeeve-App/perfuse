@@ -68,7 +68,7 @@ const DeployStep1 = forwardRef<
                   value={relayChain.value}
                   {...formData.register("relayChain.value")}
                   isDisabled={!isChecked || relayChain.isDisabled}
-                  // isChecked={formData.watch("relayChain.value") === relayChain.value}
+                  isChecked={formData.watch("relayChain.value") === relayChain.value}
                 >
                   {relayChain.label}
                 </Radio>

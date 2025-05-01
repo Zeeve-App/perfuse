@@ -29,7 +29,7 @@ const CoreTimePageClient = ({ network }: { network?: NetworkDbRow }) => {
         description={
           "RegionX is a project dedicated to developing components for the new Agile Coretime model. The goal of the project is to enable developer teams, researchers, and enthusiasts to start trading, tracking, and analyzing the product Polkadot offers."
         }
-        regionXLink={`https://app.regionx.tech/regions?network=${network?.network_relay_chain_type}`}
+        link={`https://app.regionx.tech/regions?network=${network?.network_relay_chain_type}`}
       />
       <CoreTimeCard
         protocolId={"456"}
@@ -38,7 +38,8 @@ const CoreTimePageClient = ({ network }: { network?: NetworkDbRow }) => {
         description={
           "One marketplace for all Blockspace solutions. A protocol-agnostic application that leverages the best features of major networks in order to provide the best service to builders and traders."
         }
-        regionXLink={`https://www.lastic.xyz/${network?.network_relay_chain_type}/bulkcore1`}
+        link={`https://www.lastic.xyz/${network?.network_relay_chain_type}/bulkcore1`}
+        isDisabled={!["pokladot", "kusama"].includes(network?.network_relay_chain_type ?? "")}
       />
     </Card>
   );

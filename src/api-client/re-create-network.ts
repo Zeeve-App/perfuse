@@ -12,9 +12,9 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { backendAxiosInstance } from "@/utils/axios";
 import { withBasePath } from "@/utils/helpers";
-import { CreatePerfuseApiPayload } from "@/app/(protected)/api/create/route";
+import { ReCreatePerfuseApiPayload } from "@/app/(protected)/api/re-create/route";
 
-type ApiRequest = CreatePerfuseApiPayload;
+type ApiRequest = ReCreatePerfuseApiPayload;
 type ApiResponse = {
   success: boolean;
   data: { network_id: string };

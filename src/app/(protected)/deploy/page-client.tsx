@@ -27,6 +27,7 @@ import { Badge } from "@/lib/components/Badge/Badge";
 import SvgExclamationTriangle from "@/lib/icons/essential/outline/ExclamationTriangle";
 import { NetworkDbRow } from "@/db-queries";
 import { networkEnvType, templateOption } from "@/constants/create-network";
+import { ChainSpecFileType } from "@/types/chain-spec";
 
 /** component name for deploy page  to focus */
 const componentNameForDeploy = ["step1", "step2", "step3", "summary"] as const;
@@ -35,27 +36,75 @@ export type DeployStepTypes = (typeof componentNameForDeploy)[number];
 /** Deploy page component */
 const DeployPage = ({ network }: { network: NetworkDbRow[] }) => {
   const deployed = Boolean(network.length);
-  console.log({ network, deployed });
-  const formData = useForm<DeployNetworkValidationSchemaType>({
-    resolver: yupResolver(deployNetworkValidationSchema),
-    mode: "all",
-    defaultValues: {
+
+  /** mapping network db to form defaults */
+  const mapNetworkDbToFormDefaults = (network: NetworkDbRow): Partial<DeployNetworkValidationSchemaType> => {
+    return {
       networkEnvironment: {
-        value: deployed ? (network[0].network_env as networkEnvType) : "testnet",
+        value: network.network_env as networkEnvType,
       },
       relayChain: {
-        value: deployed ? network[0].network_relay_chain_type : "local",
+        value: network.network_relay_chain_type as "paseo" | "kusama" | "polkadot",
       },
-      chainName: deployed ? network[0].network_name : undefined,
+      chainName: network.network_name,
+      id: network.network_id,
+      protocolId: network.network_id,
+      tokenName: undefined,
+      decimalValue: undefined,
+      paraId: undefined,
+      ss58Format: undefined,
       rpcNode: {
         http: true,
         ws: true,
       },
-      sidecar: "sidecar",
-      polkadotjsExplorer: "polkadotjs",
-      statescanExplorer: "statescan",
-    },
+      sidecar: network.network_sidecar ? "sidecar" : null,
+      template: {
+        value: network.network_template as (typeof templateOption)[number]["value"],
+      },
+      polkadotjsExplorer: network.network_blockchain_explorer_type === "polkadotjs" ? "polkadotjs" : undefined,
+      statescanExplorer: network.network_blockchain_explorer_type === "statescan" ? "statescan" : undefined,
+      chainSpecFile: {
+        name: "chainSpec.json",
+        contents: JSON.parse(network.network_chain_spec_file_json) as ChainSpecFileType,
+      },
+      binaryFile: {
+        name: "binary",
+        path: network.network_binary_path,
+      },
+      isSudoKeyRequired: false,
+      accounts: [],
+    };
+  };
+
+  /** form data for deploy page */
+  const formData = useForm<DeployNetworkValidationSchemaType>({
+    resolver: yupResolver(deployNetworkValidationSchema),
+    mode: "all",
+    defaultValues: deployed
+      ? mapNetworkDbToFormDefaults(network[0])
+      : {
+          rpcNode: {
+            http: true,
+            ws: true,
+          },
+          sidecar: "sidecar",
+          networkEnvironment: {
+            value: "testnet",
+          },
+          relayChain: {
+            value: "local",
+          },
+          polkadotjsExplorer: "polkadotjs",
+          statescanExplorer: "statescan",
+        },
   });
+
+  useEffect(() => {
+    if (deployed && network.length) {
+      const defaults = mapNetworkDbToFormDefaults(network[0]);
+      formData.reset(defaults);
+    }
+  }, [deployed, network]);
 
   /** refs for steps */
   const step1Ref = useRef<HTMLDivElement>(null);
@@ -85,6 +134,7 @@ const DeployPage = ({ network }: { network: NetworkDbRow[] }) => {
     }
   };
 
+  /** classes for focus */
   const focusClasses: ClassValue =
     "focus:outline-none focus-within:outline-none focus-within:ring-none focus-within:border focus-within:border-theme-secondary focus-within:opacity-100 focus:ring-none focus:border focus:border-theme-secondary focus:opacity-100";
 
@@ -127,6 +177,7 @@ const DeployPage = ({ network }: { network: NetworkDbRow[] }) => {
           focusOnComponent={focusOnComponent}
           ref={step3Ref}
           className={tx("col-span-12 opacity-50", focusClasses)}
+          deployed={deployed}
         />
       </Card>
       {/* Your selects */}
@@ -137,6 +188,7 @@ const DeployPage = ({ network }: { network: NetworkDbRow[] }) => {
           // ref={summaryRef}
           className={tx("col-span-12")}
           deployed={deployed}
+          networkId={network[0]?.network_id ?? ""}
         />
       </Card>
     </Card>

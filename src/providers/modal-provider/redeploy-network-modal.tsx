@@ -28,6 +28,7 @@ import {
 import { StatusIcon } from "@/lib/components/StatusIcon";
 import { useToast } from "@/lib/components/Toast";
 import useApi from "@/api-client";
+import HTTP_STATUS from "@/constants/http";
 
 /** Re-Deploy network modal component */
 const ReDeployNetworkModal = () => {
@@ -41,15 +42,33 @@ const ReDeployNetworkModal = () => {
   /** client apis hook */
   const apis = useApi();
 
-  const deleteNetwork = async () => {
+  const reDeployNetwork = async () => {
     try {
       setLoading(true);
-      await apis.delete(data.deleteNetwork?.networkId as string);
-      toast("Network deleted", {
-        status: "success",
-        message: "Network deleted successfully",
-      });
-      router.push("/");
+      const response = await apis.reCreateNetwork(
+        data.reDeployNetwork?.payLoad ?? {
+          network: {
+            network_name: "",
+            network_env: "",
+            network_template: "",
+            network_relay_chain_type: "",
+            network_sidecar: 0,
+            network_blockchain_explorer_type: "",
+            network_chain_spec_file_json: {},
+            network_binary_path: "",
+            network_user_address: "",
+          },
+          nodes: [],
+          networkId: "",
+        },
+      );
+      if (response.status === HTTP_STATUS.OK && response.data.success) {
+        toast("Network created", {
+          message: "Network creation is successful.",
+          status: "success",
+        });
+        router.push("/dashboard/" + response.data?.data?.network_id);
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<ParachainsServiceError>;
@@ -73,20 +92,17 @@ const ReDeployNetworkModal = () => {
       <ModalOverlay />
       <ModalContent>
         <ModalBody>
-          <StatusIcon status="error" />
+          <StatusIcon status="info" />
           <div className="flex flex-col gap-y-1">
-            <ModalTitle>Delete Network</ModalTitle>
-            <ModalText>
-              Are you sure? You want to delete <span className="font-bold">{data.deleteNetwork?.networkName}</span>{" "}
-              network.
-            </ModalText>
+            <ModalTitle className="text-brand-blue">Re-Deploy Network</ModalTitle>
+            <ModalText>Are you sure you want to delete the existing network and deploy a new one?</ModalText>
           </div>
         </ModalBody>
         <ModalFooter placement="end">
-          <Button variant="ghost" className="text-brand-red" onClick={onClose} isDisabled={isLoading}>
+          <Button variant="ghost" className="text-brand-light" onClick={onClose} isDisabled={isLoading} isFullWidth>
             Cancel
           </Button>
-          <Button colorScheme="red" onClick={deleteNetwork} isLoading={isLoading}>
+          <Button colorScheme="gradient" onClick={reDeployNetwork} isLoading={isLoading} isFullWidth>
             Confirm
           </Button>
         </ModalFooter>

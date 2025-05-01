@@ -31,6 +31,8 @@ import { Spinner } from "@/lib/components/Spinner";
 import SvgArrowUpFromBucket from "@/lib/icons/arrows/outline/ArrowUpFromBucket";
 import { getSessionKey, withBasePath } from "@/utils/helpers";
 import { useToast } from "@/lib/components/Toast";
+import { Badge } from "@/lib/components/Badge/Badge";
+import SvgExclamationTriangle from "@/lib/icons/essential/outline/ExclamationTriangle";
 
 /** template and there location in the repo */
 const templatesMap: Record<(typeof templateOption)[number]["value"], string> = {
@@ -51,8 +53,9 @@ const DeployStep3 = forwardRef<
     focusOnComponent: (component: DeployStepTypes) => void;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     formData: UseFormReturn<DeployNetworkValidationSchemaType, any, undefined>;
+    deployed: boolean;
   }
->(({ className, formData }, ref) => {
+>(({ className, formData, deployed }, ref) => {
   const [progressValue, setProgressValue] = useState(0);
   const [progressTotal, setProgressTotal] = useState(1);
   const [isBinaryFileUploading, setIsBinaryFileUploading] = useState(false);
@@ -234,8 +237,23 @@ const DeployStep3 = forwardRef<
 
   return (
     <div className="col-span-12">
-      <div tabIndex={2} ref={ref} className={tx(className, "bg-theme-foreground rounded-lg")}>
-        <Card variant={"grid-no-pad"} className="col-span-12 gap-0 py-3">
+      {deployed && (
+        <Badge className="col-span-12 mb-3 flex items-center gap-4 rounded-md p-4 text-lg" variant="purple">
+          <SvgExclamationTriangle className="size-10" />
+          You won’t be able to update the chainspecs, and they will remain the same as in the previous deployment. To
+          modify the chainspecs, you’ll need to fully delete the existing network and deploy a new one.
+        </Badge>
+      )}
+      <div
+        tabIndex={2}
+        ref={ref}
+        className={tx(
+          className,
+          "bg-theme-foreground rounded-lg",
+          deployed && "opacity-50 pointer-events-none select-none",
+        )}
+      >
+        <Card variant={"grid-no-pad"} className="col-span-12 gap-0 py-3 ">
           <Heading as="h5" className="col-span-12 p-2 px-4">
             Chain Template Selection <span className="text-brand-red">*</span>
           </Heading>
@@ -451,11 +469,11 @@ const DeployStep3 = forwardRef<
             </AccordionBody>
           </AccordionItem>
         </Accordion>
-        <Accordion className="rounded-none bg-theme-background">
+        <Accordion className="rounded-b-lg bg-theme-background ">
           <AccordionItem>
             <AccordionHeader>Advance Chainspec Config</AccordionHeader>
             <AccordionBody>
-              <Card variant={"grid"} className="lg:gap-4">
+              <Card variant={"grid"} className="rounded-b-lg lg:gap-4">
                 <hr className="col-span-12" />
                 <FormField
                   className="col-span-6"
