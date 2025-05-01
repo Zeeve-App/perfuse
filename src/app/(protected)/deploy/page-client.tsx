@@ -177,7 +177,7 @@ const DeployPage = ({ network }: { network: NetworkDbRow[] }) => {
           focusOnComponent={focusOnComponent}
           ref={step3Ref}
           className={tx("col-span-12 opacity-50", focusClasses)}
-          deployed={false} // enabled
+          deployed={deployed}
         />
       </Card>
       {/* Your selects */}
@@ -187,7 +187,7 @@ const DeployPage = ({ network }: { network: NetworkDbRow[] }) => {
           formData={formData}
           // ref={summaryRef}
           className={tx("col-span-12")}
-          deployed={false} // enabled
+          deployed={deployed}
           networkId={network[0]?.network_id ?? ""}
         />
       </Card>
