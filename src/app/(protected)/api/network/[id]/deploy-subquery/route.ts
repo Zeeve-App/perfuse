@@ -13,7 +13,7 @@ import { writeFile } from "fs/promises";
 import { NextRequest } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { sendDataResponse, sendErrorResponse } from "../../../_helpers/response";
-import { addTask, getNodeData, updateNodeData } from "@/db-queries";
+import { addTask, getNodeData, getNodeDataAndSubQueryStatus, updateNetworkData } from "@/db-queries";
 import { knexHandler } from "@/db-queries/knexfile";
 import { config } from "@/config/config";
 import { jobShellExecutorBG } from "@/utils/job-shell-executor";
@@ -29,6 +29,9 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     const formData: DeploySubqueryApiPayload = await req.json();
     const networkId = params.id;
     const taskId = uuidv4();
+
+    let apiKey;
+    let nodeId;
 
     /** creating knex transaction */
     await knexHandler.transaction(async (trx) => {
@@ -48,19 +51,32 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
           trx,
         );
         /** getting rpc api key from db */
-        const nodeData = await getNodeData({ network_id: networkId, node_type: "rpc" }, trx);
+        const nodeData = await getNodeDataAndSubQueryStatus({ network_id: networkId, node_type: "rpc" }, trx);
 
-        const apiKey = nodeData.node_api_key;
-        const nodeId = nodeData.node_id;
+        apiKey = nodeData.node_api_key;
+        nodeId = nodeData.node_id;
+        const subqueryEnabled = nodeData.subqueryEnabled;
+        console.log("-------subs stats-------------", subqueryEnabled);
+        if (subqueryEnabled) {
+          return sendErrorResponse({
+            message: "subquery already enabled",
+          });
+        }
 
         /** save subquery enabled in nodes db */
-        await updateNodeData({ node_id: nodeId, subquery_enabled: true });
+        await updateNetworkData({ subquery_enabled: true }, networkId, trx);
+        if (apiKey && nodeId) {
+          /** creating env file for the scripts */
+          await writeFile(config.server.subquery, createEnvFile(formData, apiKey));
 
-        /** creating env file for the scripts */
-        await writeFile(config.server.subquery, createEnvFile(formData, apiKey));
-
-        /** running the script to deploy subquery */
-        jobShellExecutorBG("make subquery", process.cwd(), async () => {}, taskId);
+          /** running the script to deploy subquery */
+          jobShellExecutorBG("make subquery", process.cwd(), async () => {}, taskId);
+          /** sending response back to the client */
+        } else {
+          return sendErrorResponse({
+            message: "Api key not found",
+          });
+        }
       } catch (error) {
         /** if there is any error while creating network it auto rollback the transaction */
         console.log(error);
@@ -68,7 +84,6 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
       }
     });
 
-    /** sending response back to the client */
     return sendDataResponse({ networkId });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {

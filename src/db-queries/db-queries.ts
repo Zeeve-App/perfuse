@@ -43,6 +43,20 @@ export const getNodeData = async (data: Partial<NodeDbRow>, trx?: knex.Knex.Tran
   return { ...node, rpcUrl };
 };
 
+/** to get node data from db */
+export const getNodeDataAndSubQueryStatus = async (data: Partial<NodeDbRow>, trx?: knex.Knex.Transaction) => {
+  const db = trx ?? knexHandler;
+
+  const node = await db<NodeDbRow>("nodes").select("*").where(data).first();
+  const network = await db<NetworkDbRow>("networks").select("*").where({ network_id: data["network_id"] }).first();
+  let rpcUrl = "http://localhost:9010";
+  if (node?.node_type === "collator") {
+    rpcUrl = node.node_name.endsWith("1") ? `http://localhost:9008` : `http://localhost:9009`;
+  }
+
+  return { ...node, rpcUrl, subqueryEnabled: network?.subquery_enabled };
+};
+
 /** to update node data from db */
 export const updateNodeData = async (data: Partial<NodeDbRow>, trx?: knex.Knex.Transaction) => {
   const db = trx ?? knexHandler;

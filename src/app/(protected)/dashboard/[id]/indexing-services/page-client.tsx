@@ -14,10 +14,23 @@ import React from "react";
 import { IndexingServiceCard } from "./_components/indexing-service-card";
 import { Card } from "@/lib/components/Card";
 import { useModalStore } from "@/store/modal";
+import { useNetworkStore } from "@/store/network";
 
 /** coreTime page client component */
 const IndexingServiceComponent = ({ networkId }: { networkId: string }) => {
   const { openModal } = useModalStore();
+  const networkData = useNetworkStore().networkInfo.data;
+  const nodeData = useNetworkStore().nodeInfo.data;
+  const btnText = networkData.subQueryEnabled ? "Visit" : "Deploy";
+  const apiKey = nodeData.apiKey;
+  const handleSubQueryBtn = () => {
+    if (networkData.subQueryEnabled) {
+      const host = window.location.host;
+      window.open(`${host}/${apiKey}/subql`, "_blank");
+    } else {
+      openModal("deploySubquery", { deploySubquery: { networkId: networkId ?? "" } });
+    }
+  };
   return (
     <Card variant={"grid-no-pad"} className="items-start">
       <IndexingServiceCard
@@ -39,9 +52,9 @@ const IndexingServiceComponent = ({ networkId }: { networkId: string }) => {
         docLink={`https://docs.zeeve.io/traceye/shared-indexing/hosted-subquery`}
         imageSrc={"/assets/images/indexing-service/subquery-logo.png"}
         onPrimaryClick={() => {
-          openModal("deploySubquery", { deploySubquery: { networkId: networkId ?? "" } });
+          handleSubQueryBtn();
         }}
-        primaryButton={"Deploy"}
+        primaryButton={btnText}
       />
     </Card>
   );

@@ -36,6 +36,8 @@ interface NetworkDbRow {
   network_user_address: string;
   /** Created at timestamp in ISO format */
   created_at: string;
+  /** subquery enabled */
+  subquery_enabled: boolean;
 }
 
 interface NodeDbRow {
@@ -73,8 +75,6 @@ interface NodeDbRow {
   node_collator_seed_added?: 0 | 1;
   /** Created at timestamp in ISO format */
   created_at: string;
-  /** subquery enabled */
-  subquery_enabled: boolean;
 }
 
 interface TaskDbRow {

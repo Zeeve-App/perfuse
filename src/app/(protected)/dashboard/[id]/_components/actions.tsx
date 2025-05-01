@@ -62,6 +62,7 @@ const Actions = ({
         relayChainType: network?.data?.network_relay_chain_type ?? "NA",
         networkStatus: task?.task_status,
         blockHeight: parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16),
+        subQueryEnabled: network?.data?.subquery_enabled || false,
       },
       isLoading: false,
     });

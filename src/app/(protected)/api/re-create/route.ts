@@ -115,6 +115,7 @@ export async function POST(req: NextRequest) {
             created_at: new Date().toISOString(),
             network_coretime_type: "regionx",
             network_user_address: formData.network.network_user_address,
+            subquery_enabled: false,
           },
           trx,
         );
@@ -149,7 +150,6 @@ export async function POST(req: NextRequest) {
               node_api_key: isRpc && e.node_auth_method === "api_key" ? apiKey : undefined,
               node_endpoint: isRpc ? e.node_endpoint ?? domain : undefined,
               created_at: new Date().toISOString(),
-              subquery_enabled: false,
             };
             /** saving node details */
             await saveNodeData(node, trx);

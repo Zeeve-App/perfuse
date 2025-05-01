@@ -18,7 +18,7 @@
 exports.up = async function (knex) {
     try {
       await knex.raw(`
-           ALTER TABLE nodes 
+           ALTER TABLE networks 
            ADD COLUMN subquery_enabled BOOLEAN NOT NULL DEFAULT false
          `);
   
@@ -34,7 +34,7 @@ exports.up = async function (knex) {
   exports.down = async function (knex) {
     // NOTE: multiple queries can't be run in sqlite, need to separate it
     await knex.raw(`
-          ALTER TABLE nodes 
+          ALTER TABLE networks
           DROP COLUMN subquery_enabled;
     `);
   };

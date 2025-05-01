@@ -23,6 +23,14 @@ type NetworkInfo = {
     networkName: string;
     networkStatus?: TaskDbRow["task_status"];
     blockHeight: number;
+    subQueryEnabled: boolean;
+  };
+  isLoading: boolean;
+};
+
+type NodeInfo = {
+  data: {
+    apiKey: string;
   };
   isLoading: boolean;
 };
@@ -30,6 +38,7 @@ type NetworkInfo = {
 type State = {
   networkInfo: NetworkInfo;
   registrationInfo: registrationInfo;
+  nodeInfo: NodeInfo;
 };
 
 /** action of the store to change state */
@@ -37,6 +46,7 @@ type Actions = {
   setNetworkInfo: (networkInfo: NetworkInfo) => void;
   reset: () => void;
   setRegistrationInfo: (registrationInfo: registrationInfo) => void;
+  setNodeInfo: (nodeInfo: NodeInfo) => void;
 };
 
 /** initial state */
@@ -46,10 +56,18 @@ const initialNetwork = {
   networkName: "NA",
   networkStatus: undefined,
   blockHeight: 0,
+  subQueryEnabled: false,
 };
+
+/** initial state */
+const initialNode = {
+  apiKey: "",
+};
+
 const initialState: State = {
   networkInfo: { data: initialNetwork, isLoading: false },
   registrationInfo: { show: false, isLoading: false },
+  nodeInfo: { data: initialNode, isLoading: false },
 };
 
 /** network store */
@@ -63,6 +81,9 @@ const useNetworkStore = create<State & Actions>((set) => ({
   },
   reset: () => {
     set(initialState);
+  },
+  setNodeInfo: (nodeInfo: NodeInfo) => {
+    set({ nodeInfo });
   },
 }));
 
