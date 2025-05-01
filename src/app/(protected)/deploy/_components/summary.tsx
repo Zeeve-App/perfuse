@@ -15,6 +15,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CreatePerfuseApiPayload } from "../../api/create/route";
 import { DeployStepTypes } from "../page-client";
+import { ReCreatePerfuseApiPayload } from "../../api/re-create/route";
 import { Card } from "@/lib/components/Card";
 import { DeployNetworkValidationSchemaType } from "@/schemas/validation-schema";
 import { Button } from "@/lib/components/Button";
@@ -29,6 +30,7 @@ import { useToast } from "@/lib/components/Toast";
 import { tx } from "@/utils/shared";
 import SvgCheck from "@/lib/icons/essential/outline/Check";
 import { useModalStore } from "@/store/modal";
+import { NetworkDbRow, NodeDbRowWithStatus } from "@/db-queries";
 
 /** deploy summary component */
 const DeploySummary = ({
@@ -36,7 +38,8 @@ const DeploySummary = ({
   formData,
   focusOnComponent,
   deployed,
-  networkId,
+  networkData,
+  nodesData,
 }: {
   className: string;
   // ref: RefObject<HTMLDivElement>;
@@ -44,7 +47,8 @@ const DeploySummary = ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formData: UseFormReturn<DeployNetworkValidationSchemaType, any, undefined>;
   deployed: boolean;
-  networkId: string;
+  networkData?: NetworkDbRow;
+  nodesData: NodeDbRowWithStatus[];
 }) => {
   const formWatchState = formData.watch();
   const router = useRouter();
@@ -142,8 +146,52 @@ const DeploySummary = ({
       ],
     };
 
+    const rePayload: ReCreatePerfuseApiPayload = {
+      network: {
+        network_name: networkData?.network_name ?? "",
+        network_env: data?.networkEnvironment.value ?? "",
+        network_template: networkData?.network_template ?? "",
+        network_relay_chain_type: data?.relayChain.value ?? "",
+        network_sidecar: networkData?.network_sidecar === 1 ? 1 : 0,
+        network_blockchain_explorer_type: networkData?.network_blockchain_explorer_type ?? "",
+        network_chain_spec_file_json: JSON.parse(networkData?.network_chain_spec_file_json ?? "{}"),
+        network_binary_path: networkData?.network_binary_path ?? "",
+        network_user_address: networkData?.network_user_address ?? "",
+      },
+      nodes: [
+        {
+          node_name: "rpc-node",
+          node_type: "rpc",
+          node_auth_method: "api_key",
+          node_password: "",
+          node_username: "",
+          node_https_enabled: !!nodesData[0]?.node_https_enabled,
+          node_wss_enabled: !!nodesData[0]?.node_wss_enabled,
+        },
+        {
+          node_name: "collator_1",
+          node_rpc_cors: "*",
+          node_type: "collator",
+          node_address: nodesData[1]?.node_address ?? "",
+          node_balance: nodesData[1]?.node_balance ?? 0,
+          node_collator_session_address: nodesData[1]?.node_collator_session_address ?? "",
+        },
+        {
+          node_name: "collator_2",
+          node_rpc_cors: "*",
+          node_type: "collator",
+          node_address: nodesData[2]?.node_address ?? "",
+          node_balance: nodesData[2]?.node_balance ?? 0,
+          node_collator_session_address: nodesData[2]?.node_collator_session_address ?? "",
+        },
+      ],
+      networkId: networkData?.network_id ?? "",
+    };
+
     if (deployed) {
-      openModal("reDeployNetwork", { reDeployNetwork: { payLoad: { ...payload, networkId: networkId } } });
+      openModal("reDeployNetwork", {
+        reDeployNetwork: { payLoad: rePayload },
+      });
     } else {
       const response = await apis.createNetwork(payload);
 
