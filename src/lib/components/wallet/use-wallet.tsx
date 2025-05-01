@@ -81,7 +81,7 @@ export const useSelectedAccount = () => {
           const d = data.toJSON() as any;
           return {
             ...e,
-            balance: d.data.free / 10 ** 10,
+            balance: (d.data.free / 10 ** 10).toString(),
           };
         }),
       );

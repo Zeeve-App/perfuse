@@ -87,7 +87,8 @@ interface TaskDbRow {
     | "node_provision"
     | "delete_node"
     | "delete_infra"
-    | "subquery_deployment";
+    | "subquery_deployment"
+    | "explorer_deployment";
   /** Task execution state */
   task_status: "pending" | "inprogress" | "completed" | "failed";
   /** Task associated network ID */

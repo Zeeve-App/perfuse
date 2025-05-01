@@ -8,7 +8,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import React from "react";
+import React, { useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -28,13 +28,15 @@ import { withBasePath } from "@/utils/helpers";
 import { useToast } from "@/lib/components/Toast";
 import { tx } from "@/utils/shared";
 import SvgCheck from "@/lib/icons/essential/outline/Check";
+import { useModalStore } from "@/store/modal";
 
 /** deploy summary component */
-export default function DeploySummary({
+const DeploySummary = ({
   className,
   formData,
   focusOnComponent,
   deployed,
+  networkId,
 }: {
   className: string;
   // ref: RefObject<HTMLDivElement>;
@@ -42,15 +44,20 @@ export default function DeploySummary({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formData: UseFormReturn<DeployNetworkValidationSchemaType, any, undefined>;
   deployed: boolean;
-}) {
+  networkId: string;
+}) => {
   const formWatchState = formData.watch();
   const router = useRouter();
   const apis = useApi();
+  /** modal hook */
+  const { openModal } = useModalStore();
 
   /** toast hook */
   const toast = useToast();
+  const [isloading, setIsLoading] = useState(false);
 
   const onSubmit = async (data: DeployNetworkValidationSchemaType) => {
+    setIsLoading(true);
     const chainSpec = data.chainSpecFile.contents;
     if (chainSpec.para_id) chainSpec.para_id = data.paraId;
     if (chainSpec.properties?.tokenDecimals) chainSpec.properties.tokenDecimals = data.decimalValue;
@@ -135,15 +142,20 @@ export default function DeploySummary({
       ],
     };
 
-    const response = await apis.createNetwork(payload);
+    if (deployed) {
+      openModal("reDeployNetwork", { reDeployNetwork: { payLoad: { ...payload, networkId: networkId } } });
+    } else {
+      const response = await apis.createNetwork(payload);
 
-    if (response.status === HTTP_STATUS.OK && response.data.success) {
-      toast("Network created", {
-        message: "Network creation successfully",
-        status: "success",
-      });
-      router.push("/dashboard/" + response.data?.data?.network_id);
+      if (response.status === HTTP_STATUS.OK && response.data.success) {
+        toast("Network created", {
+          message: "Network creation is successful.",
+          status: "success",
+        });
+        router.push("/dashboard/" + response.data?.data?.network_id);
+      }
     }
+    setIsLoading(false);
   };
   return (
     <Card tabIndex={3} className={className}>
@@ -298,23 +310,22 @@ export default function DeploySummary({
             )}
           </div>
         ) : (
-          <>
-            <Image
-              src={withBasePath("/assets/images/create/summary.svg")}
-              alt="parachains-logo"
-              width={400}
-              height={300}
-            />
-          </>
+          <Image
+            src={withBasePath("/assets/images/create/summary.svg")}
+            alt="parachains-logo"
+            width={400}
+            height={300}
+          />
         )}
         <form action="" className="" onSubmit={formData.handleSubmit(onSubmit)}>
           <Button
             className="w-full rounded-md"
             colorScheme="gradient"
             type="submit"
-            isDisabled={!formData.formState.isValid || deployed}
+            isDisabled={!formData.formState.isValid}
+            isLoading={isloading}
           >
-            Deploy
+            {deployed ? "Re-Deploy" : "Deploy"}
           </Button>
         </form>
         <Link rel="stylesheet" href="https://github.com/Zeeve-App/perfuse/tree/main/docs/tutorial" target="_blank">
@@ -325,4 +336,6 @@ export default function DeploySummary({
       </div>
     </Card>
   );
-}
+};
+
+export default DeploySummary;

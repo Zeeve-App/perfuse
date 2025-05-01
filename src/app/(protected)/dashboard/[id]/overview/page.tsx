@@ -12,10 +12,9 @@
 import React from "react";
 import { Metadata } from "next";
 import Overview from "./_components";
-import { getNetworkData, getNodes, getNodesWithStatus, getTask } from "@/db-queries";
+import { getNetworkData, getNodesWithStatus, getTask } from "@/db-queries";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import { config } from "@/config/config";
-import { isRpcNodeWorking } from "@/utils/wallet";
 
 /** overview page metadata */
 export const metadata: Metadata = {

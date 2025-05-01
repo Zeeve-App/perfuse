@@ -25,32 +25,86 @@ import { tx } from "@/utils/shared";
 import { deployNetworkValidationSchema, DeployNetworkValidationSchemaType } from "@/schemas/validation-schema";
 import { Badge } from "@/lib/components/Badge/Badge";
 import SvgExclamationTriangle from "@/lib/icons/essential/outline/ExclamationTriangle";
+import { NetworkDbRow } from "@/db-queries";
+import { networkEnvType, templateOption } from "@/constants/create-network";
+import { ChainSpecFileType } from "@/types/chain-spec";
 
 /** component name for deploy page  to focus */
 const componentNameForDeploy = ["step1", "step2", "step3", "summary"] as const;
 /** deploy steps types */
 export type DeployStepTypes = (typeof componentNameForDeploy)[number];
 /** Deploy page component */
-export default function DeployPage({ deployed }: { deployed: boolean }) {
-  const formData = useForm<DeployNetworkValidationSchemaType>({
-    resolver: yupResolver(deployNetworkValidationSchema),
-    mode: "all",
-    defaultValues: {
+const DeployPage = ({ network }: { network: NetworkDbRow[] }) => {
+  const deployed = Boolean(network.length);
+
+  /** mapping network db to form defaults */
+  const mapNetworkDbToFormDefaults = (network: NetworkDbRow): Partial<DeployNetworkValidationSchemaType> => {
+    return {
+      networkEnvironment: {
+        value: network.network_env as networkEnvType,
+      },
+      relayChain: {
+        value: network.network_relay_chain_type as "paseo" | "kusama" | "polkadot",
+      },
+      chainName: network.network_name,
+      id: network.network_id,
+      protocolId: network.network_id,
+      tokenName: undefined,
+      decimalValue: undefined,
+      paraId: undefined,
+      ss58Format: undefined,
       rpcNode: {
         http: true,
         ws: true,
       },
-      sidecar: "sidecar",
-      networkEnvironment: {
-        value: "testnet",
+      sidecar: network.network_sidecar ? "sidecar" : null,
+      template: {
+        value: network.network_template as (typeof templateOption)[number]["value"],
       },
-      relayChain: {
-        value: "local",
+      polkadotjsExplorer: network.network_blockchain_explorer_type === "polkadotjs" ? "polkadotjs" : undefined,
+      statescanExplorer: network.network_blockchain_explorer_type === "statescan" ? "statescan" : undefined,
+      chainSpecFile: {
+        name: "chainSpec.json",
+        contents: JSON.parse(network.network_chain_spec_file_json) as ChainSpecFileType,
       },
-      polkadotjsExplorer: "polkadotjs",
-      statescanExplorer: "statescan",
-    },
+      binaryFile: {
+        name: "binary",
+        path: network.network_binary_path,
+      },
+      isSudoKeyRequired: false,
+      accounts: [],
+    };
+  };
+
+  /** form data for deploy page */
+  const formData = useForm<DeployNetworkValidationSchemaType>({
+    resolver: yupResolver(deployNetworkValidationSchema),
+    mode: "all",
+    defaultValues: deployed
+      ? mapNetworkDbToFormDefaults(network[0])
+      : {
+          rpcNode: {
+            http: true,
+            ws: true,
+          },
+          sidecar: "sidecar",
+          networkEnvironment: {
+            value: "testnet",
+          },
+          relayChain: {
+            value: "local",
+          },
+          polkadotjsExplorer: "polkadotjs",
+          statescanExplorer: "statescan",
+        },
   });
+
+  useEffect(() => {
+    if (deployed && network.length) {
+      const defaults = mapNetworkDbToFormDefaults(network[0]);
+      formData.reset(defaults);
+    }
+  }, [deployed, network]);
 
   /** refs for steps */
   const step1Ref = useRef<HTMLDivElement>(null);
@@ -80,6 +134,7 @@ export default function DeployPage({ deployed }: { deployed: boolean }) {
     }
   };
 
+  /** classes for focus */
   const focusClasses: ClassValue =
     "focus:outline-none focus-within:outline-none focus-within:ring-none focus-within:border focus-within:border-theme-secondary focus-within:opacity-100 focus:ring-none focus:border focus:border-theme-secondary focus:opacity-100";
 
@@ -88,54 +143,56 @@ export default function DeployPage({ deployed }: { deployed: boolean }) {
   }, []);
 
   return (
-    <>
-      <Card variant={"grid"} className="gap-0">
-        <Card variant={"grid"} className="col-span-12">
-          {deployed && (
-            <Badge className="col-span-12 flex items-center gap-4 rounded-md p-4 text-lg" variant="red">
-              <SvgExclamationTriangle className="size-10" /> Network already deployed, Please delete the network and
-              then visit this page
-            </Badge>
-          )}
-          <Heading as="h4" className="col-span-12">
-            Set Up Your Parachain
-          </Heading>
-        </Card>
-        {/* Form */}
-        <Card variant={"grid"} className="col-span-12 lg:col-span-8">
-          {/* 1st step */}
-          <DeployStep1
-            focusOnComponent={focusOnComponent}
-            formData={formData}
-            ref={step1Ref}
-            className={tx("col-span-12 opacity-50", focusClasses)}
-          />
-          {/* 2nd step */}
-          <DeployStep2
-            focusOnComponent={focusOnComponent}
-            formData={formData}
-            ref={step2Ref}
-            className={tx("col-span-12 opacity-50", focusClasses)}
-          />
-          {/* 3rd step  */}
-          <DeployStep3
-            formData={formData}
-            focusOnComponent={focusOnComponent}
-            ref={step3Ref}
-            className={tx("col-span-12 opacity-50", focusClasses)}
-          />
-        </Card>
-        {/* Your selects */}
-        <Card variant={"grid"} className="col-span-12 lg:col-span-4">
-          <DeploySummary
-            focusOnComponent={focusOnComponent}
-            formData={formData}
-            // ref={summaryRef}
-            className={tx("col-span-12")}
-            deployed={deployed}
-          />
-        </Card>
+    <Card variant={"grid"} className="gap-0">
+      <Card variant={"grid"} className="col-span-12">
+        {deployed && (
+          <Badge className="col-span-12 flex items-center gap-4 rounded-md p-4 text-lg" variant="red">
+            <SvgExclamationTriangle className="size-10" />
+            Re-deploying a network will remove the existing deployment and initiate a new one.
+          </Badge>
+        )}
+        <Heading as="h4" className="col-span-12">
+          Set Up Your Parachain
+        </Heading>
       </Card>
-    </>
+      {/* Form */}
+      <Card variant={"grid"} className="col-span-12 lg:col-span-8">
+        {/* 1st step */}
+        <DeployStep1
+          focusOnComponent={focusOnComponent}
+          formData={formData}
+          ref={step1Ref}
+          className={tx("col-span-12 opacity-50", focusClasses)}
+        />
+        {/* 2nd step */}
+        <DeployStep2
+          focusOnComponent={focusOnComponent}
+          formData={formData}
+          ref={step2Ref}
+          className={tx("col-span-12 opacity-50", focusClasses)}
+        />
+        {/* 3rd step  */}
+        <DeployStep3
+          formData={formData}
+          focusOnComponent={focusOnComponent}
+          ref={step3Ref}
+          className={tx("col-span-12 opacity-50", focusClasses)}
+          deployed={deployed}
+        />
+      </Card>
+      {/* Your selects */}
+      <Card variant={"grid"} className="col-span-12 lg:col-span-4">
+        <DeploySummary
+          focusOnComponent={focusOnComponent}
+          formData={formData}
+          // ref={summaryRef}
+          className={tx("col-span-12")}
+          deployed={deployed}
+          networkId={network[0]?.network_id ?? ""}
+        />
+      </Card>
+    </Card>
   );
-}
+};
+
+export default DeployPage;

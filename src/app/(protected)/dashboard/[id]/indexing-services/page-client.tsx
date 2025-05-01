@@ -12,7 +12,6 @@
 "use client";
 import React from "react";
 import { IndexingServiceCard } from "./_components/indexing-service-card";
-import { NetworkDbRow } from "@/db-queries";
 import { Card } from "@/lib/components/Card";
 import { useModalStore } from "@/store/modal";
 

@@ -7,6 +7,7 @@ To deploy a new Perfuse network, ensure your Next.js application is running, the
 ---
 
 ### **Step 1: Setup Environment**
+
 Before starting, configure the environment by editing the `.env` file. You can base it on `.env.example`:
 
 - **`NEXT_PUBLIC_HOST`**: Host address where the Next.js app is running.
@@ -21,11 +22,13 @@ Before starting, configure the environment by editing the `.env` file. You can b
 ---
 
 ### **Step 2: Access the Setup Page**
+
 Navigate to the web application URL. You’ll land on the **Set Up Your Parachain** page.
 
 ---
 
 ### **Step 3: Select the Network Environment**
+
 Choose the environment where the parachain will operate:
 
 - **Testnet**
@@ -37,6 +40,7 @@ Choose the environment where the parachain will operate:
 ---
 
 ### **Step 4: Enter Chain Details**
+
 Provide essential details about your parachain:
 
 - **Chain Name**: Name of the parachain.
@@ -45,6 +49,7 @@ Provide essential details about your parachain:
 ---
 
 ### **Step 5: Choose a Template**
+
 Select a template for your parachain from the following options:
 
 - **Substrate**
@@ -58,6 +63,7 @@ Select a template for your parachain from the following options:
 ---
 
 ### **Step 6: Configure Advanced Options**
+
 Advanced options will auto-fill based on the selected template. You can modify these values if necessary:
 
 - **ParaID**: ID of the new parachain.
@@ -76,11 +82,13 @@ Advanced options will auto-fill based on the selected template. You can modify t
 ---
 
 ### **Step 7: Review Your Selection**
+
 Verify all the details in the **Your Selection** section. Confirm accuracy before proceeding.
 
 ---
 
 ### **Step 8: Deploy the Parachain**
+
 Once verified, click **Deploy** to launch your parachain network.
 
 ---

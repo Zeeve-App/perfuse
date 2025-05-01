@@ -9,13 +9,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 "use server";
-import { copyFile, writeFile } from "fs/promises";
-import crypto from "crypto";
+import { writeFile } from "fs/promises";
 import { NextRequest } from "next/server";
 import { v4 as uuidv4 } from "uuid";
-import { headers } from "next/headers";
 import { sendDataResponse, sendErrorResponse } from "../../../_helpers/response";
-import { NodeDbRow, addTask, getNodeData, saveNetworkData, saveNodeData, updateNodeData } from "@/db-queries";
+import { addTask, getNodeData, updateNodeData } from "@/db-queries";
 import { knexHandler } from "@/db-queries/knexfile";
 import { config } from "@/config/config";
 import { jobShellExecutorBG } from "@/utils/job-shell-executor";

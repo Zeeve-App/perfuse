@@ -9,7 +9,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React, { forwardRef, useEffect, useMemo } from "react";
+import React, { forwardRef, useMemo } from "react";
 import { HTMLMotionProps, motion } from "framer-motion";
 import { RemoveProperties } from "../core";
 import { FormStatus, useProgressiveFormContext } from "./ProgressiveFormContext";

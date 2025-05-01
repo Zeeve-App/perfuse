@@ -45,6 +45,7 @@ import SvgPlusSquare from "@/lib/icons/essential/outline/PlusSquare";
 import { ITEMS } from "@/constants/sidebar";
 import useDarkMode from "@/hooks/use-dark-mode";
 import SvgMoon from "@/lib/icons/essential/outline/moon";
+import SvgSun from "@/lib/icons/essential/outline/sun";
 
 interface ZeeveHeaderDropdownMenuItem {
   icon: React.ReactElement;
@@ -159,7 +160,7 @@ const ZeeveHeader = (props: ZeeveHeaderProps & HeaderProps) => {
             className="hidden size-10 rounded-full  bg-theme-foreground xl:flex"
             onClick={() => toggleTheme()}
           >
-            {theme === "dark" ? <SvgMoon fontSize={20} /> : <SvgMoon fontSize={24} />}
+            {theme === "dark" ? <SvgMoon fontSize={20} /> : <SvgSun fontSize={24} />}
           </IconButton>
           {/* Notifications */}
           <NotificationsWebSocketContextProvider url={_notificationsWSURL}>

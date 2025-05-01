@@ -20,17 +20,25 @@ import SvgTrash from "@/lib/icons/essential/outline/Trash";
 import { useNetworkStore } from "@/store/network";
 import { NetworkDbRow, NodeDbRow, TaskDbRow } from "@/db-queries";
 import useApi from "@/api-client";
+import { isSelected } from "@/constants/create-network";
 
 /** network action component e.g: delete, explorer and monitor */
 const Actions = ({
   // network,
   task,
   explorerUrl: { paraExplorerUrl, analyticsUrl, stateScanUrl },
+  isSelected,
 }: {
   network?: NetworkDbRow;
   task?: TaskDbRow;
   nodes?: NodeDbRow[];
-  explorerUrl: { paraExplorerUrl: string; traceUrl: string; analyticsUrl: string; stateScanUrl: string };
+  explorerUrl: {
+    paraExplorerUrl: string;
+    traceUrl: string;
+    analyticsUrl: string;
+    stateScanUrl: string;
+  };
+  isSelected: isSelected;
 }) => {
   /** getting params from the url */
   const params = useParams();
@@ -75,10 +83,11 @@ const Actions = ({
               polkadotLink: paraExplorerUrl,
               stateScanLink: stateScanUrl,
               traceHawkLink: "",
+              isSelected,
             },
           });
         }}
-        isDisabled={task?.task_status !== "completed"}
+        isDisabled={task?.task_status == "completed"}
         variant={"outline"}
         colorScheme={"accent"}
       >
