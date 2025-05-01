@@ -197,7 +197,7 @@ explorer_cleanup() {
 
 subquery_cleanup() {
     log "Checking if subquery is installed"
-    if [ -d "$SCRIPT_DIR/../../subquery/subql-starter"]; then
+    if [ -d "$SCRIPT_DIR/../../subquery/subql-starter" ]; then
         log "Subquery installed"
         log "Starting subquery cleanup"
         cd $SCRIPT_DIR/../../subquery/scripts
