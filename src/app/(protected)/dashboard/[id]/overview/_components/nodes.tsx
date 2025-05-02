@@ -26,7 +26,7 @@ const Nodes = ({ nodes }: { isLoading: boolean; nodes: (NodeDbRow & { health: bo
   console.log(nodes);
 
   const rpcNode = nodes.filter((e) => e.node_type === "rpc");
-  const apiKey = rpcNode[0].node_api_key;
+  const apiKey = rpcNode[0]?.node_api_key;
 
   const setNodekStore = useNetworkStore((e) => e.setNodeInfo);
   setNodekStore({ data: { apiKey: apiKey || "" }, isLoading: false });

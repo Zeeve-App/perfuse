@@ -11,7 +11,7 @@
 import React from "react";
 import { Metadata } from "next";
 import Deploy from "./page-client";
-import { getNetworks } from "@/db-queries";
+import { getNetworks, getNodesWithStatus } from "@/db-queries";
 
 /** dashboard page metadata */
 export const metadata: Metadata = {
@@ -22,5 +22,6 @@ export const metadata: Metadata = {
 /** deploy page main component */
 export default async function DeployPage() {
   const networks = await getNetworks();
-  return <Deploy network={networks} />;
+  const nodes = await getNodesWithStatus(networks[0]?.network_id ?? "");
+  return <Deploy network={networks} nodes={nodes} />;
 }

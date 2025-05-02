@@ -237,13 +237,13 @@ const DeployStep3 = forwardRef<
 
   return (
     <div className="col-span-12">
-      {deployed && (
+      {/* {deployed && (
         <Badge className="col-span-12 mb-3 flex items-center gap-4 rounded-md p-4 text-lg" variant="purple">
           <SvgExclamationTriangle className="size-10" />
           You won’t be able to update the chainspecs, and they will remain the same as in the previous deployment. To
           modify the chainspecs, you’ll need to fully delete the existing network and deploy a new one.
         </Badge>
-      )}
+      )} */}
       <div
         tabIndex={2}
         ref={ref}

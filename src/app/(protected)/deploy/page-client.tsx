@@ -25,7 +25,7 @@ import { tx } from "@/utils/shared";
 import { deployNetworkValidationSchema, DeployNetworkValidationSchemaType } from "@/schemas/validation-schema";
 import { Badge } from "@/lib/components/Badge/Badge";
 import SvgExclamationTriangle from "@/lib/icons/essential/outline/ExclamationTriangle";
-import { NetworkDbRow } from "@/db-queries";
+import { NetworkDbRow, NodeDbRowWithStatus } from "@/db-queries";
 import { networkEnvType, templateOption } from "@/constants/create-network";
 import { ChainSpecFileType } from "@/types/chain-spec";
 
@@ -34,11 +34,15 @@ const componentNameForDeploy = ["step1", "step2", "step3", "summary"] as const;
 /** deploy steps types */
 export type DeployStepTypes = (typeof componentNameForDeploy)[number];
 /** Deploy page component */
-const DeployPage = ({ network }: { network: NetworkDbRow[] }) => {
+const DeployPage = ({ network, nodes }: { network: NetworkDbRow[]; nodes: NodeDbRowWithStatus[] }) => {
   const deployed = Boolean(network.length);
+  const chainSpec: ChainSpecFileType = JSON.parse(network[0]?.network_chain_spec_file_json ?? "{}");
 
   /** mapping network db to form defaults */
-  const mapNetworkDbToFormDefaults = (network: NetworkDbRow): Partial<DeployNetworkValidationSchemaType> => {
+  const mapNetworkDbToFormDefaults = (
+    network: NetworkDbRow,
+    nodes: NodeDbRowWithStatus,
+  ): Partial<DeployNetworkValidationSchemaType> => {
     return {
       networkEnvironment: {
         value: network.network_env as networkEnvType,
@@ -49,13 +53,13 @@ const DeployPage = ({ network }: { network: NetworkDbRow[] }) => {
       chainName: network.network_name,
       id: network.network_id,
       protocolId: network.network_id,
-      tokenName: undefined,
-      decimalValue: undefined,
-      paraId: undefined,
-      ss58Format: undefined,
+      tokenName: chainSpec?.properties?.tokenSymbol,
+      decimalValue: chainSpec?.properties?.tokenDecimals,
+      paraId: chainSpec?.para_id,
+      ss58Format: chainSpec?.properties?.ss58Format,
       rpcNode: {
-        http: true,
-        ws: true,
+        http: nodes.node_https_enabled === 1,
+        ws: nodes.node_wss_enabled === 1,
       },
       sidecar: network.network_sidecar ? "sidecar" : null,
       template: {
@@ -71,7 +75,7 @@ const DeployPage = ({ network }: { network: NetworkDbRow[] }) => {
         name: "binary",
         path: network.network_binary_path,
       },
-      isSudoKeyRequired: false,
+      isSudoKeyRequired: !!chainSpec?.genesis?.runtimeGenesis?.patch?.sudo?.key,
       accounts: [],
     };
   };
@@ -81,7 +85,7 @@ const DeployPage = ({ network }: { network: NetworkDbRow[] }) => {
     resolver: yupResolver(deployNetworkValidationSchema),
     mode: "all",
     defaultValues: deployed
-      ? mapNetworkDbToFormDefaults(network[0])
+      ? mapNetworkDbToFormDefaults(network[0], nodes[0])
       : {
           rpcNode: {
             http: true,
@@ -101,7 +105,7 @@ const DeployPage = ({ network }: { network: NetworkDbRow[] }) => {
 
   useEffect(() => {
     if (deployed && network.length) {
-      const defaults = mapNetworkDbToFormDefaults(network[0]);
+      const defaults = mapNetworkDbToFormDefaults(network[0], nodes[0]);
       formData.reset(defaults);
     }
   }, [deployed, network]);
@@ -170,6 +174,7 @@ const DeployPage = ({ network }: { network: NetworkDbRow[] }) => {
           formData={formData}
           ref={step2Ref}
           className={tx("col-span-12 opacity-50", focusClasses)}
+          deployed={deployed}
         />
         {/* 3rd step  */}
         <DeployStep3
@@ -188,7 +193,8 @@ const DeployPage = ({ network }: { network: NetworkDbRow[] }) => {
           // ref={summaryRef}
           className={tx("col-span-12")}
           deployed={deployed}
-          networkId={network[0]?.network_id ?? ""}
+          networkData={network[0]}
+          nodesData={nodes}
         />
       </Card>
     </Card>

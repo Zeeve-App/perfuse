@@ -13,10 +13,10 @@ import { forwardRef, RefObject } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { DeployStepTypes } from "../page-client";
 import { Card } from "@/lib/components/Card";
-import { Heading } from "@/lib/components/Heading";
 import { Input } from "@/lib/components/Form";
 import { DeployNetworkValidationSchemaType } from "@/schemas/validation-schema";
 import { FormField } from "@/lib/components/Form/FormField";
+import { tx } from "@/utils/shared";
 
 /** deploy step 2 */
 const DeployStep2 = forwardRef<
@@ -27,10 +27,11 @@ const DeployStep2 = forwardRef<
     focusOnComponent: (component: DeployStepTypes) => void;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     formData: UseFormReturn<DeployNetworkValidationSchemaType, any, undefined>;
+    deployed: boolean;
   }
->(({ className, formData }, ref) => {
+>(({ className, formData, deployed }, ref) => {
   return (
-    <Card tabIndex={1} ref={ref} className={className}>
+    <Card tabIndex={1} ref={ref} className={tx(className, deployed && "opacity-50 pointer-events-none select-none")}>
       {/* chain name */}
       <Card variant={"grid-no-pad"} className="col-span-12 lg:col-span-6 ">
         <FormField

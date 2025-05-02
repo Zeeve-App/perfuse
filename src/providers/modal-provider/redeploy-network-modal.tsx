@@ -99,7 +99,13 @@ const ReDeployNetworkModal = () => {
           </div>
         </ModalBody>
         <ModalFooter placement="end">
-          <Button variant="ghost" className="text-brand-light" onClick={onClose} isDisabled={isLoading} isFullWidth>
+          <Button
+            variant="ghost"
+            className="dark:text-brand-light"
+            onClick={onClose}
+            isDisabled={isLoading}
+            isFullWidth
+          >
             Cancel
           </Button>
           <Button colorScheme="gradient" onClick={reDeployNetwork} isLoading={isLoading} isFullWidth>
