@@ -16,7 +16,7 @@ SCRIPTS_DIR = scripts
 all:  initial binary_install generate-genesis-wasm-spec build-parachain polkadotjs_app statescan proxy_setup monitoring
 
 duplicate:
-  sudo bash $(SCRIPTS_DIR)/duplicate.sh
+	sudo bash $(SCRIPTS_DIR)/duplicate.sh
 
 subquery:
 	sudo bash $(SCRIPTS_DIR)/subquery.sh
