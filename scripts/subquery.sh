@@ -93,6 +93,26 @@ sed -i '/network:/,/}/{
 }' project.ts
 log "Updated chainId with genesis hash: $GENESIS_HASH in project.ts"
 
+# ------------------------------------------------------------------------
+
+echo "Handeling Conversion of type"
+ORIGINAL='amount: (amount as Balance).toBigInt()'
+REPLACEMENT='amount: ((amount as unknown) as Balance).toBigInt()'
+
+if [ ! -f "$SUBQUERY_DIR/subql-starter/Polkadot/Polkadot-starter/src/mappings/mappingHandlers.ts" ]; then
+  echo "File mappingHandlers.ts not found!"
+fi
+
+if grep -qF "$ORIGINAL" "$SUBQUERY_DIR/subql-starter/Polkadot/Polkadot-starter/src/mappings/mappingHandlers.ts"; then
+  sed -i.bak "s|$ORIGINAL|$REPLACEMENT|" "$SUBQUERY_DIR/subql-starter/Polkadot/Polkadot-starter/src/mappings/mappingHandlers.ts"
+  echo "Typecasting handled successfully"
+else
+  echo "Original line not found in the file."
+fi
+
+#-------------------------------------------------------------------------
+
+
 log "Installing dependencies and building project..."
 npm install || error_exit "npm install failed"
 npm run codegen || error_exit "npm run codegen failed"
