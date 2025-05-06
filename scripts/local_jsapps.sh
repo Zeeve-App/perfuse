@@ -56,5 +56,10 @@ setup_nginx() {
     sudo systemctl restart nginx
 }
 
-install_and_build
-setup_nginx
+if [ "${POLKADOT:-0}" = "1" ]; then
+    echo "Installing polkadotjs explorer"
+    install_and_build
+    setup_nginx
+else
+    echo "Skipping polkadotjs installation"
+fi
