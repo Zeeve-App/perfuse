@@ -24,6 +24,8 @@ type NetworkInfo = {
     networkStatus?: TaskDbRow["task_status"];
     blockHeight: number;
     subQueryEnabled: boolean;
+    polkadotActive: boolean;
+    statescanActive: boolean;
   };
   isLoading: boolean;
 };
@@ -57,6 +59,8 @@ const initialNetwork = {
   networkStatus: undefined,
   blockHeight: 0,
   subQueryEnabled: false,
+  polkadotActive: false,
+  statescanActive: false,
 };
 
 /** initial state */

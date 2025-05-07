@@ -14,6 +14,7 @@ import useBlockNumberApi from "./block-number";
 import useCreateNetworkApi from "./create-network";
 import useDeleteApi from "./delete";
 import useDeploySubquery from "./deploy-subquery";
+import useEnableServiceApi from "./enable-service";
 import useFileApi from "./file";
 import useNetworkApi from "./network";
 import useNodeApi from "./node";
@@ -32,6 +33,7 @@ const useApi = () => ({
   network: useNetworkApi,
   deploySubquery: useDeploySubquery,
   reCreateNetwork: useReCreateNetworkApi,
+  enableService: useEnableServiceApi,
 });
 
 export default useApi;

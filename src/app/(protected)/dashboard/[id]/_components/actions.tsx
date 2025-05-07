@@ -63,6 +63,8 @@ const Actions = ({
         networkStatus: task?.task_status,
         blockHeight: parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16),
         subQueryEnabled: network?.data?.subquery_enabled || false,
+        polkadotActive: network?.data?.polkadot_active || false,
+        statescanActive: network?.data?.statescan_active || false,
       },
       isLoading: false,
     });

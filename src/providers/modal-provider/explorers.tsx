@@ -10,18 +10,26 @@
  */
 
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import axios, { AxiosError } from "axios";
 import { useModalStore } from "@/store/modal";
 import { Modal, ModalOverlay, ModalContent, ModalBody, ModalTitle, ModalText } from "@/lib/components/Modal";
 import { Card } from "@/lib/components/Card";
 import { IconCard } from "@/lib/components/Card/Icon-Card";
 import { tx } from "@/utils/shared";
-import { Button } from "@/lib/components/Button";
 import useApi from "@/api-client";
+import HTTP_STATUS from "@/constants/http";
+import { useToast } from "@/lib/components/Toast";
+import { ParachainsServiceError } from "@/api-client/types";
 
 /** explorer modal to list all the explorer */
 const ExplorersModal = () => {
+  const toast = useToast();
+  const router = useRouter();
+
+  const [isLoading, setLoading] = useState(false);
   const { isOpen, onClose, type, data } = useModalStore();
 
   const isModalOpen = isOpen && type === "explorers";
@@ -30,7 +38,44 @@ const ExplorersModal = () => {
   const networkId = params.id as string;
   const apis = useApi();
   const { data: network } = apis.network(networkId);
+  console.log("network", data);
 
+  const handleInstall = async (service: "polkadotjs" | "statescan") => {
+    try {
+      setLoading(true);
+      const payload = {
+        serviceName: service,
+      };
+      const response = await apis.enableService(networkId, payload);
+      if (response.status === HTTP_STATUS.OK && response.data.success) {
+        toast(`${service} installing`, {
+          message: `Started installing ${service}`,
+          status: "success",
+        });
+      }
+      router.refresh();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const err = error as AxiosError<ParachainsServiceError>;
+        toast("", {
+          status: "error",
+          message: err.response?.data?.error?.details,
+        });
+      } else {
+        toast("An unexpected error occurred", {
+          status: "error",
+        });
+      }
+    } finally {
+      setLoading(false);
+      onClose();
+    }
+  };
+  const handleClick = async (serviceLink: string) => {
+    if (serviceLink) {
+      window.open(serviceLink);
+    }
+  };
   return (
     <Modal isOpen={isModalOpen} handleClose={onClose}>
       <ModalOverlay />
@@ -62,21 +107,30 @@ const ExplorersModal = () => {
                 //   docLink={`https://docs.zeeve.io/traceye/shared-indexing/hosted-subquery`}
                 imageSrc={"/assets/images/modals/explorers/polkadot-explorer.svg"}
                 isSelected={data.explorers?.isSelected.polkadot ?? false}
+                btnText={
+                  data.explorers?.isSelected.polkadot && !network?.data?.polkadot_active ? "Click to Install" : "Visit"
+                }
+                isLoading={isLoading}
+                onClick={() => {
+                  data.explorers?.isSelected.polkadot && !network?.data?.polkadot_active
+                    ? handleInstall("polkadotjs")
+                    : handleClick(data.explorers?.polkadotLink || "");
+                }}
               />
-              {data.explorers?.isSelected.polkadot && (
+              {/* {data.explorers?.isSelected.polkadot && (
                 <div className="absolute inset-x-0 bottom-0 p-2 pb-3">
                   <Button
                     className="col-span-2 w-full"
                     variant={"solid"}
                     colorScheme={"gradient"}
                     onClick={() => {
-                      // installExplorer("polkadotjs");
+                      installExplorer("polkadotjs");
                     }}
                   >
                     Click to Install
                   </Button>
                 </div>
-              )}
+              )} */}
             </Card>
             <div className="col-span-12  rounded-lg bg-theme-foreground md:col-span-4">
               <IconCard
@@ -90,6 +144,17 @@ const ExplorersModal = () => {
                 //   docLink={`https://docs.zeeve.io/traceye/shared-indexing/hosted-subquery`}
                 imageSrc={"/assets/images/modals/explorers/statescan-explorer.svg"}
                 isSelected={data.explorers?.isSelected.statescan ?? false}
+                btnText={
+                  data.explorers?.isSelected.statescan && !network?.data?.statescan_active
+                    ? "Click to Install"
+                    : "Visit"
+                }
+                isLoading={isLoading}
+                onClick={() => {
+                  data.explorers?.isSelected.statescan && !network?.data?.statescan_active
+                    ? handleInstall("statescan")
+                    : handleClick(data.explorers?.stateScanLink || "");
+                }}
               />
             </div>
             {/* <IconCard

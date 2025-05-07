@@ -30,11 +30,23 @@ interface IconCardProps extends ComponentPropsWithoutRef<"div"> {
   imageSrc?: string;
   docLink?: string;
   isSelected: boolean;
+  btnText?: string;
+  onClick: () => void;
+  isLoading?: boolean;
 }
 
 /** regionX card for core time page */
 const IconCard = (props: IconCardProps) => {
-  const { protocolName, description, imageSrc, className, isSelected } = props;
+  const {
+    protocolName,
+    description,
+    imageSrc,
+    className,
+    isSelected,
+    btnText = "Visit",
+    onClick,
+    isLoading = false,
+  } = props;
   const { isOpen, handleToggle } = useToggle();
 
   return (
@@ -100,13 +112,14 @@ const IconCard = (props: IconCardProps) => {
             variant={"solid"}
             colorScheme={"gradient"}
             onClick={() => {
-              window.open(props.serviceLink);
+              onClick();
             }}
+            isLoading={isLoading}
             isDisabled={!isSelected}
           >
-            Visit
+            {btnText}
           </Button>
-          {props.docLink && (
+          {/* {props.docLink && (
             <Button
               className="col-span-2 w-full"
               variant={"outline"}
@@ -117,7 +130,7 @@ const IconCard = (props: IconCardProps) => {
             >
               Docs
             </Button>
-          )}
+          )} */}
         </div>
       </div>
     </Card>

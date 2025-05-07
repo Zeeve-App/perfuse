@@ -49,7 +49,7 @@ const DeleteNetworkModal = () => {
         status: "success",
         message: "Network deleted successfully",
       });
-      router.push("/");
+      window.location.reload();
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<ParachainsServiceError>;

@@ -96,6 +96,7 @@ export async function POST(req: NextRequest) {
     const network_id = uuidv4();
     const taskId = uuidv4();
     const apiKey = crypto.randomBytes(30).toString("hex");
+    const polkadotEnabled = formData.network.network_blockchain_explorer_type?.includes("polkadotjs");
 
     /** creating knex transaction */
     await knexHandler.transaction(async (trx) => {
@@ -116,6 +117,7 @@ export async function POST(req: NextRequest) {
             network_coretime_type: "regionx",
             network_user_address: formData.network.network_user_address,
             subquery_enabled: false,
+            polkadot_active: polkadotEnabled,
           },
           trx,
         );

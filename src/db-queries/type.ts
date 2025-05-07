@@ -38,6 +38,9 @@ interface NetworkDbRow {
   created_at: string;
   /** subquery enabled */
   subquery_enabled: boolean;
+  polkadot_active?: boolean;
+  subquery_active?: boolean;
+  statescan_active?: boolean;
 }
 
 interface NodeDbRow {
