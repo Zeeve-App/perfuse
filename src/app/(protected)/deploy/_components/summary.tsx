@@ -72,7 +72,7 @@ const DeploySummary = ({
       chainSpec.genesis.runtimeGenesis.patch.parachainInfo.parachainId = data.paraId;
     if (chainSpec.properties.ss58Format) chainSpec.properties.ss58Format = data.ss58Format;
     chainSpec.name = data.chainName;
-    chainSpec.relay_chain = data.relayChain.value.toLowerCase();
+    chainSpec.relay_chain = data.relayChain.value?.toLowerCase();
     const runtimeGenesis = chainSpec.genesis.runtimeGenesis;
 
     runtimeGenesis.patch.balances.balances =

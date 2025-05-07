@@ -91,7 +91,7 @@ const NodeDetailsModal = () => {
               <div className="grid grid-cols-12 gap-3 py-3 lg:gap-6">
                 <div className="col-span-12 rounded-lg border border-brand-outline">
                   <div className="p-3">
-                    <Heading as="h5">Blochchain Config</Heading>
+                    <Heading as="h5">Blockchain Config</Heading>
                   </div>
                   <div className="grid grid-cols-12 gap-3 p-3 lg:gap-6">
                     <KeyValuePair

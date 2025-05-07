@@ -89,6 +89,7 @@ const CoreTimeCard = (props: CoreTimeCardProps) => {
         className="col-span-2 w-full"
         variant={"solid"}
         colorScheme={"gradient"}
+        title={props.isDisabled ? "Not supported" : ""}
         isDisabled={props.isDisabled}
         onClick={() => {
           window.open(props.link);

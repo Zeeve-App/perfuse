@@ -29,7 +29,7 @@ import useApi from "@/api-client";
 import { FileUpload } from "@/lib/components/Form/FileUpload";
 import { Spinner } from "@/lib/components/Spinner";
 import SvgArrowUpFromBucket from "@/lib/icons/arrows/outline/ArrowUpFromBucket";
-import { getSessionKey, withBasePath } from "@/utils/helpers";
+import { getSessionKey, validateJsonFile, withBasePath } from "@/utils/helpers";
 import { useToast } from "@/lib/components/Toast";
 import { Badge } from "@/lib/components/Badge/Badge";
 import SvgExclamationTriangle from "@/lib/icons/essential/outline/ExclamationTriangle";
@@ -102,7 +102,7 @@ const DeployStep3 = forwardRef<
       formData.setValue("ss58Format", chainSpec.properties?.ss58Format ?? 42);
       formData.setValue("sudoKey", runtimeGenesis?.patch?.sudo?.key ?? "");
       formData.setValue("isSudoKeyRequired", runtimeGenesis?.patch?.sudo?.key ? true : false);
-      formData.setValue("id", formState.chainName + "_" + formState.relayChain.value.toLowerCase());
+      formData.setValue("id", formState.chainName + "_" + formState.relayChain.value?.toLowerCase());
 
       const collatorAddresses = runtimeGenesis?.patch?.balances.balances;
 
@@ -145,14 +145,24 @@ const DeployStep3 = forwardRef<
     if (selectedFile) {
       // set selected chain spec file name
       formData.setValue("chainSpecFile.name", selectedFile.name);
+      console.log("file type ", selectedFile.type);
 
       const reader = new FileReader();
-      reader.onload = (event) => {
-        const content = event.target?.result as string;
-        const chainSpec: ChainSpecFileType = JSON.parse(content);
-        fillValuesWithChainSpecData(chainSpec);
-      };
 
+      reader.onload = (event) => {
+        try {
+          const content = event.target?.result as string;
+
+          // Check if content is valid JSON
+          const chainSpec: ChainSpecFileType = JSON.parse(content);
+
+          // Success: Fill form values from JSON
+          fillValuesWithChainSpecData(chainSpec);
+        } catch (error) {
+          console.error("Invalid JSON file:", error);
+          formData.setError("chainSpecFile.name", { message: "Invalid JSON format" });
+        }
+      };
       reader.readAsText(selectedFile);
     } else {
       /** clear the file input event is undefined */
@@ -298,6 +308,17 @@ const DeployStep3 = forwardRef<
                         field={{
                           ...field,
                           onChange: (event) => {
+                            const file = event?.target?.files?.[0];
+
+                            if (
+                              !validateJsonFile(file, formData.setError, formData.clearErrors, "chainSpecFile.name")
+                            ) {
+                              toast("Error while Loading chain spec file", {
+                                message: "Please enter a valid chain spec file",
+                                status: "error",
+                              });
+                              return;
+                            }
                             onChange(event);
                             handleChainSpecFile(event);
                           },

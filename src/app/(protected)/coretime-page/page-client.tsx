@@ -13,14 +13,23 @@ import { CoreTimeCard } from "./_components/coreTimeCard";
 import { NetworkDbRow } from "@/db-queries";
 import { Card } from "@/lib/components/Card";
 import { Heading } from "@/lib/components/Heading";
+import { Badge } from "@/lib/components/Badge/Badge";
+import SvgExclamationTriangle from "@/lib/icons/essential/outline/ExclamationTriangle";
 
 /** coreTime page client component */
 const CoreTimePageClient = ({ network }: { network?: NetworkDbRow }) => {
+  const isDisabled = !["pokladot", "kusama"].includes(network?.network_relay_chain_type ?? "");
   return (
     <Card variant={"grid"} className="">
       <Heading as="h4" className="col-span-12">
         CoreTime
       </Heading>
+      {isDisabled && (
+        <Badge className="col-span-12 flex items-center gap-4 rounded-md p-4 text-lg" variant="red">
+          <SvgExclamationTriangle className="size-10" />
+          Lastic is not suported
+        </Badge>
+      )}
 
       <CoreTimeCard
         protocolId={"123"}
@@ -39,7 +48,7 @@ const CoreTimePageClient = ({ network }: { network?: NetworkDbRow }) => {
           "One marketplace for all Blockspace solutions. A protocol-agnostic application that leverages the best features of major networks in order to provide the best service to builders and traders."
         }
         link={`https://www.lastic.xyz/${network?.network_relay_chain_type}/bulkcore1`}
-        isDisabled={!["pokladot", "kusama"].includes(network?.network_relay_chain_type ?? "")}
+        isDisabled={isDisabled}
       />
     </Card>
   );
