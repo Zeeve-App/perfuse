@@ -144,3 +144,10 @@ export const getNodesWithStatus = async (networkId: string): Promise<NodeDbRowWi
     })),
   );
 };
+
+/** to get all tasks in the db */
+export const getAllTasks = async (data: Partial<TaskDbRow>, trx?: knex.Knex.Transaction) => {
+  const db = trx ?? knexHandler;
+
+  return db<TaskDbRow>("tasks").select("*").where(data);
+};

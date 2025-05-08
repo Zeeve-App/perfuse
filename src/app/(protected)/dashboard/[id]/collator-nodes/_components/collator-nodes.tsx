@@ -16,16 +16,27 @@ import NodeTable from "../../_components/node-table";
 import NodeListCard from "../../_components/node-list-card";
 import { NodeDbRowWithStatus } from "@/db-queries";
 import useApi from "@/api-client";
+import { Badge } from "@/lib/components/Badge/Badge";
+import SvgExclamationTriangle from "@/lib/icons/essential/outline/ExclamationTriangle";
+import { useNetworkStore } from "@/store/network";
 
 /** collator nodes component */
 const CollatorNodes = ({ nodes }: { nodes: { collator: NodeDbRowWithStatus[] } }) => {
   const apis = useApi();
   const { data: blockRpcResponse } = apis.blockNumber();
   const blockHeight = parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16);
-
+  const pendinfTasks = useNetworkStore((e) => e.tasks.data);
+  const isDisabled = pendinfTasks?.length > 0;
   return (
     <div className="flex flex-col gap-3 lg:gap-6">
       <RegisterParachainInfo show={blockHeight === 0} />
+      {isDisabled && (
+        <Badge className="col-span-12 flex items-center gap-4 rounded-md p-4 text-lg" variant="red">
+          <SvgExclamationTriangle className="size-10" />
+          These Actions can be performed once existing task:{" "}
+          {pendinfTasks?.[0]?.task_type?.replaceAll("_", " ").toLocaleUpperCase()} is completed.
+        </Badge>
+      )}
       <div className="hidden lg:block">
         <NodeTable nodeType={"collator"} heading="Collator Nodes" nodes={nodes.collator} />
       </div>

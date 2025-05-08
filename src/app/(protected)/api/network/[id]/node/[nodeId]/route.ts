@@ -21,7 +21,6 @@ export async function GET(req: NextRequest, { params }: { params: { id: string; 
     const nodeId = params.nodeId;
 
     const node = await getNodeData({ node_id: nodeId, network_id: networkId });
-
     return sendDataResponse({
       ...node,
       health: await isRpcNodeWorking(node.rpcUrl),

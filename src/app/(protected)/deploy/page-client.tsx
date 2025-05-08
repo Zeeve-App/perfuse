@@ -28,6 +28,7 @@ import SvgExclamationTriangle from "@/lib/icons/essential/outline/ExclamationTri
 import { NetworkDbRow, NodeDbRowWithStatus } from "@/db-queries";
 import { networkEnvType, templateOption } from "@/constants/create-network";
 import { ChainSpecFileType } from "@/types/chain-spec";
+import { useNetworkStore } from "@/store/network";
 
 /** component name for deploy page  to focus */
 const componentNameForDeploy = ["step1", "step2", "step3", "summary"] as const;
@@ -145,11 +146,18 @@ const DeployPage = ({ network, nodes }: { network: NetworkDbRow[]; nodes: NodeDb
   useEffect(() => {
     step1Ref.current?.focus();
   }, []);
-
+  const pendinfTasks = useNetworkStore((e) => e.tasks.data);
+  const isDisabled = pendinfTasks?.length > 0;
   return (
     <Card variant={"grid"} className="gap-0">
       <Card variant={"grid"} className="col-span-12">
-        {deployed && (
+        {deployed && isDisabled ? (
+          <Badge className="col-span-12 flex items-center gap-4 rounded-md p-4 text-lg" variant="red">
+            <SvgExclamationTriangle className="size-10" />
+            This Action can be performed once existing task:{" "}
+            {pendinfTasks?.[0]?.task_type?.replaceAll("_", " ").toLocaleUpperCase()} is completed.
+          </Badge>
+        ) : (
           <Badge className="col-span-12 flex items-center gap-4 rounded-md p-4 text-lg" variant="red">
             <SvgExclamationTriangle className="size-10" />
             Re-deploying a network will remove the existing deployment and initiate a new one.

@@ -36,11 +36,18 @@ type NodeInfo = {
   };
   isLoading: boolean;
 };
+
+type Task = {
+  data: TaskDbRow[];
+  isLoading: boolean;
+};
+
 /** state of the store */
 type State = {
   networkInfo: NetworkInfo;
   registrationInfo: registrationInfo;
   nodeInfo: NodeInfo;
+  tasks: Task;
 };
 
 /** action of the store to change state */
@@ -49,6 +56,7 @@ type Actions = {
   reset: () => void;
   setRegistrationInfo: (registrationInfo: registrationInfo) => void;
   setNodeInfo: (nodeInfo: NodeInfo) => void;
+  setTasks: (tasks: Task) => void;
 };
 
 /** initial state */
@@ -72,6 +80,7 @@ const initialState: State = {
   networkInfo: { data: initialNetwork, isLoading: false },
   registrationInfo: { show: false, isLoading: false },
   nodeInfo: { data: initialNode, isLoading: false },
+  tasks: { data: [], isLoading: false },
 };
 
 /** network store */
@@ -88,6 +97,9 @@ const useNetworkStore = create<State & Actions>((set) => ({
   },
   setNodeInfo: (nodeInfo: NodeInfo) => {
     set({ nodeInfo });
+  },
+  setTasks: (tasks: Task) => {
+    set({ tasks });
   },
 }));
 

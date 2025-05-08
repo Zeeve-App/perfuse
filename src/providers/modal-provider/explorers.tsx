@@ -23,6 +23,9 @@ import useApi from "@/api-client";
 import HTTP_STATUS from "@/constants/http";
 import { useToast } from "@/lib/components/Toast";
 import { ParachainsServiceError } from "@/api-client/types";
+import { Badge } from "@/lib/components/Badge/Badge";
+import SvgExclamationTriangle from "@/lib/icons/essential/outline/ExclamationTriangle";
+import { useNetworkStore } from "@/store/network";
 
 /** explorer modal to list all the explorer */
 const ExplorersModal = () => {
@@ -41,6 +44,12 @@ const ExplorersModal = () => {
   console.log("network", data);
 
   const handleInstall = async (service: "polkadotjs" | "statescan") => {
+    if (isDisabled) {
+      toast("Action acan be performed once existing task is completed", {
+        status: "error",
+      });
+      return;
+    }
     try {
       setLoading(true);
       const payload = {
@@ -76,6 +85,8 @@ const ExplorersModal = () => {
       window.open(serviceLink);
     }
   };
+  const pendinfTasks = useNetworkStore((e) => e.tasks.data);
+  const isDisabled = pendinfTasks?.length > 0;
   return (
     <Modal isOpen={isModalOpen} handleClose={onClose}>
       <ModalOverlay />
@@ -85,6 +96,13 @@ const ExplorersModal = () => {
             <ModalTitle className="col-span-12 text-xl">Explorers</ModalTitle>
             <ModalText className="col-span-12">Please choose a explorer</ModalText>
           </div>
+          {isDisabled && (
+            <Badge className="col-span-12 flex items-center gap-4 rounded-md p-4 text-lg" variant="red">
+              <SvgExclamationTriangle className="size-10" />
+              These Actions can be performed once existing task:{" "}
+              {pendinfTasks?.[0]?.task_type?.replaceAll("_", " ").toLocaleUpperCase()} is completed.
+            </Badge>
+          )}
           <Card variant={"grid-no-pad"} className="col-span-12 items-start justify-start">
             <Card
               variant={"grid-no-pad"}

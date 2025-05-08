@@ -154,7 +154,7 @@ const CollatorAddKey = () => {
                   }}
                   label={{
                     text: "Public Key",
-                    isRequired: true,
+                    // isRequired: true,
                   }}
                 >
                   <Input

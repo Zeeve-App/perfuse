@@ -50,8 +50,10 @@ const Actions = ({
   const { data: blockRpcResponse } = apis.blockNumber();
   /** network store */
   const setNetworkStore = useNetworkStore((e) => e.setNetworkInfo);
+  const setTasks = useNetworkStore((e) => e.setTasks);
 
   const { data: network } = apis.network(networkId);
+  const { data: tasks } = apis.getTasks(networkId);
 
   /** updating network data in store */
   useEffect(() => {
@@ -76,6 +78,12 @@ const Actions = ({
     setNetworkStore,
     task?.task_status,
   ]);
+
+  useEffect(() => {
+        
+      setTasks({ data: tasks?.data.pendingTasks ?? [], isLoading: false });
+    
+  }, [networkId, tasks]);
 
   return (
     <div className="flex flex-row gap-x-4">

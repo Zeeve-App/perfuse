@@ -19,6 +19,7 @@ import useFileApi from "./file";
 import useNetworkApi from "./network";
 import useNodeApi from "./node";
 import useReCreateNetworkApi from "./re-create-network";
+import useGetTaskApi from "./get-task";
 import useUploadApi from "./upload";
 
 /** grouping all the api hooks in one hook */
@@ -34,6 +35,7 @@ const useApi = () => ({
   deploySubquery: useDeploySubquery,
   reCreateNetwork: useReCreateNetworkApi,
   enableService: useEnableServiceApi,
+  getTasks: useGetTaskApi,
 });
 
 export default useApi;
