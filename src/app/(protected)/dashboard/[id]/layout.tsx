@@ -50,8 +50,8 @@ const DashboardLayout: React.FC<{ children: React.ReactNode; params: { id: strin
   }
 
   /** explorer urls */
-  const paraExplorerUrl = `${rpcHttpUrl}/polkadotjs/?rpc=${encodeURIComponent(`${rpcWsUrl}/para-rpc`)}#explorer`;
-  const stateScanUrl = `${rpcHttpUrl}/statescan/`;
+  const paraExplorerUrl = `${rpcHttpUrl}/polkadotjs?rpc=${encodeURIComponent(`${rpcWsUrl}/para-rpc`)}#explorer`;
+  const stateScanUrl = `${rpcHttpUrl}/statescan`;
   const traceUrl = `${`${rpcHttpUrl}/polkadotjs`}`;
   const analyticsUrl = `${`${rpcHttpUrl}/grafana`}`;
 
