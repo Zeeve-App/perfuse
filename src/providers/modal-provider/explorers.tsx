@@ -44,13 +44,13 @@ const ExplorersModal = () => {
   console.log("network", data);
 
   const handleInstall = async (service: "polkadotjs" | "statescan") => {
-    if (isDisabled) {
-      toast("Action acan be performed once existing task is completed", {
-        status: "error",
-      });
-      return;
-    }
     try {
+      if (isDisabled) {
+        toast("Action acan be performed once existing task is completed", {
+          status: "error",
+        });
+        return;
+      }
       setLoading(true);
       const payload = {
         serviceName: service,
