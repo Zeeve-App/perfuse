@@ -179,7 +179,7 @@ const DeploySummary = ({
           node_type: "collator",
           node_address: nodesData[1]?.node_address ?? "",
           node_balance: nodesData[1]?.node_balance ?? 0,
-          node_collator_session_address: nodesData[1]?.node_collator_session_address ?? "",
+          node_collator_session_address: nodesData[0]?.node_collator_session_address ?? "",
         },
         {
           node_name: "collator_2",
@@ -187,7 +187,7 @@ const DeploySummary = ({
           node_type: "collator",
           node_address: nodesData[2]?.node_address ?? "",
           node_balance: nodesData[2]?.node_balance ?? 0,
-          node_collator_session_address: nodesData[2]?.node_collator_session_address ?? "",
+          node_collator_session_address: nodesData[1]?.node_collator_session_address ?? "",
         },
       ],
       networkId: networkData?.network_id ?? "",

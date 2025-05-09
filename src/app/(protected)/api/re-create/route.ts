@@ -98,6 +98,7 @@ export async function POST(req: NextRequest) {
     const taskId = uuidv4();
     const apiKey = formData.prevApiKey ?? crypto.randomBytes(30).toString("hex");
     const polkadotEnabled = formData.network.network_blockchain_explorer_type?.includes("polkadotjs");
+    const statescanEnabled = formData.network.network_blockchain_explorer_type?.includes("statescan");
 
     /** creating knex transaction */
     await knexHandler.transaction(async (trx) => {
@@ -119,6 +120,7 @@ export async function POST(req: NextRequest) {
             network_user_address: formData.network.network_user_address,
             subquery_enabled: false,
             polkadot_active: polkadotEnabled,
+            statescan_active: statescanEnabled,
           },
           trx,
         );
