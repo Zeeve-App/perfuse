@@ -18,7 +18,7 @@ import { useToggle } from "@/hooks";
 
 const BalanceChecker = () => {
   // Custom hook to manage selected account with local storage
-  const { selectedAccount, selectAccount, tokenSymbol, accounts } = useSelectedAccount();
+  const { selectedAccount, selectAccount, tokenSymbol, accounts, initialize, isLoading } = useSelectedAccount();
 
   const {
     isOpen: isAddressDropdownOpen,
@@ -28,7 +28,7 @@ const BalanceChecker = () => {
 
   return (
     <>
-      {tokenSymbol && selectedAccount?.address && (
+      {tokenSymbol && selectedAccount?.address ? (
         <DropdownMenu className="" isOpen={isAddressDropdownOpen} onClose={handleAddressDropdownClose}>
           <DropdownMenuButton as={Button} variant={"text"} onClick={handleAddressDropdownToggle}>
             <KeyValuePair
@@ -49,6 +49,19 @@ const BalanceChecker = () => {
             ))}
           </DropdownMenuList>
         </DropdownMenu>
+      ) : (
+        <Button
+          onClick={() => {
+            initialize();
+          }}
+          // isDisabled={task?.task_status == "completed"}
+          variant={"outline"}
+          colorScheme={"accent"}
+          size={"small"}
+          isLoading={isLoading}
+        >
+          Connect Wallet
+        </Button>
       )}
     </>
   );

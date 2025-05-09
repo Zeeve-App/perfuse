@@ -33,6 +33,7 @@ import useApi from "@/api-client";
 import HyperLink from "@/lib/components/utils/hyper-link";
 import { Typography } from "@/lib/components/Typography";
 import { useSelectedAccount } from "@/lib/components/wallet/use-wallet";
+import { useToast } from "@/lib/components/Toast";
 
 /** file card to show the wasm/genesis file with checksum */
 const FileCard = ({
@@ -102,6 +103,8 @@ const RegisterParachainInfoModal = () => {
 
   const isModalOpen = isOpen && type === "registerParachain";
 
+  const toast = useToast();
+
   const { selectedAccount, relayChainApi } = useSelectedAccount();
 
   const getFileContent = async (name: "wasm" | "genesis") => {
@@ -157,8 +160,12 @@ const RegisterParachainInfoModal = () => {
             unsub(); // Unsubscribe from updates
           }
         });
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("Error during parachain registration:", error);
+      toast("Error during parachain registration", {
+        status: "error",
+        message: error instanceof Error ? error.message : "",
+      });
     }
   }
 
