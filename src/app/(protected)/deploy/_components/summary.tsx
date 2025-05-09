@@ -31,6 +31,7 @@ import { tx } from "@/utils/shared";
 import SvgCheck from "@/lib/icons/essential/outline/Check";
 import { useModalStore } from "@/store/modal";
 import { NetworkDbRow, NodeDbRowWithStatus } from "@/db-queries";
+import { useNetworkStore } from "@/store/network";
 
 /** deploy summary component */
 const DeploySummary = ({
@@ -59,6 +60,9 @@ const DeploySummary = ({
   /** toast hook */
   const toast = useToast();
   const [isloading, setIsLoading] = useState(false);
+
+  const prevNodes = useNetworkStore((e) => e.nodeInfo);
+  const prevApiKey = prevNodes?.data?.apiKey;
 
   const onSubmit = async (data: DeployNetworkValidationSchemaType) => {
     setIsLoading(true);
@@ -147,6 +151,7 @@ const DeploySummary = ({
     };
 
     const rePayload: ReCreatePerfuseApiPayload = {
+      prevApiKey: prevApiKey ?? "",
       network: {
         network_name: networkData?.network_name ?? "",
         network_env: data?.networkEnvironment.value ?? "",

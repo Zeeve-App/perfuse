@@ -22,6 +22,7 @@ import { jobShellExecutorBG } from "@/utils/job-shell-executor";
 import { createTaskHandler } from "@/utils/task-handler";
 
 export interface CreatePerfuseApiPayload {
+  prevApiKey?: string;
   /** network details from user */
   network: {
     /** network/chain name from the user */

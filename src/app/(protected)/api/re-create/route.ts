@@ -23,6 +23,7 @@ import { jobShellExecutorBG } from "@/utils/job-shell-executor";
 import { createTaskHandler } from "@/utils/task-handler";
 
 export interface ReCreatePerfuseApiPayload {
+  prevApiKey?: string;
   /** network details from user */
   network: {
     /** network/chain name from the user */
@@ -95,7 +96,7 @@ export async function POST(req: NextRequest) {
 
     const network_id = uuidv4();
     const taskId = uuidv4();
-    const apiKey = crypto.randomBytes(30).toString("hex");
+    const apiKey = formData.prevApiKey ?? crypto.randomBytes(30).toString("hex");
     const polkadotEnabled = formData.network.network_blockchain_explorer_type?.includes("polkadotjs");
 
     /** creating knex transaction */
