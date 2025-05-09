@@ -49,7 +49,7 @@ export interface ReCreatePerfuseApiPayload {
   nodes: Array<CollatorNodePayload | RPCNodePayload>;
 }
 
-interface CollatorNodePayload {
+export interface CollatorNodePayload {
   /** collator node name */
   node_name: string;
   /** node type */
@@ -63,7 +63,7 @@ interface CollatorNodePayload {
   /** collator session address */
   node_collator_session_address: string;
 }
-interface RPCNodePayload {
+export interface RPCNodePayload {
   /** rpc node name */
   node_name: string;
   /** node type  */

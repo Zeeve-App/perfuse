@@ -31,8 +31,6 @@ import { Spinner } from "@/lib/components/Spinner";
 import SvgArrowUpFromBucket from "@/lib/icons/arrows/outline/ArrowUpFromBucket";
 import { getSessionKey, validateJsonFile, withBasePath } from "@/utils/helpers";
 import { useToast } from "@/lib/components/Toast";
-import { Badge } from "@/lib/components/Badge/Badge";
-import SvgExclamationTriangle from "@/lib/icons/essential/outline/ExclamationTriangle";
 
 /** template and there location in the repo */
 const templatesMap: Record<(typeof templateOption)[number]["value"], string> = {

@@ -11,6 +11,7 @@
 
 "use client";
 import React from "react";
+import { v4 as uuidv4 } from "uuid";
 import RegisterParachainInfo from "../../_components/register-parachain-info";
 import NodeTable from "../../_components/node-table";
 import NodeListCard from "../../_components/node-list-card";
@@ -42,7 +43,7 @@ const CollatorNodes = ({ nodes }: { nodes: { collator: NodeDbRowWithStatus[] } }
       </div>
       <div className="grid gap-4 sm:grid-cols-1 lg:hidden">
         {nodes.collator.map((node, index) => (
-          <NodeListCard key={index} node={node} />
+          <NodeListCard key={uuidv4()?.toString()} node={node} />
         ))}
       </div>
     </div>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * SPDX-License-Identifier: AGPL-3.0-or-later
  * Copyright (C) 2024 [Perfuse]
@@ -65,6 +66,7 @@ const DeploySummary = ({
   const prevApiKey = prevNodes?.data?.apiKey;
 
   const onSubmit = async (data: DeployNetworkValidationSchemaType) => {
+    console.log("data account", data.accounts);
     setIsLoading(true);
     const chainSpec = data.chainSpecFile.contents;
     if (chainSpec.para_id) chainSpec.para_id = data.paraId;
@@ -108,7 +110,6 @@ const DeploySummary = ({
     if (data?.statescanExplorer === "statescan") {
       explorers.push(data.statescanExplorer);
     }
-
     const payload: CreatePerfuseApiPayload = {
       network: {
         network_name: data.chainName,
@@ -149,6 +150,29 @@ const DeploySummary = ({
         },
       ],
     };
+    const newNodes: unknown[] = nodesData?.map((node) => {
+      if (node.node_type == "collator") {
+        return {
+          node_name: node?.node_name,
+          node_rpc_cors: "*",
+          node_type: "collator",
+          node_address: node?.node_address ?? "",
+          node_balance: node?.node_balance ?? 0,
+          node_collator_session_address: node?.node_collator_session_address ?? "",
+        };
+      } else if (node.node_type == "rpc") {
+        return {
+          node_name: node.node_name,
+          node_type: "rpc",
+          node_auth_method: "api_key",
+          node_password: "",
+          node_username: "",
+          node_https_enabled: !!node?.node_https_enabled,
+          node_wss_enabled: !!node?.node_wss_enabled,
+        };
+      }
+    });
+    console.log("new col", newNodes);
 
     const rePayload: ReCreatePerfuseApiPayload = {
       prevApiKey: prevApiKey ?? "",
@@ -163,33 +187,7 @@ const DeploySummary = ({
         network_binary_path: networkData?.network_binary_path ?? "",
         network_user_address: networkData?.network_user_address ?? "",
       },
-      nodes: [
-        {
-          node_name: "rpc-node",
-          node_type: "rpc",
-          node_auth_method: "api_key",
-          node_password: "",
-          node_username: "",
-          node_https_enabled: !!nodesData[0]?.node_https_enabled,
-          node_wss_enabled: !!nodesData[0]?.node_wss_enabled,
-        },
-        {
-          node_name: "collator_1",
-          node_rpc_cors: "*",
-          node_type: "collator",
-          node_address: nodesData[1]?.node_address ?? "",
-          node_balance: nodesData[1]?.node_balance ?? 0,
-          node_collator_session_address: nodesData[0]?.node_collator_session_address ?? "",
-        },
-        {
-          node_name: "collator_2",
-          node_rpc_cors: "*",
-          node_type: "collator",
-          node_address: nodesData[2]?.node_address ?? "",
-          node_balance: nodesData[2]?.node_balance ?? 0,
-          node_collator_session_address: nodesData[1]?.node_collator_session_address ?? "",
-        },
-      ],
+      nodes: [...newNodes] as any,
       networkId: networkData?.network_id ?? "",
     };
 
