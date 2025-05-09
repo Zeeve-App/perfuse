@@ -151,13 +151,14 @@ const DeployPage = ({ network, nodes }: { network: NetworkDbRow[]; nodes: NodeDb
   return (
     <Card variant={"grid"} className="gap-0">
       <Card variant={"grid"} className="col-span-12">
-        {deployed && isDisabled ? (
+        {deployed && isDisabled && (
           <Badge className="col-span-12 flex items-center gap-4 rounded-md p-4 text-lg" variant="red">
             <SvgExclamationTriangle className="size-10" />
             This Action can be performed once existing task:{" "}
             {pendinfTasks?.[0]?.task_type?.replaceAll("_", " ").toLocaleUpperCase()} is completed.
           </Badge>
-        ) : (
+        )}
+        {deployed && !isDisabled && (
           <Badge className="col-span-12 flex items-center gap-4 rounded-md p-4 text-lg" variant="red">
             <SvgExclamationTriangle className="size-10" />
             Re-deploying a network will remove the existing deployment and initiate a new one.
