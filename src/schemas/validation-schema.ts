@@ -62,7 +62,7 @@ export const deployNetworkValidationSchema = yup
       .string()
       .required("Token symbol is required")
       .matches(/^[A-Za-z]+$/, "Token symbol can only contains alphabets, no other character")
-      .max(30)
+      .max(10)
       .min(2),
     chainName: yup
       .string()
@@ -71,7 +71,7 @@ export const deployNetworkValidationSchema = yup
         /^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$/,
         "Chain name can only contains alphanumeric and '-', no other character",
       )
-      .max(30)
+      .max(10)
       .min(2),
 
     paraId: yup

@@ -65,8 +65,17 @@ const DeploySummary = ({
   const prevNodes = useNetworkStore((e) => e.nodeInfo);
   const prevApiKey = prevNodes?.data?.apiKey;
 
+  const pendinfTasks = useNetworkStore((e) => e.tasks.data);
+  const isDisabled = pendinfTasks?.length > 0;
+
   const onSubmit = async (data: DeployNetworkValidationSchemaType) => {
-    console.log("data account", data.accounts);
+    if (isDisabled) {
+      toast(`Retry later`, {
+        message: `Action can be performed once ${pendinfTasks?.[0]?.task_type?.replaceAll("_", " ").toLocaleUpperCase()} is completed`,
+        status: "info",
+      });
+      return;
+    }
     setIsLoading(true);
     const chainSpec = data.chainSpecFile.contents;
     if (chainSpec.para_id) chainSpec.para_id = data.paraId;
@@ -379,6 +388,7 @@ const DeploySummary = ({
             {deployed ? "Re-Deploy" : "Deploy"}
           </Button>
         </form>
+        {formData.formState.isValid}
         <Link rel="stylesheet" href="https://github.com/Zeeve-App/perfuse/tree/main/docs/tutorial" target="_blank">
           <Button className="w-full rounded-md" variant={"outline"} colorScheme="accent">
             Docs
