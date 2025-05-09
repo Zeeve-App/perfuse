@@ -16,7 +16,6 @@ import { sendDataResponse, sendErrorResponse } from "@/app/(protected)/api/_help
 /** api to get all task with network id */
 export async function GET(req: NextRequest, { params }: { params: { id: string; networkId: string } }) {
   try {
-
     const networkId = params.id;
     const payload = { task_associated_network_id: networkId };
 

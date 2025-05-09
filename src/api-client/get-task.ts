@@ -17,7 +17,7 @@ import { TaskDbRow } from "@/db-queries";
 /** interface declaration of network list API response payload */
 interface ResponsePayload {
   success: boolean;
-  data:{ pendingTasks: TaskDbRow[]};
+  data: { pendingTasks: TaskDbRow[] };
 }
 
 /** hook to get the node info of a node */
@@ -25,7 +25,7 @@ const useGetTaskApi = (networkId: string) => {
   const apiEndpoint = withBasePath(`/api/network/${networkId}/get-task`);
   const fetcher = useFetcher();
 
-  const request = useSWR<ResponsePayload, Record<string, string>>( apiEndpoint, fetcher, {
+  const request = useSWR<ResponsePayload, Record<string, string>>(apiEndpoint, fetcher, {
     shouldRetryOnError: false,
   });
 
