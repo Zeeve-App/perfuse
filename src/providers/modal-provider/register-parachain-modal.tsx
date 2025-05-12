@@ -133,40 +133,37 @@ const RegisterParachainInfoModal = () => {
 
   /*   Function to register a parachain */
   async function registerParachain() {
-    try {
-      if (!selectedAccount?.address) throw new Error("No account selected");
-      if (!relayChainApi) throw new Error("No relay chain api found");
-      const injector = await web3FromAddress(selectedAccount?.address);
-
-      console.log(`Using account: ${selectedAccount?.address}`);
-
-      // Step 5: Define parachain registration parameters
-      const paraId = networkInfo.data?.data?.network_chain_spec_file_json.para_id; // Replace with your parachain ID
-      const genesisHead = await blobToHex((await getFileBlob("genesis")).response.data); // Replace with your parachain's genesis head
-      const validationCode = await blobToHex((await getFileBlob("wasm")).response.data); // Replace with your parachain's validation code
-
-      console.log({ genesisHead, validationCode, paraId });
-
-      console.log(Object.keys(relayChainApi.tx.registrar));
-
-      // Step 6: Submit the transaction to register the parachain
-      const unsub = await relayChainApi.tx.registrar
-        .register(paraId, validationCode, genesisHead)
-        .signAndSend(selectedAccount?.address, { signer: injector.signer }, ({ status, events }) => {
-          if (status.isInBlock) {
-            console.log(`Transaction included in block: ${status.asInBlock}`);
-          } else if (status.isFinalized) {
-            console.log(`Transaction finalized in block: ${status.asFinalized}`);
-            unsub(); // Unsubscribe from updates
-          }
-        });
-    } catch (error: unknown) {
-      console.error("Error during parachain registration:", error);
-      toast("Error during parachain registration", {
-        status: "error",
-        message: error instanceof Error ? error.message : "",
-      });
-    }
+    window.open("https://polkadot.js.org/apps/", "_blank");
+    onClose();
+    // try {
+    //   if (!selectedAccount?.address) throw new Error("No account selected");
+    //   if (!relayChainApi) throw new Error("No relay chain api found");
+    //   const injector = await web3FromAddress(selectedAccount?.address);
+    //   console.log(`Using account: ${selectedAccount?.address}`);
+    //   // Step 5: Define parachain registration parameters
+    //   const paraId = networkInfo.data?.data?.network_chain_spec_file_json.para_id; // Replace with your parachain ID
+    //   const genesisHead = await blobToHex((await getFileBlob("genesis")).response.data); // Replace with your parachain's genesis head
+    //   const validationCode = await blobToHex((await getFileBlob("wasm")).response.data); // Replace with your parachain's validation code
+    //   console.log({ genesisHead, validationCode, paraId });
+    //   console.log(Object.keys(relayChainApi.tx.registrar));
+    //   // Step 6: Submit the transaction to register the parachain
+    //   const unsub = await relayChainApi.tx.registrar
+    //     .register(paraId, validationCode, genesisHead)
+    //     .signAndSend(selectedAccount?.address, { signer: injector.signer }, ({ status, events }) => {
+    //       if (status.isInBlock) {
+    //         console.log(`Transaction included in block: ${status.asInBlock}`);
+    //       } else if (status.isFinalized) {
+    //         console.log(`Transaction finalized in block: ${status.asFinalized}`);
+    //         unsub(); // Unsubscribe from updates
+    //       }
+    //     });
+    // } catch (error: unknown) {
+    //   console.error("Error during parachain registration:", error);
+    //   toast("Error during parachain registration", {
+    //     status: "error",
+    //     message: error instanceof Error ? error.message : "",
+    //   });
+    // }
   }
 
   /* Function to register a parachain */

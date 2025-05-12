@@ -80,7 +80,13 @@ const ExplorersModal = () => {
       onClose();
     }
   };
-  const handleClick = async (serviceLink: string) => {
+  const handleClick = async (serviceLink: string, isActive: boolean) => {
+    if (isDisabled && !isActive) {
+      toast("Action acan be performed once existing task is completed", {
+        status: "error",
+      });
+      return;
+    }
     if (serviceLink) {
       window.open(serviceLink);
     }
@@ -132,7 +138,7 @@ const ExplorersModal = () => {
                 onClick={() => {
                   data.explorers?.isSelected.polkadot && !network?.data?.polkadot_active
                     ? handleInstall("polkadotjs")
-                    : handleClick(data.explorers?.polkadotLink || "");
+                    : handleClick(data.explorers?.polkadotLink || "", network?.data?.polkadot_active || false);
                 }}
               />
               {/* {data.explorers?.isSelected.polkadot && (
@@ -171,7 +177,7 @@ const ExplorersModal = () => {
                 onClick={() => {
                   data.explorers?.isSelected.statescan && !network?.data?.statescan_active
                     ? handleInstall("statescan")
-                    : handleClick(data.explorers?.stateScanLink || "");
+                    : handleClick(data.explorers?.stateScanLink || "", network?.data?.polkadot_active || false);
                 }}
               />
             </div>
