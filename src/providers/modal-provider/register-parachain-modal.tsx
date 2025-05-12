@@ -133,7 +133,7 @@ const RegisterParachainInfoModal = () => {
 
   /*   Function to register a parachain */
   async function registerParachain() {
-    window.open("https://polkadot.js.org/apps/", "_blank");
+    window.open("https://polkadot.js.org/apps/#/parachains/parathreads", "_blank");
     onClose();
     // try {
     //   if (!selectedAccount?.address) throw new Error("No account selected");

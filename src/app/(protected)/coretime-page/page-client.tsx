@@ -27,7 +27,7 @@ const CoreTimePageClient = ({ network }: { network?: NetworkDbRow }) => {
       {isDisabled && (
         <Badge className="col-span-12 flex items-center gap-4 rounded-md p-4 text-lg" variant="red">
           <SvgExclamationTriangle className="size-10" />
-          Lastic is not supported
+          The Paseo network is currently not supported by Lastic.
         </Badge>
       )}
 

@@ -115,7 +115,7 @@ const IconCard = (props: IconCardProps) => {
               onClick();
             }}
             isLoading={isLoading}
-            isDisabled={!isSelected}
+            // isDisabled={!isSelected}
           >
             {btnText}
           </Button>

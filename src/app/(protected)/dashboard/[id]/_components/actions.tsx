@@ -11,7 +11,8 @@
 
 "use client";
 import React from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+
 import { useEffect } from "react";
 import { useModalStore } from "@/store/modal";
 import { Button, IconButton } from "@/lib/components/Button";
@@ -55,6 +56,8 @@ const Actions = ({
   const { data: network } = apis.network(networkId);
   const { data: tasks } = apis.getTasks(networkId);
 
+  const router = useRouter();
+
   /** updating network data in store */
   useEffect(() => {
     setNetworkStore({
@@ -88,6 +91,17 @@ const Actions = ({
 
   return (
     <div className="flex flex-row gap-x-4">
+      <Button
+        onClick={() => {
+          router.push("/deploy");
+        }}
+        // isDisabled={task?.task_status == "completed"}
+        variant={"outline"}
+        colorScheme={"accent"}
+        isFullWidth
+      >
+        Re-Deploy
+      </Button>
       <Button
         onClick={() => {
           openModal("explorers", {
