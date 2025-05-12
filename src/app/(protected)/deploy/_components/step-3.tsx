@@ -307,7 +307,6 @@ const DeployStep3 = forwardRef<
                           ...field,
                           onChange: (event) => {
                             const file = event?.target?.files?.[0];
-
                             if (
                               !validateJsonFile(file, formData.setError, formData.clearErrors, "chainSpecFile.name")
                             ) {
@@ -357,10 +356,7 @@ const DeployStep3 = forwardRef<
                           ...field,
                           onChange: async (event) => {
                             const file = event?.target?.files?.[0];
-
-                            if (
-                              !validateBinaryFile(file, formData.setError, formData.clearErrors, "binaryFile.name")
-                            ) {
+                            if (!validateBinaryFile(file, formData.setError, formData.clearErrors, "binaryFile.name")) {
                               toast("Error while Loading binary file", {
                                 message: "Please enter a valid binary file",
                                 status: "error",

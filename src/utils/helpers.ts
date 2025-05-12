@@ -303,5 +303,5 @@ export {
   getSessionKey,
   blobToHex,
   validateJsonFile,
-  validateBinaryFile
+  validateBinaryFile,
 };
