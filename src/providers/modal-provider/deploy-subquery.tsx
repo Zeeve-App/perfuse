@@ -111,7 +111,13 @@ const DeploySubquery = () => {
                   <Typography variant="subtitle">Subql Access Token</Typography>
                   <Input
                     placeholder="Enter Your Subql Access Token"
-                    {...formData.register("subqlAccessToken")}
+                    {...formData.register("subqlAccessToken", {
+                      required: "SubQuery Access Token is required",
+                      pattern: {
+                        value: /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+$/,
+                        message: "Invalid token format",
+                      },
+                    })}
                     inputContainerProps={{ className: "col-span-12" }}
                     type="password"
                     isRequired
