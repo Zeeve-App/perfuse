@@ -29,7 +29,7 @@ import useApi from "@/api-client";
 import { FileUpload } from "@/lib/components/Form/FileUpload";
 import { Spinner } from "@/lib/components/Spinner";
 import SvgArrowUpFromBucket from "@/lib/icons/arrows/outline/ArrowUpFromBucket";
-import { getSessionKey, validateJsonFile, withBasePath } from "@/utils/helpers";
+import { getSessionKey, validateBinaryFile, validateJsonFile, withBasePath } from "@/utils/helpers";
 import { useToast } from "@/lib/components/Toast";
 
 /** template and there location in the repo */
@@ -356,6 +356,17 @@ const DeployStep3 = forwardRef<
                         field={{
                           ...field,
                           onChange: async (event) => {
+                            const file = event?.target?.files?.[0];
+
+                            if (
+                              !validateBinaryFile(file, formData.setError, formData.clearErrors, "binaryFile.name")
+                            ) {
+                              toast("Error while Loading binary file", {
+                                message: "Please enter a valid binary file",
+                                status: "error",
+                              });
+                              return;
+                            }
                             onChange(event);
                             await handleBinaryFile(event);
                             formData.trigger();

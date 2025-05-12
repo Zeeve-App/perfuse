@@ -39,7 +39,10 @@ import { useModalStore } from "@/store/modal";
 
 /** collator add key schema */
 const DeploySubquerySchema = yup.object({
-  subqlAccessToken: yup.string().required("Subql Access Token is required"),
+  subqlAccessToken: yup
+    .string()
+    .matches(/^[A-Za-z0-9]+$/, "Access Token can only be alpha numeric")
+    .required("Subql Access Token is required"),
 });
 
 /** collator add key type */
@@ -48,6 +51,7 @@ export type DeploySubquerySchemaType = yup.InferType<typeof DeploySubquerySchema
 /** collator add key modal component */
 const DeploySubquery = () => {
   const [isLoading, setLoading] = useState(false);
+  const [token, setToken] = useState("");
   const { isOpen, onClose, type, data } = useModalStore();
   const toast = useToast();
   const router = useRouter();
@@ -112,13 +116,7 @@ const DeploySubquery = () => {
                   <Typography variant="subtitle">Subql Access Token</Typography>
                   <Input
                     placeholder="Enter Your Subql Access Token"
-                    {...formData.register("subqlAccessToken", {
-                      required: "SubQuery Access Token is required",
-                      pattern: {
-                        value: tokenPattern,
-                        message: "Token must be alphanumeric or in JWT format (xxx.yyy.zzz)",
-                      },
-                    })}
+                    {...formData.register("subqlAccessToken")}
                     inputContainerProps={{ className: "col-span-12" }}
                     type="password"
                     isRequired

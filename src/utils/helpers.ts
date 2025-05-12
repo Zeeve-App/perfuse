@@ -266,6 +266,28 @@ function validateJsonFile<T extends FieldValues>(
   return true;
 }
 
+function validateBinaryFile<T extends FieldValues>(
+  file: File,
+  setError: UseFormSetError<T>,
+  clearErrors: UseFormClearErrors<T>,
+  fieldName: any,
+): boolean {
+  if (!file) {
+    setError(fieldName, { message: "No file selected" });
+    return false;
+  }
+
+  const isExecutable = file.type === "application/x-executable";
+
+  if (!isExecutable) {
+    setError(fieldName, { message: "Only valid executable files are allowed" });
+    return false;
+  }
+
+  clearErrors(fieldName);
+  return true;
+}
+
 export {
   withBasePath,
   isActive,
@@ -281,4 +303,5 @@ export {
   getSessionKey,
   blobToHex,
   validateJsonFile,
+  validateBinaryFile
 };
