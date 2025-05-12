@@ -90,6 +90,7 @@ const DeploySubquery = () => {
       onClose();
     }
   };
+  const tokenPattern = /^([A-Za-z0-9]+|[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+)$/;
 
   return (
     <Modal isOpen={isModalOpen} handleClose={onClose} shouldBackdropDismiss={false}>
@@ -114,8 +115,8 @@ const DeploySubquery = () => {
                     {...formData.register("subqlAccessToken", {
                       required: "SubQuery Access Token is required",
                       pattern: {
-                        value: /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+$/,
-                        message: "Invalid token format",
+                        value: tokenPattern,
+                        message: "Token must be alphanumeric or in JWT format (xxx.yyy.zzz)",
                       },
                     })}
                     inputContainerProps={{ className: "col-span-12" }}
