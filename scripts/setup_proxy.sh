@@ -85,11 +85,11 @@ server {
         location /${RPC_API_KEY}/grafana {
             proxy_pass http://127.0.0.1:${GRAFANA_PORT};
         }
-        location /${RPC_API_KEY}/polkadotjs/ {
+        location /${RPC_API_KEY}/polkadotjs {
             alias ${JSAPPS_PATH}/;
             try_files \$uri \$uri/ =404;
         }
-        location /${RPC_API_KEY}/statescan/ {
+        location /${RPC_API_KEY}/statescan {
             alias ${STATESCAN_PATH}/;
             #rewrite ^/imgs/(.*)\$ /${RPC_API_KEY}/statescan/imgs/\$1 last;
             try_files \$uri \$uri/ =404;
