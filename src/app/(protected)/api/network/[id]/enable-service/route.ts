@@ -9,10 +9,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { readFile, writeFile } from "fs/promises";
 import { NextRequest } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { sendDataResponse, sendErrorResponse } from "../../../_helpers/response";
-import { addTask, updateNetworkData } from "@/db-queries";
+import { config } from "@/config/config";
+import { addTask, getNetworkData, updateNetworkData } from "@/db-queries";
 import { knexHandler } from "@/db-queries/knexfile";
 import { jobShellExecutorBG } from "@/utils/job-shell-executor";
 /** rest api for deleting network */
@@ -29,7 +31,10 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     const taskId = uuidv4();
     await knexHandler.transaction(async (trx) => {
       try {
-        await updateNetworkData({ [key]: true }, networId, trx);
+        const networkData = await getNetworkData(networId, trx);
+        let explorerList = networkData?.network_blockchain_explorer_type;
+        explorerList += "," + formData.serviceName;
+        await updateNetworkData({ [key]: true, network_blockchain_explorer_type: explorerList }, networId, trx);
         /** adding task in the db */
 
         await addTask(
@@ -45,6 +50,8 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
           },
           trx,
         );
+        const explorerName = formData.serviceName === "polkadotjs" ? "POLKADOT" : "STATESCAN";
+        await updateEnvVariable(config.server.envFilePathForCopy, explorerName, 1);
 
         /** running the script to create the parachain network */
         if (formData.serviceName === "polkadotjs")
@@ -66,4 +73,19 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
       message: "Error while enabling service",
     });
   }
+}
+
+async function updateEnvVariable(filePath: string, key: string, newValue: string | number) {
+  let content = await readFile(filePath, "utf-8");
+
+  const regex = new RegExp(`^${key}=.*$`, "m");
+
+  if (regex.test(content)) {
+    content = content.replace(regex, `${key}=${newValue}`);
+  } else {
+    content += `\n${key}=${newValue}`;
+  }
+
+  await writeFile(filePath, content, "utf-8");
+  console.log(`✅ Updated ${key} in ${filePath}`);
 }
