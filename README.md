@@ -84,6 +84,12 @@ nvm install 20
 sudo apt install make -y
 ```
 
+> ⚠️ **Browser Compatibility Note**
+>
+> Perfuse works best in **Chrome** and **Firefox**.
+> The [Polkadot.js browser extension](https://polkadot.js.org/extension/) is also **only fully supported in Chrome and Firefox**.  
+> Other browsers (like Safari, Edge, or Brave) may not support the Polkadot.js extension properly and could cause issues.
+
 ## Clone repository & change directory
 
 ```bash
