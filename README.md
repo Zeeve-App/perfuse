@@ -15,7 +15,7 @@ Your project will take flight with these basic specs:
 - **Hardware:**
   - **🧠 Processor:** 4 Cores or more
   - **💾 Memory:** 16GB RAM or more
-  - **💽 Storage:** 250GB available disk space or more
+  - **💽 Storage:** 800GB available disk space or more
 
 ---
 
@@ -30,7 +30,7 @@ For the smoothest, most optimal experience, we recommend:
 - **Hardware:**
   - **🧠 Processor:** 8 Cores or more
   - **💾 Memory:** 32GB RAM or more
-  - **💽 Storage:** 800GB available disk space
+  - **💽 Storage:** 1TB available disk space
 
 ---
 
@@ -44,7 +44,7 @@ Your project will take flight with these basic specs:
 
 - **Hardware:**
   - **🧠 Processor:** 8 Cores or more
-  - **💾 Memory:** 16GB RAM or more
+  - **💾 Memory:** 32GB RAM or more
   - **💽 Storage:** 2TB available disk space or more
 
 ---
@@ -59,8 +59,8 @@ For the smoothest, most optimal experience, we recommend:
 
 - **Hardware:**
   - **🧠 Processor:** 8 Cores or more
-  - **💾 Memory:** 32GB RAM or more
-  - **💽 Storage:** 2.5TB available disk space
+  - **💾 Memory:** 64GB RAM or more
+  - **💽 Storage:** 4TB available disk space
 
 ---
 
