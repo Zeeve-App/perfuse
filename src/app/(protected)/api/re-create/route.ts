@@ -114,7 +114,7 @@ export async function POST(req: NextRequest) {
             network_sidecar: formData.network.network_sidecar ? 1 : 0,
             network_chain_spec_file_json: JSON.stringify(formData.network.network_chain_spec_file_json),
             network_relay_chain_version: config.server.relayChainVersion,
-
+            network_blockchain_explorer_type: formData.network.network_blockchain_explorer_type,
             created_at: new Date().toISOString(),
             network_coretime_type: "regionx",
             network_user_address: formData.network.network_user_address,

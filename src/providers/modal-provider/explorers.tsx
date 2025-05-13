@@ -132,11 +132,11 @@ const ExplorersModal = () => {
                 imageSrc={"/assets/images/modals/explorers/polkadot-explorer.svg"}
                 isSelected={data.explorers?.isSelected.polkadot ?? false}
                 btnText={
-                  data.explorers?.isSelected.polkadot && !network?.data?.polkadot_active ? "Click to Install" : "Visit"
+                  !data.explorers?.isSelected.polkadot || !network?.data?.polkadot_active ? "Click to Install" : "Visit"
                 }
                 isLoading={isLoading}
                 onClick={() => {
-                  data.explorers?.isSelected.polkadot && !network?.data?.polkadot_active
+                  !data.explorers?.isSelected.polkadot || !network?.data?.polkadot_active
                     ? handleInstall("polkadotjs")
                     : handleClick(data.explorers?.polkadotLink || "", network?.data?.polkadot_active || false);
                 }}
@@ -169,13 +169,13 @@ const ExplorersModal = () => {
                 imageSrc={"/assets/images/modals/explorers/statescan-explorer.svg"}
                 isSelected={data.explorers?.isSelected.statescan ?? false}
                 btnText={
-                  data.explorers?.isSelected.statescan && !network?.data?.statescan_active
+                  !data.explorers?.isSelected.statescan || !network?.data?.statescan_active
                     ? "Click to Install"
                     : "Visit"
                 }
                 isLoading={isLoading}
                 onClick={() => {
-                  data.explorers?.isSelected.statescan && !network?.data?.statescan_active
+                  !data.explorers?.isSelected.statescan || !network?.data?.statescan_active
                     ? handleInstall("statescan")
                     : handleClick(data.explorers?.stateScanLink || "", network?.data?.polkadot_active || false);
                 }}
