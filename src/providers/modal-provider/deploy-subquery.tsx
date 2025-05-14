@@ -51,7 +51,6 @@ export type DeploySubquerySchemaType = yup.InferType<typeof DeploySubquerySchema
 /** collator add key modal component */
 const DeploySubquery = () => {
   const [isLoading, setLoading] = useState(false);
-  const [token, setToken] = useState("");
   const { isOpen, onClose, type, data } = useModalStore();
   const toast = useToast();
   const router = useRouter();
@@ -71,7 +70,6 @@ const DeploySubquery = () => {
     try {
       if (data.deploySubquery) {
         setLoading(true);
-        console.log(formData);
         apis.deploySubquery(data.deploySubquery?.networkId, formData);
         router.refresh();
       } else {
@@ -94,7 +92,6 @@ const DeploySubquery = () => {
       onClose();
     }
   };
-  const tokenPattern = /^([A-Za-z0-9]+|[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+)$/;
 
   return (
     <Modal isOpen={isModalOpen} handleClose={onClose} shouldBackdropDismiss={false}>

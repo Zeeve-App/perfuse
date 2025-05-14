@@ -87,5 +87,4 @@ async function updateEnvVariable(filePath: string, key: string, newValue: string
   }
 
   await writeFile(filePath, content, "utf-8");
-  console.log(`✅ Updated ${key} in ${filePath}`);
 }

@@ -34,7 +34,6 @@ export async function middleware() {
       },
     });
   }
-  console.log("middleware passs => => =>");
   return NextResponse.next();
 }
 

@@ -95,7 +95,6 @@ export const useSelectedAccount = () => {
     if (!network.data.relayChainType || network.data.relayChainType === "") {
       return;
     }
-    console.log("network info >> ", network);
 
     if (network.data.relayChainType && network.data.relayChainType !== "NA") {
       initialize();
