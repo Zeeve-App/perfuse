@@ -21,7 +21,7 @@ import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from "@/lib/
 import { tx } from "@/utils/shared";
 import { Heading } from "@/lib/components/Heading";
 import { FormField } from "@/lib/components/Form/FormField";
-import { Checkbox, Input, Switch } from "@/lib/components/Form";
+import { Checkbox, Input } from "@/lib/components/Form";
 import { Button } from "@/lib/components/Button";
 import HTTP_STATUS from "@/constants/http";
 import { ChainSpecFileType } from "@/types/chain-spec";
@@ -29,7 +29,7 @@ import useApi from "@/api-client";
 import { FileUpload } from "@/lib/components/Form/FileUpload";
 import { Spinner } from "@/lib/components/Spinner";
 import SvgArrowUpFromBucket from "@/lib/icons/arrows/outline/ArrowUpFromBucket";
-import { getSessionKey, withBasePath } from "@/utils/helpers";
+import { getSessionKey, validateBinaryFile, validateJsonFile, withBasePath } from "@/utils/helpers";
 import { useToast } from "@/lib/components/Toast";
 
 /** template and there location in the repo */
@@ -51,8 +51,9 @@ const DeployStep3 = forwardRef<
     focusOnComponent: (component: DeployStepTypes) => void;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     formData: UseFormReturn<DeployNetworkValidationSchemaType, any, undefined>;
+    deployed: boolean;
   }
->(({ className, formData }, ref) => {
+>(({ className, formData, deployed }, ref) => {
   const [progressValue, setProgressValue] = useState(0);
   const [progressTotal, setProgressTotal] = useState(1);
   const [isBinaryFileUploading, setIsBinaryFileUploading] = useState(false);
@@ -99,7 +100,7 @@ const DeployStep3 = forwardRef<
       formData.setValue("ss58Format", chainSpec.properties?.ss58Format ?? 42);
       formData.setValue("sudoKey", runtimeGenesis?.patch?.sudo?.key ?? "");
       formData.setValue("isSudoKeyRequired", runtimeGenesis?.patch?.sudo?.key ? true : false);
-      formData.setValue("id", formState.chainName + "_" + formState.relayChain.value.toLowerCase());
+      formData.setValue("id", formState.chainName + "_" + formState.relayChain.value?.toLowerCase());
 
       const collatorAddresses = runtimeGenesis?.patch?.balances.balances;
 
@@ -114,8 +115,6 @@ const DeployStep3 = forwardRef<
         balance: parseInt(collatorAddresses?.[1]?.[1].toString() ?? "0"),
         sessionKey: getSessionKey(runtimeGenesis, collatorAddresses?.[1]?.[0].toString() ?? ""),
       });
-
-      console.log(chainSpec);
 
       // setting values from chain spec file
       formData.setValue("chainSpecFile.contents", chainSpec);
@@ -142,14 +141,24 @@ const DeployStep3 = forwardRef<
     if (selectedFile) {
       // set selected chain spec file name
       formData.setValue("chainSpecFile.name", selectedFile.name);
+      console.log("file type ", selectedFile.type);
 
       const reader = new FileReader();
-      reader.onload = (event) => {
-        const content = event.target?.result as string;
-        const chainSpec: ChainSpecFileType = JSON.parse(content);
-        fillValuesWithChainSpecData(chainSpec);
-      };
 
+      reader.onload = (event) => {
+        try {
+          const content = event.target?.result as string;
+
+          // Check if content is valid JSON
+          const chainSpec: ChainSpecFileType = JSON.parse(content);
+
+          // Success: Fill form values from JSON
+          fillValuesWithChainSpecData(chainSpec);
+        } catch (error) {
+          console.error("Invalid JSON file:", error);
+          formData.setError("chainSpecFile.name", { message: "Invalid JSON format" });
+        }
+      };
       reader.readAsText(selectedFile);
     } else {
       /** clear the file input event is undefined */
@@ -234,8 +243,23 @@ const DeployStep3 = forwardRef<
 
   return (
     <div className="col-span-12">
-      <div tabIndex={2} ref={ref} className={tx(className, "bg-theme-foreground rounded-lg")}>
-        <Card variant={"grid-no-pad"} className="col-span-12 gap-0 py-3">
+      {/* {deployed && (
+        <Badge className="col-span-12 mb-3 flex items-center gap-4 rounded-md p-4 text-lg" variant="purple">
+          <SvgExclamationTriangle className="size-10" />
+          You won’t be able to update the chainspecs, and they will remain the same as in the previous deployment. To
+          modify the chainspecs, you’ll need to fully delete the existing network and deploy a new one.
+        </Badge>
+      )} */}
+      <div
+        tabIndex={2}
+        ref={ref}
+        className={tx(
+          className,
+          "bg-theme-foreground rounded-lg",
+          deployed && "opacity-50 pointer-events-none select-none",
+        )}
+      >
+        <Card variant={"grid-no-pad"} className="col-span-12 gap-0 py-3 ">
           <Heading as="h5" className="col-span-12 p-2 px-4">
             Chain Template Selection <span className="text-brand-red">*</span>
           </Heading>
@@ -280,6 +304,16 @@ const DeployStep3 = forwardRef<
                         field={{
                           ...field,
                           onChange: (event) => {
+                            const file = event?.target?.files?.[0];
+                            if (
+                              !validateJsonFile(file, formData.setError, formData.clearErrors, "chainSpecFile.name")
+                            ) {
+                              toast("Error while Loading chain spec file", {
+                                message: "Please enter a valid chain spec file",
+                                status: "error",
+                              });
+                              return;
+                            }
                             onChange(event);
                             handleChainSpecFile(event);
                           },
@@ -319,6 +353,14 @@ const DeployStep3 = forwardRef<
                         field={{
                           ...field,
                           onChange: async (event) => {
+                            const file = event?.target?.files?.[0];
+                            if (!validateBinaryFile(file, formData.setError, formData.clearErrors, "binaryFile.name")) {
+                              toast("Error while Loading binary file", {
+                                message: "Please enter a valid binary file",
+                                status: "error",
+                              });
+                              return;
+                            }
                             onChange(event);
                             await handleBinaryFile(event);
                             formData.trigger();
@@ -451,11 +493,11 @@ const DeployStep3 = forwardRef<
             </AccordionBody>
           </AccordionItem>
         </Accordion>
-        <Accordion className="rounded-none bg-theme-background">
+        <Accordion className="rounded-b-lg bg-theme-background ">
           <AccordionItem>
             <AccordionHeader>Advance Chainspec Config</AccordionHeader>
             <AccordionBody>
-              <Card variant={"grid"} className="lg:gap-4">
+              <Card variant={"grid"} className="rounded-b-lg lg:gap-4">
                 <hr className="col-span-12" />
                 <FormField
                   className="col-span-6"

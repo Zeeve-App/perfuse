@@ -16,6 +16,7 @@ import { Navigation } from "@/lib/components/navigation";
 import { getNetworkData, getNodes, getTask } from "@/db-queries";
 import { config } from "@/config/config";
 import { Badge } from "@/lib/components/Badge/Badge";
+import { isSelected } from "@/constants/create-network";
 
 /** dashboard layout component */
 const DashboardLayout: React.FC<{ children: React.ReactNode; params: { id: string } }> = async ({
@@ -32,6 +33,11 @@ const DashboardLayout: React.FC<{ children: React.ReactNode; params: { id: strin
   /** rpc node details */
   const rpcNode = nodes.filter((e) => e.node_type === "rpc")?.[0];
 
+  const isSelected: isSelected = {
+    polkadot: network?.network_blockchain_explorer_type.includes("polkadotjs") ?? false,
+    statescan: network?.network_blockchain_explorer_type.includes("statescan") ?? false,
+  };
+
   /** creating rpc url for explorer */
   let rpcWsUrl = "";
   let rpcHttpUrl = "";
@@ -44,8 +50,8 @@ const DashboardLayout: React.FC<{ children: React.ReactNode; params: { id: strin
   }
 
   /** explorer urls */
-  const paraExplorerUrl = `${rpcHttpUrl}/polkadotjs/?rpc=${encodeURIComponent(`${rpcWsUrl}/para-rpc`)}#explorer`;
-  const stateScanUrl = `${rpcHttpUrl}/statescan/`;
+  const paraExplorerUrl = `${rpcHttpUrl}/polkadotjs?rpc=${encodeURIComponent(`${rpcWsUrl}/para-rpc`)}#explorer`;
+  const stateScanUrl = `${rpcHttpUrl}/statescan`;
   const traceUrl = `${`${rpcHttpUrl}/polkadotjs`}`;
   const analyticsUrl = `${`${rpcHttpUrl}/grafana`}`;
 
@@ -68,6 +74,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode; params: { id: strin
           network={network}
           task={task}
           explorerUrl={{ paraExplorerUrl, traceUrl, analyticsUrl, stateScanUrl }}
+          isSelected={isSelected}
         />
       </Navigation>
       <TabContainer

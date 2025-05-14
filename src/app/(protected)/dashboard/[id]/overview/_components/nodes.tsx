@@ -19,10 +19,17 @@ import { NodeDbRow } from "@/db-queries";
 import KeyValuePair from "@/lib/components/utils/key-value-pair";
 import { Typography } from "@/lib/components/Typography";
 import { formatEndpoint, toShortString, withBasePath } from "@/utils/helpers";
+import { useNetworkStore } from "@/store/network";
 
 /** nodes component for overview page */
 const Nodes = ({ nodes }: { isLoading: boolean; nodes: (NodeDbRow & { health: boolean })[] }) => {
   console.log(nodes);
+
+  const rpcNode = nodes.filter((e) => e.node_type === "rpc");
+  const apiKey = rpcNode[0]?.node_api_key;
+
+  const setNodekStore = useNetworkStore((e) => e.setNodeInfo);
+  setNodekStore({ data: { apiKey: apiKey || "" }, isLoading: false });
 
   return (
     <div className="col-span-10 flex flex-col gap-3 rounded-lg bg-theme-foreground shadow-brand-shadow lg:col-span-4 lg:gap-6">

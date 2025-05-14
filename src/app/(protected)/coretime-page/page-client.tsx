@@ -9,27 +9,46 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import React from "react";
-import { RegionXCard } from "./_components/regionX";
+import { CoreTimeCard } from "./_components/coreTimeCard";
 import { NetworkDbRow } from "@/db-queries";
 import { Card } from "@/lib/components/Card";
 import { Heading } from "@/lib/components/Heading";
+import { Badge } from "@/lib/components/Badge/Badge";
+import SvgExclamationTriangle from "@/lib/icons/essential/outline/ExclamationTriangle";
 
 /** coreTime page client component */
 const CoreTimePageClient = ({ network }: { network?: NetworkDbRow }) => {
+  const isDisabled = !["pokladot", "kusama"].includes(network?.network_relay_chain_type ?? "");
   return (
     <Card variant={"grid"} className="">
       <Heading as="h4" className="col-span-12">
         CoreTime
       </Heading>
+      {isDisabled && (
+        <Badge className="col-span-12 flex items-center gap-4 rounded-md p-4 text-lg" variant="red">
+          <SvgExclamationTriangle className="size-10" />
+          The Paseo network is currently not supported by Lastic.
+        </Badge>
+      )}
 
-      <RegionXCard
+      <CoreTimeCard
         protocolId={"123"}
         protocolName={"RegionX"}
         className="col-span-12"
         description={
           "RegionX is a project dedicated to developing components for the new Agile Coretime model. The goal of the project is to enable developer teams, researchers, and enthusiasts to start trading, tracking, and analyzing the product Polkadot offers."
         }
-        regionXLink={`https://app.regionx.tech/regions?network=${network?.network_relay_chain_type}`}
+        link={`https://app.regionx.tech/regions?network=${network?.network_relay_chain_type}`}
+      />
+      <CoreTimeCard
+        protocolId={"456"}
+        protocolName={"Lastic"}
+        className="col-span-12"
+        description={
+          "One marketplace for all Blockspace solutions. A protocol-agnostic application that leverages the best features of major networks in order to provide the best service to builders and traders."
+        }
+        link={`https://www.lastic.xyz/${network?.network_relay_chain_type}/bulkcore1`}
+        isDisabled={isDisabled}
       />
     </Card>
   );

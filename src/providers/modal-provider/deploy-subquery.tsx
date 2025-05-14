@@ -10,14 +10,12 @@
  */
 
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { isAddress, mnemonicValidate } from "@polkadot/util-crypto";
-import { useModalStore } from "@/store/modal";
 import { ParachainsServiceError } from "@/api-client/types";
 import { Button } from "@/lib/components/Button";
 import {
@@ -37,10 +35,14 @@ import { Input } from "@/lib/components/Form";
 import { Typography } from "@/lib/components/Typography";
 import { tx } from "@/utils/shared";
 import { SUBQL_ACCESS_TOKEN_URL } from "@/constants/constant";
+import { useModalStore } from "@/store/modal";
 
 /** collator add key schema */
 const DeploySubquerySchema = yup.object({
-  subqlAccessToken: yup.string().required("Subql Access Token is required"),
+  subqlAccessToken: yup
+    .string()
+    .matches(/^[A-Za-z0-9]+$/, "Access Token can only be alpha numeric")
+    .required("Subql Access Token is required"),
 });
 
 /** collator add key type */
@@ -49,6 +51,7 @@ export type DeploySubquerySchemaType = yup.InferType<typeof DeploySubquerySchema
 /** collator add key modal component */
 const DeploySubquery = () => {
   const [isLoading, setLoading] = useState(false);
+  const [token, setToken] = useState("");
   const { isOpen, onClose, type, data } = useModalStore();
   const toast = useToast();
   const router = useRouter();
@@ -91,6 +94,7 @@ const DeploySubquery = () => {
       onClose();
     }
   };
+  const tokenPattern = /^([A-Za-z0-9]+|[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+)$/;
 
   return (
     <Modal isOpen={isModalOpen} handleClose={onClose} shouldBackdropDismiss={false}>

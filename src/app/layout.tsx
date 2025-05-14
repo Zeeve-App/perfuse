@@ -38,8 +38,6 @@ export default function RootLayout({
   const theme = themeFromHeader(header);
 
   if (!token) {
-    console.log(token);
-
     // return redirect("/login");
   }
 

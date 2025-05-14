@@ -11,7 +11,6 @@
 
 "use client";
 import React, { ComponentPropsWithoutRef } from "react";
-
 import Image from "next/image";
 import { capitalizeFirstLetter, withBasePath } from "@/utils/helpers";
 import { Card } from "@/lib/components/Card";
@@ -20,26 +19,30 @@ import { useToggle } from "@/hooks";
 import { Typography } from "@/lib/components/Typography";
 
 /** regionX props */
-interface RegionXCardProps extends ComponentPropsWithoutRef<"div"> {
+interface CoreTimeCardProps extends ComponentPropsWithoutRef<"div"> {
   protocolId: string;
   protocolName: string;
   description: string;
   showDescription?: boolean;
-  regionXLink: string;
+  link: string;
+  isDisabled?: boolean;
 }
 
 /** regionX card for core time page */
-const RegionXCard = (props: RegionXCardProps) => {
-  const { protocolName, description } = props;
+const CoreTimeCard = (props: CoreTimeCardProps) => {
+  const { protocolName, description, className } = props;
   const { isOpen, handleToggle } = useToggle();
 
   return (
-    <Card variant={"grid"} className="col-span-12 items-center justify-between rounded-lg bg-theme-foreground">
+    <Card
+      variant={"grid"}
+      className={`col-span-12 items-center justify-between rounded-lg bg-theme-foreground ${className}`}
+    >
       <div className="col-span-10">
         <div className="flex flex-col items-baseline gap-3">
           <div className="flex gap-3">
             <Image
-              src={withBasePath(`/assets/images/coretime/regionx.png`)}
+              src={withBasePath(`/assets/images/coretime/${protocolName.toLowerCase()}.png`)}
               alt={`${protocolName} Icon`}
               width={25}
               height={25}
@@ -86,8 +89,10 @@ const RegionXCard = (props: RegionXCardProps) => {
         className="col-span-2 w-full"
         variant={"solid"}
         colorScheme={"gradient"}
+        title={props.isDisabled ? "Not supported" : ""}
+        isDisabled={props.isDisabled}
         onClick={() => {
-          window.open(props.regionXLink);
+          window.open(props.link);
         }}
       >
         Visit
@@ -96,6 +101,6 @@ const RegionXCard = (props: RegionXCardProps) => {
   );
 };
 
-RegionXCard.displayName = "RegionX Card";
-export type { RegionXCardProps };
-export { RegionXCard };
+CoreTimeCard.displayName = "CoreTime Card";
+export type { CoreTimeCardProps };
+export { CoreTimeCard };

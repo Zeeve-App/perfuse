@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * SPDX-License-Identifier: AGPL-3.0-or-later
  * Copyright (C) 2024 [Perfuse]
@@ -8,13 +9,14 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import React from "react";
+import React, { useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { CreatePerfuseApiPayload } from "../../api/create/route";
 import { DeployStepTypes } from "../page-client";
+import { ReCreatePerfuseApiPayload } from "../../api/re-create/route";
 import { Card } from "@/lib/components/Card";
 import { DeployNetworkValidationSchemaType } from "@/schemas/validation-schema";
 import { Button } from "@/lib/components/Button";
@@ -28,13 +30,19 @@ import { withBasePath } from "@/utils/helpers";
 import { useToast } from "@/lib/components/Toast";
 import { tx } from "@/utils/shared";
 import SvgCheck from "@/lib/icons/essential/outline/Check";
+import { useModalStore } from "@/store/modal";
+import { NetworkDbRow, NodeDbRowWithStatus } from "@/db-queries";
+import { useNetworkStore } from "@/store/network";
+import { ChainSpecFileType } from "@/types/chain-spec";
 
 /** deploy summary component */
-export default function DeploySummary({
+const DeploySummary = ({
   className,
   formData,
   focusOnComponent,
   deployed,
+  networkData,
+  nodesData,
 }: {
   className: string;
   // ref: RefObject<HTMLDivElement>;
@@ -42,15 +50,34 @@ export default function DeploySummary({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formData: UseFormReturn<DeployNetworkValidationSchemaType, any, undefined>;
   deployed: boolean;
-}) {
+  networkData?: NetworkDbRow;
+  nodesData: NodeDbRowWithStatus[];
+}) => {
   const formWatchState = formData.watch();
   const router = useRouter();
   const apis = useApi();
+  /** modal hook */
+  const { openModal } = useModalStore();
 
   /** toast hook */
   const toast = useToast();
+  const [isloading, setIsLoading] = useState(false);
+
+  const prevNodes = useNetworkStore((e) => e.nodeInfo);
+  const prevApiKey = prevNodes?.data?.apiKey;
+
+  const pendinfTasks = useNetworkStore((e) => e.tasks.data);
+  const isDisabled = pendinfTasks?.length > 0;
 
   const onSubmit = async (data: DeployNetworkValidationSchemaType) => {
+    if (isDisabled) {
+      toast(`Retry later`, {
+        message: `Action can be performed once ${pendinfTasks?.[0]?.task_type?.replaceAll("_", " ").toLocaleUpperCase()} is completed`,
+        status: "info",
+      });
+      return;
+    }
+    setIsLoading(true);
     const chainSpec = data.chainSpecFile.contents;
     if (chainSpec.para_id) chainSpec.para_id = data.paraId;
     if (chainSpec.properties?.tokenDecimals) chainSpec.properties.tokenDecimals = data.decimalValue;
@@ -61,7 +88,7 @@ export default function DeploySummary({
       chainSpec.genesis.runtimeGenesis.patch.parachainInfo.parachainId = data.paraId;
     if (chainSpec.properties.ss58Format) chainSpec.properties.ss58Format = data.ss58Format;
     chainSpec.name = data.chainName;
-    chainSpec.relay_chain = data.relayChain.value.toLowerCase();
+    chainSpec.relay_chain = data.relayChain.value?.toLowerCase();
     const runtimeGenesis = chainSpec.genesis.runtimeGenesis;
 
     runtimeGenesis.patch.balances.balances =
@@ -93,7 +120,6 @@ export default function DeploySummary({
     if (data?.statescanExplorer === "statescan") {
       explorers.push(data.statescanExplorer);
     }
-
     const payload: CreatePerfuseApiPayload = {
       network: {
         network_name: data.chainName,
@@ -134,16 +160,65 @@ export default function DeploySummary({
         },
       ],
     };
+    const newNodes: unknown[] = nodesData?.map((node) => {
+      if (node.node_type == "collator") {
+        return {
+          node_name: node?.node_name,
+          node_rpc_cors: "*",
+          node_type: "collator",
+          node_address: node?.node_address ?? "",
+          node_balance: node?.node_balance ?? 0,
+          node_collator_session_address: node?.node_collator_session_address ?? "",
+        };
+      } else if (node.node_type == "rpc") {
+        return {
+          node_name: node.node_name,
+          node_type: "rpc",
+          node_auth_method: "api_key",
+          node_password: "",
+          node_username: "",
+          node_https_enabled: !!node?.node_https_enabled,
+          node_wss_enabled: !!node?.node_wss_enabled,
+        };
+      }
+    });
+    const rePayload: ReCreatePerfuseApiPayload = {
+      prevApiKey: prevApiKey ?? "",
+      network: {
+        network_name: networkData?.network_name ?? "",
+        network_env: data?.networkEnvironment.value ?? "",
+        network_template: networkData?.network_template ?? "",
+        network_relay_chain_type: data?.relayChain.value ?? "",
+        network_sidecar: networkData?.network_sidecar === 1 ? 1 : 0,
+        network_blockchain_explorer_type: networkData?.network_blockchain_explorer_type ?? "",
+        network_chain_spec_file_json: JSON.parse(
+          networkData?.network_chain_spec_file_json ?? "{}",
+        ) as ChainSpecFileType,
+        network_binary_path: networkData?.network_binary_path ?? "",
+        network_user_address: networkData?.network_user_address ?? "",
+      },
+      nodes: [...newNodes] as any,
+      networkId: networkData?.network_id ?? "",
+    };
 
-    const response = await apis.createNetwork(payload);
-
-    if (response.status === HTTP_STATUS.OK && response.data.success) {
-      toast("Network created", {
-        message: "Network creation successfully",
-        status: "success",
+    if (deployed) {
+      openModal("reDeployNetwork", {
+        reDeployNetwork: { payLoad: rePayload },
       });
-      router.push("/dashboard/" + response.data?.data?.network_id);
+      setIsLoading(false);
+    } else {
+      const response = await apis.createNetwork(payload);
+
+      if (response.status === HTTP_STATUS.OK && response.data.success) {
+        toast("Network created", {
+          message: "Network creation is successful.",
+          status: "success",
+        });
+        router.push("/dashboard/" + response.data?.data?.network_id);
+      }
+      setIsLoading(false);
     }
+    setIsLoading(false);
   };
   return (
     <Card tabIndex={3} className={className}>
@@ -298,25 +373,25 @@ export default function DeploySummary({
             )}
           </div>
         ) : (
-          <>
-            <Image
-              src={withBasePath("/assets/images/create/summary.svg")}
-              alt="parachains-logo"
-              width={400}
-              height={300}
-            />
-          </>
+          <Image
+            src={withBasePath("/assets/images/create/summary.svg")}
+            alt="parachains-logo"
+            width={400}
+            height={300}
+          />
         )}
         <form action="" className="" onSubmit={formData.handleSubmit(onSubmit)}>
           <Button
             className="w-full rounded-md"
             colorScheme="gradient"
             type="submit"
-            isDisabled={!formData.formState.isValid || deployed}
+            isDisabled={!formData.formState.isValid}
+            isLoading={isloading}
           >
-            Deploy
+            {deployed ? "Re-Deploy" : "Deploy"}
           </Button>
         </form>
+        {formData.formState.isValid}
         <Link rel="stylesheet" href="https://github.com/Zeeve-App/perfuse/tree/main/docs/tutorial" target="_blank">
           <Button className="w-full rounded-md" variant={"outline"} colorScheme="accent">
             Docs
@@ -325,4 +400,6 @@ export default function DeploySummary({
       </div>
     </Card>
   );
-}
+};
+
+export default DeploySummary;

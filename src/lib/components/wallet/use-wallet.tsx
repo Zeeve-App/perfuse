@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 import { web3Accounts, web3Enable } from "@polkadot/extension-dapp";
 import { ApiPromise, WsProvider } from "@polkadot/api";
+import { useToast } from "../Toast";
 import { useNetworkStore } from "@/store/network";
 import { relayChainRpc } from "@/constants/constant";
 
@@ -23,6 +24,8 @@ export const useSelectedAccount = () => {
   const [tokenSymbol, setTokenSymbol] = useState<string | null>(null);
   const [relayChainApi, setRelayChainApi] = useState<ApiPromise | null>();
   const network = useNetworkStore((e) => e.networkInfo);
+  const [isLoading, setIsLoading] = useState(false);
+  const toast = useToast();
 
   useEffect(() => {
     // Load the selected account from local storage on mount
@@ -35,55 +38,68 @@ export const useSelectedAccount = () => {
     }
   }, [accounts]);
 
+  const initialize = async () => {
+    setIsLoading(true);
+    // Enable Polkadot extension
+    const extensions = await web3Enable("YourApp");
+    if (extensions.length === 0) {
+      console.log("No extension found");
+      toast("No Polkadot.js extension found", {
+        // duration: 5000,
+        status: "error",
+        message: "No Polkadot.js extension found, Please install Polkadot.js extension in your browser",
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    // Fetch accounts from the extension
+    const allAccounts = await web3Accounts();
+
+    // Connect to Polkadot
+    let provider = new WsProvider("wss://rpc.polkadot.io");
+
+    if (network.data && network.data.relayChainType)
+      provider = new WsProvider(
+        Object.keys(relayChainRpc).includes(network.data.relayChainType)
+          ? relayChainRpc[network.data.relayChainType as keyof typeof relayChainRpc]
+          : "wss://rpc.polkadot.io",
+      ); // Change to your network if needed
+
+    const endpoint = provider.endpoint;
+    const api = await ApiPromise.create({ provider });
+    setRelayChainApi(api);
+
+    // Set the currency symbol from the chain registry
+    const symbol = api.registry.chainTokens[0];
+    console.log("endpoint , symbol", endpoint, " -- ", symbol);
+    setTokenSymbol(symbol);
+
+    // Get account balances and store them
+    const accs = await Promise.all(
+      allAccounts.map(async (e) => {
+        const data = await api.query.system.account(e.address);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const d = data.toJSON() as any;
+        return {
+          ...e,
+          balance: (d.data.free / 10 ** 10).toString(),
+        };
+      }),
+    );
+    setAccounts(accs);
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    console.log(network);
+    if (!network.data.relayChainType || network.data.relayChainType === "") {
+      return;
+    }
+    console.log("network info >> ", network);
 
-    const initialize = async () => {
-      // Enable Polkadot extension
-      const extensions = await web3Enable("YourApp");
-      if (extensions.length === 0) {
-        console.log("No extension found");
-        return;
-      }
-
-      // Fetch accounts from the extension
-      const allAccounts = await web3Accounts();
-
-      // Connect to Polkadot
-      let provider = new WsProvider("wss://rpc.polkadot.io");
-      if (network.data?.relayChainType)
-        provider = new WsProvider(
-          Object.keys(relayChainRpc).includes(network.data.relayChainType ?? "")
-            ? relayChainRpc[network.data.relayChainType as keyof typeof relayChainRpc]
-            : "wss://rpc.polkadot.io",
-        ); // Change to your network if needed
-
-      console.log("endpoint", provider.endpoint);
-
-      const api = await ApiPromise.create({ provider });
-
-      setRelayChainApi(api);
-
-      // Set the currency symbol from the chain registry
-      const symbol = api.registry.chainTokens[0];
-      setTokenSymbol(symbol);
-
-      // Get account balances and store them
-      const accs = await Promise.all(
-        allAccounts.map(async (e) => {
-          const data = await api.query.system.account(e.address);
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const d = data.toJSON() as any;
-          return {
-            ...e,
-            balance: d.data.free,
-          };
-        }),
-      );
-      setAccounts(accs);
-    };
-
-    initialize();
+    if (network.data.relayChainType && network.data.relayChainType !== "NA") {
+      initialize();
+    }
   }, [network]);
 
   // Save selected account to local storage whenever it changes
@@ -98,5 +114,7 @@ export const useSelectedAccount = () => {
     tokenSymbol,
     accounts,
     relayChainApi,
+    initialize,
+    isLoading,
   };
 };

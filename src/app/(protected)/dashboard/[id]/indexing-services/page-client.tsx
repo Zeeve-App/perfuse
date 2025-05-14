@@ -12,21 +12,54 @@
 "use client";
 import React from "react";
 import { IndexingServiceCard } from "./_components/indexing-service-card";
-import { NetworkDbRow } from "@/db-queries";
 import { Card } from "@/lib/components/Card";
 import { useModalStore } from "@/store/modal";
+import { useNetworkStore } from "@/store/network";
+import { Badge } from "@/lib/components/Badge/Badge";
+import SvgExclamationTriangle from "@/lib/icons/essential/outline/ExclamationTriangle";
+
+import { useToast } from "@/lib/components/Toast";
 
 /** coreTime page client component */
 const IndexingServiceComponent = ({ networkId }: { networkId: string }) => {
   const { openModal } = useModalStore();
+  const toast = useToast();
+  const networkData = useNetworkStore().networkInfo.data;
+  const nodeData = useNetworkStore().nodeInfo.data;
+  const btnText = networkData.subQueryEnabled ? "Visit" : "Deploy";
+  const apiKey = nodeData.apiKey;
+  const handleSubQueryBtn = () => {
+    if (networkData.subQueryEnabled) {
+      const host = window.location.host;
+      window.open(`${host}/${apiKey}/subql`, "_blank");
+    } else {
+      if (isDisabled) {
+        toast(`Retry later`, {
+          message: `Action can be performed once ${pendinfTasks?.[0]?.task_type?.replaceAll("_", " ").toLocaleUpperCase()} is completed`,
+          status: "info",
+        });
+        return;
+      }
+      openModal("deploySubquery", { deploySubquery: { networkId: networkId ?? "" } });
+    }
+  };
+  const pendinfTasks = useNetworkStore((e) => e.tasks.data);
+  const isDisabled = pendinfTasks?.length > 0;
   return (
     <Card variant={"grid-no-pad"} className="items-start">
+      {/* {isDisabled && (
+        <Badge className="col-span-12 flex items-center gap-4 rounded-md p-4 text-lg" variant="red">
+          <SvgExclamationTriangle className="size-10" />
+          These Actions can be performed once existing task:{" "}
+          {pendinfTasks?.[0]?.task_type?.replaceAll("_", " ").toLocaleUpperCase()} is completed.
+        </Badge>
+      )} */}
       <IndexingServiceCard
         protocolId={"123"}
         protocolName={"Traceye"}
         className="col-span-12 md:col-span-6 lg:col-span-3 "
         description={
-          "Traceye combines its most reliable enterprise-grade infrastructure with The Graph’s data  indexing protocol to provide an easy, predictable, and smooth experience for using subgraphs and subquery."
+          "Traceye combines  its most reliable enterprise-grade infrastructure with The Graph’s data  indexing protocol to provide an easy, predictable, and smooth experience for using subgraphs and subquery."
         }
         serviceLink={`https://app.traceye.io`}
         docLink={`https://github.com/Zeeve-App/perfuse/blob/main/docs/tutorial/indexing-service.md`}
@@ -40,9 +73,9 @@ const IndexingServiceComponent = ({ networkId }: { networkId: string }) => {
         docLink={`https://docs.zeeve.io/traceye/shared-indexing/hosted-subquery`}
         imageSrc={"/assets/images/indexing-service/subquery-logo.png"}
         onPrimaryClick={() => {
-          openModal("deploySubquery", { deploySubquery: { networkId: networkId ?? "" } });
+          handleSubQueryBtn();
         }}
-        primaryButton={"Deploy"}
+        primaryButton={btnText}
       />
     </Card>
   );

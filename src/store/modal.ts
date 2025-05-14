@@ -11,6 +11,8 @@
 
 import { create } from "zustand";
 import { NodeDbRow } from "@/db-queries";
+import { isSelected } from "@/constants/create-network";
+import { ReCreatePerfuseApiPayload } from "@/app/(protected)/api/re-create/route";
 
 /** modal types, based on the type modal will be visible */
 type ModalType =
@@ -20,7 +22,8 @@ type ModalType =
   | "nodeDetails"
   | "addKey"
   | "explorers"
-  | "deploySubquery";
+  | "deploySubquery"
+  | "reDeployNetwork";
 
 /** modal data for each modal type */
 type ModalData = {
@@ -31,6 +34,7 @@ type ModalData = {
     networkName: string;
     networkId: string;
   };
+  reDeployNetwork?: { payLoad: ReCreatePerfuseApiPayload };
   registerParachain?: {
     networkId: string;
   };
@@ -49,6 +53,7 @@ type ModalData = {
     polkadotLink: string;
     stateScanLink: string;
     traceHawkLink: string;
+    isSelected: isSelected;
   };
   deploySubquery?: {
     networkId: string;

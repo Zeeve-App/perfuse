@@ -11,7 +11,8 @@
 
 "use client";
 import React from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+
 import { useEffect } from "react";
 import { useModalStore } from "@/store/modal";
 import { Button, IconButton } from "@/lib/components/Button";
@@ -20,17 +21,25 @@ import SvgTrash from "@/lib/icons/essential/outline/Trash";
 import { useNetworkStore } from "@/store/network";
 import { NetworkDbRow, NodeDbRow, TaskDbRow } from "@/db-queries";
 import useApi from "@/api-client";
+import { isSelected } from "@/constants/create-network";
 
 /** network action component e.g: delete, explorer and monitor */
 const Actions = ({
   // network,
   task,
   explorerUrl: { paraExplorerUrl, analyticsUrl, stateScanUrl },
+  isSelected,
 }: {
   network?: NetworkDbRow;
   task?: TaskDbRow;
   nodes?: NodeDbRow[];
-  explorerUrl: { paraExplorerUrl: string; traceUrl: string; analyticsUrl: string; stateScanUrl: string };
+  explorerUrl: {
+    paraExplorerUrl: string;
+    traceUrl: string;
+    analyticsUrl: string;
+    stateScanUrl: string;
+  };
+  isSelected: isSelected;
 }) => {
   /** getting params from the url */
   const params = useParams();
@@ -42,8 +51,12 @@ const Actions = ({
   const { data: blockRpcResponse } = apis.blockNumber();
   /** network store */
   const setNetworkStore = useNetworkStore((e) => e.setNetworkInfo);
+  const setTasks = useNetworkStore((e) => e.setTasks);
 
   const { data: network } = apis.network(networkId);
+  const { data: tasks } = apis.getTasks(networkId);
+
+  const router = useRouter();
 
   /** updating network data in store */
   useEffect(() => {
@@ -54,6 +67,9 @@ const Actions = ({
         relayChainType: network?.data?.network_relay_chain_type ?? "NA",
         networkStatus: task?.task_status,
         blockHeight: parseInt(blockRpcResponse?.result.block.header.number ?? "0", 16),
+        subQueryEnabled: network?.data?.subquery_enabled || false,
+        polkadotActive: network?.data?.polkadot_active || false,
+        statescanActive: network?.data?.statescan_active || false,
       },
       isLoading: false,
     });
@@ -61,13 +77,31 @@ const Actions = ({
     blockRpcResponse,
     network?.data?.network_name,
     network?.data?.network_relay_chain_type,
+    network?.data?.polkadot_active,
+    network?.data?.statescan_active,
+    network?.data?.subquery_enabled,
     networkId,
     setNetworkStore,
     task?.task_status,
   ]);
 
+  useEffect(() => {
+    setTasks({ data: tasks?.data.pendingTasks ?? [], isLoading: false });
+  }, [tasks]);
+
   return (
     <div className="flex flex-row gap-x-4">
+      <Button
+        onClick={() => {
+          router.push("/deploy");
+        }}
+        // isDisabled={task?.task_status == "completed"}
+        variant={"outline"}
+        colorScheme={"accent"}
+        isFullWidth
+      >
+        Re-Deploy
+      </Button>
       <Button
         onClick={() => {
           openModal("explorers", {
@@ -75,10 +109,11 @@ const Actions = ({
               polkadotLink: paraExplorerUrl,
               stateScanLink: stateScanUrl,
               traceHawkLink: "",
+              isSelected,
             },
           });
         }}
-        isDisabled={task?.task_status !== "completed"}
+        // isDisabled={task?.task_status == "completed"}
         variant={"outline"}
         colorScheme={"accent"}
       >

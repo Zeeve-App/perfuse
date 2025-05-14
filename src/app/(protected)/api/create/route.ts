@@ -22,6 +22,7 @@ import { jobShellExecutorBG } from "@/utils/job-shell-executor";
 import { createTaskHandler } from "@/utils/task-handler";
 
 export interface CreatePerfuseApiPayload {
+  prevApiKey?: string;
   /** network details from user */
   network: {
     /** network/chain name from the user */
@@ -108,6 +109,10 @@ export async function POST(req: NextRequest) {
             created_at: new Date().toISOString(),
             network_coretime_type: "regionx",
             network_user_address: formData.network.network_user_address,
+            subquery_enabled: false,
+            network_blockchain_explorer_type: formData.network.network_blockchain_explorer_type,
+            polkadot_active: formData.network.network_blockchain_explorer_type?.includes("polkadotjs") ?? false,
+            statescan_active: formData.network.network_blockchain_explorer_type?.includes("statescan") ?? false,
           },
           trx,
         );

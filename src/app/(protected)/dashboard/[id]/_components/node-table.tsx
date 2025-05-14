@@ -26,11 +26,14 @@ import { NodeDbRowWithStatus } from "@/db-queries";
 import SvgInfoCircle from "@/lib/icons/essential/outline/InfoCircle";
 import { Typography } from "@/lib/components/Typography";
 import SvgKey from "@/lib/icons/security/outline/Key";
+import { useNetworkStore } from "@/store/network";
 
 /** node table action column component */
 export const NodeTableRowActions = ({ node }: { node: NodeDbRowWithStatus }) => {
   const { openModal } = useModalStore();
   const params = useParams();
+  const pendinfTasks = useNetworkStore((e) => e.tasks.data);
+  const isDisabled = pendinfTasks?.length > 0;
   return (
     <div className="flex gap-1 lg:flex-row">
       {node.node_type === "collator" && node.node_collator_seed_added !== 1 && (
@@ -38,6 +41,7 @@ export const NodeTableRowActions = ({ node }: { node: NodeDbRowWithStatus }) => 
           <IconButton
             colorScheme="primary"
             variant={"text"}
+            isDisabled={isDisabled}
             onClick={() => {
               openModal("addKey", {
                 addKey: {

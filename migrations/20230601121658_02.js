@@ -26,7 +26,6 @@ exports.up = async function (knex) {
         ALTER TABLE nodes 
         ADD COLUMN node_collator_session_address TEXT;
        `);
-
   } catch (error) {
     console.log(error);
   }

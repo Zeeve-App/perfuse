@@ -10,6 +10,7 @@
  */
 
 import React from "react";
+import Image from "next/image";
 import { tx } from "@/utils/shared";
 
 /** header logo props */
@@ -27,7 +28,7 @@ const HeaderLogo: React.FC<HeaderLogoProps> = (props) => {
 
   return (
     <a className={tx("flex shrink-0 flex-row items-center gap-x-2", className)} href={logoHref}>
-      <img src={logoImgSrc} alt={logoImgAlt} className={tx("h-14 w-14", logoImgClassName)} />
+      <Image src={logoImgSrc} alt={logoImgAlt} className={tx(logoImgClassName)} height={56} width={56} />
     </a>
   );
 };

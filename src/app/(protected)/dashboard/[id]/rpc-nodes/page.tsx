@@ -12,7 +12,7 @@
 import React from "react";
 import { Metadata } from "next";
 import RpcNodes from "./_components/my-nodes";
-import { getNodes, getNodesWithStatus } from "@/db-queries";
+import { getNodesWithStatus } from "@/db-queries";
 
 /** rpc node metadata */
 export const metadata: Metadata = {

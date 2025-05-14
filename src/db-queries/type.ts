@@ -36,6 +36,11 @@ interface NetworkDbRow {
   network_user_address: string;
   /** Created at timestamp in ISO format */
   created_at: string;
+  /** subquery enabled */
+  subquery_enabled: boolean;
+  polkadot_active?: boolean;
+  subquery_active?: boolean;
+  statescan_active?: boolean;
 }
 
 interface NodeDbRow {
@@ -85,7 +90,8 @@ interface TaskDbRow {
     | "node_provision"
     | "delete_node"
     | "delete_infra"
-    | "subquery_deployment";
+    | "subquery_deployment"
+    | "explorer_deployment";
   /** Task execution state */
   task_status: "pending" | "inprogress" | "completed" | "failed";
   /** Task associated network ID */

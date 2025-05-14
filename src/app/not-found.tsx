@@ -13,8 +13,6 @@ export default function Home() {
   const cookie = parseCookie(rawCookie ?? "");
   const token = cookie.get("accessToken");
   if (!token) {
-    console.log(token);
-
     return redirect("/login");
   }
   return (
@@ -23,7 +21,7 @@ export default function Home() {
         <div className="w-1/2 ">
           <div className="flex flex-col justify-between gap-3">
             <Typography className="" variant="title">
-              Error 404: Page Not Found lol
+              Error 404: Page Not Found
             </Typography>
             <Typography variant="paragraph">
               The resource you’re trying to access is unavailable. This may be due to a broken link or an incorrect URL.

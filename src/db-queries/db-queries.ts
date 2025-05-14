@@ -43,6 +43,20 @@ export const getNodeData = async (data: Partial<NodeDbRow>, trx?: knex.Knex.Tran
   return { ...node, rpcUrl };
 };
 
+/** to get node data from db */
+export const getNodeDataAndSubQueryStatus = async (data: Partial<NodeDbRow>, trx?: knex.Knex.Transaction) => {
+  const db = trx ?? knexHandler;
+
+  const node = await db<NodeDbRow>("nodes").select("*").where(data).first();
+  const network = await db<NetworkDbRow>("networks").select("*").where({ network_id: data["network_id"] }).first();
+  let rpcUrl = "http://localhost:9010";
+  if (node?.node_type === "collator") {
+    rpcUrl = node.node_name.endsWith("1") ? `http://localhost:9008` : `http://localhost:9009`;
+  }
+
+  return { ...node, rpcUrl, subqueryEnabled: network?.subquery_enabled };
+};
+
 /** to update node data from db */
 export const updateNodeData = async (data: Partial<NodeDbRow>, trx?: knex.Knex.Transaction) => {
   const db = trx ?? knexHandler;
@@ -84,6 +98,13 @@ export const getNetworkData = async (networkId?: string, trx?: knex.Knex.Transac
   return db<NetworkDbRow>("networks").select("*").where({ network_id: networkId }).first();
 };
 
+/** update the network */
+export const updateNetworkData = (data: Partial<NetworkDbRow>, networkId: string, trx?: knex.Knex.Transaction) => {
+  const db = trx ?? knexHandler;
+
+  return db<NetworkDbRow>("networks").update(data).where("network_id", networkId);
+};
+
 /** to delete the network from db */
 export const deleteNetwork = (networkId: string, trx?: knex.Knex.Transaction) => {
   const db = trx ?? knexHandler;
@@ -122,4 +143,11 @@ export const getNodesWithStatus = async (networkId: string): Promise<NodeDbRowWi
       health: await isRpcNodeWorking(e.rpcUrl),
     })),
   );
+};
+
+/** to get all tasks in the db */
+export const getAllTasks = async (data: Partial<TaskDbRow>, trx?: knex.Knex.Transaction) => {
+  const db = trx ?? knexHandler;
+
+  return db<TaskDbRow>("tasks").select("*").where(data);
 };

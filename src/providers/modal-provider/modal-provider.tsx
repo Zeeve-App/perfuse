@@ -17,6 +17,7 @@ import NodeDetailsModal from "./node-details-modal";
 import CollatorAddKey from "./collator-add-key";
 import ExplorersModal from "./explorers";
 import DeploySubquery from "./deploy-subquery";
+import ReDeployNetworkModal from "./redeploy-network-modal";
 
 /** modal provider */
 const ModalProvider = () => {
@@ -29,6 +30,7 @@ const ModalProvider = () => {
       <CollatorAddKey />
       <ExplorersModal />
       <DeploySubquery />
+      <ReDeployNetworkModal />
     </>
   );
 };

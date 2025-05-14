@@ -49,8 +49,6 @@ export async function POST(req: NextRequest, { params }: { params: { id: string;
     );
 
     await updateNodeData({ node_id: nodeId, node_collator_seed_added: 1 });
-    console.log(response.data); // Handle the response data
-
     return sendDataResponse({
       node: node,
     });

@@ -113,11 +113,12 @@ pm2 start npm --name "perfuse" -- start -- -H 0.0.0.0
 ```
 
 ## Login credentials
-Once  the server is running, access it at http://localhost:3000/ .
+
+Once the server is running, access it at http://localhost:3000/ .
 You will be directed to a login page. To proceed, enter the following credentials:
 
 - **Email**: *perfuse@perfuse.io*
-- **Password**: *perfuse@123*
+- **Password**: _perfuse@123_
 
 ## License
 

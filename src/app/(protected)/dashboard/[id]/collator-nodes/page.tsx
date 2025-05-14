@@ -12,7 +12,7 @@
 import React from "react";
 import { Metadata } from "next";
 import CollatorNodes from "./_components/collator-nodes";
-import { getNodes, getNodesWithStatus } from "@/db-queries";
+import { getNodesWithStatus } from "@/db-queries";
 
 /** collator nodes page metadata */
 export const metadata: Metadata = {

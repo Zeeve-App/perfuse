@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * SPDX-License-Identifier: AGPL-3.0-or-later
  * Copyright (C) 2024 [Perfuse]
@@ -10,9 +11,9 @@
  */
 
 import { format, parseISO, intervalToDuration } from "date-fns";
+import { FieldValues, UseFormSetError, UseFormClearErrors } from "react-hook-form";
 import { ChainSpecFileType } from "@/types/chain-spec";
 import { NodeDbRow } from "@/db-queries";
-
 /**
  * to show standard formatted time and make it common throughout the application
  * @param date date object or ISO string
@@ -242,6 +243,51 @@ function getSessionKey(
   return typeof aura?.[2] !== "string" ? aura?.[2]?.aura ?? "" : "";
 }
 
+function validateJsonFile<T extends FieldValues>(
+  file: File,
+  setError: UseFormSetError<T>,
+  clearErrors: UseFormClearErrors<T>,
+  fieldName: any,
+): boolean {
+  if (!file) {
+    setError(fieldName, { message: "No file selected" });
+    return false;
+  }
+
+  const isJsonMime = file.type === "application/json";
+  const isJsonExt = file.name.toLowerCase().endsWith(".json");
+
+  if (!isJsonMime || !isJsonExt) {
+    setError(fieldName, { message: "Only valid JSON files are allowed" });
+    return false;
+  }
+
+  clearErrors(fieldName);
+  return true;
+}
+
+function validateBinaryFile<T extends FieldValues>(
+  file: File,
+  setError: UseFormSetError<T>,
+  clearErrors: UseFormClearErrors<T>,
+  fieldName: any,
+): boolean {
+  if (!file) {
+    setError(fieldName, { message: "No file selected" });
+    return false;
+  }
+
+  const isExecutable = file.type === "application/x-executable";
+
+  if (!isExecutable) {
+    setError(fieldName, { message: "Only valid executable files are allowed" });
+    return false;
+  }
+
+  clearErrors(fieldName);
+  return true;
+}
+
 export {
   withBasePath,
   isActive,
@@ -256,4 +302,6 @@ export {
   formatEndpoint,
   getSessionKey,
   blobToHex,
+  validateJsonFile,
+  validateBinaryFile,
 };

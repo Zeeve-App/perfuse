@@ -21,7 +21,6 @@ export async function GET(req: NextRequest, { params }: { params: { id: string; 
     const includeChainSpec = req.nextUrl.searchParams.get("includeChainSpec") === "true";
 
     const network = await getNetworkData(networkId);
-
     return sendDataResponse({
       ...network,
       network_chain_spec_file_json: includeChainSpec ? JSON.parse(network?.network_chain_spec_file_json ?? "{}") : {},
