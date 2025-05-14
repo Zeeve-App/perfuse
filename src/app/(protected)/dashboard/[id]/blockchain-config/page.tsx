@@ -13,7 +13,6 @@ import React from "react";
 import { Metadata } from "next";
 import BlockchainConfig from "./_copmonents";
 import { getNetworkData } from "@/db-queries";
-import { ChainSpecFileType } from "@/types/chain-spec";
 
 /** blockchain config page metadata */
 export const metadata: Metadata = {
@@ -29,11 +28,9 @@ const BlockchainConfigPage = async ({
   searchParams: { [key: string]: string | string[] | undefined };
 }) => {
   const network = await getNetworkData(params.id);
-  const chainSpecJSON: ChainSpecFileType = JSON.parse(network?.network_chain_spec_file_json ?? "");
-  chainSpecJSON.genesis.runtimeGenesis.code = "<Download file to see full content>";
   return (
     <BlockchainConfig
-      chainSpecJSON={chainSpecJSON}
+      chainSpecJSON={JSON.parse(network?.network_chain_spec_file_json ?? "")}
       relayChain={{
         type: network?.network_relay_chain_type,
         version: network?.network_relay_chain_version,

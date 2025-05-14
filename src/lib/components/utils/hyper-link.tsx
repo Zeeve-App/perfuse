@@ -9,7 +9,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React from "react";
 import Link, { LinkProps } from "next/link";
 import { FC, HTMLProps } from "react";
 import { tx } from "@/utils/shared";

@@ -53,17 +53,14 @@ const Login = () => {
 
   /** login api call on submit */
   const onSubmit = async (data: LoginSchemaType) => {
+    // console.log(data);
     try {
-      const response = await axios.post("/api/login", {
+      await axios.post("/api/login", {
         email: data.email,
         password: data.password,
         remember: data.remember,
       });
-
-      // check if response is successful
-      if (response.status.toString().startsWith("2")) {
-        router.refresh();
-      }
+      router.push("/");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast("Error while login", {

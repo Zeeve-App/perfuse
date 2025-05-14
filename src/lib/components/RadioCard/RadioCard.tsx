@@ -45,7 +45,6 @@ interface RadioCardProps
   size?: "small" | "medium" | "large";
   hideRadioCircle?: boolean;
   tooltipText?: string;
-  onClick?: React.MouseEventHandler<HTMLInputElement>;
 }
 
 /** radio card component */
@@ -60,7 +59,6 @@ const RadioCard = forwardRef<HTMLInputElement, RadioCardProps>((props, ref) => {
     isChecked,
     hideRadioCircle,
     tooltipText,
-    onClick,
     ...rest
   } = props;
 
@@ -83,7 +81,6 @@ const RadioCard = forwardRef<HTMLInputElement, RadioCardProps>((props, ref) => {
       hideRadioCircle={hideRadioCircle}
       ref={ref}
       {...rest}
-      onClickIt={onClick}
     >
       <span
         className={tx({

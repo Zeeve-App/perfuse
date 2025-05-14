@@ -8,7 +8,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import React from "react";
+
 import { RegionXCard } from "./_components/regionX";
 import { NetworkDbRow } from "@/db-queries";
 import { Card } from "@/lib/components/Card";

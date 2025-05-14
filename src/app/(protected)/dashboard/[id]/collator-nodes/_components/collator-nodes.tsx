@@ -10,7 +10,6 @@
  */
 
 "use client";
-import React from "react";
 import RegisterParachainInfo from "../../_components/register-parachain-info";
 import NodeTable from "../../_components/node-table";
 import NodeListCard from "../../_components/node-list-card";

@@ -10,7 +10,6 @@
  */
 
 "use client";
-import React from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { TabList, Tab } from "@/lib/components/Tabs";
 import { TabsContextProvider } from "@/lib/components/Tabs/TabsContext";

@@ -92,12 +92,10 @@ const Nodes = ({ nodes }: { isLoading: boolean; nodes: (NodeDbRow & { health: bo
                   />
                   <KeyValuePair
                     className="col-span-6 mx-0"
-                    label={"Sidecar HTTP URL"}
+                    label={"API Key"}
                     shouldAllowCopy
-                    tooltipText={formatEndpoint("https", e.node_endpoint, e.node_auth_method, e.node_api_key, "api")}
-                    value={toShortString(
-                      formatEndpoint("https", e.node_endpoint, e.node_auth_method, e.node_api_key, "api"),
-                    )}
+                    tooltipText={e.node_api_key ?? ""}
+                    value={toShortString(e.node_api_key ?? "", 5, 5)}
                   />
                 </div>
               </div>

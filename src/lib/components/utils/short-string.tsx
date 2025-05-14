@@ -8,7 +8,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import React from "react";
+
 import { CopyButton } from "@/lib/components/Button";
 import { Tooltip } from "@/lib/components/Tooltip";
 import { toShortString } from "@/utils/helpers";

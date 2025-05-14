@@ -19,7 +19,6 @@ import { NodeDbRow, addTask, saveNetworkData, saveNodeData } from "@/db-queries"
 import { knexHandler } from "@/db-queries/knexfile";
 import { config } from "@/config/config";
 import { jobShellExecutorBG } from "@/utils/job-shell-executor";
-import { createTaskHandler } from "@/utils/task-handler";
 
 export interface CreatePerfuseApiPayload {
   /** network details from user */
@@ -163,7 +162,7 @@ export async function POST(req: NextRequest) {
         );
 
         /** running the script to create the parachain network */
-        jobShellExecutorBG("make all", process.cwd(), createTaskHandler, taskId);
+        jobShellExecutorBG("make all", process.cwd(), taskId);
       } catch (error) {
         /** if there is any error while creating network it auto rollback the transaction */
         console.log(error);
@@ -213,8 +212,6 @@ const createEnvFile = (data: CreatePerfuseApiPayload, apiKey?: string) => {
     `SSL_TLS=0\n` +
     `ACCOUNT_ADDRESS=${data.network.network_user_address}\n` +
     `REPO=\n` +
-    `POLKADOT=${data.network.network_blockchain_explorer_type.includes("polkadotjs") ? 1 : 0}\n` +
-    `STATESCAN=${data.network.network_blockchain_explorer_type.includes("statescan") ? 1 : 0}\n` +
     ``;
 
   return envFile;

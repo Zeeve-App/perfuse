@@ -20,8 +20,6 @@ import { Progress } from "@/lib/components/Progress";
 import { tx } from "@/utils/shared";
 import SvgCheck from "@/lib/icons/essential/outline/Check";
 import SvgXMark from "@/lib/icons/essential/outline/XMark";
-import { Typography } from "@/lib/components/Typography";
-import { Card } from "@/lib/components/Card";
 
 /** file upload component props */
 interface FileUploadProps {
@@ -86,22 +84,6 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>((props, ref) =>
       >
         <div className="flex flex-col gap-2  lg:gap-4">
           <Heading as="h6">{floatingLabelText}</Heading>
-          {id === "chainSpecFile" && (
-            <Card
-              className={tx(
-                "col-span-12 flex flex-row items-center border border-brand-yellow bg-brand-yellow/5 gap-3",
-              )}
-            >
-              <div className="2xl:flex 2xl:grow 2xl:flex-row 2xl:items-center 2xl:justify-between">
-                <div className="">
-                  <Typography variant="paragraph" className="font-bold">
-                    Note:{" "}
-                  </Typography>
-                  <Typography variant="paragraph">Please ensure the chain spec file is in plain JSON form.</Typography>
-                </div>
-              </div>
-            </Card>
-          )}
           <div className="flex items-center justify-between gap-2 rounded-xl border-2 border-dashed bg-white text-theme-primary-content lg:gap-4 lg:p-3 dark:bg-[#11141C]">
             <span>{iconRight}</span>
             <div className="p-2">

@@ -8,7 +8,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import React from "react";
 import { forwardRef, useEffect } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { DeployStepTypes } from "../page-client";

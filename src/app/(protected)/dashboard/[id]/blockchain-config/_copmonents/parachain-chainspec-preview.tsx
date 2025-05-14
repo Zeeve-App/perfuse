@@ -9,7 +9,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import * as theme from "react-syntax-highlighter/dist/esm/styles/prism";
 import { ChainSpecFileType } from "@/types/chain-spec";
