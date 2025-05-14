@@ -68,8 +68,6 @@ export const useSelectedAccount = () => {
 
     const endpoint = provider.endpoint;
     const api = await ApiPromise.create({ provider });
-    // console.log("api-w", api);
-
     setRelayChainApi(api);
 
     // Set the currency symbol from the chain registry

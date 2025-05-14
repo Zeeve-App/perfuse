@@ -119,7 +119,6 @@ const DeployPage = ({ network, nodes }: { network: NetworkDbRow[]; nodes: NodeDb
 
   /** focusing on steps of deploy page */
   const focusOnComponent = (component: DeployStepTypes) => {
-    console.log({ component, step1Ref });
     switch (component) {
       case "step1":
         step1Ref.current?.focus();

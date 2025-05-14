@@ -45,8 +45,6 @@ const IndexingServiceComponent = ({ networkId }: { networkId: string }) => {
   };
   const pendinfTasks = useNetworkStore((e) => e.tasks.data);
   const isDisabled = pendinfTasks?.length > 0;
-  console.log("index-task", pendinfTasks);
-
   return (
     <Card variant={"grid-no-pad"} className="items-start">
       {/* {isDisabled && (

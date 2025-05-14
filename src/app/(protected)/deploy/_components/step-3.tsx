@@ -116,8 +116,6 @@ const DeployStep3 = forwardRef<
         sessionKey: getSessionKey(runtimeGenesis, collatorAddresses?.[1]?.[0].toString() ?? ""),
       });
 
-      console.log(chainSpec);
-
       // setting values from chain spec file
       formData.setValue("chainSpecFile.contents", chainSpec);
       // trigger validation

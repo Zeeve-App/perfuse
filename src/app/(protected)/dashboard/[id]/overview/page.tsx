@@ -34,8 +34,6 @@ const OverviewPage = async ({
 
   const task = await getTask({ task_associated_network_id: network?.network_id, task_type: "network_provision" });
   const chainSpec: ChainSpecFileType = JSON.parse(network?.network_chain_spec_file_json ?? "{}");
-  // console.log(task);
-
   return (
     <Overview
       isLoading={false}

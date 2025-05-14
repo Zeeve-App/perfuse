@@ -89,9 +89,6 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>((props, ref) => {
 
   const [_id] = useID(id, "switch");
 
-  useEffect(() => {
-    console.log({ isChecked });
-  }, [isChecked]);
   return (
     <SwitchLabel htmlFor={_id} isDisabled={isDisabled} {...switchLabelProps}>
       <input

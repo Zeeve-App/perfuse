@@ -33,6 +33,7 @@ import SvgCheck from "@/lib/icons/essential/outline/Check";
 import { useModalStore } from "@/store/modal";
 import { NetworkDbRow, NodeDbRowWithStatus } from "@/db-queries";
 import { useNetworkStore } from "@/store/network";
+import { ChainSpecFileType } from "@/types/chain-spec";
 
 /** deploy summary component */
 const DeploySummary = ({
@@ -181,8 +182,6 @@ const DeploySummary = ({
         };
       }
     });
-    console.log("new col", newNodes);
-
     const rePayload: ReCreatePerfuseApiPayload = {
       prevApiKey: prevApiKey ?? "",
       network: {
@@ -192,7 +191,9 @@ const DeploySummary = ({
         network_relay_chain_type: data?.relayChain.value ?? "",
         network_sidecar: networkData?.network_sidecar === 1 ? 1 : 0,
         network_blockchain_explorer_type: networkData?.network_blockchain_explorer_type ?? "",
-        network_chain_spec_file_json: JSON.parse(networkData?.network_chain_spec_file_json ?? "{}"),
+        network_chain_spec_file_json: JSON.parse(
+          networkData?.network_chain_spec_file_json ?? "{}",
+        ) as ChainSpecFileType,
         network_binary_path: networkData?.network_binary_path ?? "",
         network_user_address: networkData?.network_user_address ?? "",
       },
@@ -204,6 +205,7 @@ const DeploySummary = ({
       openModal("reDeployNetwork", {
         reDeployNetwork: { payLoad: rePayload },
       });
+      setIsLoading(false);
     } else {
       const response = await apis.createNetwork(payload);
 
@@ -214,6 +216,7 @@ const DeploySummary = ({
         });
         router.push("/dashboard/" + response.data?.data?.network_id);
       }
+      setIsLoading(false);
     }
     setIsLoading(false);
   };

@@ -39,8 +39,5 @@ export const createTaskHandler = async () => {
 export const createExplorerHandler = async (networkId: string) => {
   const explorer = "";
   await updateNetworkData({ network_blockchain_explorer_type: explorer }, networkId);
-
-  // console.log("outputChecksum", outputChecksum);
-
   return;
 };

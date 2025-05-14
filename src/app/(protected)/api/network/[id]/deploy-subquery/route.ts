@@ -56,7 +56,6 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         apiKey = nodeData.node_api_key;
         nodeId = nodeData.node_id;
         const subqueryEnabled = nodeData.subqueryEnabled;
-        console.log("-------subs stats-------------", subqueryEnabled);
         if (subqueryEnabled) {
           return sendErrorResponse({
             message: "subquery already enabled",
