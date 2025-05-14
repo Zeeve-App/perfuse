@@ -91,7 +91,6 @@ const CollatorAddKey = () => {
     try {
       if (data.addKey) {
         setLoading(true);
-        console.log(formData);
         apis.addKey(data.addKey?.networkId, data.addKey?.nodeId, formData);
         router.refresh();
       } else {

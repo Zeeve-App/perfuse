@@ -87,7 +87,7 @@ const Actions = ({
 
   useEffect(() => {
     setTasks({ data: tasks?.data.pendingTasks ?? [], isLoading: false });
-  }, [tasks]);
+  }, [tasks, network, networkId]);
 
   return (
     <div className="flex flex-row gap-x-4">
