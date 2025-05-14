@@ -28,6 +28,7 @@ import {
 import { StatusIcon } from "@/lib/components/StatusIcon";
 import { useToast } from "@/lib/components/Toast";
 import useApi from "@/api-client";
+import { useNetworkStore } from "@/store/network";
 
 /** delete network modal component */
 const DeleteNetworkModal = () => {
@@ -38,11 +39,20 @@ const DeleteNetworkModal = () => {
 
   const isModalOpen = isOpen && type === "deleteNetwork";
 
+  const pendinfTasks = useNetworkStore((e) => e.tasks.data);
+  const isDisabled = pendinfTasks?.length > 0;
+
   /** client apis hook */
   const apis = useApi();
 
   const deleteNetwork = async () => {
     try {
+      if (isDisabled) {
+        toast("Action acan be performed once existing task is completed", {
+          status: "error",
+        });
+        return;
+      }
       setLoading(true);
       await apis.delete(data.deleteNetwork?.networkId as string);
       toast("Network deleted", {

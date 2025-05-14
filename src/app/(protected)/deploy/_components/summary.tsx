@@ -77,6 +77,13 @@ const DeploySummary = ({
       });
       return;
     }
+    if (networkData?.network_relay_chain_type === data?.relayChain.value) {
+      toast(`Error `, {
+        message: `Cannot Re-Deploy same network type`,
+        status: "error",
+      });
+      return;
+    }
     setIsLoading(true);
     const chainSpec = data.chainSpecFile.contents;
     if (chainSpec.para_id) chainSpec.para_id = data.paraId;
