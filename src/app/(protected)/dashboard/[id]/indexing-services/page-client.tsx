@@ -33,7 +33,7 @@ const IndexingServiceComponent = ({ networkId }: { networkId: string }) => {
   }, []);
 
   const btnText = networkData.subQueryEnabled ? "Visit" : "Deploy";
-  const apiKey = nodeData.apiKey || "dffsdf-dfs-d";
+  const apiKey = nodeData.apiKey;
 
   const handleSubQueryBtn = () => {
     if (networkData.subQueryEnabled) {
