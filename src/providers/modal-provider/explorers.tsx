@@ -92,7 +92,11 @@ const ExplorersModal = () => {
     }
   };
   const pendinfTasks = useNetworkStore((e) => e.tasks.data);
-  const isDisabled = pendinfTasks?.length > 0;
+  const networkTask = pendinfTasks?.map(
+    (e) =>
+      e.task_type === "network_provision" || e.task_type === "node_provision" || e.task_type === "explorer_deployment",
+  );
+  const isDisabled = networkTask?.length > 0;
   return (
     <Modal isOpen={isModalOpen} handleClose={onClose}>
       <ModalOverlay />
@@ -134,6 +138,7 @@ const ExplorersModal = () => {
                 btnText={
                   !data.explorers?.isSelected.polkadot || !network?.data?.polkadot_active ? "Click to Install" : "Visit"
                 }
+                btnDisabled={isDisabled}
                 isLoading={isLoading}
                 onClick={() => {
                   !data.explorers?.isSelected.polkadot || !network?.data?.polkadot_active
@@ -174,6 +179,7 @@ const ExplorersModal = () => {
                     : "Visit"
                 }
                 isLoading={isLoading}
+                btnDisabled={isDisabled}
                 onClick={() => {
                   !data.explorers?.isSelected.statescan || !network?.data?.statescan_active
                     ? handleInstall("statescan")
