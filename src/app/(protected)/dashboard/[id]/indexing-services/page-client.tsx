@@ -10,28 +10,34 @@
  */
 
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IndexingServiceCard } from "./_components/indexing-service-card";
 import { Card } from "@/lib/components/Card";
 import { useModalStore } from "@/store/modal";
 import { useNetworkStore } from "@/store/network";
-import { Badge } from "@/lib/components/Badge/Badge";
-import SvgExclamationTriangle from "@/lib/icons/essential/outline/ExclamationTriangle";
 
 import { useToast } from "@/lib/components/Toast";
 
 /** coreTime page client component */
 const IndexingServiceComponent = ({ networkId }: { networkId: string }) => {
   const { openModal } = useModalStore();
+  const [host, setHost] = useState("");
   const toast = useToast();
   const networkData = useNetworkStore().networkInfo.data;
   const nodeData = useNetworkStore().nodeInfo.data;
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setHost(window.location.host);
+    }
+  }, []);
+
   const btnText = networkData.subQueryEnabled ? "Visit" : "Deploy";
-  const apiKey = nodeData.apiKey;
+  const apiKey = nodeData.apiKey || "dffsdf-dfs-d";
+
   const handleSubQueryBtn = () => {
     if (networkData.subQueryEnabled) {
-      const host = window.location.host;
-      window.open(`${host}/${apiKey}/subql`, "_blank");
+      window.open(`http://${host?.split(":")[0]}/${apiKey}/subql`, "_blank");
     } else {
       if (isDisabled) {
         toast(`Retry later`, {
@@ -43,6 +49,7 @@ const IndexingServiceComponent = ({ networkId }: { networkId: string }) => {
       openModal("deploySubquery", { deploySubquery: { networkId: networkId ?? "" } });
     }
   };
+
   const pendinfTasks = useNetworkStore((e) => e.tasks.data);
   const isDisabled = pendinfTasks?.length > 0;
   return (

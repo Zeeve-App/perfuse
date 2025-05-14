@@ -18,15 +18,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { ParachainsServiceError } from "@/api-client/types";
 import { Button } from "@/lib/components/Button";
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
-  ModalTitle,
-  ModalText,
-  ModalFooter,
-} from "@/lib/components/Modal";
+import { Modal, ModalOverlay, ModalContent, ModalBody, ModalTitle, ModalFooter } from "@/lib/components/Modal";
 import { useToast } from "@/lib/components/Toast";
 import useApi from "@/api-client";
 import { Card } from "@/lib/components/Card";

@@ -33,6 +33,7 @@ interface IconCardProps extends ComponentPropsWithoutRef<"div"> {
   btnText?: string;
   onClick: () => void;
   isLoading?: boolean;
+  btnDisabled?: boolean;
 }
 
 /** regionX card for core time page */
@@ -46,6 +47,7 @@ const IconCard = (props: IconCardProps) => {
     btnText = "Visit",
     onClick,
     isLoading = false,
+    btnDisabled = false,
   } = props;
   const { isOpen, handleToggle } = useToggle();
 
@@ -114,6 +116,7 @@ const IconCard = (props: IconCardProps) => {
             onClick={() => {
               onClick();
             }}
+            isDisabled={btnDisabled}
             isLoading={isLoading}
             // isDisabled={!isSelected}
           >
