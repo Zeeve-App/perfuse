@@ -9,6 +9,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import React from "react";
 import Image from "next/image";
 import SvgCreateConfig from "@/lib/icons/custom/create-config";
 import { withBasePath } from "@/utils/helpers";

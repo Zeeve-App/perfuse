@@ -9,6 +9,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import React from "react";
 import ZeeveSidebarItemProps from "../lib/components/sidebar/type";
 import SvgBook2 from "@/lib/icons/school/outline/Book2";
 import Svg4Square from "@/lib/icons/grid/outline/4Square";

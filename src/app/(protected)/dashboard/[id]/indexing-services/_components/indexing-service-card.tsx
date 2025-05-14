@@ -26,9 +26,11 @@ interface IndexingServiceCardProps extends ComponentPropsWithoutRef<"div"> {
   protocolName: string;
   description: string;
   showDescription?: boolean;
-  serviceLink: string;
+  serviceLink?: string;
   imageSrc?: string;
   docLink?: string;
+  primaryButton?: JSX.Element | string;
+  onPrimaryClick?: () => void;
 }
 
 /** regionX card for core time page */
@@ -99,10 +101,11 @@ const IndexingServiceCard = (props: IndexingServiceCardProps) => {
             variant={"solid"}
             colorScheme={"gradient"}
             onClick={() => {
-              window.open(props.serviceLink);
+              props.serviceLink && window.open(props.serviceLink);
+              props.onPrimaryClick && props.onPrimaryClick();
             }}
           >
-            Visit
+            {props.primaryButton ? props.primaryButton : "Visit"}
           </Button>
           <Button
             className="col-span-2 w-full"

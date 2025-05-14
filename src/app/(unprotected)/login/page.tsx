@@ -11,7 +11,10 @@
 
 import React from "react";
 import { Metadata } from "next";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import Login from "./page-client";
+import { authFromHeader } from "@/middleware";
 
 /** login page metadata */
 export const metadata: Metadata = {
@@ -21,6 +24,12 @@ export const metadata: Metadata = {
 
 /** login page */
 const LoginPage = async () => {
+  const header = headers();
+  const data = await authFromHeader(header);
+
+  if (data?.email) {
+    return redirect("/");
+  }
   return (
     <>
       <Login />

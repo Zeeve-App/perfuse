@@ -37,14 +37,24 @@ export const deployNetworkValidationSchema = yup
     }),
     sudoKey: yup
       .string()
-      .required("Sudo Key is required")
-      .test({
-        test: (publicKey: string) => {
-          // Ensure it's a hex string, has 64 characters (32 bytes) and that the length is correct when converted to U8 array
-          return isAddress(publicKey);
-        },
-        message: "invalid sudo key",
+
+      .when("isSudoKeyRequired", {
+        is: true,
+        then: (schema) =>
+          schema
+            .test({
+              name: "is-valid-address",
+              message: "Invalid sudo key",
+              test: (publicKey: string | undefined) => {
+                // Return true for valid keys or if not required
+                if (!publicKey) return false;
+                return isAddress(publicKey);
+              },
+            })
+            .required("Sudo Key is required"),
+        otherwise: (schema) => schema.notRequired(),
       }),
+    isSudoKeyRequired: yup.bool().default(false),
     relayChain: yup.object({
       value: yup.string().required("Select a relay chain."),
     }),
@@ -104,7 +114,7 @@ export const deployNetworkValidationSchema = yup
       http: yup.boolean().default(true),
       ws: yup.boolean().default(true),
     }),
-    sidecar: yup.boolean().default(true),
+    sidecar: yup.string().nullable(),
     accounts: yup
       .array(
         yup.object({
@@ -145,6 +155,8 @@ export const deployNetworkValidationSchema = yup
         value: yup.string<(typeof templateOption)[number]["value"]>().required("Select a template."),
       })
       .required(),
+    polkadotjsExplorer: yup.string().nullable(),
+    statescanExplorer: yup.string().nullable(),
     chainSpecFile: yup
       .object({
         contents: yup.mixed<ChainSpecFileType>().required("Chain spec file is required."),

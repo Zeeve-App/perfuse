@@ -10,6 +10,7 @@
  */
 
 "use client";
+import React from "react";
 import { useEffect, useRef } from "react";
 import { ClassValue } from "class-variance-authority/types";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -39,13 +40,15 @@ export default function DeployPage({ deployed }: { deployed: boolean }) {
         http: true,
         ws: true,
       },
-      sidecar: true,
+      sidecar: "sidecar",
       networkEnvironment: {
         value: "testnet",
       },
       relayChain: {
         value: "local",
       },
+      polkadotjsExplorer: "polkadotjs",
+      statescanExplorer: "statescan",
     },
   });
 

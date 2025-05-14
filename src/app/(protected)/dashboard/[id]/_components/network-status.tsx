@@ -9,6 +9,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import React from "react";
 import { TaskDbRow } from "@/db-queries";
 import { Badge } from "@/lib/components/Badge/Badge";
 import { useNetworkStore } from "@/store/network";

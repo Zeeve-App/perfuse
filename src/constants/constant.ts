@@ -8,3 +8,5 @@ export const relayChainRpc: Record<
   kusama: "wss://kusama-rpc.polkadot.io", // RPC endpoint for Kusama mainnet
   polkadot: "wss://rpc.polkadot.io", // RPC endpoint for Polkadot mainnet
 };
+
+export const SUBQL_ACCESS_TOKEN_URL = "https://managedservice.subquery.network/";

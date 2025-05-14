@@ -9,6 +9,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import React from "react";
 import Image from "next/image";
 import { Metadata } from "next";
 import NetworkCard from "./_components/network-card";

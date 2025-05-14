@@ -10,6 +10,7 @@
  */
 
 /* eslint-disable react/display-name */
+import React from "react";
 import { forwardRef } from "react";
 import { PolymorphicComponentPropsWithRef, PolymorphicRef } from "../core";
 import { tx } from "@/utils/shared";

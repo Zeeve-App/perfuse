@@ -8,11 +8,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import React from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
 import { CreatePerfuseApiPayload } from "../../api/create/route";
 import { DeployStepTypes } from "../page-client";
 import { Card } from "@/lib/components/Card";
@@ -85,14 +85,23 @@ export default function DeploySummary({
 
     // if (chainSpec.) chainSpec.properties.tokenSymbol = data.tokenName;
 
+    const explorers: string[] = [];
+    if (data?.polkadotjsExplorer === "polkadotjs") {
+      explorers.push(data.polkadotjsExplorer);
+    }
+
+    if (data?.statescanExplorer === "statescan") {
+      explorers.push(data.statescanExplorer);
+    }
+
     const payload: CreatePerfuseApiPayload = {
       network: {
         network_name: data.chainName,
         network_env: data?.networkEnvironment.value ?? "",
         network_template: data?.template.value ?? "",
         network_relay_chain_type: data?.relayChain.value ?? "",
-        network_sidecar: Boolean(data?.sidecar) ? 1 : 0,
-        network_blockchain_explorer_type: "polkdotjs",
+        network_sidecar: data?.sidecar === "sidecar" ? 1 : 0,
+        network_blockchain_explorer_type: explorers.join(),
         network_chain_spec_file_json: chainSpec,
         network_binary_path: data?.binaryFile.path ?? "",
         network_user_address: "",
@@ -257,7 +266,7 @@ export default function DeploySummary({
                 <span className="font-semibold">Sidecar </span>
 
                 <div className="col-span-12 flex items-center justify-start">
-                  <Switch isChecked={formWatchState.sidecar} colorScheme={"blue"} isDisabled>
+                  <Switch isChecked={formWatchState.sidecar === "sidecar"} colorScheme={"blue"} isDisabled>
                     Enable
                   </Switch>
                 </div>

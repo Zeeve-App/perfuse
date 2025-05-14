@@ -26,7 +26,7 @@ const SvgArrowDown = ({ title, titleId, ...props }: SVGProps<SVGSVGElement> & SV
     {...props}
   >
     {title ? <title id={titleId}>{title}</title> : null}
-    <path d="M0.848633 1.28076L6.74658 7.17871L12.6445 1.28076" stroke="currentColor" stroke-width="2" />
+    <path d="M0.848633 1.28076L6.74658 7.17871L12.6445 1.28076" stroke="currentColor" strokeWidth="2" />
   </svg>
 );
 

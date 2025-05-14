@@ -13,21 +13,22 @@ import useSWR from "swr";
 import useFetcher from "@/hooks/use-fetcher";
 import { withBasePath } from "@/utils/helpers";
 import { NetworkDbRow } from "@/db-queries";
+import { ChainSpecFileType } from "@/types/chain-spec";
 
 /** interface declaration of network list API response payload */
 interface ResponsePayload {
   success: boolean;
-  data?: NetworkDbRow;
+  data?: NetworkDbRow & { network_chain_spec_file_json: ChainSpecFileType };
 }
 
 /** hook to get the node info of a node */
-const useNetworkApi = (networkId: string) => {
-  const apiEndpoint = withBasePath(`/api/network/${networkId}`);
+const useNetworkApi = (networkId: string, includeChainSpec: boolean = false) => {
+  const apiEndpoint = withBasePath(`/api/network/${networkId}?includeChainSpec=${includeChainSpec.toString()}`);
   const fetcher = useFetcher();
 
   const request = useSWR<ResponsePayload, Record<string, string>>(networkId ? apiEndpoint : undefined, fetcher, {
     shouldRetryOnError: false,
-    refreshInterval: 1000 * 5,
+    refreshInterval: includeChainSpec ? 0 : 1000 * 20,
   });
 
   return request;
