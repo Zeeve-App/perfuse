@@ -48,7 +48,7 @@ const DeleteNetworkModal = () => {
   const deleteNetwork = async () => {
     try {
       if (isDisabled) {
-        toast("Action acan be performed once existing task is completed", {
+        toast("Action can be performed once existing task is completed", {
           status: "error",
         });
         return;

@@ -46,7 +46,7 @@ const ExplorersModal = () => {
   const handleInstall = async (service: "polkadotjs" | "statescan") => {
     try {
       if (isDisabled) {
-        toast("Action acan be performed once existing task is completed", {
+        toast("Action can be performed once existing task is completed", {
           status: "error",
         });
         return;
@@ -82,7 +82,7 @@ const ExplorersModal = () => {
   };
   const handleClick = async (serviceLink: string, isActive: boolean) => {
     if (isDisabled && !isActive) {
-      toast("Action acan be performed once existing task is completed", {
+      toast("Action can be performed once existing task is completed", {
         status: "error",
       });
       return;

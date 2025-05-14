@@ -51,7 +51,6 @@ export type DeploySubquerySchemaType = yup.InferType<typeof DeploySubquerySchema
 /** collator add key modal component */
 const DeploySubquery = () => {
   const [isLoading, setLoading] = useState(false);
-  const [token, setToken] = useState("");
   const { isOpen, onClose, type, data } = useModalStore();
   const toast = useToast();
   const router = useRouter();
